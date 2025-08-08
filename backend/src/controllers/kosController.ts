@@ -71,13 +71,11 @@ export const createKos = async (req: Request, res: Response) => {
                 address,
                 pricePerMonth,
                 gender,
-                // Nested create untuk gambar
                 images: images?.create ? {
                     create: images.create.map((img: { file: string }) => ({
                         file: img.file
                     }))
                 } : undefined,
-                // Nested create untuk fasilitas
                 facilities: facilities?.create ? {
                     create: facilities.create.map((fac: { facility: string }) => ({
                         facility: fac.facility
