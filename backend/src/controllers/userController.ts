@@ -5,7 +5,6 @@ import { BASE_URL, SECRET } from "../global";
 import { v4 as uuidv4 } from "uuid";
 import md5 from "md5";
 import { sign } from "jsonwebtoken";
-import jwt from "jsonwebtoken"
 
 
 const prisma = new PrismaClient({ errorFormat: "pretty" })

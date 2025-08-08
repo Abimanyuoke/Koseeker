@@ -1,8 +1,8 @@
 import express from "express"
 import { getAllMenus, createMenu, updateMenu, deleteMenu } from "../controllers/kosController"
-import { verifyAddMenu, verifyEditMenu } from "../middlewares/menuValidation"
+import { verifyAddMenu, verifyEditMenu } from "../middlewares/kosValidation"
 import { verifyRole, verifyToken } from "../middlewares/authorization"
-import uploadFile from "../middlewares/menuUpload"
+import uploadFile from "../middlewares/kosUpload"
 
 const app = express()
 app.use(express.json())

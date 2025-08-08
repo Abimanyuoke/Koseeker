@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { v4 as uuidv4 } from "uuid";
 import { BASE_URL } from "../global";
 import fs from "fs"
 
@@ -31,35 +30,80 @@ export const getAllKos = async (request: Request, response: Response) => {
     }
 }
 
-export const createMenu = async (request: Request, response: Response) => {
+// export const createKos = async (request: Request, response: Response) => {
+//     try {
+//         /** get requested data (data has been sent from request) */
+//         const { name, price, category, description } = request.body
+//         const uuid = uuidv4()
+
+//         /** variable filename use to define of uploaded file name */
+//         let filename = ""
+//         if (request.file) filename = request.file.filename /** get file name of uploaded file */
+
+//         /** process to save new kos, price and stock have to convert in number type */
+//         const newKos = await prisma.kos.create({
+//             data: { uuid, name, price: Number(price), category, description, picture: filename }
+//         })
+
+//         return response.json({
+//             status: true,
+//             data: newKos,
+//             message: `New Kos has created`
+//         }).status(200)
+//     } catch (error) {
+//         return response
+//             .json({
+//                 status: false,
+//                 message: `There is an error. ${error}`
+//             })
+//             .status(400)
+//     }
+// }
+
+export const createKos = async (req: Request, res: Response) => {
     try {
-        /** get requested data (data has been sent from request) */
-        const { name, price, category, description } = request.body
-        const uuid = uuidv4()
+        const { userId, name, address, pricePerMonth, gender, images, facilities } = req.body
 
-        /** variable filename use to define of uploaded file name */
-        let filename = ""
-        if (request.file) filename = request.file.filename /** get file name of uploaded file */
-
-        /** process to save new kos, price and stock have to convert in number type */
         const newKos = await prisma.kos.create({
-            data: { uuid, name, price: Number(price), category, description, picture: filename }
+            data: {
+                userId,
+                name,
+                address,
+                pricePerMonth,
+                gender,
+                // Nested create untuk gambar
+                images: images?.create ? {
+                    create: images.create.map((img: { file: string }) => ({
+                        file: img.file
+                    }))
+                } : undefined,
+                // Nested create untuk fasilitas
+                facilities: facilities?.create ? {
+                    create: facilities.create.map((fac: { facility: string }) => ({
+                        facility: fac.facility
+                    }))
+                } : undefined
+            },
+            include: {
+                images: true,
+                facilities: true
+            }
         })
 
-        return response.json({
+        return res.status(201).json({
             status: true,
-            data: newKos,
-            message: `New Kos has created`
-        }).status(200)
+            message: 'Kos berhasil ditambahkan',
+            data: newKos
+        })
     } catch (error) {
-        return response
-            .json({
-                status: false,
-                message: `There is an error. ${error}`
-            })
-            .status(400)
+        console.error(error)
+        return res.status(500).json({
+            status: false,
+            message: 'Terjadi kesalahan pada server'
+        })
     }
 }
+
 
 export const updateKos = async (request: Request, response: Response) => {
     try {
