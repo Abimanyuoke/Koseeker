@@ -5,8 +5,8 @@ import swaggerUi from 'swagger-ui-express'
 import path from 'path'
 import KosRoute from './routers/kosRoute'
 import UserRoute from './routers/userRoute'
-import OrderRoute from './routers/orderRoute'
-import ReportRoute from './routers/reportRoute'
+import OrderRoute from '../../orderRoute'
+import ReportRoute from '../../reportRoute'
 
 import { PORT } from './global'
 
