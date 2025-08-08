@@ -6,3 +6,104 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id       Int      @id @default(autoincrement())
+  name     String
+  email    String   @unique
+  password String
+  phone    String
+  role     Role
+  kos      Kos[]        @relation("UserKos")
+  reviews  Review[]
+  books    Book[]
+  comments Comment[]
+  likes    Like[]
+}
+
+model Kos {
+  id              Int            @id @default(autoincrement())
+  userId          Int
+  name            String
+  address         String
+  pricePerMonth   Float
+  gender          Gender
+  owner           User           @relation("UserKos", fields: [userId], references: [id])
+  images          KosImage[]
+  facilities      KosFacility[]
+  reviews         Review[]
+  books           Book[]
+  comments        Comment[]
+  likes           Like[]
+}
+
+model KosImage {
+  id     Int    @id @default(autoincrement())
+  kosId  Int
+  file   String
+  kos    Kos    @relation(fields: [kosId], references: [id])
+}
+
+model KosFacility {
+  id       Int    @id @default(autoincrement())
+  kosId    Int
+  facility String
+  kos      Kos    @relation(fields: [kosId], references: [id])
+}
+
+model Review {
+  id       Int    @id @default(autoincrement())
+  kosId    Int
+  userId   Int
+  comment  String
+  kos      Kos    @relation(fields: [kosId], references: [id])
+  user     User   @relation(fields: [userId], references: [id])
+}
+
+model Book {
+  id        Int      @id @default(autoincrement())
+  kosId     Int
+  userId    Int
+  startDate DateTime
+  endDate   DateTime
+  status    BookStatus
+  kos       Kos      @relation(fields: [kosId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  kosId     Int
+  userId    Int
+  content   String
+  createdAt DateTime @default(now())
+  kos       Kos      @relation(fields: [kosId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Like {
+  id      Int    @id @default(autoincrement())
+  kosId   Int
+  userId  Int
+  kos     Kos    @relation(fields: [kosId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
+
+  @@unique([kosId, userId])
+}
+
+enum Role {
+  owner
+  society
+}
+
+enum Gender {
+  male
+  female
+  all
+}
+
+enum BookStatus {
+  pending
+  accept
+  reject
+}
