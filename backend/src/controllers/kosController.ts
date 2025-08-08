@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { BASE_URL } from "../global";
 import fs from "fs"
+import path from "path";
 
 const prisma = new PrismaClient({ errorFormat: "pretty" })
 
@@ -105,88 +106,98 @@ export const createKos = async (req: Request, res: Response) => {
 
 export const updateKos = async (request: Request, response: Response) => {
     try {
-        /** get id of kos's id that sent in parameter of URL */
-        const { id } = request.params
-        /** get requested data (data has been sent from request) */
-        const { name, price, category, description } = request.body
+        const { id } = request.params;
+        const { name, pricePerMonth, gender, address } = request.body;
 
-        /** make sure that data is exists in database */
-        const findKos = await prisma.kos.findFirst({ where: { id: Number(id) } })
-        if (!findKos) return response
-            .status(200)
-            .json({ status: false, message: `Kos is not found` })
+        const findKos = await prisma.kos.findFirst({
+            where: { id: Number(id) },
+            include: { images: true }
+        });
 
-        /** default value filename of saved data */
-        let filename = findKos.picture
-        if (request.file) {
-            /** update filename by new uploaded picture */
-            filename = request.file.filename
-            /** check the old picture in the folder */
-            let path = `${BASE_URL}/../public/kos_picture/${findKos.picture}`
-            let exists = fs.existsSync(path)
-            /** delete the old exists picture if reupload new file */
-            if (exists && findKos.picture !== ``) fs.unlinkSync(path)
+        if (!findKos) {
+            return response.status(404).json({ status: false, message: `Kos is not found` });
         }
 
-        /** process to update kos's data */
+        // Update data utama kos
         const updatedKos = await prisma.kos.update({
+            where: { id: Number(id) },
             data: {
                 name: name || findKos.name,
-                price: price ? Number(price) : findKos.price,
-                category: category || findKos.category,
-                description: description || findKos.description,
-                picture: filename
-            },
-            where: { id: Number(id) }
-        })
+                pricePerMonth: pricePerMonth ? Number(pricePerMonth) : findKos.pricePerMonth,
+                gender: gender || findKos.gender,
+                address: address || findKos.address
+            }
+        });
 
-        return response.json({
+        // Kalau ada file gambar baru
+        if (request.files && Array.isArray(request.files) && request.files.length > 0) {
+            // Hapus gambar lama dari folder
+            for (let img of findKos.images) {
+                const oldPath = path.join(BASE_URL, "../public/kos_picture", img.file);
+                if (fs.existsSync(oldPath)) {
+                    fs.unlinkSync(oldPath);
+                }
+            }
+
+            // Hapus gambar lama di DB
+            await prisma.kosImage.deleteMany({ where: { kosId: updatedKos.id } });
+
+            // Simpan gambar baru di DB
+            const newImages = (request.files as Express.Multer.File[]).map(file => ({
+                kosId: updatedKos.id,
+                file: file.filename
+            }));
+            await prisma.kosImage.createMany({ data: newImages });
+        }
+
+        return response.status(200).json({
             status: true,
             data: updatedKos,
-            message: `Kos has updated`
-        }).status(200)
+            message: `Kos has been updated`
+        });
     } catch (error) {
-        return response
-            .json({
-                status: false,
-                message: `There is an error. ${error}`
-            })
-            .status(400)
+        return response.status(400).json({
+            status: false,
+            message: `There is an error: ${error}`
+        });
     }
-}
+};
 
-export const deleteMenu = async (request: Request, response: Response) => {
+export const deleteKos = async (request: Request, response: Response) => {
     try {
-        /** get id of menu's id that sent in parameter of URL */
-        const { id } = request.params
+        const { id } = request.params;
 
-        /** make sure that data is exists in database */
-        const findMenu = await prisma.menu.findFirst({ where: { id: Number(id) } })
-        if (!findMenu) return response
-            .status(200)
-            .json({ status: false, message: `Menu is not found` })
+        const findKos = await prisma.kos.findFirst({
+            where: { id: Number(id) },
+            include: { images: true }
+        });
 
-        /** check the old picture in the folder */
-        let path = `${BASE_URL}/../public/menu_picture/${findMenu.picture}`
-        let exists = fs.existsSync(path)
-        /** delete the old exists picture if reupload new file */
-        if (exists && findMenu.picture !== ``) fs.unlinkSync(path)
+        if (!findKos) {
+            return response.status(404).json({ status: false, message: `Kos is not found` });
+        }
 
-        /** process to delete menu's data */
-        const deletedMenu = await prisma.menu.delete({
+        // Hapus gambar dari folder
+        for (let img of findKos.images) {
+            const imgPath = path.join(BASE_URL, "../public/kos_picture", img.file);
+            if (fs.existsSync(imgPath)) {
+                fs.unlinkSync(imgPath);
+            }
+        }
+
+        // Hapus kos (otomatis hapus relasi kalau sudah diatur onDelete cascade di schema)
+        const deletedKos = await prisma.kos.delete({
             where: { id: Number(id) }
-        })
-        return response.json({
+        });
+
+        return response.status(200).json({
             status: true,
-            data: deletedMenu,
-            message: `Menu has deleted`
-        }).status(200)
+            data: deletedKos,
+            message: `Kos has been deleted`
+        });
     } catch (error) {
-        return response
-            .json({
-                status: false,
-                message: `There is an error. ${error}`
-            })
-            .status(400)
+        return response.status(400).json({
+            status: false,
+            message: `There is an error: ${error}`
+        });
     }
-}
+};

@@ -8,71 +8,79 @@ datasource db {
 }
 
 model User {
-  id       Int      @id @default(autoincrement())
-  name     String
-  email    String   @unique
-  password String
-  phone    String
-  role     Role
-  kos      Kos[]        @relation("UserKos")
-  reviews  Review[]
-  books    Book[]
-  comments Comment[]
-  likes    Like[]
-}
-
-model Kos {
-  id              Int            @id @default(autoincrement())
-  userId          Int
+  id              Int       @id @default(autoincrement())
+  uuid            String    @unique @default("")
   name            String
-  address         String
-  pricePerMonth   Float
-  gender          Gender
-  owner           User           @relation("UserKos", fields: [userId], references: [id])
-  images          KosImage[]
-  facilities      KosFacility[]
+  email           String    @unique
+  password        String
+  phone           String
+  profile_picture String    @default("")
+  role            Role
+  kos             Kos[]     @relation("UserKos")
   reviews         Review[]
   books           Book[]
   comments        Comment[]
   likes           Like[]
 }
 
+model Kos {
+  id            Int           @id @default(autoincrement())
+  uuid          String        @unique @default(uuid())
+  userId        Int
+  name          String
+  address       String
+  pricePerMonth Float
+  gender        Gender
+  owner         User          @relation("UserKos", fields: [userId], references: [id])
+  images        KosImage[]
+  facilities    KosFacility[]
+  reviews       Review[]
+  books         Book[]
+  comments      Comment[]
+  likes         Like[]
+}
+
 model KosImage {
-  id     Int    @id @default(autoincrement())
-  kosId  Int
-  file   String
-  kos    Kos    @relation(fields: [kosId], references: [id])
+  id    Int    @id @default(autoincrement())
+  uuid  String @unique @default(uuid())
+  kosId Int
+  file  String
+  kos   Kos    @relation(fields: [kosId], references: [id])
 }
 
 model KosFacility {
   id       Int    @id @default(autoincrement())
+  uuid     String @unique @default(uuid())
   kosId    Int
   facility String
   kos      Kos    @relation(fields: [kosId], references: [id])
 }
 
 model Review {
-  id       Int    @id @default(autoincrement())
-  kosId    Int
-  userId   Int
-  comment  String
-  kos      Kos    @relation(fields: [kosId], references: [id])
-  user     User   @relation(fields: [userId], references: [id])
+  id      Int    @id @default(autoincrement())
+  uuid    String @unique @default(uuid())
+  kosId   Int
+  userId  Int
+  comment String
+  kos     Kos    @relation(fields: [kosId], references: [id])
+  user    User   @relation(fields: [userId], references: [id])
 }
 
 model Book {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
+  uuid      String     @unique @default(uuid())
   kosId     Int
   userId    Int
   startDate DateTime
   endDate   DateTime
   status    BookStatus
-  kos       Kos      @relation(fields: [kosId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  kos       Kos        @relation(fields: [kosId], references: [id])
+  user      User       @relation(fields: [userId], references: [id])
 }
 
 model Comment {
   id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
   kosId     Int
   userId    Int
   content   String
@@ -82,14 +90,43 @@ model Comment {
 }
 
 model Like {
-  id      Int    @id @default(autoincrement())
-  kosId   Int
-  userId  Int
-  kos     Kos    @relation(fields: [kosId], references: [id])
-  user    User   @relation(fields: [userId], references: [id])
-
+  id     Int    @id @default(autoincrement())
+  uuid   String @unique @default(uuid())
+  kosId  Int
+  userId Int
+  kos    Kos    @relation(fields: [kosId], references: [id])
+  user   User   @relation(fields: [userId], references: [id])
   @@unique([kosId, userId])
 }
+
+// model Order {
+//   id             Int         @id @default(autoincrement())
+//   uuid           String      @unique @default(uuid())
+//   customer       String      @default("")
+//   total_price    Int         @default(0)
+//   payment_method Payment     @default(CASH)
+//   alamat         String      @default("")
+//   status         Status      @default(NEW)
+//   size           Size
+//   createdAt      DateTime    @default(now())
+//   updatedAt      DateTime    @updatedAt
+//   orderLists     OrderList[]
+//   User           User?       @relation(fields: [userId], references: [id])
+//   userId         Int?
+// }
+
+// model OrderList {
+//   id        Int      @id @default(autoincrement())
+//   uuid      String   @unique @default(uuid())
+//   quantity  Int      @default(0)
+//   note      String   @db.Text
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+//   Product   Product? @relation(fields: [productId], references: [id])
+//   productId Int?
+//   Order   Order? @relation(fields: [orderId], references: [id])
+//   orderId Int?
+// }
 
 enum Role {
   owner

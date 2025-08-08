@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllOrders, createOrder, updateStatusOrder, deleteOrder } from "../controllers/orderController"
+import { getAllOrders, createOrder, updateStatusOrder, deleteOrder } from "../../../orderController"
 import { verifyAddOrder, verifyEditStatus } from "../middlewares/orderValidation"
 import { verifyRole, verifyToken } from "../middlewares/authorization"
 

@@ -1,5 +1,5 @@
 import express from "express"
-import { getDashboard, getFavourite } from "../controllers/reportController"
+import { getDashboard, getFavourite } from "../../../reportController"
 import { verifyRole, verifyToken } from "../middlewares/authorization"
 
 const app = express()

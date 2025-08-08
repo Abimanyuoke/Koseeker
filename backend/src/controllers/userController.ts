@@ -71,7 +71,7 @@ export const getUserById = async (request: Request, response: Response) => {
 export const createUser = async (request: Request, response: Response) => {
     try {
         /** get requested data (data has been sent from request) */
-        const {name, email, password, role, alamat, telephone } = request.body
+        const {name, email, password, role, phone } = request.body
         const uuid = uuidv4()
 
         /** variable filename use to define of uploaded file name */
@@ -80,7 +80,7 @@ export const createUser = async (request: Request, response: Response) => {
 
         /** process to save new user */
         const newUser = await prisma.user.create({
-            data: { uuid, name, email, password: md5(password), role, profile_picture: filename, alamat, telephone }
+            data: { uuid, name, email, password: md5(password), role, profile_picture: filename, phone }
         })
 
         return response.json({
