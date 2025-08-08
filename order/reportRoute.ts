@@ -1,6 +1,6 @@
 import express from "express"
 import { getDashboard, getFavourite } from "./reportController"
-import { verifyRole, verifyToken } from "./backend/src/middlewares/authorization"
+import { verifyRole, verifyToken } from "../backend/src/middlewares/authorization"
 
 const app = express()
 app.use(express.json())
