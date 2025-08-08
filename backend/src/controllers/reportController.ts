@@ -7,7 +7,7 @@ export const getDashboard = async (request: Request, response: Response): Promis
     try {
         /** process to get order, contains means search name or table number of customer's order based on sent keyword */
         const allUsers = await prisma.user.findMany()
-        const allMenus = await prisma.menu.findMany()
+        const allKos = await prisma.kos.findMany()
         const newOrders = await prisma.order.findMany({
             where: {
                 OR: [
@@ -22,7 +22,7 @@ export const getDashboard = async (request: Request, response: Response): Promis
             status: true,
             data: {
                 allUser: allUsers.length,
-                allMenus: allMenus.length,
+                allKos: allKos.length,
                 newOrder: newOrders.length,
                 doneOrder: doneOrders.length,
             },
@@ -47,22 +47,22 @@ export const getFavourite = async (request: Request, response: Response): Promis
             },
         });
 
-        // Membuat objek untuk menyimpan jumlah pemesanan per menu
-        const menuCount: { [key: string]: number } = {};
+        // Membuat objek untuk menyimpan jumlah pemesanan per kos
+        const kosCount: { [key: string]: number } = {};
 
-        // Menghitung jumlah pemesanan untuk setiap menu
-        orderLists.forEach((orderList) => {
+        // Menghitung jumlah pemesanan untuk setiap kos
+        orderLists.forEach((orderList: { Menu: { name: any; }; quantity: number; }) => {
             const menuName = orderList.Menu?.name;
             if (menuName) {
-                if (!menuCount[menuName]) {
-                    menuCount[menuName] = 0; 
+                if (!kosCount[menuName]) {
+                    kosCount[menuName] = 0;
                 }
-                menuCount[menuName] += orderList.quantity; 
+                kosCount[menuName] += orderList.quantity;
             }
         });
 
         // Mengubah objek menjadi array untuk dikirim sebagai respons
-        const result = Object.entries(menuCount).map(([name, count]) => ({
+        const result = Object.entries(kosCount).map(([name, count]) => ({
             name,
             count,
         }));
@@ -70,7 +70,7 @@ export const getFavourite = async (request: Request, response: Response): Promis
         response.json({
             status: true,
             data: result,
-            message: "All report menu are retrieved",
+            message: "All report kos are retrieved",
         }).status(200);
     } catch (error) {
         response

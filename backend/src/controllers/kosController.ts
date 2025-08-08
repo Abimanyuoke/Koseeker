@@ -6,20 +6,20 @@ import fs from "fs"
 
 const prisma = new PrismaClient({ errorFormat: "pretty" })
 
-export const getAllMenus = async (request: Request, response: Response) => {
+export const getAllKos = async (request: Request, response: Response) => {
     try {
         /** get requested data (data has been sent from request) */
         const { search } = request.query
 
-        /** process to get menu, contains means search name of menu based on sent keyword */
-        const allMenus = await prisma.menu.findMany({
+        /** process to get kos, contains means search name of kos based on sent keyword */
+        const allKos = await prisma.kos.findMany({
             where: { name: { contains: search?.toString() || "" } }
         })
 
         return response.json({
             status: true,
-            data: allMenus,
-            message: `Menus has retrieved`
+            data: allKos,
+            message: `Kos has retrieved`
         }).status(200)
     } catch (error) {
         return response
@@ -41,15 +41,15 @@ export const createMenu = async (request: Request, response: Response) => {
         let filename = ""
         if (request.file) filename = request.file.filename /** get file name of uploaded file */
 
-        /** process to save new menu, price and stock have to convert in number type */
-        const newMenu = await prisma.menu.create({
+        /** process to save new kos, price and stock have to convert in number type */
+        const newKos = await prisma.kos.create({
             data: { uuid, name, price: Number(price), category, description, picture: filename }
         })
 
         return response.json({
             status: true,
-            data: newMenu,
-            message: `New Menu has created`
+            data: newKos,
+            message: `New Kos has created`
         }).status(200)
     } catch (error) {
         return response
@@ -61,38 +61,38 @@ export const createMenu = async (request: Request, response: Response) => {
     }
 }
 
-export const updateMenu = async (request: Request, response: Response) => {
+export const updateKos = async (request: Request, response: Response) => {
     try {
-        /** get id of menu's id that sent in parameter of URL */
+        /** get id of kos's id that sent in parameter of URL */
         const { id } = request.params
         /** get requested data (data has been sent from request) */
         const { name, price, category, description } = request.body
 
         /** make sure that data is exists in database */
-        const findMenu = await prisma.menu.findFirst({ where: { id: Number(id) } })
-        if (!findMenu) return response
+        const findKos = await prisma.kos.findFirst({ where: { id: Number(id) } })
+        if (!findKos) return response
             .status(200)
-            .json({ status: false, message: `Menu is not found` })
+            .json({ status: false, message: `Kos is not found` })
 
         /** default value filename of saved data */
-        let filename = findMenu.picture
+        let filename = findKos.picture
         if (request.file) {
             /** update filename by new uploaded picture */
             filename = request.file.filename
             /** check the old picture in the folder */
-            let path = `${BASE_URL}/../public/menu_picture/${findMenu.picture}`
+            let path = `${BASE_URL}/../public/kos_picture/${findKos.picture}`
             let exists = fs.existsSync(path)
             /** delete the old exists picture if reupload new file */
-            if (exists && findMenu.picture !== ``) fs.unlinkSync(path)
+            if (exists && findKos.picture !== ``) fs.unlinkSync(path)
         }
 
-        /** process to update menu's data */
-        const updatedMenu = await prisma.menu.update({
+        /** process to update kos's data */
+        const updatedKos = await prisma.kos.update({
             data: {
-                name: name || findMenu.name,
-                price: price ? Number(price) : findMenu.price,
-                category: category || findMenu.category,
-                description: description || findMenu.description,
+                name: name || findKos.name,
+                price: price ? Number(price) : findKos.price,
+                category: category || findKos.category,
+                description: description || findKos.description,
                 picture: filename
             },
             where: { id: Number(id) }
@@ -100,8 +100,8 @@ export const updateMenu = async (request: Request, response: Response) => {
 
         return response.json({
             status: true,
-            data: updatedMenu,
-            message: `Menu has updated`
+            data: updatedKos,
+            message: `Kos has updated`
         }).status(200)
     } catch (error) {
         return response

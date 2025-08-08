@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllMenus, createMenu, updateMenu, deleteMenu } from "../controllers/menuController"
+import { getAllMenus, createMenu, updateMenu, deleteMenu } from "../controllers/kosController"
 import { verifyAddMenu, verifyEditMenu } from "../middlewares/menuValidation"
 import { verifyRole, verifyToken } from "../middlewares/authorization"
 import uploadFile from "../middlewares/menuUpload"
