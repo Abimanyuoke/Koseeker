@@ -63,7 +63,7 @@ export const getAllKos = async (request: Request, response: Response) => {
 
 export const createKos = async (req: Request, res: Response) => {
     try {
-        const { userId, name, address, pricePerMonth, gender, images, facilities } = req.body
+        const { userId, name, address, pricePerMonth, gender, images, facilities } = req.body;
 
         const newKos = await prisma.kos.create({
             data: {
@@ -72,36 +72,31 @@ export const createKos = async (req: Request, res: Response) => {
                 address,
                 pricePerMonth,
                 gender,
-                images: images?.create ? {
-                    create: images.create.map((img: { file: string }) => ({
-                        file: img.file
-                    }))
-                } : undefined,
-                facilities: facilities?.create ? {
-                    create: facilities.create.map((fac: { facility: string }) => ({
-                        facility: fac.facility
-                    }))
-                } : undefined
+                images: {
+                    create: images?.map((img: { file: any; }) => ({ file: img.file })) || []
+                },
+                facilities: {
+                    create: facilities?.map((fac: { facility: any; }) => ({ facility: fac.facility })) || []
+                }
             },
             include: {
                 images: true,
                 facilities: true
             }
-        })
+        });
 
-        return res.status(201).json({
+        res.status(201).json({
             status: true,
             message: 'Kos berhasil ditambahkan',
             data: newKos
-        })
+        });
     } catch (error) {
-        console.error(error)
-        return res.status(500).json({
+        res.status(500).json({
             status: false,
-            message: 'Terjadi kesalahan pada server'
-        })
+            message: (error instanceof Error) ? error.message : String(error)
+        });
     }
-}
+};
 
 
 export const updateKos = async (request: Request, response: Response) => {
