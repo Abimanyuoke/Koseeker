@@ -31,47 +31,12 @@ export const getAllKos = async (request: Request, response: Response) => {
     }
 }
 
-// export const createKos = async (request: Request, response: Response) => {
-//     try {
-//         /** get requested data (data has been sent from request) */
-//         const { name, price, category, description } = request.body
-//         const uuid = uuidv4()
-
-//         /** variable filename use to define of uploaded file name */
-//         let filename = ""
-//         if (request.file) filename = request.file.filename /** get file name of uploaded file */
-
-//         /** process to save new kos, price and stock have to convert in number type */
-//         const newKos = await prisma.kos.create({
-//             data: { uuid, name, price: Number(price), category, description, picture: filename }
-//         })
-
-//         return response.json({
-//             status: true,
-//             data: newKos,
-//             message: `New Kos has created`
-//         }).status(200)
-//     } catch (error) {
-//         return response
-//             .json({
-//                 status: false,
-//                 message: `There is an error. ${error}`
-//             })
-//             .status(400)
-//     }
-// }
-
 export const createKos = async (req: Request, res: Response) => {
     try {
         const { userId, name, address, pricePerMonth, gender, images, facilities } = req.body;
 
         const newKos = await prisma.kos.create({
-            data: {
-                userId,
-                name,
-                address,
-                pricePerMonth,
-                gender,
+            data: { userId, name, address, pricePerMonth, gender,
                 images: {
                     create: images?.map((img: { file: any; }) => ({ file: img.file })) || []
                 },
