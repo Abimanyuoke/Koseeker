@@ -8,7 +8,7 @@ const app = express()
 app.use(express.json())
 
 app.get(`/`, getAllKos)
-app.post(`/`, [uploadFile.single("picture"), verifyAddKos], createKos)
+app.post(`/`, [uploadFile.single("picture"),uploadFile.array("images", 10), verifyAddKos], createKos)
 app.put(`/:id`, [uploadFile.single("picture"), verifyEditKos, verifyKosFiles, uploadFile.array("images", 10)], updateKos)
 app.delete(`/:id`, [verifyToken, verifyRole(["MANAGER"])], deleteKos)
 
