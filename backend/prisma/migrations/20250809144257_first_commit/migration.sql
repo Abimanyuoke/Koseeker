@@ -8,6 +8,8 @@ CREATE TABLE `User` (
     `phone` VARCHAR(191) NOT NULL,
     `profile_picture` VARCHAR(191) NOT NULL DEFAULT '',
     `role` ENUM('owner', 'society') NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `User_uuid_key`(`uuid`),
     UNIQUE INDEX `User_email_key`(`email`),
@@ -23,6 +25,8 @@ CREATE TABLE `Kos` (
     `address` VARCHAR(191) NOT NULL,
     `pricePerMonth` DOUBLE NOT NULL,
     `gender` ENUM('male', 'female', 'all') NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Kos_uuid_key`(`uuid`),
     PRIMARY KEY (`id`)
@@ -34,6 +38,8 @@ CREATE TABLE `KosImage` (
     `uuid` VARCHAR(191) NOT NULL,
     `kosId` INTEGER NOT NULL,
     `file` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `KosImage_uuid_key`(`uuid`),
     PRIMARY KEY (`id`)
@@ -45,6 +51,8 @@ CREATE TABLE `KosFacility` (
     `uuid` VARCHAR(191) NOT NULL,
     `kosId` INTEGER NOT NULL,
     `facility` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `KosFacility_uuid_key`(`uuid`),
     PRIMARY KEY (`id`)
@@ -57,6 +65,8 @@ CREATE TABLE `Review` (
     `kosId` INTEGER NOT NULL,
     `userId` INTEGER NOT NULL,
     `comment` VARCHAR(191) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Review_uuid_key`(`uuid`),
     PRIMARY KEY (`id`)
@@ -71,6 +81,8 @@ CREATE TABLE `Book` (
     `startDate` DATETIME(3) NOT NULL,
     `endDate` DATETIME(3) NOT NULL,
     `status` ENUM('pending', 'accept', 'reject') NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Book_uuid_key`(`uuid`),
     PRIMARY KEY (`id`)
@@ -84,6 +96,7 @@ CREATE TABLE `Comment` (
     `userId` INTEGER NOT NULL,
     `content` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Comment_uuid_key`(`uuid`),
     PRIMARY KEY (`id`)
@@ -95,6 +108,8 @@ CREATE TABLE `Like` (
     `uuid` VARCHAR(191) NOT NULL,
     `kosId` INTEGER NOT NULL,
     `userId` INTEGER NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
 
     UNIQUE INDEX `Like_uuid_key`(`uuid`),
     UNIQUE INDEX `Like_kosId_userId_key`(`kosId`, `userId`),
