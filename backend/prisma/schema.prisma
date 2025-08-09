@@ -16,6 +16,8 @@ model User {
   phone           String
   profile_picture String    @default("")
   role            Role
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
   kos             Kos[]     @relation("UserKos")
   reviews         Review[]
   books           Book[]
@@ -32,6 +34,8 @@ model Kos {
   pricePerMonth Float
   gender        Gender
   owner         User          @relation("UserKos", fields: [userId], references: [id])
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
   images        KosImage[]
   facilities    KosFacility[]
   reviews       Review[]
@@ -45,6 +49,8 @@ model KosImage {
   uuid  String @unique @default(uuid())
   kosId Int
   file  String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
   kos   Kos    @relation(fields: [kosId], references: [id])
 }
 
@@ -53,6 +59,8 @@ model KosFacility {
   uuid     String @unique @default(uuid())
   kosId    Int
   facility String
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
   kos      Kos    @relation(fields: [kosId], references: [id])
 }
 
@@ -64,6 +72,8 @@ model Review {
   comment String
   kos     Kos    @relation(fields: [kosId], references: [id])
   user    User   @relation(fields: [userId], references: [id])
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
 }
 
 model Book {
@@ -74,6 +84,8 @@ model Book {
   startDate DateTime
   endDate   DateTime
   status    BookStatus
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
   kos       Kos        @relation(fields: [kosId], references: [id])
   user      User       @relation(fields: [userId], references: [id])
 }
@@ -85,6 +97,7 @@ model Comment {
   userId    Int
   content   String
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
   kos       Kos      @relation(fields: [kosId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
 }
@@ -94,6 +107,8 @@ model Like {
   uuid   String @unique @default(uuid())
   kosId  Int
   userId Int
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
   kos    Kos    @relation(fields: [kosId], references: [id])
   user   User   @relation(fields: [userId], references: [id])
   @@unique([kosId, userId])

@@ -12,18 +12,22 @@ const kosFacilitySchema = Joi.object({
 
 const addKosSchema = Joi.object({
     userId: Joi.number().integer().required(),
-    name: Joi.string().required(),
-    address: Joi.string().required(),
-    pricePerMonth: Joi.number().min(0).required(),
-    gender: Joi.string().valid('male', 'female', 'all').required(),
-    images: Joi.object({
-        create: Joi.array().items(kosImageSchema).min(1).max(10)
-    }).optional(),
+    name: Joi.string().min(3).required(),
+    address: Joi.string().min(5).required(),
+    pricePerMonth: Joi.number().positive().required(),
+    gender: Joi.string().valid("male", "female", "all").required(),
+    images: Joi.array().items(
+        Joi.object({
+            file: Joi.string().required()
+        })
+    ).optional(),
+    facilities: Joi.array().items(
+        Joi.object({
+            facility: Joi.string().required()
+        })
+    ).optional()
+});
 
-    facilities: Joi.object({
-        create: Joi.array().items(kosFacilitySchema).min(1).max(10)
-    }).optional()
-})
 
 const editKosSchema = Joi.object({
     userId: Joi.number().integer().optional(),
@@ -40,16 +44,29 @@ const editKosSchema = Joi.object({
     }).optional()
 })
 
+// export const verifyAddKos = (request: Request, response: Response, next: NextFunction) => {
+//     const { error } = addKosSchema.validate(request.body, { abortEarly: false })
+//     if (error) {
+//         return response.status(400).json({
+//             status: false,
+//             message: error.details.map(it => it.message).join(', ')
+//         })
+//     }
+//     return next()
+// }
+
 export const verifyAddKos = (request: Request, response: Response, next: NextFunction) => {
-    const { error } = addKosSchema.validate(request.body, { abortEarly: false })
+    const { error } = addKosSchema.validate(request.body, { abortEarly: false });
+
     if (error) {
         return response.status(400).json({
             status: false,
-            message: error.details.map(it => it.message).join(', ')
-        })
+            message: error.details.map((it) => it.message).join(", ")
+        });
     }
-    return next()
-}
+    next();
+};
+
 
 export const verifyKosFiles = (req: Request, res: Response, next: NextFunction) => {
     if (!req.files || (Array.isArray(req.files) && req.files.length === 0)) {
