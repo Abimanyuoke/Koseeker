@@ -7,8 +7,8 @@ import { verifyToken, verifyRole } from "../middlewares/authorization"
 const app = express()
 app.use(express.json())
 
-app.get(`/`, [verifyToken, verifyRole(["MANAGER"])], getAllUsers)
-app.get(`/:id`, [verifyToken, verifyRole(["MANAGER"])], getUserById)
+app.get(`/`,  getAllUsers)
+app.get(`/:id`,  getUserById)
 app.post(`/`, uploadFile.single("picture"), verifyAddUser, createUser)
 // app.post(`/`, [verifyToken, verifyRole(["MANAGER"]), uploadFile.single("picture"), verifyAddUser], createUser)
 app.put(`/:id`, [verifyToken, verifyRole(["USER", "MANAGER"]), uploadFile.single("picture"), verifyEditUser], updateUser)
