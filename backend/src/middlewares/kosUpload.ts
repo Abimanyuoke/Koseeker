@@ -22,3 +22,5 @@ const uploadFile = multer({
 })
 
 export default uploadFile
+
+

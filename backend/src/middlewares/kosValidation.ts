@@ -55,13 +55,18 @@ const editKosSchema = Joi.object({
 //     return next()
 // }
 
-export const verifyAddKos = (request: Request, response: Response, next: NextFunction) => {
-    const { error } = addKosSchema.validate(request.body, { abortEarly: false });
+export const verifyAddKos = (req: Request, res: Response, next: NextFunction) => {
+    // Ambil file dari multer
+    if (req.files && Array.isArray(req.files)) {
+        req.body.images = req.files.map(file => ({ file: file.filename }));
+    }
+
+    const { error } = addKosSchema.validate(req.body, { abortEarly: false });
 
     if (error) {
-        return response.status(400).json({
+        return res.status(400).json({
             status: false,
-            message: error.details.map((it) => it.message).join(", ")
+            message: error.details.map(it => it.message).join(", ")
         });
     }
     next();

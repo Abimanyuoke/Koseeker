@@ -36,7 +36,7 @@ export const createKos = async (req: Request, res: Response) => {
         const { userId, name, address, pricePerMonth, gender, images, facilities } = req.body;
 
         const newKos = await prisma.kos.create({
-            data: { userId, name, address, pricePerMonth, gender,
+            data: { userId: Number(userId), name, address, pricePerMonth: Number(pricePerMonth), gender,
                 images: {
                     create: images?.map((img: { file: any; }) => ({ file: img.file })) || []
                 },
