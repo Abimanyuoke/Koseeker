@@ -3,6 +3,20 @@
     "development"
   ],
   "hints": {
-    "typescript-config/consistent-casing": "off"
+    "typescript-config/consistent-casing": "off",
+    "axe/forms": [
+      "default",
+      {
+        "label": "off",
+        "select-name": "off"
+      }
+    ],
+    "axe/parsing": [
+      "default",
+      {
+        "duplicate-id-active": "off"
+      }
+    ],
+    "no-inline-styles": "off"
   }
 }
