@@ -81,6 +81,7 @@ model Book {
   uuid      String     @unique @default(uuid())
   kosId     Int
   userId    Int
+  payment Payment
   startDate DateTime
   endDate   DateTime
   status    BookStatus
