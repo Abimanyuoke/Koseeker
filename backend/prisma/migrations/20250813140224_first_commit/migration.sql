@@ -78,6 +78,7 @@ CREATE TABLE `Book` (
     `uuid` VARCHAR(191) NOT NULL,
     `kosId` INTEGER NOT NULL,
     `userId` INTEGER NOT NULL,
+    `commentId` INTEGER NOT NULL,
     `payment` ENUM('cash', 'transfer') NOT NULL,
     `startDate` DATETIME(3) NOT NULL,
     `endDate` DATETIME(3) NOT NULL,

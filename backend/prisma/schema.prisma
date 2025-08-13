@@ -81,7 +81,6 @@ model Book {
   uuid      String     @unique @default(uuid())
   kosId     Int
   userId    Int
-  commentId Int
   payment   Payment
   startDate DateTime
   endDate   DateTime
@@ -90,7 +89,6 @@ model Book {
   updatedAt DateTime   @updatedAt
   kos       Kos        @relation(fields: [kosId], references: [id])
   user      User       @relation(fields: [userId], references: [id])
-  comment   Comment    @relation(fields: [commentId], references: [id])
 }
 
 model Comment {
@@ -103,7 +101,6 @@ model Comment {
   updatedAt DateTime @updatedAt
   kos       Kos      @relation(fields: [kosId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
-  Book      Book[]
 }
 
 model Like {
