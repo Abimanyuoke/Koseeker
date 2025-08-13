@@ -26,14 +26,14 @@ model User {
 }
 
 model Kos {
-  id            Int           @id @default(autoincrement())
-  uuid          String        @unique @default(uuid())
+  id            Int         @id @default(autoincrement())
+  uuid          String      @unique @default(uuid())
   userId        Int
   name          String
   address       String
   pricePerMonth Float
   gender        Gender
-  owner         User          @relation("UserKos", fields: [userId], references: [id])
+  owner         User        @relation("UserKos", fields: [userId], references: [id])
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
   images        KosImage[]
@@ -45,8 +45,8 @@ model Kos {
 }
 
 model KosImage {
-  id    Int    @id @default(autoincrement())
-  uuid  String @unique @default(uuid())
+  id    Int           @id @default(autoincrement())
+  uuid  String        @unique @default(uuid())
   kosId Int
   file  String
   createdAt    DateTime     @default(now())
