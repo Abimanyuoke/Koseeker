@@ -115,35 +115,6 @@ model Like {
   @@unique([kosId, userId])
 }
 
-// model Order {
-//   id             Int         @id @default(autoincrement())
-//   uuid           String      @unique @default(uuid())
-//   customer       String      @default("")
-//   total_price    Int         @default(0)
-//   payment_method Payment     @default(CASH)
-//   alamat         String      @default("")
-//   status         Status      @default(NEW)
-//   size           Size
-//   createdAt      DateTime    @default(now())
-//   updatedAt      DateTime    @updatedAt
-//   orderLists     OrderList[]
-//   User           User?       @relation(fields: [userId], references: [id])
-//   userId         Int?
-// }
-
-// model OrderList {
-//   id        Int      @id @default(autoincrement())
-//   uuid      String   @unique @default(uuid())
-//   quantity  Int      @default(0)
-//   note      String   @db.Text
-//   createdAt DateTime @default(now())
-//   updatedAt DateTime @updatedAt
-//   Product   Product? @relation(fields: [productId], references: [id])
-//   productId Int?
-//   Order   Order? @relation(fields: [orderId], references: [id])
-//   orderId Int?
-// }
-
 enum Role {
   superadmin
   owner
