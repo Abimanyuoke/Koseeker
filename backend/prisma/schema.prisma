@@ -16,8 +16,8 @@ model User {
   phone           String
   profile_picture String    @default("")
   role            Role
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
   kos             Kos[]     @relation("UserKos")
   reviews         Review[]
   books           Book[]
@@ -26,16 +26,16 @@ model User {
 }
 
 model Kos {
-  id            Int         @id @default(autoincrement())
-  uuid          String      @unique @default(uuid())
+  id            Int           @id @default(autoincrement())
+  uuid          String        @unique @default(uuid())
   userId        Int
   name          String
   address       String
   pricePerMonth Float
   gender        Gender
-  owner         User        @relation("UserKos", fields: [userId], references: [id])
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  owner         User          @relation("UserKos", fields: [userId], references: [id])
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
   images        KosImage[]
   facilities    KosFacility[]
   reviews       Review[]
@@ -45,35 +45,35 @@ model Kos {
 }
 
 model KosImage {
-  id    Int           @id @default(autoincrement())
-  uuid  String        @unique @default(uuid())
-  kosId Int
-  file  String
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  kos   Kos    @relation(fields: [kosId], references: [id])
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+  kosId     Int
+  file      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  kos       Kos      @relation(fields: [kosId], references: [id])
 }
 
 model KosFacility {
-  id       Int    @id @default(autoincrement())
-  uuid     String @unique @default(uuid())
-  kosId    Int
-  facility String
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  kos      Kos    @relation(fields: [kosId], references: [id])
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+  kosId     Int
+  facility  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  kos       Kos      @relation(fields: [kosId], references: [id])
 }
 
 model Review {
-  id      Int    @id @default(autoincrement())
-  uuid    String @unique @default(uuid())
-  kosId   Int
-  userId  Int
-  comment String
-  kos     Kos    @relation(fields: [kosId], references: [id])
-  user    User   @relation(fields: [userId], references: [id])
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+  kosId     Int
+  userId    Int
+  comment   String
+  kos       Kos      @relation(fields: [kosId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Book {
@@ -81,14 +81,16 @@ model Book {
   uuid      String     @unique @default(uuid())
   kosId     Int
   userId    Int
-  payment Payment
+  commentId Int
+  payment   Payment
   startDate DateTime
   endDate   DateTime
   status    BookStatus
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   kos       Kos        @relation(fields: [kosId], references: [id])
   user      User       @relation(fields: [userId], references: [id])
+  comment   Comment    @relation(fields: [commentId], references: [id])
 }
 
 model Comment {
@@ -101,17 +103,19 @@ model Comment {
   updatedAt DateTime @updatedAt
   kos       Kos      @relation(fields: [kosId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
+  Book      Book[]
 }
 
 model Like {
-  id     Int    @id @default(autoincrement())
-  uuid   String @unique @default(uuid())
-  kosId  Int
-  userId Int
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
-  kos    Kos    @relation(fields: [kosId], references: [id])
-  user   User   @relation(fields: [userId], references: [id])
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+  kosId     Int
+  userId    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  kos       Kos      @relation(fields: [kosId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+
   @@unique([kosId, userId])
 }
 
