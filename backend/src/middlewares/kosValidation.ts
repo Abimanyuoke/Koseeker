@@ -44,17 +44,6 @@ const editKosSchema = Joi.object({
     }).optional()
 })
 
-// export const verifyAddKos = (request: Request, response: Response, next: NextFunction) => {
-//     const { error } = addKosSchema.validate(request.body, { abortEarly: false })
-//     if (error) {
-//         return response.status(400).json({
-//             status: false,
-//             message: error.details.map(it => it.message).join(', ')
-//         })
-//     }
-//     return next()
-// }
-
 export const verifyAddKos = (req: Request, res: Response, next: NextFunction) => {
     // Ambil file dari multer
     if (req.files && Array.isArray(req.files)) {
