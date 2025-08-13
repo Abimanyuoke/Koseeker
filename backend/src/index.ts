@@ -5,6 +5,8 @@ import swaggerUi from 'swagger-ui-express'
 import path from 'path'
 import KosRoute from './routers/kosRoute'
 import UserRoute from './routers/userRoute'
+import LikeRoute from './routers/likeRoute'
+import CommentRoute from './routers/commentRoute'
 // import OrderRoute from '../../orderRoute'
 // import ReportRoute from '../../reportRoute'
 
@@ -46,6 +48,8 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 app.use(`/kos`, KosRoute)
 app.use(`/user`, UserRoute)
+app.use(`/like`, LikeRoute)
+app.use(`/comment`, CommentRoute)
 // app.use(`/order`, OrderRoute)
 // app.use(`/report`, ReportRoute)
 
