@@ -7,6 +7,7 @@ const addBookSchema = Joi.object({
     payment: Joi.string().valid("cash", "transfer").required(),
     startDate: Joi.date().iso().required(),
     endDate: Joi.date().iso().min(Joi.ref('startDate')).required(),
+    durationMonths: Joi.number().integer().min(1).max(12).optional().default(1),
     status: Joi.string().valid("pending", "accept", "reject").optional().default("pending")
 });
 
@@ -14,6 +15,7 @@ const editBookSchema = Joi.object({
     payment: Joi.string().valid("cash", "transfer").optional(),
     startDate: Joi.date().iso().optional(),
     endDate: Joi.date().iso().optional(),
+    durationMonths: Joi.number().integer().min(1).max(12).optional(),
     status: Joi.string().valid("pending", "accept", "reject").optional()
 }).custom((value, helpers) => {
     // If both startDate and endDate are provided, validate that endDate is after startDate
