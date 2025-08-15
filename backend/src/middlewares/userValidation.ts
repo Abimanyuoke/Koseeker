@@ -81,7 +81,7 @@ const addUserSchema = Joi.object({
     name: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().min(3).alphanum().required(),
-    role: Joi.string().valid("owner", "society").required(),
+    role: Joi.string().valid("owner", "society", "useradmin").required(),
     phone: Joi.string().pattern(/^[0-9]{10,15}$/).required(),
     profile_picture: Joi.string().optional()
 });
