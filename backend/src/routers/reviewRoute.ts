@@ -9,6 +9,10 @@ import {
     deleteReview,
     checkUserReview
 } from "../controllers/reviewcontroller";
+import {
+    verifyAddReview,
+    verifyEditReview
+} from "../middlewares/reviewValidation";
 
 const router = Router();
 
@@ -20,10 +24,10 @@ router.get("/check/:kosId/:userId", checkUserReview); // Check if user has revie
 router.get("/:id", getReviewById);                 // Get single review by ID
 
 // POST Routes
-router.post("/", createReview);                    // Create a new review
+router.post("/", verifyAddReview, createReview);   // Create a new review
 
 // PUT Routes
-router.put("/:id", updateReview);                  // Update a review
+router.put("/:id", verifyEditReview, updateReview); // Update a review
 
 // DELETE Routes
 router.delete("/:id", deleteReview);               // Delete a review
