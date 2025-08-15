@@ -7,6 +7,11 @@ import {
     toggleLike,
     checkUserLike
 } from "../controllers/likeController";
+import {
+    verifyAddLike,
+    verifyToggleLike,
+    verifyDeleteLike
+} from "../middlewares/likeValidaiton";
 
 const router = Router();
 
@@ -16,10 +21,10 @@ router.get("/user/:userId", getLikesByUser);        // Get all likes by a specif
 router.get("/check/:kosId/:userId", checkUserLike); // Check if user has liked a kos
 
 // POST Routes
-router.post("/", createLike);                       // Create a new like
-router.post("/toggle", toggleLike);                 // Toggle like/unlike
+router.post("/", verifyAddLike, createLike);        // Create a new like
+router.post("/toggle", verifyToggleLike, toggleLike); // Toggle like/unlike
 
 // DELETE Routes
-router.delete("/", deleteLike);                     // Remove a like
+router.delete("/", verifyDeleteLike, deleteLike);   // Remove a like
 
 export default router;
