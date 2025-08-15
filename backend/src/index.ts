@@ -8,6 +8,7 @@ import UserRoute from './routers/userRoute'
 import LikeRoute from './routers/likeRoute'
 import CommentRoute from './routers/commentRoute'
 import ReviewRoute from './routers/reviewRoute'
+import BookRoute from './routers/bookRoute'
 // import OrderRoute from '../../orderRoute'
 // import ReportRoute from '../../reportRoute'
 
@@ -52,6 +53,7 @@ app.use(`/user`, UserRoute)
 app.use(`/like`, LikeRoute)
 app.use(`/comment`, CommentRoute)
 app.use(`/review`, ReviewRoute)
+app.use(`/book`, BookRoute)
 // app.use(`/order`, OrderRoute)
 // app.use(`/report`, ReportRoute)
 

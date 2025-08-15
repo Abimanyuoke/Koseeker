@@ -91,6 +91,18 @@ model Book {
   user      User       @relation(fields: [userId], references: [id])
 }
 
+model Comment {
+  id        Int      @id @default(autoincrement())
+  uuid      String   @unique @default(uuid())
+  kosId     Int
+  userId    Int
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  kos       Kos      @relation(fields: [kosId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+}
+
 model Like {
   id        Int      @id @default(autoincrement())
   uuid      String   @unique @default(uuid())
