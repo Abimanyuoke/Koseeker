@@ -17,7 +17,7 @@ import { CiSquareMinus, CiSquarePlus } from "react-icons/ci";
 import CardSelect from "../components/card";
 import Image from "next/image";
 import axios from "axios";
-import Navbar_Products from "../components/navbar_products/page";
+import Navbar_Products from "../components/navbar_kos/page";
 import { MdOutlineQrCodeScanner } from "react-icons/md";
 import { BsPiggyBank } from "react-icons/bs";
 import CardSelectSize from "../components/size_selected";
