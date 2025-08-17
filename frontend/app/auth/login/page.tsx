@@ -9,7 +9,9 @@ import { IoEyeSharp } from "react-icons/io5";
 import { toast } from "sonner";
 import axios from "axios";
 import Image from "next/image";
-import imgLogin from "../../../public/images/logo.png";
+import imgLogin from "../../../public/images/kosimage.jpeg";
+import logo from "../../../public/images/logo.png";
+import { input } from "framer-motion/client";
 
 export default function Login() {
     const router = useRouter();
@@ -55,21 +57,28 @@ export default function Login() {
                 <path fill="#1baa" d="M37,-42.5C44.8,-29.1,45.9,-14.6,44.4,-1.5C42.9,11.6,38.8,23.1,30.9,30.5C23.1,37.9,11.6,41.2,-5.4,46.6C-22.4,52,-44.7,59.5,-54.4,52.1C-64.2,44.7,-61.3,22.4,-59,2.3C-56.7,-17.8,-55.1,-35.6,-45.3,-48.9C-35.6,-62.3,-17.8,-71.2,-1.6,-69.6C14.6,-68,29.1,-55.8,37,-42.5Z" transform="translate(100 100)" />
             </svg>
             <div className="w-full h-full flex justify-center items-center relative">
-                <div className="absolute flex items-center">
+                <div className="absolute flex max-h-[90%]">
                     <div className="relative">
-                        <Image src={imgLogin} alt="Image Login" height={800} width={800} className="bg-cover rounded-l-lg" />
-                        <span className="absolute bottom-0 w-full h-[200px] bg-gradient-to-t opacity-30 from-black via via-black to-transparent">{""}</span>
-                        <div className="absolute bottom-0 text-white space-y-2 p-4">
-                            <h4 className="text-5xl font-semibold leading-[58px]">
-                                Capture Your <br /> Journeys
-                            </h4>
-                            <p className="text-[15px] text-white leading-6 pr-7 mt-4">Shop journals, accessories, and keepsakes made to help you capture moments that matter.</p>
+                        <div className="relative">
+                            <Image src={imgLogin} alt="Image Login" width={680} className="bg-cover rounded-l-lg" />
+                        </div>
+                        <div className="absolute w-full">
+                            <span className="absolute bottom-0 w-full h-[200px] bg-gradient-to-t opacity-30 from-black via via-black to-transparent">{""}</span>
+                            <div className="absolute bottom-0 text-white space-y-2 p-4">
+                                <h4 className="text-5xl font-semibold leading-[58px]">
+                                    Capture Your <br /> Journeys
+                                </h4>
+                                <p className="text-[15px] text-white leading-6 pr-7 mt-4">Shop journals, accessories, and keepsakes made to help you capture moments that matter.</p>
+                            </div>
                         </div>
                     </div>
-                    <div className="w-3/5 h-[500px] p-10 bg-white rounded-r-lg relative">
-                        <h1 className="text-2xl font-semibold mb-7">
-                            Login
-                        </h1>
+                    <div className="w-3/5 p-10 bg-white rounded-r-lg relative">
+                        <div className="flex flex-col items-center justify-center mb-4">
+                            <Image src={logo} alt="Logo" width={60} height={60} className="w-16 h-16 object-cover" />
+                            <h1 className="text-2xl font-semibold mb-7">
+                                Hello ! Welcome back
+                            </h1>
+                        </div>
                         <form className="flex flex-col pt-5 gap-3" onSubmit={handleSubmit}>
                             <div className="flex w-full items-center rounded relative bg-cyan-600/5">
                                 <input type="email" placeholder="Email" className="pl-5 text-[#393e46] focus:outline-none py-3 text-sm w-full border rounded-md"
