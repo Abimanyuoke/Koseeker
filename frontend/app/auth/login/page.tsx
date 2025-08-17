@@ -9,7 +9,7 @@ import { IoEyeSharp } from "react-icons/io5";
 import { toast } from "sonner";
 import axios from "axios";
 import Image from "next/image";
-import imgLogin from "../../../public/image/login.jpg";
+import imgLogin from "../../../public/images/logo.png";
 
 export default function Login() {
     const router = useRouter();
