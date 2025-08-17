@@ -159,7 +159,6 @@ const Navbar: React.FC = () => {
     removeCookie("id");
     removeCookie("name");
     removeCookie("role");
-    removeCookie("alamat")
     router.replace(`/auth/login`);
   };
 
