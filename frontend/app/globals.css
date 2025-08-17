@@ -2,12 +2,15 @@
 @import 'slick-carousel/slick/slick.css';
 @import 'slick-carousel/slick/slick-theme.css';
 
-
 :root {
   --background: #ffffff;
 }
-
 body {
   background: var(--background);
 }
-e:\React\Website_Ecommerce\frontend\app\auth
+
+@theme {
+  --color-primary: #1baa56;
+  --color-background: #ffffff;
+  --color-text: #393e46;
+}

@@ -11,7 +11,8 @@ import axios from "axios";
 import Image from "next/image";
 import imgLogin from "../../../public/images/kosimage.jpeg";
 import logo from "../../../public/images/logo.png";
-import { input } from "framer-motion/client";
+import siluet from "../../../public/images/siluetKota.png";
+
 
 export default function Login() {
     const router = useRouter();
@@ -37,8 +38,8 @@ export default function Login() {
                     storeCookie("role", data.data.role)
                     storeCookie("profile_picture", data.data.profile_picture || "")
                     let role = data.data.role
-                    if (role === `MANAGER`) setTimeout(() => router.replace(`/manager/dashboard`), 1000)
-                    else if (role === `USER`) setTimeout(() => router.replace(`/main`), 1000)
+                    if (role === `owner`) setTimeout(() => router.replace(`/manager/dashboard`), 1000)
+                    else if (role === `society`) setTimeout(() => router.replace(`/main`), 1000)
                 }
             }
             else toast.warning(data.message, { duration: 2000 })
@@ -63,7 +64,7 @@ export default function Login() {
                             <Image src={imgLogin} alt="Image Login" width={680} className="bg-cover rounded-l-lg" />
                         </div>
                         <div className="absolute w-full">
-                            <span className="absolute bottom-0 w-full h-[200px] bg-gradient-to-t opacity-30 from-black via via-black to-transparent">{""}</span>
+                            <span className="absolute bottom-0 w-full h-[300px] bg-gradient-to-t opacity-30 from-black via-black to-transparent">{""}</span>
                             <div className="absolute bottom-0 text-white space-y-2 p-4">
                                 <h4 className="text-5xl font-semibold leading-[58px]">
                                     Capture Your <br /> Journeys
@@ -75,17 +76,17 @@ export default function Login() {
                     <div className="w-3/5 p-10 bg-white rounded-r-lg relative">
                         <div className="flex flex-col items-center justify-center mb-4">
                             <Image src={logo} alt="Logo" width={60} height={60} className="w-16 h-16 object-cover" />
-                            <h1 className="text-2xl font-semibold mb-7">
+                            <h1 className="text-2xl font-semibold ">
                                 Hello ! Welcome back
                             </h1>
                         </div>
                         <form className="flex flex-col pt-5 gap-3" onSubmit={handleSubmit}>
-                            <div className="flex w-full items-center rounded relative bg-cyan-600/5">
+                            <div className="flex w-full items-center rounded relative">
                                 <input type="email" placeholder="Email" className="pl-5 text-[#393e46] focus:outline-none py-3 text-sm w-full border rounded-md"
                                     onChange={e => setEmail(e.target.value)} id={`email`} />
                             </div>
 
-                            <div className="flex w-full items-center bg-cyan-600/5 rounded relative">
+                            <div className="flex w-full items-center rounded relative">
                                 <input type={showPassword ? `text` : `password`} className="pl-5 text-[#393e46] rounded-md py-3 text-sm w-full focus:outline-none border" value={password}
                                     onChange={e => setPassword(e.target.value)} placeholder="Password" id={`password`} />
                                 <div className="cursor-pointer rounded-r-md p-3 absolute right-0" onClick={() => setShowPassword(!showPassword)}>
@@ -95,17 +96,16 @@ export default function Login() {
                                     }
                                 </div>
                             </div>
-
-                            <button
-                                type="submit" className="mt-3 uppercase text-sm font-semibold bg-[#fea928] shadow-lg  p-[10px] my-1 hover:text-white duration-200 transition-all  text-white py-2 rounded-full cursor-pointer">
+                            <button type="submit" className="mt-3 uppercase text-sm font-semibold bg-primary shadow-lg p-[10px]  hover:text-white duration-200 transition-all hover:scale-105  text-white py-2 rounded-full cursor-pointer">
                                 login
                             </button>
+                            <p className="text-xs text-center text-slate-500 my-2">Or</p>
                             <div className="flex flex-col justify-center text-center">
-                                <p className="text-xs text-slate-500 my-4">Or</p>
-                                <button onClick={() => { router.push("/auth/signup") }} className="uppercase text-sm bg-white text-primary border border-secondary hover:bg-secondary hover:text-white rounded-full py-2 cursor-pointer font-semibold duration-300 transition-colors">create account</button>
+                                <button onClick={() => { router.push("/auth/signup") }} className="uppercase text-sm text-primary border border-primary hover:scale-105 rounded-full py-2 cursor-pointer font-semibold duration-300 transition-all">create account</button>
                             </div>
                         </form>
                     </div>
+                    <Image src={siluet} alt="Logo" width={300} height={60} className=" object-cover absolute bottom-0 right-0" />
                 </div>
             </div>
         </div>
