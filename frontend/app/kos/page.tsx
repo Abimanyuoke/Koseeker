@@ -20,7 +20,6 @@ import axios from "axios";
 import Navbar_Products from "../components/navbar_kos/page";
 import { MdOutlineQrCodeScanner } from "react-icons/md";
 import { BsPiggyBank } from "react-icons/bs";
-import CardSelectSize from "../components/size_selected";
 import { FiLoader } from "react-icons/fi";
 
 const OrderPage = () => {
@@ -542,24 +541,6 @@ const OrderPage = () => {
                                                     { value: "CASH", label: "CASH", icon: <FaMoneyBill /> },
                                                     { value: "QRIS", label: "QRIS", icon: <MdOutlineQrCodeScanner /> },
                                                     { value: "BANK", label: "BANK", icon: <BsPiggyBank /> },
-                                                ]}
-                                            />
-
-                                            <CardSelectSize
-                                                value={orderForm.size}
-                                                onChange={(val: any) =>
-                                                    setOrderForm({ ...orderForm, size: val })
-                                                }
-                                                label="Pilihan Ukuran"
-                                                required
-                                                options={[
-                                                    { value: "XS", label: "XS" },
-                                                    { value: "S", label: "S" },
-                                                    { value: "M", label: "M" },
-                                                    { value: "L", label: "L" },
-                                                    { value: "XL", label: "XL" },
-                                                    { value: "XXL", label: "XXL" },
-                                                    { value: "XXXL", label: "XXXL" },
                                                 ]}
                                             />
 

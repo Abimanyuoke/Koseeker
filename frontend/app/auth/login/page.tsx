@@ -69,7 +69,7 @@ export default function Login() {
                                 <h4 className="text-5xl font-semibold leading-[58px]">
                                     Capture Your <br /> Journeys
                                 </h4>
-                                <p className="text-[15px] text-white leading-6 pr-7 mt-4">Shop journals, accessories, and keepsakes made to help you capture moments that matter.</p>
+                                <p className="text-[15px] text-white leading-6 pr-7 mt-4">Koseeker ready to help you capture moments that matter.</p>
                             </div>
                         </div>
                     </div>
