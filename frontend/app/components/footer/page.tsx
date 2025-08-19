@@ -1,5 +1,4 @@
 import React from 'react'
-import footerLogo from "../../../public/logo.png";
 import { FaFacebook, FaInstagram, FaLinkedin, FaLocationArrow } from 'react-icons/fa6';
 import { FaMobileAlt } from 'react-icons/fa';
 import Link from 'next/link';
@@ -40,7 +39,6 @@ const Footer = () => {
                     {/* company details */}
                     <div className='py-8 px-4'>
                         <h1 className='sm:text-3xl text-xl font-bold sm:text-left text-justify mb-3 flex items-center gap-3'>
-                            <img src={footerLogo.src} alt="" className='max-w-[50px] ' /> Shopsy
                         </h1>
                         <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum nam vitae facilis fugiat itaque asperiores accusamus dicta magnam perferendis consectetur?</p>
                     </div>

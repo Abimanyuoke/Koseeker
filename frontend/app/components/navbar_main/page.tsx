@@ -1,11 +1,9 @@
 'use client'
 
 import React, { useRef, useState } from 'react'
-import logo from "../../../public/logo.png";
-import DarkMode from "."
+import logo from "../../../public/images/logo.png";
 import Search from "./search";
 import { useEffect } from "react";
-import { IProduct } from "@/app/types";
 import { getCookies, removeCookie } from "@/lib/client-cookies";
 import { BASE_IMAGE_PROFILE } from "../../../global"
 import { IoMdSearch } from "react-icons/io";
@@ -13,7 +11,6 @@ import { IoMdArrowDropup } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from 'next/navigation';
 import { FiLogOut } from 'react-icons/fi';
-import { ButtonCart } from '../button';
 
 const Navbar: React.FC = () => {
 
@@ -232,7 +229,6 @@ const Navbar: React.FC = () => {
               </button>
 
               {/* Dark Mode */}
-              <DarkMode />
             </div>
           </div>
         </div>
