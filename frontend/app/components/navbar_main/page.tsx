@@ -65,7 +65,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className='fixed top-0 z-50 w-full'>
+    <div className=' max-w-7xl mx-auto'>
       <div className={`transition-all duration-300 shadow-md bg-white dark:bg-gray-900 dark:text-white ${scrolled ? "mt-4 rounded-xl w-[80%]" : "w-full"} mx-auto`}>
 
         {/* upper Navbar */}
