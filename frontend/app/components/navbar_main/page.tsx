@@ -12,6 +12,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { FiLogOut } from 'react-icons/fi';
+import Link from 'next/link';
 
 const Navbar: React.FC = () => {
 
@@ -22,6 +23,7 @@ const Navbar: React.FC = () => {
   const router = useRouter();
   const sidebarRef = useRef<HTMLDivElement>(null)
   const [scrolled, setScrolled] = useState(false);
+  const [openCari, setOpenCari] = useState(false);
 
   const handleLogout = () => {
     removeCookie("token");
@@ -150,11 +152,28 @@ const Navbar: React.FC = () => {
 
 
 
-    <div className='z-50 py-10'>
+    <div className='bg-white sticky top-0 z-50 shadow-md py-4 font-lato'>
       <div className='max-w-7xl mx-auto'>
-        <div className='flex items-center'>
-          <Image src={logo} alt="Logo" width={60} height={60} className="w-16 h-16 object-cover"/>
-          <span className='font-lato'>Koseeker</span>
+        <div className='flex items-center justify-between relative'>
+          <div className='flex items-center gap-2 cursor-pointer' onClick={() => router.push(`/main`)}>
+            <Image src={logo} alt="Logo" width={40} height={40} className="w-12 h-12 object-cover" />
+            <span className='font-lato text-primary text-2xl font-extrabold'>koseeker</span>
+          </div>
+          <div className='flex items-center gap-4'>
+            <div className='flex items-center gap-4 font-semibold'>
+              <Link href={'/main'}>Cari Apa</Link>
+              <Link href={'/favorit'}>Favorit</Link>
+              <Link href={'/chat'}>Chat</Link>
+              <Link href={'/notifikasi'}>Notifikasi</Link>
+              <Link href={'/lainnya'}>Lainnya</Link>
+            </div>
+            <div className='flex items-center gap-3 mb-3'>
+              <img
+                src={`${BASE_IMAGE_PROFILE}/${profile}`}
+                alt='profile'
+                className='w-10 h-10 rounded-full object-cover border-2 border-primary' />
+            </div>
+          </div>
         </div>
       </div>
     </div>
