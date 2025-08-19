@@ -21,7 +21,7 @@ const Main = () => {
 
 
     return (
-        <div className='bg-white dark:bg-gray-900 dark:text-white duration-200'>
+        <div className='bg-white duration-200'>
             <Navbar />
             {/* <Footer /> */}
         </div>

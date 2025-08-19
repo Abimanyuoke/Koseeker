@@ -9,6 +9,7 @@ import { BASE_IMAGE_PROFILE } from "../../../global"
 import { IoMdSearch } from "react-icons/io";
 import { IoMdArrowDropup } from "react-icons/io";
 import { motion, AnimatePresence } from "framer-motion";
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { FiLogOut } from 'react-icons/fi';
 
@@ -65,83 +66,96 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className=' max-w-7xl mx-auto'>
-      <div className={`transition-all duration-300 shadow-md bg-white dark:bg-gray-900 dark:text-white ${scrolled ? "mt-4 rounded-xl w-[80%]" : "w-full"} mx-auto`}>
+    // <div className=' max-w-7xl mx-auto '>
+    //   <div className={`transition-all duration-300  bg-white ${scrolled ? "mt-4 rounded-xl w-[80%]" : "w-full"} mx-auto`}>
 
-        {/* upper Navbar */}
-        <div className={`bg-primary/40 ${scrolled ? "py-3 rounded-xl" : "py-2"} transition-all`}>
-          <div className='container flex justify-between items-center'>
-            {/* Logo */}
-            <a href="#" className={`font-bold text-2xl sm:text-3xl flex gap-2 items-center`}>
-              <img src={logo.src} alt="logo" className={`transition-all duration-300 ${scrolled ? "w-12" : "w-10"}`} />
-              <span
-                className={`transition-all duration-500 ease-in-out transform ${scrolled ? "translate-x-80  absolute text-3xl" : "translate-x-0 opacity-100"} text-2xl`}>
-                Shopsy
-              </span>
-            </a>
+    //     {/* upper Navbar */}
+    //     <div className={`${scrolled ? "py-3 rounded-xl" : "py-2"} transition-all`}>
+    //       <div className='container flex justify-between items-center'>
+    //         {/* Logo */}
+    //         <a href="#" className={`font-bold text-2xl sm:text-3xl flex gap-2 items-center`}>
+    //           <img src={logo.src} alt="logo" className={`transition-all duration-300 ${scrolled ? "w-12" : "w-10"}`} />
+    //           <span
+    //             className={`transition-all duration-500 ease-in-out transform ${scrolled ? "translate-x-80  absolute text-3xl" : "translate-x-0 opacity-100"} text-2xl`}>
+    //             Shopsy
+    //           </span>
+    //         </a>
 
-            {/* Search, Profile, DarkMode */}
-            <div className='flex justify-between items-center gap-4'>
-              {/* Search */}
-              <div className='relative group hidden sm:block'>
-                <Search url={`/main`} search={""} />
-                <IoMdSearch className='text-gray-500 group-hover:text-primary absolute top-1/2 -translate-y-1/2 right-3' />
-              </div>
+    //         {/* Search, Profile, DarkMode */}
+    //         <div className='flex justify-between items-center gap-4'>
+    //           {/* Search */}
+    //           <div className='relative group hidden sm:block'>
+    //             <Search url={`/main`} search={""} />
+    //             <IoMdSearch className='text-gray-500 group-hover:text-primary absolute top-1/2 -translate-y-1/2 right-3' />
+    //           </div>
 
-              {/* Profile */}
-              <button className='cursor-pointer' onClick={() => handlePopup()}>
-                <img
-                  src={`${BASE_IMAGE_PROFILE}/${profile}`}
-                  alt="profile image"
-                  width={40}
-                  height={40}
-                  className="rounded-full"
-                />
-              </button>
+    //           {/* Profile */}
+    //           <button className='cursor-pointer' onClick={() => handlePopup()}>
+    //             <img
+    //               src={`${BASE_IMAGE_PROFILE}/${profile}`}
+    //               alt="profile image"
+    //               width={40}
+    //               height={40}
+    //               className="rounded-full"
+    //             />
+    //           </button>
 
-              {/* Dark Mode */}
-            </div>
-          </div>
+    //           {/* Dark Mode */}
+    //         </div>
+    //       </div>
+    //     </div>
+
+    //     {/* Dropdown Profile */}
+    //     <AnimatePresence>
+    //       {popup && (
+    //         <motion.div
+    //           ref={sidebarRef}
+    //           key="profile-popup"
+    //           initial={{ opacity: 0, y: -10 }}
+    //           animate={{ opacity: 1, y: 0 }}
+    //           exit={{ opacity: 0, y: -10 }}
+    //           transition={{ duration: 0.3 }}
+    //           className='absolute top-full right-5 mt-2 w-52 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg p-4 z-50'>
+    //           <div
+    //             className='absolute -top-4 right-2 text-gray-700 dark:text-white text-2xl cursor-pointer'
+    //             onClick={() => setPopup(false)}>
+    //             <IoMdArrowDropup />
+    //           </div>
+    //           <div className='flex items-center gap-3 mb-3'>
+    //             <img
+    //               src={`${BASE_IMAGE_PROFILE}/${profile}`}
+    //               alt='profile'
+    //               className='w-10 h-10 rounded-full object-cover border-2 border-primary' />
+    //             <div>
+    //               <p className='text-sm font-semibold text-gray-700 dark:text-white'>{user}</p>
+    //               <p className='text-xs text-gray-500 dark:text-gray-400'>{role}</p>
+    //             </div>
+    //           </div>
+
+    //           <div className="border-t pt-3 mt-3">
+    //             <button
+    //               onClick={handleLogout}
+    //               className="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-800 dark:text-red-400 rounded-md transition">
+    //               <FiLogOut className="text-lg" />
+    //               <span>Logout</span>
+    //             </button>
+    //           </div>
+    //         </motion.div>
+    //       )}
+    //     </AnimatePresence>
+    //   </div>
+    // </div>
+
+
+
+
+
+    <div className='z-50 py-10'>
+      <div className='max-w-7xl mx-auto'>
+        <div className='flex items-center'>
+          <Image src={logo} alt="Logo" width={60} height={60} className="w-16 h-16 object-cover"/>
+          <span className='font-lato'>Koseeker</span>
         </div>
-
-        {/* Dropdown Profile */}
-        <AnimatePresence>
-          {popup && (
-            <motion.div
-              ref={sidebarRef}
-              key="profile-popup"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className='absolute top-full right-5 mt-2 w-52 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg p-4 z-50'>
-              <div
-                className='absolute -top-4 right-2 text-gray-700 dark:text-white text-2xl cursor-pointer'
-                onClick={() => setPopup(false)}>
-                <IoMdArrowDropup />
-              </div>
-              <div className='flex items-center gap-3 mb-3'>
-                <img
-                  src={`${BASE_IMAGE_PROFILE}/${profile}`}
-                  alt='profile'
-                  className='w-10 h-10 rounded-full object-cover border-2 border-primary' />
-                <div>
-                  <p className='text-sm font-semibold text-gray-700 dark:text-white'>{user}</p>
-                  <p className='text-xs text-gray-500 dark:text-gray-400'>{role}</p>
-                </div>
-              </div>
-
-              <div className="border-t pt-3 mt-3">
-                <button
-                  onClick={handleLogout}
-                  className="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-800 dark:text-red-400 rounded-md transition">
-                  <FiLogOut className="text-lg" />
-                  <span>Logout</span>
-                </button>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
       </div>
     </div>
   )

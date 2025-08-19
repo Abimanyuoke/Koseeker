@@ -13,4 +13,5 @@ body {
   --color-primary: #1baa56;
   --color-background: #ffffff;
   --color-text: #393e46;
+  --font-lato: var(--font-lato);
 }
