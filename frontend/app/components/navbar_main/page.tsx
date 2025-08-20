@@ -6,13 +6,13 @@ import Search from "./search";
 import { useEffect } from "react";
 import { getCookies, removeCookie } from "@/lib/client-cookies";
 import { BASE_IMAGE_PROFILE } from "../../../global"
-import { IoMdSearch } from "react-icons/io";
-import { IoMdArrowDropup } from "react-icons/io";
-import { motion, AnimatePresence } from "framer-motion";
+import { IoMdArrowDropdown, IoMdSearch } from "react-icons/io";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { FiLogOut } from 'react-icons/fi';
 import Link from 'next/link';
+import { LuCalendarDays } from 'react-icons/lu';
+import { PiDeviceMobile } from 'react-icons/pi';
 
 const Navbar: React.FC = () => {
 
@@ -24,6 +24,15 @@ const Navbar: React.FC = () => {
   const sidebarRef = useRef<HTMLDivElement>(null)
   const [scrolled, setScrolled] = useState(false);
   const [openCari, setOpenCari] = useState(false);
+  const [openLainnya, setOpenLain] = useState(false);
+
+  const handleCariToggle = () => {
+    setOpenCari((prev) => !prev);
+  };
+
+  const handleLainnyaToggle = () => {
+    setOpenLain((prev) => !prev);
+  }
 
   const handleLogout = () => {
     removeCookie("token");
@@ -149,25 +158,98 @@ const Navbar: React.FC = () => {
     // </div>
 
 
-
-
-
-    <div className='bg-white sticky top-0 z-50 shadow-md py-4 font-lato'>
+    <div className='bg-white sticky top-0 z-50 border-b-[1px] border-gray-200 font-lato'>
       <div className='max-w-7xl mx-auto'>
-        <div className='flex items-center justify-between relative'>
+        <div className='flex items-center gap-4 font-semibold text-xs text-gray-500'>
+          <button className='flex items-center gap-2 py-4 cursor-pointer'>
+            <PiDeviceMobile className='text-lg' />
+            Download App
+          </button>
+          <button className='flex items-center gap-2 cursor-pointer'>
+            <LuCalendarDays  className='text-lg' />
+            Sewa Kos
+          </button>
+        </div>
+        <div className='flex items-center justify-between py-3 relative'>
           <div className='flex items-center gap-2 cursor-pointer' onClick={() => router.push(`/main`)}>
             <Image src={logo} alt="Logo" width={40} height={40} className="w-12 h-12 object-cover" />
             <span className='font-lato text-primary text-2xl font-extrabold'>koseeker</span>
           </div>
           <div className='flex items-center gap-4'>
-            <div className='flex items-center gap-4 font-semibold'>
-              <Link href={'/main'}>Cari Apa</Link>
+            <div className='flex items-center gap-4 font-semibold text-[14px] text-[#303030]'>
+              <button onClick={handleCariToggle} className='flex items-center relative'>
+                Cari Apa?
+                <IoMdArrowDropdown className={`text-lg transition-transform mt-1 ${openCari ? 'rotate-180' : ''}`} />
+              </button>
+              {openCari && (
+                <div className="absolute top-full mt-5 w-48 bg-white shadow-lg rounded-xl border border-gray-200 z-50">
+                  <ul className="flex flex-col">
+                    <li>
+                      <Link
+                        href="/kos"
+                        className="block px-4 py-2 hover:bg-gray-100"
+                        onClick={() => router.push('/kos')}>
+                        Kos
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/kos-andalan"
+                        className="block px-4 py-2 hover:bg-gray-100"
+                        onClick={() => router.push('/kos-andalan')}>
+                        Kos Andalan
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/kos-singgasini-apik"
+                        className="block px-4 py-2 hover:bg-gray-100"
+                        onClick={() => router.push('/kos-singgasini-apik')}>
+                        Kos Singgasini & Apik
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
               <Link href={'/favorit'}>Favorit</Link>
               <Link href={'/chat'}>Chat</Link>
               <Link href={'/notifikasi'}>Notifikasi</Link>
-              <Link href={'/lainnya'}>Lainnya</Link>
+              <button onClick={handleLainnyaToggle} className='flex items-center relative'>
+                Lainnya
+                <IoMdArrowDropdown className={`text-lg transition-transform ${openLainnya ? 'rotate-180' : ''}`} />
+              </button>
+              {openLainnya && (
+                <div className="absolute top-full right-0 mt-5 w-48 bg-white shadow-lg rounded-xl border border-gray-200 z-50">
+                  <ul className="flex flex-col">
+                    <li>
+                      <Link
+                        href="/kos"
+                        className="block px-4 py-2 hover:bg-gray-100"
+                        onClick={() => router.push('/bantuan')}>
+                        Pusat Bantuan
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/kos-andalan"
+                        className="block px-4 py-2 hover:bg-gray-100"
+                        onClick={() => router.push('/blog')}>
+                        Blog Koseeker
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/kos-singgasini-apik"
+                        className="block px-4 py-2 hover:bg-gray-100"
+                        onClick={() => router.push('/syarat')}>
+                        Syarat dan Ketentuan
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
-            <div className='flex items-center gap-3 mb-3'>
+            <div className='flex items-center gap-3'>
               <img
                 src={`${BASE_IMAGE_PROFILE}/${profile}`}
                 alt='profile'
