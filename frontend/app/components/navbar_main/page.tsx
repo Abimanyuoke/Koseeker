@@ -23,16 +23,11 @@ const Navbar: React.FC = () => {
   const router = useRouter();
   const sidebarRef = useRef<HTMLDivElement>(null)
   const [scrolled, setScrolled] = useState(false);
-  const [openCari, setOpenCari] = useState(false);
-  const [openLainnya, setOpenLain] = useState(false);
+  const [activeMenu, setActiveMenu] = useState<string | null>(null);
 
-  const handleCariToggle = () => {
-    setOpenCari((prev) => !prev);
+  const toggleMenu = (menu: string) => {
+    setActiveMenu((prev) => (prev === menu ? null : menu));
   };
-
-  const handleLainnyaToggle = () => {
-    setOpenLain((prev) => !prev);
-  }
 
   const handleLogout = () => {
     removeCookie("token");
@@ -166,7 +161,7 @@ const Navbar: React.FC = () => {
             Download App
           </button>
           <button className='flex items-center gap-2 cursor-pointer'>
-            <LuCalendarDays  className='text-lg' />
+            <LuCalendarDays className='text-lg' />
             Sewa Kos
           </button>
         </div>
@@ -177,11 +172,11 @@ const Navbar: React.FC = () => {
           </div>
           <div className='flex items-center gap-4'>
             <div className='flex items-center gap-4 font-semibold text-[14px] text-[#303030]'>
-              <button onClick={handleCariToggle} className='flex items-center relative'>
+              <button onClick={() => toggleMenu('cari')} className='flex items-center relative'>
                 Cari Apa?
-                <IoMdArrowDropdown className={`text-lg transition-transform mt-1 ${openCari ? 'rotate-180' : ''}`} />
+                <IoMdArrowDropdown className={`text-lg transition-transform mt-1 ${activeMenu === 'cari' ? 'rotate-180' : ''}`} />
               </button>
-              {openCari && (
+              {activeMenu == "cari" && (
                 <div className="absolute top-full mt-5 w-48 bg-white shadow-lg rounded-xl border border-gray-200 z-50">
                   <ul className="flex flex-col">
                     <li>
@@ -214,11 +209,11 @@ const Navbar: React.FC = () => {
               <Link href={'/favorit'}>Favorit</Link>
               <Link href={'/chat'}>Chat</Link>
               <Link href={'/notifikasi'}>Notifikasi</Link>
-              <button onClick={handleLainnyaToggle} className='flex items-center relative'>
+              <button onClick={() => toggleMenu('lainnya')} className='flex items-center relative'>
                 Lainnya
-                <IoMdArrowDropdown className={`text-lg transition-transform ${openLainnya ? 'rotate-180' : ''}`} />
+                <IoMdArrowDropdown className={`text-lg transition-transform ${activeMenu === 'lainnya' ? 'rotate-180' : ''}`} />
               </button>
-              {openLainnya && (
+              {activeMenu === 'lainnya' && (
                 <div className="absolute top-full right-0 mt-5 w-48 bg-white shadow-lg rounded-xl border border-gray-200 z-50">
                   <ul className="flex flex-col">
                     <li>
