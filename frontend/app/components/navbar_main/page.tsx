@@ -172,7 +172,7 @@ const Navbar: React.FC = () => {
           </div>
           <div className='flex items-center gap-4'>
             <div className='flex items-center gap-4 font-semibold text-[14px] text-[#303030]'>
-              <button onClick={() => toggleMenu('cari')} className='flex items-center relative'>
+              <button onClick={() => toggleMenu('cari')} className='flex items-center relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
                 Cari Apa?
                 <IoMdArrowDropdown className={`text-lg transition-transform mt-1 ${activeMenu === 'cari' ? 'rotate-180' : ''}`} />
               </button>
@@ -206,10 +206,14 @@ const Navbar: React.FC = () => {
                   </ul>
                 </div>
               )}
-              <Link href={'/favorit'}>Favorit</Link>
-              <Link href={'/chat'}>Chat</Link>
-              <Link href={'/notifikasi'}>Notifikasi</Link>
-              <button onClick={() => toggleMenu('lainnya')} className='flex items-center relative'>
+                <Link href={"/favorit"} className='relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
+                  Favorit
+                </Link>
+                <Link href={'/chat'} className='relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
+                  Chat
+                </Link>
+              <Link href={'/notifikasi'} className='relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>Notifikasi</Link>
+              <button onClick={() => toggleMenu('lainnya')} className='flex items-center relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
                 Lainnya
                 <IoMdArrowDropdown className={`text-lg transition-transform ${activeMenu === 'lainnya' ? 'rotate-180' : ''}`} />
               </button>
