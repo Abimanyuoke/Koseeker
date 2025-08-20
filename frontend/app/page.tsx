@@ -4,6 +4,7 @@ import AOS from "aos";
 import "aos/dist/aos.css"
 // import Footer from '../components/footer/page';
 import Navbar from './components/navbar_main/page';
+import Home from './home/page';
 
 
 
@@ -23,6 +24,7 @@ const Main = () => {
     return (
         <div className='bg-white'>
             <Navbar />
+            <Home/>
             {/* <Footer /> */}
         </div>
     )
