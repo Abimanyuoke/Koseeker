@@ -253,7 +253,7 @@ const Navbar: React.FC = () => {
               <img
                 src={`${BASE_IMAGE_PROFILE}/${profile}`}
                 alt='profile'
-                className='w-10 h-10 rounded-full object-cover border-2 border-primary' />
+                className='w-10 h-10 rounded-full object-cover border-[1px] border-primary' />
             </div>
           </div>
         </div>
