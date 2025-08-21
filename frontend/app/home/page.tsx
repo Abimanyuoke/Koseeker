@@ -9,7 +9,7 @@ import bild from "../../public/images/building.svg";
 export default function Home() {
 
     return (
-        <div className="bg-white font-lato">
+        <div className="bg-white font-lato h-[1000px]">
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center    mb-10">
                     <div className="flex flex-col text-[#484848]">

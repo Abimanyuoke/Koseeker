@@ -13,6 +13,8 @@ import { FiLogOut } from 'react-icons/fi';
 import Link from 'next/link';
 import { LuCalendarDays } from 'react-icons/lu';
 import { PiDeviceMobile } from 'react-icons/pi';
+import { AnimatePresence, motion } from 'framer-motion';
+import { IoSearch } from 'react-icons/io5';
 
 const Navbar: React.FC = () => {
 
@@ -85,9 +87,38 @@ const Navbar: React.FC = () => {
           </button>
         </div>
         <div className='flex items-center justify-between py-3 relative'>
-          <div className='flex items-center gap-2 cursor-pointer' onClick={() => router.push(`/main`)}>
+          <div className='flex items-center gap-2 cursor-pointer'>
             <Image src={logo} alt="Logo" width={40} height={40} className="w-12 h-12 object-cover" />
-            <span className='font-lato text-primary text-2xl font-extrabold'>koseeker</span>
+            <AnimatePresence mode="wait">
+              {!scrolled ? (
+                <motion.span
+                  key="logo-text"
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.3 }}
+                  className='font-lato text-primary text-2xl font-extrabold'
+                >
+                  koseeker
+                </motion.span>
+              ) : (
+                <motion.div
+                  key="search"
+                  initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  transition={{ duration: 0.3 }}
+                  className="flex-1"
+                >
+                  <div className="flex items-center gap-1 shadow-md border-[1px] border-[#48484819] p-2 rounded-lg">
+                    {/* icon kaca pembesar */}
+                    <IoSearch className="text-2xl" />
+                    <Search url={"/"} search={""} />
+                    <button className="text-[16px] text-white cursor-pointer bg-primary font-bold px-8 py-2 rounded-sm">Cari</button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </div>
           <div className='flex items-center gap-4'>
             <div className='flex items-center gap-4 font-semibold text-[14px] text-[#303030]'>
@@ -125,12 +156,12 @@ const Navbar: React.FC = () => {
                   </ul>
                 </div>
               )}
-                <Link href={"/favorit"} className='relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
-                  Favorit
-                </Link>
-                <Link href={'/chat'} className='relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
-                  Chat
-                </Link>
+              <Link href={"/favorit"} className='relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
+                Favorit
+              </Link>
+              <Link href={'/chat'} className='relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
+                Chat
+              </Link>
               <Link href={'/notifikasi'} className='relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>Notifikasi</Link>
               <button onClick={() => toggleDown('lainnya')} className='flex items-center relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
                 Lainnya
