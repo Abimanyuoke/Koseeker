@@ -22,7 +22,7 @@ const Main = () => {
 
 
     return (
-        <div className='bg-white'>
+        <div className=''>
             <Navbar />
             <Home/>
             {/* <Footer /> */}

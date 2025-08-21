@@ -9,26 +9,29 @@ import Slider from "react-slick";
 import voucher from "../../public/images/voucher1.png";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { SampleNextArrow, SamplePrevArrow  } from "../components/arrow";
+import { CustomArrows } from "../components/arrow";
 
 
 export default function Home() {
+
+    const sliderRef = React.useRef<Slider | null>(null);
 
     const settings = {
         dots: false,
         lazyLoad: "ondemand" as const,
         infinite: true,
         speed: 500,
-        slidesToShow: 1,
+        slidesToShow: 2,
         slidesToScroll: 1,
-        initialSlide: 2
+        initialSlide: 2,
+        arrow: false
     };
 
     return (
-        <div className="bg-white font-lato">
+        <div className="bg-white font-lato mx-[185px]">
             {/* Section Hero */}
             <div className="max-w-7xl mx-auto">
-                <div className="flex justify-between items-center    mb-10">
+                <div className="flex justify-between items-center">
                     <div className="flex flex-col text-[#484848]">
                         <h1 className="font-black text-[32px]">Mau cari kos?</h1>
                         <p className="text-xl font-normal">Dapatkan infonya dan langsung sewa di Koseeker.</p>
@@ -39,12 +42,15 @@ export default function Home() {
                         </div>
                     </div>
                     <div>
-                        <Image src={bild} alt="Hero Image" width={500} height={300} className="w-[700px] h-auto object-cover" />
+                        <Image src={bild} alt="Hero Image" width={400} height={300} className="w-[600px] h-auto object-cover" />
                     </div>
                 </div>
                 {/* Carousel */}
-                <div className="py-10">
-                    <Slider {...settings}>
+                <div className="py-10 relative">
+                    <Slider ref={sliderRef} {...settings}>
+                        <div>
+                            <Image src={voucher} alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
+                        </div>
                         <div>
                             <Image src={voucher} alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
                         </div>
@@ -53,8 +59,10 @@ export default function Home() {
                         </div>
                     </Slider>
                     <div>
-                        <SamplePrevArrow className="absolute left-0 z-10" style={undefined} onClick={undefined} />
-                        <SampleNextArrow className="absolute right-0 z-10" style={undefined} onClick={undefined} />
+                        <CustomArrows
+                            next={() => sliderRef.current?.slickNext()}
+                            prev={() => sliderRef.current?.slickPrev()}
+                        />
                     </div>
                 </div>
             </div>
