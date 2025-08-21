@@ -9,6 +9,7 @@ import Slider from "react-slick";
 import voucher from "../../public/images/voucher1.png";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { SampleNextArrow, SamplePrevArrow  } from "../components/arrow";
 
 
 export default function Home() {
@@ -51,6 +52,10 @@ export default function Home() {
                             <Image src={voucher} alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
                         </div>
                     </Slider>
+                    <div>
+                        <SamplePrevArrow className="absolute left-0 z-10" style={undefined} onClick={undefined} />
+                        <SampleNextArrow className="absolute right-0 z-10" style={undefined} onClick={undefined} />
+                    </div>
                 </div>
             </div>
         </div>
