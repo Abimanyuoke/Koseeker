@@ -5,8 +5,23 @@ import Image from "next/image";
 import Search from "./search";
 import { IoSearch } from "react-icons/io5";
 import bild from "../../public/images/building.svg";
+import Slider from "react-slick";
+import voucher from "../../public/images/voucher1.png";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 
 export default function Home() {
+
+    const settings = {
+        dots: false,
+        lazyLoad: "ondemand" as const,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        initialSlide: 2
+    };
 
     return (
         <div className="bg-white font-lato">
@@ -26,9 +41,18 @@ export default function Home() {
                         <Image src={bild} alt="Hero Image" width={500} height={300} className="w-[700px] h-auto object-cover" />
                     </div>
                 </div>
+                {/* Carousel */}
+                <div className="py-10">
+                    <Slider {...settings}>
+                        <div>
+                            <Image src={voucher} alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
+                        </div>
+                        <div>
+                            <Image src={voucher} alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
+                        </div>
+                    </Slider>
+                </div>
             </div>
-            {/* Carousel */}
-            
         </div>
     );
 }

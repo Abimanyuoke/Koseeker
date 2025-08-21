@@ -95,8 +95,6 @@ export const ButtonInfo = ({ children, type, onClick, className }: Props) => {
 import { FaShoppingCart } from "react-icons/fa";
 
 export const ButtonCart = ({ children, type = "button", onClick, className }: Props) => {
-
-
     return (
         <button
             type={type}
