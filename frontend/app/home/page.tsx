@@ -6,8 +6,6 @@ import Search from "./search";
 import { IoSearch } from "react-icons/io5";
 import bild from "../../public/images/building.svg";
 import Slider from "react-slick";
-import voucher from "../../public/images/voucher1.png";
-import dots from "../../public/images/dots.svg";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { CustomArrows } from "../components/arrow";
@@ -50,13 +48,13 @@ export default function Home() {
                 <div className="py-10 relative">
                     <Slider ref={sliderRef} {...settings}>
                         <div className="px-10">
-                            <Image src={voucher} alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
+                            <Image src="./images/voucher/voucher1.svg" alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
                         </div>
                         <div className="px-10">
-                            <Image src={voucher} alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
+                            <Image src="./images/voucher/voucher2.svg" alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
                         </div>
                         <div className="px-10">
-                            <Image src={voucher} alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
+                            <Image src="./images/voucher/voucher3.svg" alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
                         </div>
                     </Slider>
                     <div>
@@ -66,22 +64,23 @@ export default function Home() {
                     </div>
                 </div>
                 {/* blog */}
-                <div className="py-36">
-                    <div className="bg-white shadow-md rounded-lg p-10 gap-3 relative w-3/4">
-                        <div className="font-lato flex flex-col space-y-1 text-[#404040]">
+                <div className="py-36 text-[#404040] space-y-5">
+                    <div className="bg-white shadow-lg rounded-lg p-7 gap-3 relative w-3/4">
+                        <div className="font-lato flex flex-col space-y-1">
                             <h1 className="text-2xl font-black ">Coba cara baru bayar kos!</h1>
                             <p className="text-base font-normal">Biar bayar kos lebih gampang dan aman, coba sistem pembayaran khusus buat anak kos.</p>
                             <button className="underline text-start cursor-pointer text-[12px] mt-2 font-bold">Mau coba dong</button>
                         </div>
                         <Image src="./images/dots.svg" alt="Abstract 1" width={250} height={300} className=" h-auto object-cover absolute bottom-0 right-0" />
                     </div>
-                    <div>
-                        <div>
-                            <h1></h1>
-                            <p></p>
+                    <div className="flex justify-between items-center bg-white shadow-lg rounded-lg p-7 gap-3">
+                        <div className="flex flex-col space-y-2">
+                            <h1 className="font-black text-2xl">Kos Dikelola Mamikos, Terjamin Nyaman</h1>
+                            <p className="text-base font-normal">Disurvey langsung oleh Mamikos. Lokasi terverifikasi, bangunan kos lolos seleksi.</p>
                         </div>
-                        <div>
-
+                        <div className="flex items-center gap-8">
+                            <Image src="./images/logosinggasini.svg" alt="Mamikos" width={100} height={100} className=" h-auto object-cover"/>
+                            <Image src="./images/logoapik.svg" alt="Mamikos" width={70} height={100} className=" h-auto object-cover"/>
                         </div>
                     </div>
                 </div>
