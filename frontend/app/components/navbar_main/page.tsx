@@ -98,8 +98,7 @@ const Navbar: React.FC = () => {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: 10 }}
                     transition={{ duration: 0.3 }}
-                    className='font-lato text-primary text-2xl font-extrabold'
-                  >
+                    className='font-lato text-primary text-2xl font-extrabold'>
                     koseeker
                   </motion.span>
                 ) : (
@@ -109,8 +108,7 @@ const Navbar: React.FC = () => {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 10, scale: 0.95 }}
                     transition={{ duration: 0.3 }}
-                    className="flex-1"
-                  >
+                    className="flex-1">
                     <div className="flex items-center gap-1 shadow-md border-[1px] border-[#48484819] p-2 rounded-lg">
                       {/* icon kaca pembesar */}
                       <IoSearch className="text-2xl" />
