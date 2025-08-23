@@ -48,13 +48,13 @@ export default function Home() {
                 {/* Carousel */}
                 <div className="py-10 relative">
                     <Slider ref={sliderRef} {...settings}>
-                        <div>
+                        <div className="px-10">
                             <Image src={voucher} alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
                         </div>
-                        <div>
+                        <div className="px-10">
                             <Image src={voucher} alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
                         </div>
-                        <div>
+                        <div className="px-10">
                             <Image src={voucher} alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
                         </div>
                     </Slider>
