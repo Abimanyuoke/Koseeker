@@ -62,15 +62,15 @@ export const verifyAddKos = (req: Request, res: Response, next: NextFunction) =>
 };
 
 
-export const verifyKosFiles = (req: Request, res: Response, next: NextFunction) => {
-    if (!req.files || (Array.isArray(req.files) && req.files.length === 0)) {
-        return res.status(400).json({
-            status: false,
-            message: "Minimal 1 gambar diperlukan"
-        });
-    }
-    next();
-};
+// export const verifyKosFiles = (req: Request, res: Response, next: NextFunction) => {
+//     if (!req.files || (Array.isArray(req.files) && req.files.length === 0)) {
+//         return res.status(400).json({
+//             status: false,
+//             message: "Minimal 1 gambar diperlukan"
+//         });
+//     }
+//     next();
+// };
 
 
 export const verifyEditKos = (request: Request, response: Response, next: NextFunction) => {

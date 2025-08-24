@@ -31,37 +31,37 @@ export const getAllKos = async (request: Request, response: Response) => {
     }
 }
 
-export const createKos = async (req: Request, res: Response) => {
-    try {
-        const { userId, name, address, pricePerMonth, gender, images, facilities } = req.body;
+    export const createKos = async (req: Request, res: Response) => {
+        try {
+            const { userId, name, address, pricePerMonth, gender, images, facilities } = req.body;
 
-        const newKos = await prisma.kos.create({
-            data: { userId: Number(userId), name, address, pricePerMonth: Number(pricePerMonth), gender,
-                images: {
-                    create: images?.map((img: { file: any; }) => ({ file: img.file })) || []
+            const newKos = await prisma.kos.create({
+                data: { userId: Number(userId), name, address, pricePerMonth: Number(pricePerMonth), gender,
+                    images: {
+                        create: images?.map((img: { file: any; }) => ({ file: img.file })) || []
+                    },
+                    facilities: {
+                        create: facilities?.map((fac: { facility: any; }) => ({ facility: fac.facility })) || []
+                    }
                 },
-                facilities: {
-                    create: facilities?.map((fac: { facility: any; }) => ({ facility: fac.facility })) || []
+                include: {
+                    images: true,
+                    facilities: true
                 }
-            },
-            include: {
-                images: true,
-                facilities: true
-            }
-        });
+            });
 
-        res.status(201).json({
-            status: true,
-            message: 'Kos berhasil ditambahkan',
-            data: newKos
-        });
-    } catch (error) {
-        res.status(500).json({
-            status: false,
-            message: (error instanceof Error) ? error.message : String(error)
-        });
-    }
-};
+            res.status(201).json({
+                status: true,
+                message: 'Kos berhasil ditambahkan',
+                data: newKos
+            });
+        } catch (error) {
+            res.status(500).json({
+                status: false,
+                message: (error instanceof Error) ? error.message : String(error)
+            });
+        }
+    };
 
 
 export const updateKos = async (request: Request, response: Response) => {
