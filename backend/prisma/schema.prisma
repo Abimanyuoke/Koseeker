@@ -21,7 +21,6 @@ model User {
   kos             Kos[]     @relation("UserKos")
   reviews         Review[]
   books           Book[]
-  comments        Comment[]
   likes           Like[]
 }
 
@@ -42,7 +41,6 @@ model Kos {
   facilities    KosFacility[]
   reviews       Review[]
   books         Book[]
-  comments      Comment[]
   likes         Like[]
 }
 
@@ -92,18 +90,6 @@ model Book {
   updatedAt      DateTime   @updatedAt
   kos            Kos        @relation(fields: [kosId], references: [id])
   user           User       @relation(fields: [userId], references: [id])
-}
-
-model Comment {
-  id        Int      @id @default(autoincrement())
-  uuid      String   @unique @default(uuid())
-  kosId     Int
-  userId    Int
-  content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  kos       Kos      @relation(fields: [kosId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Like {

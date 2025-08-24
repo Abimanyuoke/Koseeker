@@ -6,7 +6,6 @@ import path from 'path'
 import KosRoute from './routers/kosRoute'
 import UserRoute from './routers/userRoute'
 import LikeRoute from './routers/likeRoute'
-import CommentRoute from './routers/commentRoute'
 import ReviewRoute from './routers/reviewRoute'
 import BookRoute from './routers/bookRoute'
 import KosFacilitiesRoute from './routers/kosFacilitiesRoute'
@@ -52,7 +51,6 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 app.use(`/kos`, KosRoute)
 app.use(`/user`, UserRoute)
 app.use(`/like`, LikeRoute)
-app.use(`/comment`, CommentRoute)
 app.use(`/review`, ReviewRoute)
 app.use(`/book`, BookRoute)
 app.use(`/facilities`, KosFacilitiesRoute)
