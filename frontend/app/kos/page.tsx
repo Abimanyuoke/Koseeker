@@ -44,7 +44,7 @@ const KosPage = () => {
             if ((data as { status: boolean; data: IKos[] }).status) {
                 let allKos = (data as { status: boolean; data: IKos[] }).data;
 
-                // Filter berdasarkan kota jika dipilih
+                // Filter kota
                 if (kota && kota !== "all") {
                     allKos = allKos.filter(kos => kos.kota.toLowerCase() === kota.toLowerCase());
                 }
@@ -62,7 +62,6 @@ const KosPage = () => {
         getKosData(selectedKota);
     }, [search, selectedKota]);
 
-    /** ---------- HELPER FUNCTIONS ---------- */
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('id-ID').format(price);
     };
@@ -118,7 +117,7 @@ const KosPage = () => {
     /** ---------- RENDER ---------- */
     return (
         <div className="bg-white white duration-200 ">
-            <div className="bg-white shadow-lg">
+            <div className="bg-white">
                 <div className="container mx-auto px-4 py-6">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
@@ -180,19 +179,16 @@ const KosPage = () => {
                                     className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer group transform hover:-translate-y-1"
                                     onClick={() => router.push(`/kos/${kos.id}`)}
                                 >
-                                    {/* Gambar Kos dengan Carousel */}
                                     <div className="relative h-48 overflow-hidden">
                                         {kos.images && kos.images.length > 0 ? (
-                                            <>
+                                            <div>
                                                 <Image
                                                     src={`${BASE_API_URL}/../public/kos_picture/${kos.images[currentImageIndex].file}`}
                                                     alt={kos.name}
                                                     fill
                                                     className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                                    unoptimized
-                                                />
+                                                    unoptimized/>
 
-                                                {/* Navigation Arrows */}
                                                 {hasMultipleImages && (
                                                     <>
                                                         <button
@@ -210,7 +206,6 @@ const KosPage = () => {
                                                     </>
                                                 )}
 
-                                                {/* Image Indicators */}
                                                 {hasMultipleImages && (
                                                     <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-1">
                                                         {kos.images.map((_, index) => (
@@ -224,7 +219,7 @@ const KosPage = () => {
                                                         ))}
                                                     </div>
                                                 )}
-                                            </>
+                                            </div>
                                         ) : (
                                             <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                                                 <span className="text-gray-400">No Image</span>
@@ -241,7 +236,6 @@ const KosPage = () => {
 
                                     {/* Konten Kos */}
                                     <div className="p-5">
-                                        {/* Nama dan Alamat */}
                                         <div className="mb-3">
                                             <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-1 line-clamp-1">
                                                 {kos.name}
@@ -254,7 +248,6 @@ const KosPage = () => {
                                             </p>
                                         </div>
 
-                                        {/* Fasilitas */}
                                         {kos.facilities && kos.facilities.length > 0 && (
                                             <div className="mb-4">
                                                 <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
@@ -287,7 +280,6 @@ const KosPage = () => {
                                             </div>
                                         )}
 
-                                        {/* Harga */}
                                         <div className="flex items-baseline gap-1">
                                             <span className="text-xl font-bold text-green-600">
                                                 Rp {formatPrice(kos.pricePerMonth)}
@@ -297,7 +289,6 @@ const KosPage = () => {
                                             </span>
                                         </div>
 
-                                        {/* Info Booking */}
                                         {kos.books && (
                                             <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
                                                 Sisa kamar tersedia

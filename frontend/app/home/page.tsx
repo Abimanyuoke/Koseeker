@@ -65,7 +65,7 @@ export default function Home() {
                     </div>
                 </div>
                 {/* blog */}
-                <div className="py-36 text-[#404040] space-y-5">
+                <div className="py-24 text-[#404040] space-y-5">
                     <div className="bg-white shadow-lg rounded-lg p-7 gap-3 relative w-3/4">
                         <div className="font-lato flex flex-col space-y-1">
                             <h1 className="text-2xl font-black ">Coba cara baru bayar kos!</h1>
