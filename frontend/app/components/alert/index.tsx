@@ -54,14 +54,14 @@
     export const AlertToko = ({ children, title, className }: Prop) => {
         return (
             <section>
-                <div className="my-2 ml-10 bg-sky-200 rounded-md text-sky-800 px-4 py-3 shadow-md border-l-4 border-sky-800 w-[600px]" role="alert">
-                    <div className="flex gap-1">
+                <div className=" rounded-md px-4 py-3 shadow-md w-[600px]" role="alert">
+                    <div className="flex gap-3">
                         <div>
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-7 h-7 ">
                                 <path strokeLinecap="round" strokeLinejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
                             </svg>
                         </div>
-                        <div>
+                        <div className="flex flex-col">
                             <p className={`font-bold text-lg ${className}`}>{title}</p>
                             <div className="text-sm">
                                 {children}  

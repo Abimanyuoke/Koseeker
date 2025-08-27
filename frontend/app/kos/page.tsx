@@ -153,16 +153,16 @@ const KosPage = () => {
                     </div>
                 </div>
             </div>            {/* ----------------- KOS CARDS ----------------- */}
-            <div className="container mx-auto px-4 py-8">
+            <div className="container mx-auto py-8">
                 {loading ? (
-                    <div className="flex items-center justify-center min-h-[400px]">
+                    <div className="flex items-center justify-center min-h-[250px]">
                         <div className="flex flex-col items-center gap-4">
                             <FiLoader className="animate-spin text-green-600 text-4xl" />
                             <p className="text-gray-600 dark:text-gray-300 text-lg">Memuat data kos...</p>
                         </div>
                     </div>
                 ) : kosData.length === 0 ? (
-                    <div className="text-center py-16">
+                    <div className="text-start py-4">
                         <AlertToko title="Informasi">
                             Tidak ada kos yang ditemukan di {selectedKota === "all" ? "semua kota" : selectedKota}
                         </AlertToko>
