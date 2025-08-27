@@ -16,6 +16,16 @@ const addKosSchema = Joi.object({
     address: Joi.string().min(5).required(),
     pricePerMonth: Joi.number().positive().required(),
     gender: Joi.string().valid("male", "female", "all").required(),
+    kampus: Joi.string().valid(
+        "UGM", "UNDIP", "UNPAD", "STAN", "UNAIR", "UB", "UI", "ITS", "ITB",
+        "UNS", "TELKOM", "UNESA", "BINUS", "UMM"
+    ).required(),
+    kota: Joi.string().valid(
+        "Jakarta", "Bandung", "Surabaya", "Medan", "Semarang", "Makassar",
+        "Palembang", "Batam", "Malang", "Bogor", "Depok", "Tangerang",
+        "Solo", "Makasar", "Yogyakarta", "Bekasi"
+    ).required(),
+    kalender: Joi.string().valid("minggu", "bulan", "tahun").required(),
     images: Joi.array().items(
         Joi.object({
             file: Joi.string().required()
@@ -35,6 +45,16 @@ const editKosSchema = Joi.object({
     address: Joi.string().optional(),
     pricePerMonth: Joi.number().min(0).optional(),
     gender: Joi.string().valid('male', 'female', 'all').optional(),
+    kampus: Joi.string().valid(
+        "UGM", "UNDIP", "UNPAD", "STAN", "UNAIR", "UB", "UI", "ITS", "ITB",
+        "UNS", "TELKOM", "UNESA", "BINUS", "UMM"
+    ).optional(),
+    kota: Joi.string().valid(
+        "Jakarta", "Bandung", "Surabaya", "Medan", "Semarang", "Makassar",
+        "Palembang", "Batam", "Malang", "Bogor", "Depok", "Tangerang",
+        "Solo", "Makasar", "Yogyakarta", "Bekasi"
+    ).optional(),
+    kalender: Joi.string().valid("minggu", "bulan", "tahun").optional(),
     images: Joi.object({
         create: Joi.array().items(kosImageSchema).min(1).max(10)
     }).optional(),
