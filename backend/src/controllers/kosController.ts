@@ -9,7 +9,7 @@ const prisma = new PrismaClient({ errorFormat: "pretty" })
 export const getAllKos = async (request: Request, response: Response) => {
     try {
         /** get requested data (data has been sent from request) */
-        const { search, kota } = request.query
+        const { search, kota, kalender } = request.query
 
         /** build where condition */
         let whereCondition: any = {}
@@ -22,6 +22,11 @@ export const getAllKos = async (request: Request, response: Response) => {
         // Add city filter if provided
         if (kota && kota !== 'all') {
             whereCondition.kota = kota.toString()
+        }
+
+        // Add kalender filter if provided
+        if (kalender && kalender !== 'all') {
+            whereCondition.kalender = kalender.toString()
         }
 
         /** process to get kos with images and facilities */
@@ -146,11 +151,18 @@ export const getKosById = async (request: Request, response: Response) => {
 
 export const createKos = async (req: Request, res: Response) => {
     try {
-        const { userId, name, address, pricePerMonth, gender, images, facilities } = req.body;
+        const { userId, name, address, pricePerMonth, gender, kampus, kota, kalender, images, facilities } = req.body;
 
         const newKos = await prisma.kos.create({
             data: {
-                userId: Number(userId), name, address, pricePerMonth: Number(pricePerMonth), gender,
+                userId: Number(userId),
+                name,
+                address,
+                pricePerMonth: Number(pricePerMonth),
+                gender,
+                kampus,
+                kota,
+                kalender,
                 images: {
                     create: images?.map((img: { file: any; }) => ({ file: img.file })) || []
                 },

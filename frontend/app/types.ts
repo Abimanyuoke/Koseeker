@@ -19,6 +19,7 @@ export interface IKos {
     gender: string;
     kampus: string;
     kota: string;
+    kalender: string;
     createdAt: string;
     updatedAt: string;
     images: IKosImage[];
