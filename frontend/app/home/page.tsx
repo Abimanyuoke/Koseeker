@@ -9,6 +9,7 @@ import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { CustomArrows } from "../components/arrow";
+import Kos from "../kos/page";
 
 
 export default function Home() {
@@ -84,6 +85,9 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
+
+                {/* fitur kos */}
+                <Kos/>
             </div>
         </div>
     );

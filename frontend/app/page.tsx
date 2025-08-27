@@ -2,9 +2,9 @@
 import React from 'react';
 import AOS from "aos";
 import "aos/dist/aos.css"
-// import Footer from '../components/footer/page';
 import Navbar from './components/navbar_main/page';
 import Home from './home/page';
+import Footer from './components/footer/page';
 
 
 

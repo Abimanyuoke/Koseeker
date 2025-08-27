@@ -9,7 +9,6 @@ import { BASE_IMAGE_PROFILE } from "../../../global"
 import { IoMdArrowDropdown, IoMdSearch } from "react-icons/io";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { FiLogOut } from 'react-icons/fi';
 import Link from 'next/link';
 import { LuCalendarDays } from 'react-icons/lu';
 import { PiDeviceMobile } from 'react-icons/pi';

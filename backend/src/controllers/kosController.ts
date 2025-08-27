@@ -9,11 +9,48 @@ const prisma = new PrismaClient({ errorFormat: "pretty" })
 export const getAllKos = async (request: Request, response: Response) => {
     try {
         /** get requested data (data has been sent from request) */
-        const { search } = request.query
+        const { search, kota } = request.query
 
-        /** process to get kos, contains means search name of kos based on sent keyword */
+        /** build where condition */
+        let whereCondition: any = {}
+
+        // Add search filter for name if provided
+        if (search) {
+            whereCondition.name = { contains: search.toString() }
+        }
+
+        // Add city filter if provided
+        if (kota && kota !== 'all') {
+            whereCondition.kota = kota.toString()
+        }
+
+        /** process to get kos with images and facilities */
         const allKos = await prisma.kos.findMany({
-            where: { name: { contains: search?.toString() || "" } }
+            where: whereCondition,
+            include: {
+                images: true,
+                facilities: true,
+                books: {
+                    select: {
+                        id: true,
+                        status: true
+                    }
+                },
+                reviews: {
+                    select: {
+                        id: true,
+                        comment: true
+                    }
+                },
+                likes: {
+                    select: {
+                        id: true
+                    }
+                }
+            },
+            orderBy: {
+                createdAt: 'desc'
+            }
         })
 
         return response.json({
@@ -31,37 +68,114 @@ export const getAllKos = async (request: Request, response: Response) => {
     }
 }
 
-    export const createKos = async (req: Request, res: Response) => {
-        try {
-            const { userId, name, address, pricePerMonth, gender, images, facilities } = req.body;
+export const getKosById = async (request: Request, response: Response) => {
+    try {
+        const { id } = request.params
 
-            const newKos = await prisma.kos.create({
-                data: { userId: Number(userId), name, address, pricePerMonth: Number(pricePerMonth), gender,
-                    images: {
-                        create: images?.map((img: { file: any; }) => ({ file: img.file })) || []
-                    },
-                    facilities: {
-                        create: facilities?.map((fac: { facility: any; }) => ({ facility: fac.facility })) || []
+        /** get kos by id with all relations */
+        const kos = await prisma.kos.findUnique({
+            where: { id: Number(id) },
+            include: {
+                images: true,
+                facilities: true,
+                books: {
+                    include: {
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                                email: true
+                            }
+                        }
                     }
                 },
-                include: {
-                    images: true,
-                    facilities: true
+                reviews: {
+                    include: {
+                        user: {
+                            select: {
+                                id: true,
+                                name: true,
+                                profile_picture: true
+                            }
+                        }
+                    }
+                },
+                likes: {
+                    include: {
+                        user: {
+                            select: {
+                                id: true,
+                                name: true
+                            }
+                        }
+                    }
+                },
+                owner: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        phone: true,
+                        profile_picture: true
+                    }
                 }
-            });
+            }
+        })
 
-            res.status(201).json({
-                status: true,
-                message: 'Kos berhasil ditambahkan',
-                data: newKos
-            });
-        } catch (error) {
-            res.status(500).json({
+        if (!kos) {
+            return response.json({
                 status: false,
-                message: (error instanceof Error) ? error.message : String(error)
-            });
+                message: `Kos with id ${id} not found`
+            }).status(404)
         }
-    };
+
+        return response.json({
+            status: true,
+            data: kos,
+            message: `Kos detail has retrieved`
+        }).status(200)
+    } catch (error) {
+        return response
+            .json({
+                status: false,
+                message: `There is an error. ${error}`
+            })
+            .status(400)
+    }
+}
+
+export const createKos = async (req: Request, res: Response) => {
+    try {
+        const { userId, name, address, pricePerMonth, gender, images, facilities } = req.body;
+
+        const newKos = await prisma.kos.create({
+            data: {
+                userId: Number(userId), name, address, pricePerMonth: Number(pricePerMonth), gender,
+                images: {
+                    create: images?.map((img: { file: any; }) => ({ file: img.file })) || []
+                },
+                facilities: {
+                    create: facilities?.map((fac: { facility: any; }) => ({ facility: fac.facility })) || []
+                }
+            },
+            include: {
+                images: true,
+                facilities: true
+            }
+        });
+
+        res.status(201).json({
+            status: true,
+            message: 'Kos berhasil ditambahkan',
+            data: newKos
+        });
+    } catch (error) {
+        res.status(500).json({
+            status: false,
+            message: (error instanceof Error) ? error.message : String(error)
+        });
+    }
+};
 
 
 export const updateKos = async (request: Request, response: Response) => {

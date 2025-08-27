@@ -9,6 +9,87 @@ export interface IProduct {
     picture: string;
 }
 
+export interface IKos {
+    id: number;
+    uuid: string;
+    userId: number;
+    name: string;
+    address: string;
+    pricePerMonth: number;
+    gender: string;
+    kampus: string;
+    kota: string;
+    createdAt: string;
+    updatedAt: string;
+    images: IKosImage[];
+    facilities: IKosFacility[];
+    books?: IBook[];
+    reviews?: IReview[];
+    likes?: ILike[];
+    owner?: {
+        id: number;
+        name: string;
+        email: string;
+        phone?: string;
+        profile_picture?: string;
+    };
+}
+
+export interface IKosImage {
+    id: number;
+    uuid: string;
+    kosId: number;
+    file: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface IKosFacility {
+    id: number;
+    uuid: string;
+    kosId: number;
+    facility: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface IBook {
+    id: number;
+    uuid: string;
+    kosId: number;
+    userId: number;
+    payment: string;
+    startDate: string;
+    endDate: string;
+    durationMonths: number;
+    status: string;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface IReview {
+    id: number;
+    uuid: string;
+    kosId: number;
+    userId: number;
+    comment: string;
+    createdAt: string;
+    updatedAt: string;
+    user?: {
+        id: number;
+        name: string;
+        profile_picture?: string;
+    };
+}
+
+export interface ILike {
+    id: number;
+    uuid: string;
+    kosId: number;
+    userId: number;
+    createdAt: string;
+    updatedAt: string;
+}
 
 export interface IUser {
     id: number,
