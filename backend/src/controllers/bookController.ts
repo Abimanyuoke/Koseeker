@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
+import { createBookingCalendarEntries } from "./bookingCalendarController";
 
 
 const prisma = new PrismaClient({ errorFormat: "pretty" })
@@ -124,6 +125,35 @@ export const createBook = async (request: Request, response: Response) => {
                 }
             }
         });
+
+        // Create booking calendar entries
+        try {
+            await createBookingCalendarEntries(
+                Number(kosId),
+                new Date(startDate),
+                new Date(endDate),
+                newBook.id
+            );
+        } catch (calendarError) {
+            console.error('Failed to create calendar entries:', calendarError);
+            // Don't fail the booking if calendar creation fails
+        }
+
+        // Create notification for user
+        try {
+            await prisma.notification.create({
+                data: {
+                    uuid: uuidv4(),
+                    userId: Number(userId),
+                    title: 'Booking Berhasil Dibuat',
+                    message: `Booking Anda untuk ${newBook.kos.name} telah dibuat dan menunggu konfirmasi dari pemilik kos.`,
+                    type: 'BOOKING_CREATED',
+                    relatedId: newBook.id
+                }
+            });
+        } catch (notifError) {
+            console.error('Failed to create notification:', notifError);
+        }
 
         return response.status(201).json({
             status: true,

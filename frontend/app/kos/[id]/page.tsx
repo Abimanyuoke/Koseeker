@@ -20,6 +20,8 @@ import Cookies from "js-cookie";
 const KosDetailPage = () => {
     const params = useParams();
     const router = useRouter();
+    const [user, setUser] = useState<any>(null);
+    const [token, setToken] = useState<string | null>(null);
     const id = params.id as string;
 
     /** ---------- STATE ---------- */
@@ -58,9 +60,6 @@ const KosDetailPage = () => {
 
 
     // Untuk Like
-    const [user, setUser] = useState<any>(null);
-    const [token, setToken] = useState<string | null>(null);
-
     useEffect(() => {
         const u = {
             id: Cookies.get("id"),

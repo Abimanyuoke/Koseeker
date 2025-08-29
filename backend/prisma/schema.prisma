@@ -8,41 +8,43 @@ datasource db {
 }
 
 model User {
-  id              Int       @id @default(autoincrement())
-  uuid            String    @unique @default("")
+  id              Int            @id @default(autoincrement())
+  uuid            String         @unique @default("")
   name            String
-  email           String    @unique
+  email           String         @unique
   password        String
   phone           String
-  profile_picture String    @default("")
+  profile_picture String         @default("")
   role            Role
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  kos             Kos[]     @relation("UserKos")
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  kos             Kos[]          @relation("UserKos")
   reviews         Review[]
   books           Book[]
   likes           Like[]
+  notifications   Notification[]
 }
 
 model Kos {
-  id            Int           @id @default(autoincrement())
-  uuid          String        @unique @default(uuid())
-  userId        Int
-  name          String
-  address       String
-  pricePerMonth Float
-  gender        Gender
-  kampus        Kampus
-  kota          Kota
-  kalender      Kalender
-  owner         User          @relation("UserKos", fields: [userId], references: [id], onDelete: Cascade)
-  createdAt     DateTime      @default(now())
-  updatedAt     DateTime      @updatedAt
-  images        KosImage[]
-  facilities    KosFacility[]
-  reviews       Review[]
-  books         Book[]
-  likes         Like[]
+  id              Int               @id @default(autoincrement())
+  uuid            String            @unique @default(uuid())
+  userId          Int
+  name            String
+  address         String
+  pricePerMonth   Float
+  gender          Gender
+  kampus          Kampus
+  kota            Kota
+  kalender        Kalender
+  owner           User              @relation("UserKos", fields: [userId], references: [id], onDelete: Cascade)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  images          KosImage[]
+  facilities      KosFacility[]
+  reviews         Review[]
+  books           Book[]
+  likes           Like[]
+  bookingCalendar BookingCalendar[]
 }
 
 model KosImage {
@@ -78,19 +80,20 @@ model Review {
 }
 
 model Book {
-  id             Int        @id @default(autoincrement())
-  uuid           String     @unique @default(uuid())
-  kosId          Int
-  userId         Int
-  payment        Payment
-  startDate      DateTime
-  endDate        DateTime
-  durationMonths Int        @default(1)
-  status         BookStatus
-  createdAt      DateTime   @default(now())
-  updatedAt      DateTime   @updatedAt
-  kos            Kos        @relation(fields: [kosId], references: [id], onDelete: Cascade)
-  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id              Int              @id @default(autoincrement())
+  uuid            String           @unique @default(uuid())
+  kosId           Int
+  userId          Int
+  payment         Payment
+  startDate       DateTime
+  endDate         DateTime
+  durationMonths  Int              @default(1)
+  status          BookStatus
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  kos             Kos              @relation(fields: [kosId], references: [id], onDelete: Cascade)
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bookingCalendar BookingCalendar?
 }
 
 model Like {
@@ -102,8 +105,37 @@ model Like {
   updatedAt DateTime @updatedAt
   kos       Kos      @relation(fields: [kosId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
   @@unique([kosId, userId])
+}
+
+model Notification {
+  id        Int              @id @default(autoincrement())
+  uuid      String           @unique @default(uuid())
+  userId    Int
+  title     String
+  message   String
+  type      NotificationType
+  isRead    Boolean          @default(false)
+  relatedId Int? // ID dari book, kos, dll
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model BookingCalendar {
+  id          Int      @id @default(autoincrement())
+  uuid        String   @unique @default(uuid())
+  kosId       Int
+  bookId      Int?     @unique
+  date        DateTime
+  isAvailable Boolean  @default(true)
+  isBooked    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  kos         Kos      @relation(fields: [kosId], references: [id], onDelete: Cascade)
+  book        Book?    @relation(fields: [bookId], references: [id], onDelete: Cascade)
+
+  @@unique([kosId, date])
 }
 
 enum Role {
@@ -169,4 +201,13 @@ enum Kota {
   Makasar
   Yogyakarta
   Bekasi
+}
+
+enum NotificationType {
+  BOOKING_CREATED
+  BOOKING_ACCEPTED
+  BOOKING_REJECTED
+  BOOKING_REMINDER
+  PAYMENT_DUE
+  GENERAL
 }

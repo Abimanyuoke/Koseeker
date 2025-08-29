@@ -9,6 +9,7 @@ import LikeRoute from './routers/likeRoute'
 import ReviewRoute from './routers/reviewRoute'
 import BookRoute from './routers/bookRoute'
 import KosFacilitiesRoute from './routers/kosFacilitiesRoute'
+import BookingCalendarRoute from './routers/bookingCalendarRoute'
 // import OrderRoute from '../../orderRoute'
 // import ReportRoute from '../../reportRoute'
 
@@ -54,6 +55,7 @@ app.use(`/like`, LikeRoute)
 app.use(`/review`, ReviewRoute)
 app.use(`/book`, BookRoute)
 app.use(`/facilities`, KosFacilitiesRoute)
+app.use(`/booking-calendar`, BookingCalendarRoute)
 // app.use(`/order`, OrderRoute)
 // app.use(`/report`, ReportRoute)
 
