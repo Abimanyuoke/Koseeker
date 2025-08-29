@@ -12,6 +12,6 @@ app.get(`/`, getAllKos)
 app.get(`/:id`, getKosById)
 app.post("/", uploadFile.array("picture", 10), parseFacilities, verifyAddKos, createKos,);
 app.put(`/:id`, [verifyEditKos, uploadFile.array("images", 10)], updateKos)
-app.delete(`/:id`, [verifyToken, verifyRole(["MANAGER"])], deleteKos)
+app.delete(`/:id`, deleteKos)
 
 export default app

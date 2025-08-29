@@ -35,7 +35,7 @@ model Kos {
   kampus        Kampus
   kota          Kota
   kalender      Kalender
-  owner         User          @relation("UserKos", fields: [userId], references: [id])
+  owner         User          @relation("UserKos", fields: [userId], references: [id], onDelete: Cascade)
   createdAt     DateTime      @default(now())
   updatedAt     DateTime      @updatedAt
   images        KosImage[]
@@ -52,7 +52,7 @@ model KosImage {
   file      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  kos       Kos      @relation(fields: [kosId], references: [id])
+  kos       Kos      @relation(fields: [kosId], references: [id], onDelete: Cascade)
 }
 
 model KosFacility {
@@ -62,7 +62,7 @@ model KosFacility {
   facility  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  kos       Kos      @relation(fields: [kosId], references: [id])
+  kos       Kos      @relation(fields: [kosId], references: [id], onDelete: Cascade)
 }
 
 model Review {
@@ -71,8 +71,8 @@ model Review {
   kosId     Int
   userId    Int
   comment   String
-  kos       Kos      @relation(fields: [kosId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  kos       Kos      @relation(fields: [kosId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -89,8 +89,8 @@ model Book {
   status         BookStatus
   createdAt      DateTime   @default(now())
   updatedAt      DateTime   @updatedAt
-  kos            Kos        @relation(fields: [kosId], references: [id])
-  user           User       @relation(fields: [userId], references: [id])
+  kos            Kos        @relation(fields: [kosId], references: [id], onDelete: Cascade)
+  user           User       @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Like {
@@ -100,8 +100,8 @@ model Like {
   userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  kos       Kos      @relation(fields: [kosId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
+  kos       Kos      @relation(fields: [kosId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([kosId, userId])
 }

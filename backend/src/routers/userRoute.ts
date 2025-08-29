@@ -13,7 +13,7 @@ app.post(`/`, uploadFile.single("picture"), verifyAddUser, createUser)
 // app.post(`/`, [verifyToken, verifyRole(["MANAGER"]), uploadFile.single("picture"), verifyAddUser], createUser)
 app.put(`/:id`, [verifyToken, verifyRole(["USER", "MANAGER"]), uploadFile.single("picture"), verifyEditUser], updateUser)
 app.put(`/profile/:id`, [verifyToken, verifyRole(["USER", "MANAGER"]), uploadFile.single("picture")], changePicture)
-app.delete(`/:id`, [verifyToken, verifyRole(["MANAGER"])], deleteUser)
+app.delete(`/:id`, deleteUser)
 app.post(`/login`, [verifyAuthentication], authentication)
 
 export default app

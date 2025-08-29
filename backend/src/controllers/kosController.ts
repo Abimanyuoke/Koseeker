@@ -253,16 +253,19 @@ export const deleteKos = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
 
+        // Cari kos
         const findKos = await prisma.kos.findFirst({
             where: { id: Number(id) },
-            include: { images: true }
+            include: { images: true },
         });
 
         if (!findKos) {
-            return response.status(404).json({ status: false, message: `Kos is not found` });
+            return response
+                .status(404)
+                .json({ status: false, message: `Kos is not found` });
         }
 
-        // Hapus gambar dari folder
+        // Hapus file gambar dari folder public/kos_picture
         for (let img of findKos.images) {
             const imgPath = path.join(BASE_URL, "../public/kos_picture", img.file);
             if (fs.existsSync(imgPath)) {
@@ -270,20 +273,59 @@ export const deleteKos = async (request: Request, response: Response) => {
             }
         }
 
-        // Hapus kos (otomatis hapus relasi kalau sudah diatur onDelete cascade di schema)
+        // Hapus kos -> child (images, reviews, books, likes, facilities) otomatis kehapus
         const deletedKos = await prisma.kos.delete({
-            where: { id: Number(id) }
+            where: { id: Number(id) },
         });
 
         return response.status(200).json({
             status: true,
             data: deletedKos,
-            message: `Kos has been deleted`
+            message: `Kos has been deleted (cascade applied)`,
         });
     } catch (error) {
         return response.status(400).json({
             status: false,
-            message: `There is an error: ${error}`
+            message: `There is an error: ${error}`,
         });
     }
 };
+
+// export const deleteKos = async (request: Request, response: Response) => {
+//     try {
+//         const { id } = request.params;
+
+//         const findKos = await prisma.kos.findFirst({
+//             where: { id: Number(id) },
+//             include: { images: true }
+//         });
+
+//         if (!findKos) {
+//             return response.status(404).json({ status: false, message: `Kos is not found` });
+//         }
+
+//         // Hapus gambar dari folder
+//         for (let img of findKos.images) {
+//             const imgPath = path.join(BASE_URL, "../public/kos_picture", img.file);
+//             if (fs.existsSync(imgPath)) {
+//                 fs.unlinkSync(imgPath);
+//             }
+//         }
+
+//         // Hapus kos (otomatis hapus relasi kalau sudah diatur onDelete cascade di schema)
+//         const deletedKos = await prisma.kos.delete({
+//             where: { id: Number(id) }
+//         });
+
+//         return response.status(200).json({
+//             status: true,
+//             data: deletedKos,
+//             message: `Kos has been deleted`
+//         });
+//     } catch (error) {
+//         return response.status(400).json({
+//             status: false,
+//             message: `There is an error: ${error}`
+//         });
+//     }
+// };
