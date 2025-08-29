@@ -14,6 +14,8 @@ import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaUs
 import { MdLocalLaundryService, MdSecurity } from "react-icons/md";
 import { GiCook } from "react-icons/gi";
 import { ButtonPrimary } from "../../components/button";
+import LikeButton from "@/app/components/likeButton";
+import Cookies from "js-cookie";
 
 const KosDetailPage = () => {
     const params = useParams();
@@ -53,6 +55,31 @@ const KosDetailPage = () => {
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('id-ID').format(price);
     };
+
+
+    // Untuk Like
+    const [user, setUser] = useState<any>(null);
+    const [token, setToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        const u = {
+            id: Cookies.get("id"),
+            name: Cookies.get("name"),
+            role: Cookies.get("role"),
+            profile_picture: Cookies.get("profile_picture"),
+        };
+        const t = Cookies.get("token");
+
+        if (u.id && t) {
+            setUser(u);
+            setToken(t);
+        }
+    }, []);
+
+
+
+
+
 
     const getGenderText = (gender: string) => {
         switch (gender) {
@@ -156,7 +183,7 @@ const KosDetailPage = () => {
                             )}
                         </div>
 
-                        
+
 
                         {/* Thumbnail Images */}
                         {kosDetail.images && kosDetail.images.length > 1 && (
@@ -200,9 +227,16 @@ const KosDetailPage = () => {
                                 </div>
 
                                 <div className="flex gap-2">
-                                    <button className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">
-                                        <FiHeart className="text-xl text-gray-600 dark:text-gray-300" />
-                                    </button>
+                                    {user && token ? (
+                                        <LikeButton
+                                            kosId={kosDetail.id}
+                                            userId={user.id}
+                                            token={token.toString()}
+                                        />
+                                    ) : (
+                                        <p className="text-gray-500">Login dulu untuk like ❤️</p>
+                                    )}
+
                                     <button className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">
                                         <FiShare2 className="text-xl text-gray-600 dark:text-gray-300" />
                                     </button>
@@ -338,3 +372,5 @@ const KosDetailPage = () => {
 };
 
 export default KosDetailPage;
+
+

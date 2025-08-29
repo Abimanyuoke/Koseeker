@@ -18,11 +18,11 @@ export default function LikeButton({ kosId, userId, token }: LikeButtonProps) {
     useEffect(() => {
         const fetchLikeStatus = async () => {
             try {
-                const res = await axios.get(`http://localhost:5000/likes/check/${kosId}/${userId}`);
-                setLiked(res.data.status);
+                const res = await axios.get(`http://localhost:5000/like/check/${kosId}/${userId}`);
+                setLiked(res.data.data.liked);
 
-                const countRes = await axios.get(`http://localhost:5000/likes/${kosId}`);
-                setLikeCount(countRes.data.count);
+                const countRes = await axios.get(`http://localhost:5000/like/kos/${kosId}`);
+                setLikeCount(countRes.data.data.count);
             } catch (err) {
                 console.error(err);
             }
@@ -34,14 +34,14 @@ export default function LikeButton({ kosId, userId, token }: LikeButtonProps) {
     const toggleLike = async () => {
         try {
             const res = await axios.post(
-                `http://localhost:5000/likes/toggle`,
+                `http://localhost:5000/like/toggle`,
                 { kosId, userId },
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 
             // Update UI sesuai response
-            setLiked(res.data.liked);
-            setLikeCount(res.data.count);
+            setLiked(res.data.data.liked);
+            setLikeCount(res.data.data.count);
         } catch (err) {
             console.error(err);
         }

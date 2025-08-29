@@ -233,9 +233,14 @@ export const toggleLike = async (request: Request, response: Response) => {
                 }
             });
 
+            // Get updated like count
+            const likeCount = await prisma.like.count({
+                where: { kosId: Number(kosId) }
+            });
+
             return response.status(200).json({
                 status: true,
-                data: { liked: false },
+                data: { liked: false, count: likeCount },
                 message: `Kos unliked successfully`
             });
         } else {
@@ -267,9 +272,14 @@ export const toggleLike = async (request: Request, response: Response) => {
                 }
             });
 
+            // Get updated like count
+            const likeCount = await prisma.like.count({
+                where: { kosId: Number(kosId) }
+            });
+
             return response.status(201).json({
                 status: true,
-                data: { liked: true, like: newLike },
+                data: { liked: true, count: likeCount, like: newLike },
                 message: `Kos liked successfully`
             });
         }

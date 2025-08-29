@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import axios from "axios";
 import Image from "next/image";
 import imgLogin from "../../../public/images/kosimage.jpeg";
-import logo from "../../../public/images/logo.png";
+import logo from "../../../public/images/logo.svg";
 import siluet from "../../../public/images/siluetKota.png";
 
 
@@ -38,8 +38,8 @@ export default function Login() {
                     storeCookie("role", data.data.role)
                     storeCookie("profile_picture", data.data.profile_picture || "")
                     let role = data.data.role
-                    if (role === `owner`) setTimeout(() => router.replace(`/manager/dashboard`), 1000)
-                    else if (role === `society`) setTimeout(() => router.replace(`/main`), 1000)
+                    if (role === `owner`) setTimeout(() => router.replace(`/`), 1000)
+                    else if (role === `society`) setTimeout(() => router.replace(`/`), 1000)
                 }
             }
             else toast.warning(data.message, { duration: 2000 })
