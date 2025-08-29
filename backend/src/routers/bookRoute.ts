@@ -15,17 +15,17 @@ import {
 const router = Router();
 
 // GET Routes
-router.get("/", getAllBooks);                       // Get all books
-router.get("/:uuid", getBookByUUID);               // Get single book by UUID
+router.get("/", getAllBooks);                       
+router.get("/:uuid", getBookByUUID);               
 
 // POST Routes
-router.post("/", verifyAddBook, createBook);       // Create a new book
+router.post("/", verifyAddBook, createBook);       
 
 // PUT Routes
-router.put("/status/:id", verifyUpdateBookStatus, updateStatusBook); // Update book status
-router.put("/:id", verifyEditBook, updateStatusBook);                // Update book (general)
+router.put("/status/:id", verifyUpdateBookStatus, updateStatusBook); 
+router.put("/:id", verifyEditBook, updateStatusBook);                
 
 // DELETE Routes
-router.delete("/:id", deleteBook);                 // Delete a book
+router.delete("/:id", deleteBook);                 
 
 export default router;
