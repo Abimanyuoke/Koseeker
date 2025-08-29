@@ -1,10 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { IKos } from "../../../types";
-import { get } from "../../../../lib/bridge";
-import { BASE_IMAGE_PRODUCT } from "../../../../global";
-import Select from "../../select";
+import { IKos } from "../../types";
+import { get } from "../../../lib/bridge";
+import { BASE_IMAGE_PRODUCT } from "../../../global";
+import Select from "../../components/select";
 
 // Enum untuk kalender sesuai dengan Prisma
 const kalenderOptions = [
