@@ -148,90 +148,132 @@ export const addKosFacility = async (request: Request, response: Response) => {
 };
 
 // Add multiple facilities to a kos
-export const addMultipleFacilities = async (request: Request, response: Response) => {
+export const addMultipleFacilities = async (req: Request, res: Response) => {
     try {
-        const { kosId, facilities } = request.body;
+        const { kosId, facilities } = req.body;
 
-        // Validate facilities array
-        if (!facilities || !Array.isArray(facilities)) {
-            return response.status(400).json({
-                status: false,
-                message: "Facilities must be an array"
-            });
-        }
-
-        // Check if kos exists
         const kos = await prisma.kos.findUnique({
             where: { id: Number(kosId) }
         });
 
         if (!kos) {
-            return response.status(404).json({
+            return res.status(404).json({
                 status: false,
                 message: "Kos not found"
             });
         }
 
-        // Filter out duplicate facilities and ensure they're strings
-        const uniqueFacilities: string[] = [...new Set(facilities.map((f: any) => String(f).trim()))];
+        // mapping facilities ke prisma
+        const facilitiesData = facilities.map((fac: { facility: string }) => ({
+            kosId: Number(kosId),
+            facility: fac.facility.trim()
+        }));
 
-        // Check for existing facilities
-        const existingFacilities = await prisma.kosFacility.findMany({
-            where: {
-                kosId: Number(kosId),
-                facility: { in: uniqueFacilities }
-            }
+        const newFacilities = await prisma.kosFacility.createMany({
+            data: facilitiesData,
+            skipDuplicates: true
         });
 
-        const existingFacilityNames = existingFacilities.map(f => f.facility);
-        const newFacilities = uniqueFacilities.filter(f => !existingFacilityNames.includes(f));
-
-        if (newFacilities.length === 0) {
-            return response.status(400).json({
-                status: false,
-                message: "All facilities already exist for this kos"
-            });
-        }
-
-        const createdFacilities = await prisma.kosFacility.createMany({
-            data: newFacilities.map(facility => ({
-                kosId: Number(kosId),
-                facility
-            }))
-        });
-
-        // Get the created facilities with kos info
-        const facilitiesWithKos = await prisma.kosFacility.findMany({
-            where: {
-                kosId: Number(kosId),
-                facility: { in: newFacilities }
-            },
-            include: {
-                kos: {
-                    select: {
-                        id: true,
-                        name: true,
-                        uuid: true
-                    }
-                }
-            },
-            orderBy: { createdAt: 'desc' }
-        });
-
-        return response.status(201).json({
+        res.status(201).json({
             status: true,
-            data: facilitiesWithKos,
-            message: `${createdFacilities.count} facilities added successfully`,
-            skipped: existingFacilityNames.length > 0 ? existingFacilityNames : undefined
+            message: "Facilities added successfully",
+            data: newFacilities
         });
-
     } catch (error) {
-        return response.status(500).json({
+        res.status(500).json({
             status: false,
-            message: `There is an error: ${error}`
+            message: (error instanceof Error) ? error.message : String(error)
         });
     }
 };
+
+
+
+
+// export const addMultipleFacilities = async (request: Request, response: Response) => {
+//     try {
+//         const { kosId, facilities } = request.body;
+
+//         // Validate facilities array
+//         if (!facilities || !Array.isArray(facilities)) {
+//             return response.status(400).json({
+//                 status: false,
+//                 message: "Facilities must be an array"
+//             });
+//         }
+
+//         // Check if kos exists
+//         const kos = await prisma.kos.findUnique({
+//             where: { id: Number(kosId) }
+//         });
+
+//         if (!kos) {
+//             return response.status(404).json({
+//                 status: false,
+//                 message: "Kos not found"
+//             });
+//         }
+
+//         // Filter out duplicate facilities and ensure they're strings
+//         const uniqueFacilities: string[] = [...new Set(facilities.map((f: any) => String(f).trim()))];
+
+//         // Check for existing facilities
+//         const existingFacilities = await prisma.kosFacility.findMany({
+//             where: {
+//                 kosId: Number(kosId),
+//                 facility: { in: uniqueFacilities }
+//             }
+//         });
+
+//         const existingFacilityNames = existingFacilities.map(f => f.facility);
+//         const newFacilities = uniqueFacilities.filter(f => !existingFacilityNames.includes(f));
+
+//         if (newFacilities.length === 0) {
+//             return response.status(400).json({
+//                 status: false,
+//                 message: "All facilities already exist for this kos"
+//             });
+//         }
+
+//         const createdFacilities = await prisma.kosFacility.createMany({
+//             data: newFacilities.map(facility => ({
+//                 kosId: Number(kosId),
+//                 facility
+//             }))
+//         });
+
+//         // Get the created facilities with kos info
+//         const facilitiesWithKos = await prisma.kosFacility.findMany({
+//             where: {
+//                 kosId: Number(kosId),
+//                 facility: { in: newFacilities }
+//             },
+//             include: {
+//                 kos: {
+//                     select: {
+//                         id: true,
+//                         name: true,
+//                         uuid: true
+//                     }
+//                 }
+//             },
+//             orderBy: { createdAt: 'desc' }
+//         });
+
+//         return response.status(201).json({
+//             status: true,
+//             data: facilitiesWithKos,
+//             message: `${createdFacilities.count} facilities added successfully`,
+//             skipped: existingFacilityNames.length > 0 ? existingFacilityNames : undefined
+//         });
+
+//     } catch (error) {
+//         return response.status(500).json({
+//             status: false,
+//             message: `There is an error: ${error}`
+//         });
+//     }
+// };
 
 // Update a facility
 export const updateKosFacility = async (request: Request, response: Response) => {

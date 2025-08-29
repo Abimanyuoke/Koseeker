@@ -11,20 +11,40 @@ const addFacilitySchema = Joi.object({
     })
 });
 
-// Schema for adding multiple facilities
 const addMultipleFacilitiesSchema = Joi.object({
     kosId: Joi.number().integer().positive().required(),
     facilities: Joi.array()
-        .items(Joi.string().min(2).max(100))
+        .items(
+            Joi.object({
+                facility: Joi.string().min(2).max(100).required()
+            })
+        )
         .min(1)
         .max(20)
         .required()
         .messages({
+            'array.base': 'Facilities must be an array',
             'array.empty': 'At least one facility is required',
             'array.min': 'At least one facility is required',
             'array.max': 'Maximum 20 facilities allowed at once'
         })
 });
+
+
+// Schema for adding multiple facilities
+// const addMultipleFacilitiesSchema = Joi.object({
+//     kosId: Joi.number().integer().positive().required(),
+//     facilities: Joi.array()
+//         .items(Joi.string().min(2).max(100))
+//         .min(1)
+//         .max(20)
+//         .required()
+//         .messages({
+//             'array.empty': 'At least one facility is required',
+//             'array.min': 'At least one facility is required',
+//             'array.max': 'Maximum 20 facilities allowed at once'
+//         })
+// });
 
 // Schema for updating a facility
 const updateFacilitySchema = Joi.object({
@@ -64,31 +84,50 @@ export const verifyAddFacility = (req: Request, res: Response, next: NextFunctio
 };
 
 // Middleware for validating multiple facilities addition
+
 export const verifyAddMultipleFacilities = (req: Request, res: Response, next: NextFunction) => {
     const { error } = addMultipleFacilitiesSchema.validate(req.body, { abortEarly: false });
 
     if (error) {
         return res.status(400).json({
             status: false,
-            message: error.details.map(detail => detail.message).join(', ')
+            message: error.details.map(it => it.message).join(", ")
         });
     }
 
-    // Trim facility names and filter out empty strings
-    req.body.facilities = req.body.facilities
-        .map((facility: string) => facility.trim())
-        .filter((facility: string) => facility.length > 0);
-
-    // Check if we still have facilities after filtering
-    if (req.body.facilities.length === 0) {
-        return res.status(400).json({
-            status: false,
-            message: 'At least one valid facility is required'
-        });
-    }
+    // Pastikan setiap facility dipangkas spasi
+    req.body.facilities = req.body.facilities.map((fac: { facility: string }) => ({
+        facility: fac.facility.trim()
+    }));
 
     next();
 };
+
+// export const verifyAddMultipleFacilities = (req: Request, res: Response, next: NextFunction) => {
+//     const { error } = addMultipleFacilitiesSchema.validate(req.body, { abortEarly: false });
+
+//     if (error) {
+//         return res.status(400).json({
+//             status: false,
+//             message: error.details.map(detail => detail.message).join(', ')
+//         });
+//     }
+
+//     // Trim facility names and filter out empty strings
+//     req.body.facilities = req.body.facilities
+//         .map((facility: string) => facility.trim())
+//         .filter((facility: string) => facility.length > 0);
+
+//     // Check if we still have facilities after filtering
+//     if (req.body.facilities.length === 0) {
+//         return res.status(400).json({
+//             status: false,
+//             message: 'At least one valid facility is required'
+//         });
+//     }
+
+//     next();
+// };
 
 // Middleware for validating facility update
 export const verifyUpdateFacility = (req: Request, res: Response, next: NextFunction) => {
