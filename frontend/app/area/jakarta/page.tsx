@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { IKos } from "../../types";
 import { get } from "../../../lib/bridge";
-import { BASE_IMAGE_PRODUCT } from "../../../global";
+import { BASE_IMAGE_KOS } from "../../../global";
 import Select from "../../components/select";
 
 // Enum untuk kalender sesuai dengan Prisma
@@ -135,7 +135,7 @@ const JakartaKosPage = () => {
                                 <div className="relative h-48 rounded-t-lg overflow-hidden">
                                     {kos.images && kos.images.length > 0 ? (
                                         <img
-                                            src={`${BASE_IMAGE_PRODUCT}/${kos.images[0].file}`}
+                                            src={`${BASE_IMAGE_KOS}/${kos.images[0].file}`}
                                             alt={kos.name}
                                             className="w-full h-full object-cover"
                                         />

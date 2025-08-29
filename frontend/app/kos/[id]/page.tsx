@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { IKos } from "@/app/types";
 import { getCookies } from "@/lib/client-cookies";
-import { BASE_API_URL } from "../../../global";
+import { BASE_API_URL, BASE_IMAGE_KOS } from "../../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
 import Image from "next/image";
@@ -124,7 +124,7 @@ const KosDetailPage = () => {
 
     /** ---------- RENDER ---------- */
     return (
-        <div className="bg-gray-50 dark:bg-gray-900 dark:text-white duration-200 min-h-screen">
+        <div className="bg-gray-50 dark:bg-gray-900 duration-200 min-h-screen">
             <div className="sticky top-0 z-50 shadow-md">
                 <Navbar_Products />
             </div>
@@ -133,20 +133,17 @@ const KosDetailPage = () => {
                 {/* Back Button */}
                 <button
                     onClick={() => router.back()}
-                    className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-green-600 mb-6"
-                >
+                    className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-green-600 mb-6">
                     <FiArrowLeft className="text-xl" />
                     <span>Kembali ke Daftar Kos</span>
                 </button>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    {/* Left Side - Images */}
                     <div className="space-y-4">
-                        {/* Main Image */}
                         <div className="relative h-96 rounded-xl overflow-hidden">
                             {kosDetail.images && kosDetail.images.length > 0 ? (
                                 <Image
-                                    src={`${BASE_API_URL}/../public/kos_picture/${kosDetail.images[currentImageIndex]?.file || kosDetail.images[0].file}`}
+                                    src={`${BASE_IMAGE_KOS}/${kosDetail.images[currentImageIndex]?.file || kosDetail.images[0].file}`}
                                     alt={kosDetail.name}
                                     fill
                                     className="object-cover"
@@ -159,6 +156,8 @@ const KosDetailPage = () => {
                             )}
                         </div>
 
+                        
+
                         {/* Thumbnail Images */}
                         {kosDetail.images && kosDetail.images.length > 1 && (
                             <div className="grid grid-cols-4 gap-2">
@@ -170,7 +169,7 @@ const KosDetailPage = () => {
                                         onClick={() => setCurrentImageIndex(index)}
                                     >
                                         <Image
-                                            src={`${BASE_API_URL}/../public/kos_picture/${image.file}`}
+                                            src={`${BASE_IMAGE_KOS}/${image.file}`}
                                             alt={`${kosDetail.name} ${index + 1}`}
                                             fill
                                             className="object-cover"
