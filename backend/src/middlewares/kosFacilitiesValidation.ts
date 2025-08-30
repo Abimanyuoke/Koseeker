@@ -69,7 +69,7 @@ const deleteMultipleFacilitiesSchema = Joi.object({
 
 // Middleware for validating single facility addition
 export const verifyAddFacility = (req: Request, res: Response, next: NextFunction) => {
-    const { error } = addFacilitySchema.validate(req.body, { abortEarly: false });
+    const { error } = addFacilitySchema.validate(req.body, { abortEarly: false, allowUnknown: true });
 
     if (error) {
         return res.status(400).json({
@@ -86,7 +86,7 @@ export const verifyAddFacility = (req: Request, res: Response, next: NextFunctio
 // Middleware for validating multiple facilities addition
 
 export const verifyAddMultipleFacilities = (req: Request, res: Response, next: NextFunction) => {
-    const { error } = addMultipleFacilitiesSchema.validate(req.body, { abortEarly: false });
+    const { error } = addMultipleFacilitiesSchema.validate(req.body, { abortEarly: false, allowUnknown: true });
 
     if (error) {
         return res.status(400).json({
@@ -131,7 +131,7 @@ export const verifyAddMultipleFacilities = (req: Request, res: Response, next: N
 
 // Middleware for validating facility update
 export const verifyUpdateFacility = (req: Request, res: Response, next: NextFunction) => {
-    const { error } = updateFacilitySchema.validate(req.body, { abortEarly: false });
+    const { error } = updateFacilitySchema.validate(req.body, { abortEarly: false, allowUnknown: true });
 
     if (error) {
         return res.status(400).json({
@@ -147,7 +147,7 @@ export const verifyUpdateFacility = (req: Request, res: Response, next: NextFunc
 
 // Middleware for validating multiple facilities deletion
 export const verifyDeleteMultipleFacilities = (req: Request, res: Response, next: NextFunction) => {
-    const { error } = deleteMultipleFacilitiesSchema.validate(req.body, { abortEarly: false });
+    const { error } = deleteMultipleFacilitiesSchema.validate(req.body, { abortEarly: false, allowUnknown: true });
 
     if (error) {
         return res.status(400).json({

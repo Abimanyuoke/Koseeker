@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { isAuthenticated, getAuthToken } from '@/lib/auth'
+import { BASE_IMAGE_KOS } from '@/global'
 
 interface Booking {
     id: number
@@ -123,7 +124,7 @@ export default function BookingsPage() {
                                 <div className="relative h-48">
                                     {booking.kos.images && booking.kos.images.length > 0 ? (
                                         <img
-                                            src={`http://localhost:5000/${booking.kos.images[0].file}`}
+                                            src={`${BASE_IMAGE_KOS}/${booking.kos.images[0].file}`}
                                             alt={booking.kos.name}
                                             className="w-full h-full object-cover"
                                         />

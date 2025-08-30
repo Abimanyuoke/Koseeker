@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 import { v4 as uuidv4 } from "uuid";
 import { createBookingCalendarEntries } from "./bookingCalendarController";
 
-
+// const prisma = new PrismaClient();
 const prisma = new PrismaClient({ errorFormat: "pretty" })
 export const getAllBooks = async (request: Request, response: Response) => {
     try {
@@ -88,9 +88,7 @@ export const getBookByUUID = async (request: Request, response: Response) => {
 
 export const createBook = async (request: Request, response: Response) => {
     try {
-        const { kosId, payment, status, startDate, endDate, durationMonths } = request.body;
-
-        // Ambil userId dari token JWT
+        // Get userId from token (set by authorization middleware)
         const userId = request.body.user?.id;
         if (!userId) {
             return response.status(401).json({
@@ -98,6 +96,8 @@ export const createBook = async (request: Request, response: Response) => {
                 message: "User belum login atau token tidak valid"
             });
         }
+
+        const { kosId, payment, status, startDate, endDate, durationMonths } = request.body;
 
         // Validasi field
         if (!kosId || !payment || !startDate || !endDate) {
@@ -108,16 +108,52 @@ export const createBook = async (request: Request, response: Response) => {
         }
 
         // Buat book baru
+        // const newBook = await prisma.book.create({
+        //     data: {
+        //         uuid: uuidv4(),
+        //         kosId: Number(kosId),
+        //         userId: Number(userId),
+        //         payment,
+        //         status: status || "pending",
+        //         startDate: new Date(startDate),
+        //         endDate: new Date(endDate),
+        //         durationMonths: durationMonths || 1,
+        //     },
+        //     include: {
+        //         kos: {
+        //             select: {
+        //                 id: true,
+        //                 name: true,
+        //                 address: true,
+        //                 pricePerMonth: true
+        //             }
+        //         },
+        //         user: {
+        //             select: {
+        //                 id: true,
+        //                 name: true,
+        //                 email: true
+        //             }
+        //         }
+        //     }
+        // });
+
         const newBook = await prisma.book.create({
             data: {
                 uuid: uuidv4(),
-                kosId: Number(kosId),
-                userId: Number(userId),
                 payment,
                 status: status || "pending",
                 startDate: new Date(startDate),
                 endDate: new Date(endDate),
                 durationMonths: durationMonths || 1,
+                // Relasi Kos
+                kos: {
+                    connect: { id: Number(kosId) }
+                },
+                // Relasi User
+                user: {
+                    connect: { id: Number(userId) }
+                }
             },
             include: {
                 kos: {

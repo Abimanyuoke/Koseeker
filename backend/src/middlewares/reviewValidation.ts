@@ -12,7 +12,7 @@ const editReviewSchema = Joi.object({
 });
 
 export const verifyAddReview = (req: Request, res: Response, next: NextFunction) => {
-    const { error } = addReviewSchema.validate(req.body, { abortEarly: false });
+    const { error } = addReviewSchema.validate(req.body, { abortEarly: false, allowUnknown: true });
 
     if (error) {
         return res.status(400).json({
@@ -24,7 +24,7 @@ export const verifyAddReview = (req: Request, res: Response, next: NextFunction)
 };
 
 export const verifyEditReview = (request: Request, response: Response, next: NextFunction) => {
-    const { error } = editReviewSchema.validate(request.body, { abortEarly: false })
+    const { error } = editReviewSchema.validate(request.body, { abortEarly: false, allowUnknown: true })
     if (error) {
         return response.status(400).json({
             status: false,

@@ -33,7 +33,7 @@ const updateBookStatusSchema = Joi.object({
 });
 
 export const verifyAddBook = (req: Request, res: Response, next: NextFunction) => {
-    const { error } = addBookSchema.validate(req.body, { abortEarly: false });
+    const { error } = addBookSchema.validate(req.body, { abortEarly: false, allowUnknown: true });
 
     if (error) {
         return res.status(400).json({
@@ -45,7 +45,7 @@ export const verifyAddBook = (req: Request, res: Response, next: NextFunction) =
 };
 
 export const verifyEditBook = (request: Request, response: Response, next: NextFunction) => {
-    const { error } = editBookSchema.validate(request.body, { abortEarly: false })
+    const { error } = editBookSchema.validate(request.body, { abortEarly: false, allowUnknown: true })
     if (error) {
         return response.status(400).json({
             status: false,
@@ -56,7 +56,7 @@ export const verifyEditBook = (request: Request, response: Response, next: NextF
 }
 
 export const verifyUpdateBookStatus = (req: Request, res: Response, next: NextFunction) => {
-    const { error } = updateBookStatusSchema.validate(req.body, { abortEarly: false });
+    const { error } = updateBookStatusSchema.validate(req.body, { abortEarly: false, allowUnknown: true });
 
     if (error) {
         return res.status(400).json({

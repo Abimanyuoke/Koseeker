@@ -101,7 +101,7 @@ const authSchema = Joi.object({
 });
 
 export const verifyAddUser = (req: Request, res: Response, next: NextFunction) => {
-    const { error } = addUserSchema.validate(req.body, { abortEarly: false });
+    const { error } = addUserSchema.validate(req.body, { abortEarly: false, allowUnknown: true });
     if (error) {
         return res.status(400).json({
             status: false,
@@ -112,7 +112,7 @@ export const verifyAddUser = (req: Request, res: Response, next: NextFunction) =
 };
 
 export const verifyEditUser = (req: Request, res: Response, next: NextFunction) => {
-    const { error } = editUserSchema.validate(req.body, { abortEarly: false });
+    const { error } = editUserSchema.validate(req.body, { abortEarly: false, allowUnknown: true });
     if (error) {
         return res.status(400).json({
             status: false,
@@ -123,7 +123,7 @@ export const verifyEditUser = (req: Request, res: Response, next: NextFunction) 
 };
 
 export const verifyAuthentication = (req: Request, res: Response, next: NextFunction) => {
-    const { error } = authSchema.validate(req.body, { abortEarly: false });
+    const { error } = authSchema.validate(req.body, { abortEarly: false, allowUnknown: true });
     if (error) {
         return res.status(400).json({
             status: false,

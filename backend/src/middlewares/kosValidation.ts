@@ -70,7 +70,7 @@ export const verifyAddKos = (req: Request, res: Response, next: NextFunction) =>
         req.body.images = req.files.map(file => ({ file: file.filename }));
     }
 
-    const { error } = addKosSchema.validate(req.body, { abortEarly: false });
+    const { error } = addKosSchema.validate(req.body, { abortEarly: false, allowUnknown: true });
 
     if (error) {
         return res.status(400).json({
@@ -94,7 +94,7 @@ export const verifyAddKos = (req: Request, res: Response, next: NextFunction) =>
 
 
 export const verifyEditKos = (request: Request, response: Response, next: NextFunction) => {
-    const { error } = editKosSchema.validate(request.body, { abortEarly: false })
+    const { error } = editKosSchema.validate(request.body, { abortEarly: false, allowUnknown: true })
     if (error) {
         return response.status(400).json({
             status: false,
