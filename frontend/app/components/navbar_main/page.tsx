@@ -6,7 +6,7 @@ import Search from "./search";
 import { useEffect } from "react";
 import { getCookies, removeCookie } from "@/lib/client-cookies";
 import { BASE_IMAGE_PROFILE } from "../../../global"
-import { IoMdArrowDropdown, IoMdSearch } from "react-icons/io";
+import { IoMdArrowDropdown, IoMdArrowDropup, IoMdSearch } from "react-icons/io";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
@@ -14,6 +14,7 @@ import { LuCalendarDays } from 'react-icons/lu';
 import { PiDeviceMobile } from 'react-icons/pi';
 import { AnimatePresence, motion } from 'framer-motion';
 import { IoSearch } from 'react-icons/io5';
+import { FiLogOut } from 'react-icons/fi';
 
 const Navbar: React.FC = () => {
 
@@ -86,7 +87,7 @@ const Navbar: React.FC = () => {
               Sewa Kos
             </button>
           </div>
-          <div className='flex items-center justify-between py-3 relative'>
+          <div className='flex items-center justify-between py-3 relative h-[100px]'>
             <div className='flex items-center gap-2 cursor-pointer'>
               <Image src={logo} alt="Logo" width={40} height={40} className="w-12 h-12 object-cover" />
               <AnimatePresence mode="wait">
@@ -196,12 +197,54 @@ const Navbar: React.FC = () => {
                   </div>
                 )}
               </div>
-              <div className='flex items-center gap-3'>
+
+              <button className='cursor-pointer' onClick={() => handlePopup()}>
                 <img
                   src={`${BASE_IMAGE_PROFILE}/${profile}`}
-                  alt='profile'
-                  className='w-10 h-10 rounded-full object-cover border-[1px] border-primary' />
-              </div>
+                  alt="profile image"
+                  width={40}
+                  height={40}
+                  className="rounded-full"
+                />
+              </button>
+
+              <AnimatePresence>
+                {popup && (
+                  <motion.div
+                    ref={sidebarRef}
+                    key="profile-popup"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                    className='absolute top-full -right-24 translate-x-16 mt-2 w-52 bg-white border border-gray-200 rounded-xl shadow-lg p-4 z-50'>
+                    <div
+                      className='absolute -top-4  text-gray-700 text-2xl cursor-pointer'
+                      onClick={() => setPopup(false)}>
+                      <IoMdArrowDropup />
+                    </div>
+                    <div className='flex items-center gap-3 mb-3'>
+                      <img
+                        src={`${BASE_IMAGE_PROFILE}/${profile}`}
+                        alt='profile'
+                        className='w-10 h-10 rounded-full object-cover border-2 border-primary' />
+                      <div>
+                        <p className='text-sm font-semibold text-gray-700'>{user}</p>
+                        <p className='text-xs text-gray-500 dark:text-gray-400'>{role}</p>
+                      </div>
+                    </div>
+
+                    <div className="border-t pt-3 mt-3">
+                      <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-100 dark:text-red-400 rounded-md transition cursor-pointer">
+                        <FiLogOut className="text-lg" />
+                        <span>Logout</span>
+                      </button>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
         </div>

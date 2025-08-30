@@ -4,11 +4,10 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { IKos } from "@/app/types";
 import { getCookies } from "@/lib/client-cookies";
-import { BASE_API_URL } from "../../global";
+import { BASE_API_URL, BASE_IMAGE_KOS } from "../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../components/alert";
 import Image from "next/image";
-import Navbar_Products from "../components/navbar_main/page";
 import { FiLoader } from "react-icons/fi";
 import Select from "../components/select";
 import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaChevronLeft, FaChevronRight } from "react-icons/fa";
@@ -158,7 +157,7 @@ const KosPage = () => {
                     <div className="flex items-center justify-center min-h-[250px]">
                         <div className="flex flex-col items-center gap-4">
                             <FiLoader className="animate-spin text-green-600 text-4xl" />
-                            <p className="text-gray-600 dark:text-gray-300 text-lg">Memuat data kos...</p>
+                            <p className="text-gray-600 text-lg">Memuat data kos...</p>
                         </div>
                     </div>
                 ) : kosData.length === 0 ? (
@@ -183,7 +182,7 @@ const KosPage = () => {
                                         {kos.images && kos.images.length > 0 ? (
                                             <div>
                                                 <Image
-                                                    src={`${BASE_API_URL}/../public/kos_picture/${kos.images[currentImageIndex].file}`}
+                                                    src={`${BASE_IMAGE_KOS}/${kos.images[currentImageIndex].file}`}
                                                     alt={kos.name}
                                                     fill
                                                     className="object-cover group-hover:scale-105 transition-transform duration-300"
@@ -221,7 +220,7 @@ const KosPage = () => {
                                                 )}
                                             </div>
                                         ) : (
-                                            <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                                            <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                                                 <span className="text-gray-400">No Image</span>
                                             </div>
                                         )}
@@ -237,31 +236,31 @@ const KosPage = () => {
                                     {/* Konten Kos */}
                                     <div className="p-5">
                                         <div className="mb-3">
-                                            <h3 className="font-bold text-lg text-gray-900 dark:text-white mb-1 line-clamp-1">
+                                            <h3 className="font-bold text-lg text-gray-900  mb-1 line-clamp-1">
                                                 {kos.name}
                                             </h3>
-                                            <p className="text-sm text-gray-600 dark:text-gray-300 line-clamp-2">
+                                            <p className="text-sm text-gray-600 line-clamp-2">
                                                 {kos.address}
                                             </p>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                            <p className="text-xs text-gray-500 mt-1">
                                                 {kos.kota}
                                             </p>
                                         </div>
 
                                         {kos.facilities && kos.facilities.length > 0 && (
                                             <div className="mb-4">
-                                                <h4 className="text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
+                                                <h4 className="text-sm font-semibold text-gray-700 mb-2">
                                                     Fasilitas:
                                                 </h4>
                                                 <div className="flex flex-wrap gap-2">
                                                     {kos.facilities.slice(0, 4).map((facility, index) => (
                                                         <div
                                                             key={facility.id}
-                                                            className="flex items-center gap-1 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-lg"
+                                                            className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-lg"
                                                             title={facility.facility}
                                                         >
                                                             {getFacilityIcon(facility.facility)}
-                                                            <span className="text-xs text-gray-600 dark:text-gray-300 truncate max-w-16">
+                                                            <span className="text-xs text-gray-600 truncate max-w-16">
                                                                 {facility.facility.length > 8
                                                                     ? facility.facility.substring(0, 8) + "..."
                                                                     : facility.facility
@@ -270,8 +269,8 @@ const KosPage = () => {
                                                         </div>
                                                     ))}
                                                     {kos.facilities.length > 4 && (
-                                                        <div className="flex items-center justify-center bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-lg">
-                                                            <span className="text-xs text-gray-600 dark:text-gray-300">
+                                                        <div className="flex items-center justify-center bg-gray-100  px-2 py-1 rounded-lg">
+                                                            <span className="text-xs text-gray-600">
                                                                 +{kos.facilities.length - 4}
                                                             </span>
                                                         </div>
@@ -284,13 +283,13 @@ const KosPage = () => {
                                             <span className="text-xl font-bold text-green-600">
                                                 Rp {formatPrice(kos.pricePerMonth)}
                                             </span>
-                                            <span className="text-sm text-gray-500 dark:text-gray-400">
+                                            <span className="text-sm text-gray-500">
                                                 /bulan
                                             </span>
                                         </div>
 
                                         {kos.books && (
-                                            <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+                                            <div className="mt-2 text-xs text-gray-500">
                                                 Sisa kamar tersedia
                                             </div>
                                         )}
