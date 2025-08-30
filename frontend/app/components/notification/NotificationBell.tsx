@@ -54,19 +54,14 @@ export default function NotificationBell({ className = '' }: NotificationBellPro
             <button
                 onClick={handleClick}
                 className={`relative p-2 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg ${className}`}
+                title="Notifikasi"
             >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M15 17h5l-5 5-5-5h5v-13z M12.595 6.595l.707.707L15 5.5V12h-2V7.414l-1.414 1.414-.707-.707z M3 12h9v2H3z"
-                    />
-                    <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M18 8a6 6 0 01-12 0 6 6 0 0112 0zM20.485 8.485l-1.414 1.414A8 8 0 1011.515 19.9l1.414-1.414A6 6 0 1020.485 8.485z"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                 </svg>
 
@@ -76,9 +71,7 @@ export default function NotificationBell({ className = '' }: NotificationBellPro
                         {unreadCount > 99 ? '99+' : unreadCount}
                     </span>
                 )}
-            </button>
-
-            <NotificationCenter isOpen={isOpen} onClose={handleClose} />
+            </button>            <NotificationCenter isOpen={isOpen} onClose={handleClose} />
         </>
     )
 }

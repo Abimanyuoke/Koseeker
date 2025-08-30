@@ -31,12 +31,21 @@ export default function Login() {
             }>(url, payload, { headers: { "Content-Type": "application/json" } })
             if (data.status == true) {
                 toast.success("Login success", { duration: 2000 })
+                // Simpan di localStorage untuk client-side access
+                localStorage.setItem("token", data.token)
+                // Simpan di cookies untuk server-side middleware
                 storeCookie("token", data.token)
                 if (data.data) {
+                    localStorage.setItem("id", data.data.id)
+                    localStorage.setItem("name", data.data.name)
+                    localStorage.setItem("role", data.data.role)
+                    localStorage.setItem("profile_picture", data.data.profile_picture || "")
+
                     storeCookie("id", data.data.id)
                     storeCookie("name", data.data.name)
                     storeCookie("role", data.data.role)
                     storeCookie("profile_picture", data.data.profile_picture || "")
+
                     let role = data.data.role
                     if (role === `owner`) setTimeout(() => router.replace(`/`), 1000)
                     else if (role === `society`) setTimeout(() => router.replace(`/`), 1000)

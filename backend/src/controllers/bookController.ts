@@ -7,26 +7,41 @@ import { createBookingCalendarEntries } from "./bookingCalendarController";
 const prisma = new PrismaClient({ errorFormat: "pretty" })
 export const getAllBooks = async (request: Request, response: Response) => {
     try {
+        /** get userId from token */
+        const userId = request.body.user?.id;
+        if (!userId) {
+            return response.status(401).json({
+                status: false,
+                message: "User belum login atau token tidak valid"
+            });
+        }
+
         /** get requested data (data has been sent from request) */
         const { search } = request.query
 
-        /** process to get order, contains means search name or table number of customer's order based on sent keyword */
+        /** process to get books for the current user */
         const allBook = await prisma.book.findMany({
             where: {
-                OR: [
-                    { kosId: search ? { equals: Number(search) } : undefined },
-                    { userId: search ? { equals: Number(search) } : undefined },
-                ]
+                userId: Number(userId),
+                ...(search && {
+                    OR: [
+                        { kosId: search ? { equals: Number(search) } : undefined },
+                    ]
+                })
             },
             orderBy: { createdAt: "desc" }, /** sort by descending order date */
             include: {
-                kos: true,
+                kos: {
+                    include: {
+                        images: true
+                    }
+                },
                 user: true
             }
         })
         return response.json({
             status: true,
-            data: allBook,
+            books: allBook,
             message: `Book list has retrieved`
         }).status(200)
     } catch (error) {
@@ -73,25 +88,22 @@ export const getBookByUUID = async (request: Request, response: Response) => {
 
 export const createBook = async (request: Request, response: Response) => {
     try {
+        const { kosId, payment, status, startDate, endDate, durationMonths } = request.body;
 
-        //  const { kosId, payment, status } = request.body;
-
-        //         // Ambil userId dari token JWT
-        //         const userId = request.user?.id; // pastikan middleware auth mengisi req.user
-        //         if (!userId) {
-        //             return response.status(401).json({
-        //                 status: false,
-        //                 message: "User belum login atau token tidak valid"
-        //             });
-        //         }
-
-        const { kosId, userId, payment, status, startDate, endDate, durationMonths } = request.body;
+        // Ambil userId dari token JWT
+        const userId = request.body.user?.id;
+        if (!userId) {
+            return response.status(401).json({
+                status: false,
+                message: "User belum login atau token tidak valid"
+            });
+        }
 
         // Validasi field
-        if (!kosId || !userId || !payment || !startDate || !endDate) {
+        if (!kosId || !payment || !startDate || !endDate) {
             return response.status(400).json({
                 status: false,
-                message: "All required fields must be provided: kosId, userId, payment, startDate, endDate"
+                message: "All required fields must be provided: kosId, payment, startDate, endDate"
             });
         }
 

@@ -42,6 +42,16 @@ export const middleware = async (request: NextRequest) => {
         return NextResponse.next();
     }
 
+    // Proteksi untuk halaman booking
+    if (request.nextUrl.pathname.startsWith("/book")) {
+        if (!token) {
+            const redirectUrl = request.nextUrl.clone();
+            redirectUrl.pathname = "/auth/login";
+            return NextResponse.redirect(redirectUrl);
+        }
+        return NextResponse.next();
+    }
+
     return NextResponse.next(); // default: izinkan akses
 };
 
@@ -50,6 +60,7 @@ export const config = {
         "/manager/:path*",
         "/user/:path*",
         "/main/:path*", // Tambahkan ini agar /main diproteksi
+        "/book/:path*", // Proteksi untuk halaman booking
         "/" // root
     ],
 };

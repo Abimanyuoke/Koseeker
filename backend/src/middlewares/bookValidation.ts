@@ -3,7 +3,6 @@ import Joi from 'joi'
 
 const addBookSchema = Joi.object({
     kosId: Joi.number().integer().required(),
-    userId: Joi.number().integer().required(),
     payment: Joi.string().valid("cash", "transfer").required(),
     startDate: Joi.date().iso().required(),
     endDate: Joi.date().iso().min(Joi.ref('startDate')).required(),

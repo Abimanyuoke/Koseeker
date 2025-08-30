@@ -33,6 +33,7 @@ export default function BookingCalendar({
             const year = currentDate.getFullYear()
             const month = currentDate.getMonth() + 1
 
+            // No need for authentication to fetch booked dates - this should be public
             const response = await fetch(
                 `http://localhost:5000/booking-calendar/${kosId}?year=${year}&month=${month}`
             )
@@ -40,9 +41,15 @@ export default function BookingCalendar({
             if (response.ok) {
                 const data = await response.json()
                 setBookedDates(data.bookedDates || [])
+            } else {
+                console.error('Failed to fetch booked dates:', response.statusText)
+                // Don't show error to user, just set empty array
+                setBookedDates([])
             }
         } catch (err) {
             console.error('Failed to fetch booked dates:', err)
+            // Don't show error to user, just set empty array
+            setBookedDates([])
         }
     }
 
@@ -77,10 +84,14 @@ export default function BookingCalendar({
         return date < today
     }
 
-    const handleDateClick = (date: Date) => {
+    const handleDateClick = (date: Date, event?: React.MouseEvent) => {
         const dateString = formatDate(date)
 
         if (isDatePast(date) || isDateBooked(dateString)) return
+
+        // Prevent any event bubbling that might trigger form submission
+        event?.preventDefault?.()
+        event?.stopPropagation?.()
 
         if (selectingType === 'start') {
             onDateSelect(dateString, 'start')
@@ -143,7 +154,7 @@ export default function BookingCalendar({
                 <div
                     key={day}
                     className={className}
-                    onClick={() => !isPast && !isBooked && handleDateClick(date)}
+                    onClick={(e) => !isPast && !isBooked && handleDateClick(date, e)}
                 >
                     {day}
                 </div>
@@ -164,6 +175,7 @@ export default function BookingCalendar({
         <div className="bg-white p-6 rounded-lg shadow-md">
             <div className="flex items-center justify-between mb-4">
                 <button
+                    type="button"
                     onClick={() => navigateMonth('prev')}
                     className="p-2 hover:bg-gray-100 rounded-lg"
                 >
@@ -177,6 +189,7 @@ export default function BookingCalendar({
                 </h3>
 
                 <button
+                    type="button"
                     onClick={() => navigateMonth('next')}
                     className="p-2 hover:bg-gray-100 rounded-lg"
                 >

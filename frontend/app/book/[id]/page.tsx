@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
 import BookingCalendar from '../../components/calendar/BookingCalendar'
+import { BASE_IMAGE_KOS } from '@/global'
+import { isAuthenticated, getAuthToken } from '@/lib/auth'
 
 interface Kos {
     id: number
@@ -28,7 +30,6 @@ export default function BookKosPage() {
     const params = useParams()
     const router = useRouter()
     const kosId = params.id as string
-
     const [kos, setKos] = useState<Kos | null>(null)
     const [loading, setLoading] = useState(true)
     const [submitting, setSubmitting] = useState(false)
@@ -47,6 +48,19 @@ export default function BookKosPage() {
     }, [kosId])
 
     useEffect(() => {
+        // Cek autentikasi saat komponen dimuat
+        const checkAuth = () => {
+            if (!isAuthenticated()) {
+                setError('Silakan login terlebih dahulu untuk melakukan booking.')
+                setTimeout(() => {
+                    router.push('/auth/login')
+                }, 2000)
+            }
+        }
+        checkAuth()
+    }, [router])
+
+    useEffect(() => {
         if (bookingData.startDate && bookingData.endDate) {
             calculateDuration()
         }
@@ -57,11 +71,17 @@ export default function BookKosPage() {
             const response = await fetch(`http://localhost:5000/kos/${kosId}`)
             if (response.ok) {
                 const data = await response.json()
-                setKos(data.kos)
+                console.log('API Response:', data) // Debug log
+                if (data.status && data.data) {
+                    setKos(data.data)
+                } else {
+                    setError('Kos tidak ditemukan')
+                }
             } else {
                 setError('Kos tidak ditemukan')
             }
         } catch (err) {
+            console.error('Fetch error:', err)
             setError('Gagal memuat data kos')
         } finally {
             setLoading(false)
@@ -103,9 +123,14 @@ export default function BookKosPage() {
         setSuccess('')
 
         try {
-            const token = localStorage.getItem('token')
+            // Cek token dari cookies terlebih dahulu, kemudian localStorage
+            const token = getAuthToken()
+
             if (!token) {
-                router.push('/auth/login')
+                setError('Anda harus login terlebih dahulu untuk melakukan booking.')
+                setTimeout(() => {
+                    router.push('/auth/login')
+                }, 2000)
                 return
             }
 
@@ -191,7 +216,7 @@ export default function BookKosPage() {
                         <div className="relative h-64">
                             {kos.images && kos.images.length > 0 ? (
                                 <img
-                                    src={`http://localhost:5000/${kos.images[0].file}`}
+                                    src={`${BASE_IMAGE_KOS}/${kos.images[0].file}`}
                                     alt={kos.name}
                                     className="w-full h-full object-cover"
                                 />
@@ -260,17 +285,21 @@ export default function BookKosPage() {
                         )}
 
                         <form onSubmit={handleSubmit} className="space-y-6">
-                            {/* Calendar Component */}
-                            <div>
-                                <h3 className="text-sm font-medium text-gray-700 mb-4">Pilih Tanggal Booking</h3>
-                                <BookingCalendar
-                                    kosId={parseInt(kosId)}
-                                    selectedStartDate={bookingData.startDate}
-                                    selectedEndDate={bookingData.endDate}
-                                    onDateSelect={handleDateSelect}
-                                />
-                            </div>
+                            {/* Calendar Component - Outside form to prevent conflicts */}
+                        </form>
 
+                        {/* Calendar Component */}
+                        <div className="mb-6">
+                            <h3 className="text-sm font-medium text-gray-700 mb-4">Pilih Tanggal Booking</h3>
+                            <BookingCalendar
+                                kosId={parseInt(kosId)}
+                                selectedStartDate={bookingData.startDate}
+                                selectedEndDate={bookingData.endDate}
+                                onDateSelect={handleDateSelect}
+                            />
+                        </div>
+
+                        <form onSubmit={handleSubmit} className="space-y-6">
                             {/* Selected Dates Display */}
                             {(bookingData.startDate || bookingData.endDate) && (
                                 <div className="bg-gray-50 p-4 rounded-lg">
@@ -351,6 +380,14 @@ export default function BookKosPage() {
                             >
                                 {submitting ? 'Memproses...' : 'Buat Booking'}
                             </button>
+
+                            {/* Login reminder if not authenticated */}
+                            <div className="text-center text-sm text-gray-500">
+                                Pastikan Anda sudah login untuk melakukan booking.{' '}
+                                <Link href="/auth/login" className="text-blue-600 hover:text-blue-800">
+                                    Login di sini
+                                </Link>
+                            </div>
                         </form>
                     </div>
                 </div>

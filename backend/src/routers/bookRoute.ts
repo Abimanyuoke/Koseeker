@@ -11,21 +11,22 @@ import {
     verifyEditBook,
     verifyUpdateBookStatus
 } from "../middlewares/bookValidation";
+import { verifyToken } from "../middlewares/authorization";
 
 const router = Router();
 
 // GET Routes
-router.get("/", getAllBooks);                       
-router.get("/:uuid", getBookByUUID);               
+router.get("/", verifyToken, getAllBooks);
+router.get("/:uuid", getBookByUUID);
 
 // POST Routes
-router.post("/", verifyAddBook, createBook);       
+router.post("/", verifyToken, verifyAddBook, createBook);
 
 // PUT Routes
-router.put("/status/:id", verifyUpdateBookStatus, updateStatusBook); 
-router.put("/:id", verifyEditBook, updateStatusBook);                
+router.put("/status/:id", verifyUpdateBookStatus, updateStatusBook);
+router.put("/:id", verifyEditBook, updateStatusBook);
 
 // DELETE Routes
-router.delete("/:id", deleteBook);                 
+router.delete("/:id", deleteBook);
 
 export default router;

@@ -5,6 +5,7 @@ import logo from "../../../public/images/logo.svg";
 import Search from "./search";
 import { useEffect } from "react";
 import { getCookies, removeCookie } from "@/lib/client-cookies";
+import { clearAuthData } from "@/lib/auth";
 import { BASE_IMAGE_PROFILE } from "../../../global"
 import { IoMdArrowDropdown, IoMdArrowDropup, IoMdSearch } from "react-icons/io";
 import Image from 'next/image';
@@ -15,6 +16,7 @@ import { PiDeviceMobile } from 'react-icons/pi';
 import { AnimatePresence, motion } from 'framer-motion';
 import { IoSearch } from 'react-icons/io5';
 import { FiLogOut } from 'react-icons/fi';
+import NotificationBell from '../notification/NotificationBell';
 
 const Navbar: React.FC = () => {
 
@@ -32,10 +34,16 @@ const Navbar: React.FC = () => {
   };
 
   const handleLogout = () => {
+    // Hapus cookies
     removeCookie("token");
     removeCookie("id");
     removeCookie("name");
     removeCookie("role");
+    removeCookie("profile_picture");
+
+    // Hapus localStorage menggunakan utility function
+    clearAuthData();
+
     router.replace(`/auth/login`);
   };
 
@@ -161,7 +169,10 @@ const Navbar: React.FC = () => {
                 <Link href={'/chat'} className='relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
                   Chat
                 </Link>
-                <Link href={'/notifikasi'} className='relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>Notifikasi</Link>
+                <Link href={'/book'} className='relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
+                  Booking
+                </Link>
+                <NotificationBell className='mx-2' />
                 <button onClick={() => toggleDown('lainnya')} className='flex items-center relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
                   Lainnya
                   <IoMdArrowDropdown className={`text-lg transition-transform ${activeDown === 'lainnya' ? 'rotate-180' : ''}`} />
