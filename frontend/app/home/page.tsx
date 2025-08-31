@@ -28,7 +28,7 @@ export default function Home() {
     };
 
     return (
-        <div className="bg-white font-lato mx-[185px]">
+        <div className="bg-white font-lato mx-[150px]">
             {/* Section Hero */}
             <div className="max-w-7xl mx-auto">
                 <div className="flex justify-between items-center">
