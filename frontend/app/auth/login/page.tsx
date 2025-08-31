@@ -113,8 +113,8 @@ export default function Login() {
                                 <button onClick={() => { router.push("/auth/signup") }} className="uppercase text-sm text-primary border border-primary hover:scale-105 rounded-full py-2 cursor-pointer font-semibold duration-300 transition-all">create account</button>
                             </div>
                         </form>
+                    <Image src={siluet} alt="Logo" width={300} height={60} className=" object-cover absolute bottom-0 right-0 z-10" />
                     </div>
-                    <Image src={siluet} alt="Logo" width={300} height={60} className=" object-cover absolute bottom-0 right-0" />
                 </div>
             </div>
         </div>
