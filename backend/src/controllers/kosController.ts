@@ -6,10 +6,72 @@ import path from "path";
 
 const prisma = new PrismaClient({ errorFormat: "pretty" })
 
+export const getPromoKos = async (request: Request, response: Response) => {
+    try {
+        const { kota } = request.query
+
+        /** build where condition for promo kos */
+        let whereCondition: any = {
+            AND: [
+                { discountPercent: { not: null } },
+                { discountPercent: { gt: 0 } },
+                { discountEndDate: { gte: new Date() } }
+            ]
+        }
+
+        // Add city filter if provided
+        if (kota && kota !== 'all') {
+            whereCondition.kota = kota.toString()
+        }
+
+        /** process to get promo kos with images and facilities */
+        const promoKos = await prisma.kos.findMany({
+            where: whereCondition,
+            include: {
+                images: true,
+                facilities: true,
+                books: {
+                    select: {
+                        id: true,
+                        status: true
+                    }
+                },
+                reviews: {
+                    select: {
+                        id: true,
+                        comment: true
+                    }
+                },
+                likes: {
+                    select: {
+                        id: true
+                    }
+                }
+            },
+            orderBy: {
+                discountPercent: 'desc' // Sort by highest discount first
+            }
+        })
+
+        return response.json({
+            status: true,
+            data: promoKos,
+            message: `Promo kos has retrieved`
+        }).status(200)
+    } catch (error) {
+        return response
+            .json({
+                status: false,
+                message: `There is an error. ${error}`
+            })
+            .status(400)
+    }
+}
+
 export const getAllKos = async (request: Request, response: Response) => {
     try {
         /** get requested data (data has been sent from request) */
-        const { search, kota, kalender } = request.query
+        const { search, kota, kalender, gender, kampus, minPrice, maxPrice, hasDiscount } = request.query
 
         /** build where condition */
         let whereCondition: any = {}
@@ -27,6 +89,36 @@ export const getAllKos = async (request: Request, response: Response) => {
         // Add kalender filter if provided
         if (kalender && kalender !== 'all') {
             whereCondition.kalender = kalender.toString()
+        }
+
+        // Add gender filter if provided
+        if (gender && gender !== 'all') {
+            whereCondition.gender = gender.toString()
+        }
+
+        // Add kampus filter if provided
+        if (kampus && kampus !== 'all') {
+            whereCondition.kampus = kampus.toString()
+        }
+
+        // Add price range filter if provided
+        if (minPrice || maxPrice) {
+            whereCondition.pricePerMonth = {}
+            if (minPrice) {
+                whereCondition.pricePerMonth.gte = Number(minPrice)
+            }
+            if (maxPrice) {
+                whereCondition.pricePerMonth.lte = Number(maxPrice)
+            }
+        }
+
+        // Add discount filter if provided
+        if (hasDiscount === 'true') {
+            whereCondition.AND = [
+                { discountPercent: { not: null } },
+                { discountPercent: { gt: 0 } },
+                { discountEndDate: { gte: new Date() } }
+            ]
         }
 
         /** process to get kos with images and facilities */
@@ -151,7 +243,7 @@ export const getKosById = async (request: Request, response: Response) => {
 
 export const createKos = async (req: Request, res: Response) => {
     try {
-        const { userId, name, address, pricePerMonth, gender, kampus, kota, kalender, images, facilities } = req.body;
+        const { userId, name, address, pricePerMonth, discountPercent, discountEndDate, gender, kampus, kota, kalender, images, facilities } = req.body;
 
         const newKos = await prisma.kos.create({
             data: {
@@ -159,6 +251,8 @@ export const createKos = async (req: Request, res: Response) => {
                 name,
                 address,
                 pricePerMonth: Number(pricePerMonth),
+                discountPercent: discountPercent ? Number(discountPercent) : null,
+                discountEndDate: discountEndDate ? new Date(discountEndDate) : null,
                 gender,
                 kampus,
                 kota,
@@ -193,7 +287,7 @@ export const createKos = async (req: Request, res: Response) => {
 export const updateKos = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
-        const { name, pricePerMonth, gender, address } = request.body;
+        const { name, pricePerMonth, discountPercent, discountEndDate, gender, address } = request.body;
 
         const findKos = await prisma.kos.findFirst({
             where: { id: Number(id) },
@@ -210,6 +304,8 @@ export const updateKos = async (request: Request, response: Response) => {
             data: {
                 name: name || findKos.name,
                 pricePerMonth: pricePerMonth ? Number(pricePerMonth) : findKos.pricePerMonth,
+                discountPercent: discountPercent !== undefined ? (discountPercent ? Number(discountPercent) : null) : findKos.discountPercent,
+                discountEndDate: discountEndDate !== undefined ? (discountEndDate ? new Date(discountEndDate) : null) : findKos.discountEndDate,
                 gender: gender || findKos.gender,
                 address: address || findKos.address
             }

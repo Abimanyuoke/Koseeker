@@ -25,6 +25,7 @@ const Main = () => {
         <div className=''>
             <Navbar />
             <Home/>
+            
             {/* <Footer /> */}
         </div>
     )

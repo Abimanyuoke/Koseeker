@@ -171,10 +171,12 @@ const PromoSection: React.FC<PromoSectionProps> = ({ city }) => {
         const fetchPromoKos = async () => {
             try {
                 setLoading(true)
-                const response = await fetch(`http://localhost:5000/kos?city=${city}&hasDiscount=true`)
+                const response = await fetch(`http://localhost:5000/kos/promo?kota=${city}`)
                 if (response.ok) {
                     const data = await response.json()
-                    setPromoKos(data.filter((kos: IKos) => kos.discountPercent && kos.discountPercent > 0))
+                    if (data.status && data.data) {
+                        setPromoKos(data.data)
+                    }
                 }
             } catch (error) {
                 console.error('Error fetching promo kos:', error)

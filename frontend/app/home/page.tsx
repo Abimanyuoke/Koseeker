@@ -88,6 +88,7 @@ export default function Home() {
 
                 {/* fitur kos */}
                 <Kos/>
+
             </div>
         </div>
     );
