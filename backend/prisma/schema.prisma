@@ -32,8 +32,8 @@ model Kos {
   name            String
   address         String
   pricePerMonth   Float
-  discountPercent Float?            @default(0) // Persentase diskon (0-100)
-  discountEndDate DateTime? // Tanggal berakhir diskon
+  discountPercent Float?            @default(0) 
+  discountEndDate DateTime?
   gender          Gender
   kampus          Kampus
   kota            Kota
