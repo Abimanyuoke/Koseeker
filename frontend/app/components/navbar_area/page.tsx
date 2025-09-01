@@ -1,22 +1,22 @@
 'use client'
 
 import React, { useRef, useState } from 'react'
-import { getCookies, removeCookie } from "@/lib/client-cookies";
+import logo from "../../../public/images/logo.svg";
+import Search from "./search";
 import { useEffect } from "react";
+import { getCookies, removeCookie } from "@/lib/client-cookies";
 import { clearAuthData } from "@/lib/auth";
 import { BASE_IMAGE_PROFILE } from "../../../global"
-import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
+import { IoMdArrowDropdown, IoMdArrowDropup, IoMdSearch } from "react-icons/io";
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { LuCalendarDays } from 'react-icons/lu';
 import { PiDeviceMobile } from 'react-icons/pi';
 import { AnimatePresence, motion } from 'framer-motion';
 import { IoSearch } from 'react-icons/io5';
 import { FiLogOut } from 'react-icons/fi';
 import NotificationBell from '../notification/NotificationBell';
-import Search from "./search";
-import Image from 'next/image';
-import Link from 'next/link';
-import logo from "../../../public/images/logo.svg";
 
 const Navbar: React.FC = () => {
 
@@ -119,7 +119,7 @@ const Navbar: React.FC = () => {
                   <div className="flex items-center gap-1 shadow-md border-[1px] border-[#48484819] p-2 rounded-lg">
                     {/* icon kaca pembesar */}
                     <IoSearch className="text-2xl" />
-                    <Search url={"/"} search={""} />
+                    <Search url={"/area/jakarta"} search={""} />
                     <button className="text-[16px] text-white cursor-pointer bg-primary font-bold px-8 py-2 rounded-sm">Cari</button>
                   </div>
                 </motion.div>
