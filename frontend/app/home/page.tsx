@@ -4,12 +4,12 @@ import React from "react";
 import Image from "next/image";
 import Search from "./search";
 import { IoSearch } from "react-icons/io5";
+import { CustomArrows } from "../components/arrow";
+import Kos from "../kos/page";
 import bild from "../../public/images/building.svg";
 import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { CustomArrows } from "../components/arrow";
-import Kos from "../kos/page";
 
 
 export default function Home() {

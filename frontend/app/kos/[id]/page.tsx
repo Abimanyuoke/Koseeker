@@ -9,7 +9,7 @@ import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
 import Image from "next/image";
 import Navbar_Products from "../../components/navbar_main/page";
-import { FiLoader, FiArrowLeft, FiHeart, FiShare2 } from "react-icons/fi";
+import { FiLoader, FiArrowLeft, FiShare2 } from "react-icons/fi";
 import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaUser, FaPhone, FaEnvelope } from "react-icons/fa";
 import { MdLocalLaundryService, MdSecurity } from "react-icons/md";
 import { GiCook } from "react-icons/gi";

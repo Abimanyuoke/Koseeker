@@ -7,6 +7,7 @@ import { get } from "../../../lib/bridge";
 import { BASE_IMAGE_KOS } from "../../../global";
 import Select from "../../components/select";
 import Navbar from "../../components/navbar_area/page";
+import PriceDisplay from "../../components/price/PriceDisplay";
 
 // Enum untuk kalender sesuai dengan Prisma
 const kalenderOptions = [
@@ -361,12 +362,12 @@ const JakartaKosPage = () => {
 
                                             {/* Harga */}
                                             <div className="mb-3">
-                                                <span className="text-xl font-bold text-blue-600">
-                                                    {formatPrice(kos.pricePerMonth)}
-                                                </span>
-                                                <span className="text-gray-500 text-sm">
-                                                    {getPeriodText(kos.kalender)}
-                                                </span>
+                                                <PriceDisplay
+                                                    originalPrice={kos.pricePerMonth}
+                                                    discountPercent={kos.discountPercent}
+                                                    discountEndDate={kos.discountEndDate}
+                                                    className=""
+                                                />
                                             </div>
 
                                             {/* Info Tambahan */}

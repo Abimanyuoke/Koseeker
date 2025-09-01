@@ -32,6 +32,8 @@ model Kos {
   name            String
   address         String
   pricePerMonth   Float
+  discountPercent Float?            @default(0) // Persentase diskon (0-100)
+  discountEndDate DateTime? // Tanggal berakhir diskon
   gender          Gender
   kampus          Kampus
   kota            Kota
@@ -105,6 +107,7 @@ model Like {
   updatedAt DateTime @updatedAt
   kos       Kos      @relation(fields: [kosId], references: [id], onDelete: Cascade)
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
   @@unique([kosId, userId])
 }
 
