@@ -15,6 +15,7 @@ import { MdLocalLaundryService, MdSecurity } from "react-icons/md";
 import { GiCook } from "react-icons/gi";
 import { ButtonPrimary } from "../../components/button";
 import LikeButton from "@/app/components/likeButton";
+import ReviewContainer from "@/app/components/review/ReviewContainer";
 import Cookies from "js-cookie";
 
 const KosDetailPage = () => {
@@ -182,8 +183,6 @@ const KosDetailPage = () => {
                             )}
                         </div>
 
-
-
                         {/* Thumbnail Images */}
                         {kosDetail.images && kosDetail.images.length > 1 && (
                             <div className="grid grid-cols-4 gap-2">
@@ -205,6 +204,17 @@ const KosDetailPage = () => {
                                 ))}
                             </div>
                         )}
+
+                        {/* Reviews Section - Same width as images */}
+                        <div className="mt-8">
+                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                                Reviews & Ulasan
+                            </h2>
+                            <ReviewContainer
+                                kosId={kosDetail.id}
+                                userId={user?.id ? parseInt(user.id) : undefined}
+                            />
+                        </div>
                     </div>
 
                     {/* Right Side - Details */}
@@ -370,40 +380,6 @@ const KosDetailPage = () => {
                         )}
                     </div>
                 </div>
-
-                {/* Reviews Section */}
-                {kosDetail.reviews && kosDetail.reviews.length > 0 && (
-                    <div className="mt-12">
-                        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                            Ulasan ({kosDetail.reviews.length})
-                        </h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {kosDetail.reviews.map((review) => (
-                                <div
-                                    key={review.id}
-                                    className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg"
-                                >
-                                    <div className="flex items-center gap-3 mb-3">
-                                        <div className="w-10 h-10 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
-                                            <FaUser className="text-gray-600 dark:text-gray-300" />
-                                        </div>
-                                        <div>
-                                            <h4 className="font-semibold text-gray-900 dark:text-white">
-                                                {review.user?.name || 'Anonymous'}
-                                            </h4>
-                                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                                                {new Date(review.createdAt).toLocaleDateString('id-ID')}
-                                            </p>
-                                        </div>
-                                    </div>
-                                    <p className="text-gray-700 dark:text-gray-300 text-sm">
-                                        {review.comment}
-                                    </p>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                )}
             </div>
         </div>
     );
