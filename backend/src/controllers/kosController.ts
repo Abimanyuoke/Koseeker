@@ -243,13 +243,28 @@ export const createKos = async (req: Request, res: Response) => {
     try {
         const { userId, name, address, pricePerMonth, discountPercent, gender, kampus, kota, kalender, images, facilities } = req.body;
 
-        const newKos = await prisma.kos.create({
+        console.log('=== CREATE KOS DEBUG ===');
+        console.log('Full request body:', req.body);
+        console.log('Request headers:', req.headers);
+        console.log('Received discountPercent:', discountPercent, 'Type:', typeof discountPercent);
+
+        // Robust validation for discountPercent
+        let validDiscountPercent = null;
+        if (discountPercent !== undefined && discountPercent !== null && discountPercent !== '') {
+            const numDiscount = Number(discountPercent);
+            if (!isNaN(numDiscount) && numDiscount >= 0 && numDiscount <= 100) {
+                validDiscountPercent = numDiscount;
+            }
+        }
+
+        console.log('Processed discountPercent:', validDiscountPercent);
+        console.log('========================'); const newKos = await prisma.kos.create({
             data: {
                 userId: Number(userId),
                 name,
                 address,
                 pricePerMonth: Number(pricePerMonth),
-                discountPercent: discountPercent ? Number(discountPercent) : null,
+                discountPercent: validDiscountPercent,
                 gender,
                 kampus,
                 kota,
@@ -286,6 +301,8 @@ export const updateKos = async (request: Request, response: Response) => {
         const { id } = request.params;
         const { name, pricePerMonth, discountPercent, gender, address } = request.body;
 
+        console.log('Update - Received discountPercent:', discountPercent, 'Type:', typeof discountPercent); // Debug log
+
         const findKos = await prisma.kos.findFirst({
             where: { id: Number(id) },
             include: { images: true }
@@ -301,7 +318,9 @@ export const updateKos = async (request: Request, response: Response) => {
             data: {
                 name: name || findKos.name,
                 pricePerMonth: pricePerMonth ? Number(pricePerMonth) : findKos.pricePerMonth,
-                discountPercent: discountPercent !== undefined ? (discountPercent ? Number(discountPercent) : null) : findKos.discountPercent,
+                discountPercent: discountPercent !== undefined
+                    ? (discountPercent !== null && discountPercent !== '' ? Number(discountPercent) : null)
+                    : findKos.discountPercent,
                 gender: gender || findKos.gender,
                 address: address || findKos.address
             }
