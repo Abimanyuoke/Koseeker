@@ -7,8 +7,6 @@ import { getCookies } from "@/lib/client-cookies";
 import { BASE_API_URL, BASE_IMAGE_KOS } from "../../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
-import Image from "next/image";
-import Navbar_Products from "../../components/navbar_main/page";
 import { FiLoader, FiArrowLeft, FiShare2 } from "react-icons/fi";
 import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaUser, FaPhone, FaEnvelope } from "react-icons/fa";
 import { MdLocalLaundryService, MdSecurity } from "react-icons/md";
@@ -17,6 +15,8 @@ import { ButtonPrimary } from "../../components/button";
 import LikeButton from "@/app/components/likeButton";
 import ReviewContainer from "@/app/components/review/ReviewContainer";
 import Cookies from "js-cookie";
+import Image from "next/image";
+import Navbar_Products from "../../components/navbar_area/page";
 
 const KosDetailPage = () => {
     const params = useParams();
@@ -120,14 +120,14 @@ const KosDetailPage = () => {
 
     if (loading) {
         return (
-            <div className="bg-gray-50 dark:bg-gray-900 dark:text-white duration-200 min-h-screen">
+            <div className="bg-gray-50 text-black duration-200 min-h-screen">
                 <div className="sticky top-0 z-50 shadow-md">
                     <Navbar_Products />
                 </div>
                 <div className="flex items-center justify-center min-h-[400px] mt-16">
                     <div className="flex flex-col items-center gap-4">
                         <FiLoader className="animate-spin text-green-600 text-4xl" />
-                        <p className="text-gray-600 dark:text-gray-300 text-lg">Memuat detail kos...</p>
+                        <p className="text-gray-600 text-lg">Memuat detail kos...</p>
                     </div>
                 </div>
             </div>
@@ -136,7 +136,7 @@ const KosDetailPage = () => {
 
     if (!kosDetail) {
         return (
-            <div className="bg-gray-50 dark:bg-gray-900 dark:text-white duration-200 min-h-screen">
+            <div className="bg-gray-50 text-black duration-200 min-h-screen">
                 <div className="sticky top-0 z-50 shadow-md">
                     <Navbar_Products />
                 </div>
@@ -151,7 +151,7 @@ const KosDetailPage = () => {
 
     /** ---------- RENDER ---------- */
     return (
-        <div className="bg-gray-50 dark:bg-gray-900 duration-200 min-h-screen">
+        <div className="bg-gray-50 text-black duration-200 min-h-screen">
             <div className="sticky top-0 z-50 shadow-md">
                 <Navbar_Products />
             </div>
@@ -160,7 +160,7 @@ const KosDetailPage = () => {
                 {/* Back Button */}
                 <button
                     onClick={() => router.back()}
-                    className="flex items-center gap-2 text-gray-600 dark:text-gray-300 hover:text-green-600 mb-6">
+                    className="flex items-center gap-2 text-gray-600 hover:text-green-600 mb-6">
                     <FiArrowLeft className="text-xl" />
                     <span>Kembali ke Daftar Kos</span>
                 </button>
@@ -177,7 +177,7 @@ const KosDetailPage = () => {
                                     unoptimized
                                 />
                             ) : (
-                                <div className="w-full h-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
                                     <span className="text-gray-400">No Image</span>
                                 </div>
                             )}
@@ -207,7 +207,7 @@ const KosDetailPage = () => {
 
                         {/* Reviews Section - Same width as images */}
                         <div className="mt-8">
-                            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-6">
                                 Reviews & Ulasan
                             </h2>
                             <ReviewContainer
@@ -223,14 +223,14 @@ const KosDetailPage = () => {
                         <div>
                             <div className="flex items-start justify-between mb-4">
                                 <div>
-                                    <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                                    <h1 className="text-3xl font-bold text-gray-900-2">
                                         {kosDetail.name}
                                     </h1>
-                                    <div className="flex items-center gap-2 text-gray-600 dark:text-gray-300 mb-2">
+                                    <div className="flex items-center gap-2 text-gray-600 mb-2">
                                         <FaMapMarkerAlt className="text-green-600" />
                                         <span>{kosDetail.address}</span>
                                     </div>
-                                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                                    <p className="text-sm text-gray-500">
                                         {kosDetail.kota}
                                     </p>
                                 </div>
@@ -246,8 +246,8 @@ const KosDetailPage = () => {
                                         <p className="text-gray-500">Login dulu untuk like ❤️</p>
                                     )}
 
-                                    <button className="p-2 rounded-full bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600">
-                                        <FiShare2 className="text-xl text-gray-600 dark:text-gray-300" />
+                                    <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-200-600">
+                                        <FiShare2 className="text-xl text-gray-600" />
                                     </button>
                                 </div>
                             </div>
@@ -261,7 +261,7 @@ const KosDetailPage = () => {
                         </div>
 
                         {/* Price */}
-                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <div className="bg-white rounded-xl p-6 shadow-lg">
                             {kosDetail.discountPercent && kosDetail.discountPercent > 0 ? (
                                 <div>
                                     {/* Discount Badge */}
@@ -272,14 +272,14 @@ const KosDetailPage = () => {
                                         <span className="text-3xl font-bold text-red-500">
                                             Rp {formatPrice(kosDetail.pricePerMonth - (kosDetail.pricePerMonth * kosDetail.discountPercent / 100))}
                                         </span>
-                                        <span className="text-lg text-gray-500 dark:text-gray-400 line-through">
+                                        <span className="text-lg text-gray-500 line-through">
                                             Rp {formatPrice(kosDetail.pricePerMonth)}
                                         </span>
-                                        <span className="text-lg text-gray-500 dark:text-gray-400">
+                                        <span className="text-lg text-gray-500">
                                             /bulan
                                         </span>
                                     </div>
-                                    <p className="text-red-600 dark:text-red-400 text-sm font-semibold">
+                                    <p className="text-red-600 text-sm font-semibold">
                                         Hemat Rp {formatPrice(kosDetail.pricePerMonth * kosDetail.discountPercent / 100)} per bulan!
                                     </p>
                                 </div>
@@ -289,11 +289,11 @@ const KosDetailPage = () => {
                                         <span className="text-3xl font-bold text-green-600">
                                             Rp {formatPrice(kosDetail.pricePerMonth)}
                                         </span>
-                                        <span className="text-lg text-gray-500 dark:text-gray-400">
+                                        <span className="text-lg text-gray-500">
                                             /bulan
                                         </span>
                                     </div>
-                                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                                    <p className="text-gray-600 text-sm">
                                         Harga sudah termasuk listrik dan air
                                     </p>
                                 </div>
@@ -301,7 +301,7 @@ const KosDetailPage = () => {
                         </div>
 
                         {/* Book Now Button */}
-                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <div className="bg-white rounded-xl p-6 shadow-lg">
                             <ButtonPrimary
                                 type="button"
                                 className="w-full"
@@ -309,25 +309,25 @@ const KosDetailPage = () => {
                             >
                                 Book Sekarang
                             </ButtonPrimary>
-                            <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-3">
+                            <p className="text-center text-sm text-gray-500 mt-3">
                                 Hubungi pemilik untuk info lebih lanjut
                             </p>
                         </div>
 
                         {/* Facilities */}
                         {kosDetail.facilities && kosDetail.facilities.length > 0 && (
-                            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                            <div className="bg-white rounded-xl p-6 shadow-lg">
+                                <h3 className="text-xl font-bold text-gray-900-4">
                                     Fasilitas
                                 </h3>
                                 <div className="grid grid-cols-2 gap-3">
                                     {kosDetail.facilities.map((facility) => (
                                         <div
                                             key={facility.id}
-                                            className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                                            className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
                                         >
                                             {getFacilityIcon(facility.facility)}
-                                            <span className="text-sm text-gray-700 dark:text-gray-300">
+                                            <span className="text-sm text-gray-700">
                                                 {facility.facility}
                                             </span>
                                         </div>
@@ -337,7 +337,7 @@ const KosDetailPage = () => {
                         )}
 
                         {/* Booking Button */}
-                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+                        <div className="bg-white rounded-xl p-6 shadow-lg">
                             <ButtonPrimary
                                 type="button"
                                 onClick={handleBooking}
@@ -345,33 +345,33 @@ const KosDetailPage = () => {
                             >
                                 Pesan Sekarang
                             </ButtonPrimary>
-                            <p className="text-center text-gray-500 dark:text-gray-400 text-sm mt-2">
+                            <p className="text-center text-gray-500 text-sm mt-2">
                                 Hubungi pemilik untuk info lebih lanjut
                             </p>
                         </div>
 
                         {/* Owner Info */}
                         {kosDetail.owner && (
-                            <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
+                            <div className="bg-white rounded-xl p-6 shadow-lg">
+                                <h3 className="text-xl font-bold text-gray-900-4">
                                     Informasi Pemilik
                                 </h3>
                                 <div className="space-y-3">
                                     <div className="flex items-center gap-3">
                                         <FaUser className="text-gray-500" />
-                                        <span className="text-gray-700 dark:text-gray-300">
+                                        <span className="text-gray-700">
                                             {kosDetail.owner.name}
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <FaPhone className="text-gray-500" />
-                                        <span className="text-gray-700 dark:text-gray-300">
+                                        <span className="text-gray-700">
                                             {kosDetail.owner.phone || 'Tidak tersedia'}
                                         </span>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         <FaEnvelope className="text-gray-500" />
-                                        <span className="text-gray-700 dark:text-gray-300">
+                                        <span className="text-gray-700">
                                             {kosDetail.owner.email}
                                         </span>
                                     </div>

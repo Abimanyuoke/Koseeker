@@ -168,7 +168,7 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
             )}
 
             {/* Reviews Display */}
-            <ReviewComponent reviews={reviews} kosId={kosId} />
+            <ReviewComponent kosId={kosId} userId={userId} />
         </div>
     );
 };

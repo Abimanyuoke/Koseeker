@@ -7,12 +7,10 @@ import { useEffect } from "react";
 import { getCookies, removeCookie } from "@/lib/client-cookies";
 import { clearAuthData } from "@/lib/auth";
 import { BASE_IMAGE_PROFILE } from "../../../global"
-import { IoMdArrowDropdown, IoMdArrowDropup, IoMdSearch } from "react-icons/io";
+import { IoMdArrowDropdown, IoMdArrowDropup } from "react-icons/io";
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { LuCalendarDays } from 'react-icons/lu';
-import { PiDeviceMobile } from 'react-icons/pi';
 import { AnimatePresence, motion } from 'framer-motion';
 import { IoSearch } from 'react-icons/io5';
 import { FiLogOut } from 'react-icons/fi';
@@ -82,18 +80,8 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className='bg-white sticky top-0 z-50 border-b-[1px] border-gray-200 font-lato mx-[150px]'>
+    <div className='bg-white sticky top-0 z-50 border-b-[1px] border-gray-200 font-lato'>
       <div className='max-w-7xl mx-auto'>
-        <div className='flex items-center gap-4 font-semibold text-xs text-gray-500'>
-          <button className='flex items-center text-xs gap-2 py-4 cursor-pointer'>
-            <PiDeviceMobile className='text-base' />
-            Download App
-          </button>
-          <button className='flex items-center text-xs gap-2 cursor-pointer'>
-            <LuCalendarDays className='text-base' />
-            Sewa Kos
-          </button>
-        </div>
         <div className='flex items-center justify-between py-3 relative h-[80px]'>
           <div className='flex items-center gap-2 cursor-pointer'>
             <Image src={logo} alt="Logo" width={40} height={40} className="w-12 h-12 object-cover" />
