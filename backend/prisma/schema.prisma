@@ -32,8 +32,7 @@ model Kos {
   name            String
   address         String
   pricePerMonth   Float
-  discountPercent Float?            @default(0) 
-  discountEndDate DateTime?
+  discountPercent Float?            @default(0)
   gender          Gender
   kampus          Kampus
   kota            Kota

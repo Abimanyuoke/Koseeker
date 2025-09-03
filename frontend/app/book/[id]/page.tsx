@@ -12,6 +12,7 @@ interface Kos {
     name: string
     address: string
     pricePerMonth: number
+    discountPercent?: number
     gender: string
     kampus: string
     kota: string
@@ -86,6 +87,23 @@ export default function BookKosPage() {
         } finally {
             setLoading(false)
         }
+    }
+
+    const formatPrice = (price: number) => {
+        return new Intl.NumberFormat('id-ID').format(price)
+    }
+
+    const getDiscountedPrice = () => {
+        if (!kos) return 0
+        if (kos.discountPercent && kos.discountPercent > 0) {
+            return kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100)
+        }
+        return kos.pricePerMonth
+    }
+
+    const getSavings = () => {
+        if (!kos || !kos.discountPercent || kos.discountPercent <= 0) return 0
+        return (kos.pricePerMonth * kos.discountPercent / 100) * bookingData.durationMonths
     }
 
     const calculateDuration = () => {
@@ -164,7 +182,7 @@ export default function BookKosPage() {
 
     const getTotalPrice = () => {
         if (!kos) return 0
-        return kos.pricePerMonth * bookingData.durationMonths
+        return getDiscountedPrice() * bookingData.durationMonths
     }
 
     const getMinDate = () => {
@@ -228,7 +246,14 @@ export default function BookKosPage() {
                         </div>
 
                         <div className="p-6">
-                            <h2 className="text-xl font-semibold text-gray-900 mb-2">{kos.name}</h2>
+                            <div className="flex items-start justify-between mb-2">
+                                <h2 className="text-xl font-semibold text-gray-900">{kos.name}</h2>
+                                {kos.discountPercent && kos.discountPercent > 0 && (
+                                    <span className="bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                                        -{kos.discountPercent}% OFF
+                                    </span>
+                                )}
+                            </div>
                             <p className="text-gray-600 mb-4">{kos.address}</p>
 
                             <div className="grid grid-cols-2 gap-4 text-sm mb-4">
@@ -246,7 +271,14 @@ export default function BookKosPage() {
                                 </div>
                                 <div>
                                     <span className="text-gray-500">Harga/bulan:</span>
-                                    <p className="font-medium text-blue-600">Rp {kos.pricePerMonth.toLocaleString()}</p>
+                                    {kos.discountPercent && kos.discountPercent > 0 ? (
+                                        <div className="space-y-1">
+                                            <p className="text-sm text-gray-500 line-through">Rp {formatPrice(kos.pricePerMonth)}</p>
+                                            <p className="font-bold text-red-600">Rp {formatPrice(getDiscountedPrice())}</p>
+                                        </div>
+                                    ) : (
+                                        <p className="font-medium text-blue-600">Rp {formatPrice(kos.pricePerMonth)}</p>
+                                    )}
                                 </div>
                             </div>
 
@@ -362,13 +394,32 @@ export default function BookKosPage() {
                                         <span>Durasi:</span>
                                         <span className="font-medium">{bookingData.durationMonths} bulan</span>
                                     </div>
-                                    <div className="flex justify-between">
-                                        <span>Harga per bulan:</span>
-                                        <span className="font-medium">Rp {kos.pricePerMonth.toLocaleString()}</span>
-                                    </div>
+
+                                    {kos.discountPercent && kos.discountPercent > 0 ? (
+                                        <>
+                                            <div className="flex justify-between">
+                                                <span>Harga normal per bulan:</span>
+                                                <span className="line-through text-gray-500">Rp {formatPrice(kos.pricePerMonth)}</span>
+                                            </div>
+                                            <div className="flex justify-between text-red-600">
+                                                <span>Harga diskon per bulan ({kos.discountPercent}% off):</span>
+                                                <span className="font-medium">Rp {formatPrice(getDiscountedPrice())}</span>
+                                            </div>
+                                            <div className="flex justify-between text-green-600">
+                                                <span>Hemat total:</span>
+                                                <span className="font-medium">Rp {formatPrice(getSavings())}</span>
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <div className="flex justify-between">
+                                            <span>Harga per bulan:</span>
+                                            <span className="font-medium">Rp {formatPrice(kos.pricePerMonth)}</span>
+                                        </div>
+                                    )}
+
                                     <div className="flex justify-between border-t pt-2">
-                                        <span className="font-medium">Total:</span>
-                                        <span className="font-bold text-blue-600">Rp {getTotalPrice().toLocaleString()}</span>
+                                        <span className="font-medium">Total Pembayaran:</span>
+                                        <span className="font-bold text-blue-600">Rp {formatPrice(getTotalPrice())}</span>
                                     </div>
                                 </div>
                             </div>

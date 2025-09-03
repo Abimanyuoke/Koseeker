@@ -72,8 +72,8 @@ const PromoCard: React.FC<{ kos: IKos }> = ({ kos }) => {
     const originalPrice = kos.pricePerMonth
     const discountedPrice = kos.discountPercent ? originalPrice - (originalPrice * kos.discountPercent / 100) : originalPrice
 
-    // Set promo end date (from discountEndDate or 7 days from now)
-    const promoEndDate = kos.discountEndDate ? new Date(kos.discountEndDate) : (() => {
+    // Set promo end date (from 7 days from now)
+    const promoEndDate = (() => {
         const date = new Date()
         date.setDate(date.getDate() + 7)
         return date

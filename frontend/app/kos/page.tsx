@@ -186,7 +186,7 @@ const KosPage = () => {
                                                     alt={kos.name}
                                                     fill
                                                     className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                                    unoptimized/>
+                                                    unoptimized />
 
                                                 {hasMultipleImages && (
                                                     <>
@@ -211,8 +211,8 @@ const KosPage = () => {
                                                             <div
                                                                 key={index}
                                                                 className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentImageIndex
-                                                                        ? 'bg-white'
-                                                                        : 'bg-white/50'
+                                                                    ? 'bg-white'
+                                                                    : 'bg-white/50'
                                                                     }`}
                                                             />
                                                         ))}
@@ -231,6 +231,13 @@ const KosPage = () => {
                                                 {getGenderText(kos.gender)}
                                             </span>
                                         </div>
+
+                                        {/* Discount Badge */}
+                                        {kos.discountPercent && kos.discountPercent > 0 && (
+                                            <div className="absolute top-3 right-3 z-20 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
+                                                -{kos.discountPercent}%
+                                            </div>
+                                        )}
                                     </div>
 
                                     {/* Konten Kos */}
@@ -280,12 +287,28 @@ const KosPage = () => {
                                         )}
 
                                         <div className="flex items-baseline gap-1">
-                                            <span className="text-xl font-bold text-green-600">
-                                                Rp {formatPrice(kos.pricePerMonth)}
-                                            </span>
-                                            <span className="text-sm text-gray-500">
-                                                /bulan
-                                            </span>
+                                            {kos.discountPercent && kos.discountPercent > 0 ? (
+                                                <>
+                                                    <span className="text-xl font-bold text-red-500">
+                                                        Rp {formatPrice(kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100))}
+                                                    </span>
+                                                    <span className="text-sm text-gray-500 line-through">
+                                                        Rp {formatPrice(kos.pricePerMonth)}
+                                                    </span>
+                                                    <span className="text-sm text-gray-500">
+                                                        /bulan
+                                                    </span>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <span className="text-xl font-bold text-green-600">
+                                                        Rp {formatPrice(kos.pricePerMonth)}
+                                                    </span>
+                                                    <span className="text-sm text-gray-500">
+                                                        /bulan
+                                                    </span>
+                                                </>
+                                            )}
                                         </div>
 
                                         {kos.books && (

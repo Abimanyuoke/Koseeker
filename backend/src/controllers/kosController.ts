@@ -14,8 +14,7 @@ export const getPromoKos = async (request: Request, response: Response) => {
         let whereCondition: any = {
             AND: [
                 { discountPercent: { not: null } },
-                { discountPercent: { gt: 0 } },
-                { discountEndDate: { gte: new Date() } }
+                { discountPercent: { gt: 0 } }
             ]
         }
 
@@ -116,8 +115,7 @@ export const getAllKos = async (request: Request, response: Response) => {
         if (hasDiscount === 'true') {
             whereCondition.AND = [
                 { discountPercent: { not: null } },
-                { discountPercent: { gt: 0 } },
-                { discountEndDate: { gte: new Date() } }
+                { discountPercent: { gt: 0 } }
             ]
         }
 
@@ -243,7 +241,7 @@ export const getKosById = async (request: Request, response: Response) => {
 
 export const createKos = async (req: Request, res: Response) => {
     try {
-        const { userId, name, address, pricePerMonth, discountPercent, discountEndDate, gender, kampus, kota, kalender, images, facilities } = req.body;
+        const { userId, name, address, pricePerMonth, discountPercent, gender, kampus, kota, kalender, images, facilities } = req.body;
 
         const newKos = await prisma.kos.create({
             data: {
@@ -252,7 +250,6 @@ export const createKos = async (req: Request, res: Response) => {
                 address,
                 pricePerMonth: Number(pricePerMonth),
                 discountPercent: discountPercent ? Number(discountPercent) : null,
-                discountEndDate: discountEndDate ? new Date(discountEndDate) : null,
                 gender,
                 kampus,
                 kota,
@@ -287,7 +284,7 @@ export const createKos = async (req: Request, res: Response) => {
 export const updateKos = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
-        const { name, pricePerMonth, discountPercent, discountEndDate, gender, address } = request.body;
+        const { name, pricePerMonth, discountPercent, gender, address } = request.body;
 
         const findKos = await prisma.kos.findFirst({
             where: { id: Number(id) },
@@ -305,7 +302,6 @@ export const updateKos = async (request: Request, response: Response) => {
                 name: name || findKos.name,
                 pricePerMonth: pricePerMonth ? Number(pricePerMonth) : findKos.pricePerMonth,
                 discountPercent: discountPercent !== undefined ? (discountPercent ? Number(discountPercent) : null) : findKos.discountPercent,
-                discountEndDate: discountEndDate !== undefined ? (discountEndDate ? new Date(discountEndDate) : null) : findKos.discountEndDate,
                 gender: gender || findKos.gender,
                 address: address || findKos.address
             }

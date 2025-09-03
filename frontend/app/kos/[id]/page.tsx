@@ -252,16 +252,55 @@ const KosDetailPage = () => {
 
                         {/* Price */}
                         <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
-                            <div className="flex items-baseline gap-2 mb-2">
-                                <span className="text-3xl font-bold text-green-600">
-                                    Rp {formatPrice(kosDetail.pricePerMonth)}
-                                </span>
-                                <span className="text-lg text-gray-500 dark:text-gray-400">
-                                    /bulan
-                                </span>
-                            </div>
-                            <p className="text-gray-600 dark:text-gray-300 text-sm">
-                                Harga sudah termasuk listrik dan air
+                            {kosDetail.discountPercent && kosDetail.discountPercent > 0 ? (
+                                <div>
+                                    {/* Discount Badge */}
+                                    <div className="inline-block bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold mb-3">
+                                        Hemat {kosDetail.discountPercent}%
+                                    </div>
+                                    <div className="flex items-baseline gap-2 mb-2">
+                                        <span className="text-3xl font-bold text-red-500">
+                                            Rp {formatPrice(kosDetail.pricePerMonth - (kosDetail.pricePerMonth * kosDetail.discountPercent / 100))}
+                                        </span>
+                                        <span className="text-lg text-gray-500 dark:text-gray-400 line-through">
+                                            Rp {formatPrice(kosDetail.pricePerMonth)}
+                                        </span>
+                                        <span className="text-lg text-gray-500 dark:text-gray-400">
+                                            /bulan
+                                        </span>
+                                    </div>
+                                    <p className="text-red-600 dark:text-red-400 text-sm font-semibold">
+                                        Hemat Rp {formatPrice(kosDetail.pricePerMonth * kosDetail.discountPercent / 100)} per bulan!
+                                    </p>
+                                </div>
+                            ) : (
+                                <div>
+                                    <div className="flex items-baseline gap-2 mb-2">
+                                        <span className="text-3xl font-bold text-green-600">
+                                            Rp {formatPrice(kosDetail.pricePerMonth)}
+                                        </span>
+                                        <span className="text-lg text-gray-500 dark:text-gray-400">
+                                            /bulan
+                                        </span>
+                                    </div>
+                                    <p className="text-gray-600 dark:text-gray-300 text-sm">
+                                        Harga sudah termasuk listrik dan air
+                                    </p>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Book Now Button */}
+                        <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg">
+                            <ButtonPrimary
+                                type="button"
+                                className="w-full"
+                                onClick={() => router.push(`/book/${kosDetail.id}`)}
+                            >
+                                Book Sekarang
+                            </ButtonPrimary>
+                            <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-3">
+                                Hubungi pemilik untuk info lebih lanjut
                             </p>
                         </div>
 

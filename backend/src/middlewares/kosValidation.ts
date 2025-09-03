@@ -16,7 +16,6 @@ const addKosSchema = Joi.object({
     address: Joi.string().min(5).required(),
     pricePerMonth: Joi.number().positive().required(),
     discountPercent: Joi.number().min(0).max(100).optional(),
-    discountEndDate: Joi.date().optional(),
     gender: Joi.string().valid("male", "female", "all").required(),
     kampus: Joi.string().valid(
         "UGM", "UNDIP", "UNPAD", "STAN", "UNAIR", "UB", "UI", "ITS", "ITB",
@@ -47,7 +46,6 @@ const editKosSchema = Joi.object({
     address: Joi.string().optional(),
     pricePerMonth: Joi.number().min(0).optional(),
     discountPercent: Joi.number().min(0).max(100).optional(),
-    discountEndDate: Joi.date().optional(),
     gender: Joi.string().valid('male', 'female', 'all').optional(),
     kampus: Joi.string().valid(
         "UGM", "UNDIP", "UNPAD", "STAN", "UNAIR", "UB", "UI", "ITS", "ITB",

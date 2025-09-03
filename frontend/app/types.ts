@@ -17,7 +17,6 @@ export interface IKos {
     address: string;
     pricePerMonth: number;
     discountPercent?: number;
-    discountEndDate?: string;
     gender: string;
     kampus: string;
     kota: string;
