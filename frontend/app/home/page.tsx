@@ -11,6 +11,7 @@ import Slider from "react-slick";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import KosPromoPage from "../kos_promo/page";
+import Blog from "../components/blog";
 
 
 export default function Home() {
@@ -22,16 +23,16 @@ export default function Home() {
         lazyLoad: "ondemand" as const,
         infinite: true,
         speed: 500,
-        slidesToShow: 2,
+        slidesToShow: 2.6,
         slidesToScroll: 1,
         initialSlide: 2,
         arrow: false
     };
 
     return (
-        <div className="bg-white font-lato mx-[150px]">
+        <div className="bg-white font-lato">
             {/* Section Hero */}
-            <div className="max-w-7xl mx-auto">
+            <div className="max-w-6xl mx-auto">
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col text-[#484848]">
                         <h1 className="font-black text-[32px]">Mau cari kos?</h1>
@@ -50,13 +51,13 @@ export default function Home() {
                 <div className="py-10 relative">
                     <Slider ref={sliderRef} {...settings}>
                         <div className="px-10">
-                            <Image src="./images/voucher/voucher1.svg" alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
+                            <Image src="./images/voucher/voucher1.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
                         </div>
                         <div className="px-10">
-                            <Image src="./images/voucher/voucher2.svg" alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
+                            <Image src="./images/voucher/voucher2.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
                         </div>
                         <div className="px-10">
-                            <Image src="./images/voucher/voucher3.svg" alt="Abstract 1" width={600} height={300} className=" h-auto object-cover" />
+                            <Image src="./images/voucher/voucher3.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
                         </div>
                     </Slider>
                     <div>
@@ -81,18 +82,17 @@ export default function Home() {
                             <p className="text-base font-normal">Disurvey langsung oleh Mamikos. Lokasi terverifikasi, bangunan kos lolos seleksi.</p>
                         </div>
                         <div className="flex items-center gap-8">
-                            <Image src="./images/logosinggasini.svg" alt="Mamikos" width={100} height={100} className=" h-auto object-cover"/>
-                            <Image src="./images/logoapik.svg" alt="Mamikos" width={70} height={100} className=" h-auto object-cover"/>
+                            <Image src="./images/logosinggasini.svg" alt="Mamikos" width={100} height={100} className=" h-auto object-cover" />
+                            <Image src="./images/logoapik.svg" alt="Mamikos" width={70} height={100} className=" h-auto object-cover" />
                         </div>
                     </div>
                 </div>
 
-                {/* fitur kos */}
-                <Kos/>
-
-                <KosPromoPage/>
-
             </div>
+            {/* fitur kos */}
+            <Kos />
+            <KosPromoPage />
+            <Blog />
         </div>
     );
 }

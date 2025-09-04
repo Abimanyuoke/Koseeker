@@ -186,9 +186,9 @@ const KosPromoPage = () => {
 
     /** ---------- RENDER ---------- */
     return (
-        <div className="bg-white white duration-200 ">
+        <div className="bg-white duration-200 ">
             <div className="bg-white">
-                <div className="container mx-auto px-4 py-6">
+                <div className="max-w-6xl mx-auto py-6">
                     <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                         <div className="flex items-center gap-4">
                             <div>
@@ -225,8 +225,8 @@ const KosPromoPage = () => {
             </div>
 
             {/* Countdown Timer Section */}
-            <div className="bg-gradient-to-r from-red-500 via-pink-500 to-orange-500 py-8">
-                <div className="container mx-auto px-4">
+            <div className="py-8">
+                <div className="max-w-6xl mx-auto px-4">
                     <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-6 max-w-4xl mx-auto">
                         <Countdown endDate={promoEndDate} />
                     </div>
@@ -234,7 +234,7 @@ const KosPromoPage = () => {
             </div>
 
             {/* ----------------- KOS CARDS ----------------- */}
-            <div className="container mx-auto py-8">
+            <div className="max-w-6xl mx-auto py-8">
                 {loading ? (
                     <div className="flex items-center justify-center min-h-[250px]">
                         <div className="flex flex-col items-center gap-4">

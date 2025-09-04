@@ -82,8 +82,8 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className='bg-white sticky top-0 z-50 border-b-[1px] border-gray-200 font-lato mx-[150px]'>
-      <div className='max-w-7xl mx-auto'>
+    <div className='bg-white sticky top-0 z-50 border-b-[1px] border-gray-200 font-lato'>
+      <div className='max-w-6xl mx-auto'>
         <div className='flex items-center gap-4 font-semibold text-xs text-gray-500'>
           <button className='flex items-center text-xs gap-2 py-4 cursor-pointer'>
             <PiDeviceMobile className='text-base' />
