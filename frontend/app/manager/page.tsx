@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { toast } from 'sonner'
 import { getUserData, getAuthToken } from '../../lib/auth'
 import NotificationBell from '../components/notification/NotificationBell'
 
@@ -45,18 +46,6 @@ export default function ManagerPage() {
     const [processingAction, setProcessingAction] = useState(false)
     const [filter, setFilter] = useState<'all' | 'pending' | 'accept' | 'reject'>('all')
     const [userData, setUserData] = useState<any>(null)
-    const [toast, setToast] = useState<{ show: boolean; message: string; type: 'success' | 'error' }>({
-        show: false,
-        message: '',
-        type: 'success'
-    })
-
-    const showToast = (message: string, type: 'success' | 'error') => {
-        setToast({ show: true, message, type })
-        setTimeout(() => {
-            setToast({ show: false, message: '', type: 'success' })
-        }, 5000)
-    }
 
     useEffect(() => {
         const user = getUserData()
@@ -93,11 +82,11 @@ export default function ManagerPage() {
             } else {
                 const errorResult = await response.json()
                 console.error('Error response:', errorResult)
-                showToast('Gagal memuat data booking. Silakan refresh halaman.', 'error')
+                toast.error('Gagal memuat data booking. Silakan refresh halaman.', { duration: 2000 })
             }
         } catch (error) {
             console.error('Failed to fetch bookings:', error)
-            showToast('Gagal memuat data booking. Periksa koneksi internet Anda.', 'error')
+            toast.error('Gagal memuat data booking. Periksa koneksi internet Anda.', { duration: 2000 })
         } finally {
             setLoading(false)
         }
@@ -118,13 +107,13 @@ export default function ManagerPage() {
             await updateBookingStatus(confirmAction.booking.id, confirmAction.status)
             setIsConfirmModalOpen(false)
             setConfirmAction(null)
-            showToast(
+            toast.success(
                 `Booking ${confirmAction.status === 'accept' ? 'diterima' : 'ditolak'} berhasil. Notifikasi telah dikirim ke penyewa.`,
-                'success'
+                { duration: 2000 }
             )
         } catch (error) {
             console.error('Failed to update status:', error)
-            showToast('Gagal memperbarui status booking. Silakan coba lagi.', 'error')
+            toast.error('Gagal memperbarui status booking. Silakan coba lagi.', { duration: 2000 })
         } finally {
             setProcessingAction(false)
         }
@@ -134,7 +123,7 @@ export default function ManagerPage() {
         try {
             const token = getAuthToken()
             if (!token) {
-                showToast('Token tidak valid. Silakan login ulang.', 'error')
+                toast.error('Token tidak valid. Silakan login ulang.', { duration: 2000 })
                 return
             }
 
@@ -236,8 +225,7 @@ export default function ManagerPage() {
                         <button
                             onClick={fetchOwnerBookings}
                             disabled={loading}
-                            className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
-                        >
+                            className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50">
                             <svg className={`-ml-0.5 mr-2 h-4 w-4 ${loading ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                             </svg>
@@ -498,15 +486,12 @@ export default function ManagerPage() {
                 {isModalOpen && selectedBooking && (
                     <div className="fixed inset-0 z-50 overflow-y-auto">
                         <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
-                            <div className="fixed inset-0 transition-opacity bg-gray-500 bg-opacity-75" onClick={() => setIsModalOpen(false)}></div>
-
                             <div className="inline-block w-full max-w-2xl p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl">
                                 <div className="flex items-center justify-between mb-6">
                                     <h3 className="text-lg font-medium text-gray-900">Detail Booking</h3>
                                     <button
                                         onClick={() => setIsModalOpen(false)}
-                                        className="text-gray-400 hover:text-gray-600"
-                                    >
+                                        className="text-gray-400 hover:text-gray-600">
                                         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                         </svg>
@@ -602,14 +587,12 @@ export default function ManagerPage() {
                                             <div className="flex gap-3">
                                                 <button
                                                     onClick={() => handleStatusAction(selectedBooking, 'accept')}
-                                                    className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium"
-                                                >
+                                                    className="flex-1 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium">
                                                     Terima Booking
                                                 </button>
                                                 <button
                                                     onClick={() => handleStatusAction(selectedBooking, 'reject')}
-                                                    className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors font-medium"
-                                                >
+                                                    className="flex-1 bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors font-medium">
                                                     Tolak Booking
                                                 </button>
                                             </div>
@@ -626,7 +609,7 @@ export default function ManagerPage() {
                     <div className="fixed inset-0 z-[60] overflow-y-auto">
                         <div className="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:p-0">
                             <div
-                                className="fixed inset-0 transition-opacity bg-black bg-opacity-50 backdrop-blur-sm"
+                                className="fixed inset-0 transition-opacity bg-black/60 bg-opacity-50 backdrop-blur-sm"
                                 onClick={() => {
                                     if (!processingAction) {
                                         console.log('Closing confirmation modal')
@@ -646,8 +629,7 @@ export default function ManagerPage() {
                                                 console.log('Closing confirmation modal via X button')
                                                 setIsConfirmModalOpen(false)
                                             }}
-                                            className="text-gray-400 hover:text-gray-600"
-                                        >
+                                            className="text-gray-400 hover:text-gray-600">
                                             <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                             </svg>
@@ -716,46 +698,6 @@ export default function ManagerPage() {
                                             confirmAction.status === 'accept' ? 'Ya, Terima' : 'Ya, Tolak'
                                         )}
                                     </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                )}
-
-                {/* Toast Notification */}
-                {toast.show && (
-                    <div className="fixed top-4 right-4 z-50">
-                        <div className={`max-w-md w-full bg-white shadow-lg rounded-lg pointer-events-auto border-l-4 ${toast.type === 'success' ? 'border-green-400' : 'border-red-400'
-                            }`}>
-                            <div className="p-4">
-                                <div className="flex items-start">
-                                    <div className="flex-shrink-0">
-                                        {toast.type === 'success' ? (
-                                            <svg className="h-5 w-5 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                        ) : (
-                                            <svg className="h-5 w-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                        )}
-                                    </div>
-                                    <div className="ml-3 w-0 flex-1">
-                                        <p className="text-sm font-medium text-gray-900">
-                                            {toast.type === 'success' ? 'Berhasil!' : 'Error!'}
-                                        </p>
-                                        <p className="mt-1 text-sm text-gray-500">{toast.message}</p>
-                                    </div>
-                                    <div className="ml-4 flex-shrink-0 flex">
-                                        <button
-                                            onClick={() => setToast({ show: false, message: '', type: 'success' })}
-                                            className="bg-white rounded-md inline-flex text-gray-400 hover:text-gray-500 focus:outline-none"
-                                        >
-                                            <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                            </svg>
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
