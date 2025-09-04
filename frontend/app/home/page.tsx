@@ -23,7 +23,7 @@ export default function Home() {
         lazyLoad: "ondemand" as const,
         infinite: true,
         speed: 500,
-        slidesToShow: 2.6,
+        slidesToShow: 2.1,
         slidesToScroll: 1,
         initialSlide: 2,
         arrow: false
@@ -48,7 +48,7 @@ export default function Home() {
                     </div>
                 </div>
                 {/* Carousel */}
-                <div className="py-10 relative">
+                <div className="pt-16 h-[350px] relative">
                     <Slider ref={sliderRef} {...settings}>
                         <div className="px-10">
                             <Image src="./images/voucher/voucher1.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
@@ -87,7 +87,6 @@ export default function Home() {
                         </div>
                     </div>
                 </div>
-
             </div>
             {/* fitur kos */}
             <Kos />
