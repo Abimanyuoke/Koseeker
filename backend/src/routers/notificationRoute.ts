@@ -3,7 +3,8 @@ import {
     getNotifications,
     markAsRead,
     markAllAsRead,
-    getUnreadCount
+    getUnreadCount,
+    createNotificationAPI
 } from '../controllers/notificationController'
 import { verifyToken } from '../middlewares/authorization'
 
@@ -14,6 +15,9 @@ router.get('/', verifyToken, getNotifications)
 
 // Get unread notification count
 router.get('/unread-count', verifyToken, getUnreadCount)
+
+// Create notification
+router.post('/', verifyToken, createNotificationAPI)
 
 // Mark notification as read
 router.put('/:id/read', verifyToken, markAsRead)

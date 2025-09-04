@@ -143,6 +143,43 @@ export const getUnreadCount = async (req: Request, res: Response) => {
     }
 };
 
+// Create notification via API
+export const createNotificationAPI = async (req: Request, res: Response) => {
+    try {
+        const { userId, title, message, type, relatedId } = req.body;
+
+        if (!userId || !title || !message || !type) {
+            return res.status(400).json({
+                status: false,
+                message: 'Missing required fields: userId, title, message, type'
+            });
+        }
+
+        const notification = await prisma.notification.create({
+            data: {
+                uuid: require('uuid').v4(),
+                userId: Number(userId),
+                title,
+                message,
+                type: type as any,
+                relatedId: relatedId ? Number(relatedId) : null,
+            },
+        });
+
+        res.status(201).json({
+            status: true,
+            data: notification,
+            message: "Notification created successfully",
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            status: false,
+            message: "Internal server error",
+        });
+    }
+};
+
 // Create notification (utility function for internal use)
 export const createNotification = async (
     userId: number,
@@ -154,6 +191,7 @@ export const createNotification = async (
     try {
         const notification = await prisma.notification.create({
             data: {
+                uuid: require('uuid').v4(),
                 userId,
                 title,
                 message,

@@ -5,6 +5,82 @@ import { createBookingCalendarEntries } from "./bookingCalendarController";
 
 // const prisma = new PrismaClient();
 const prisma = new PrismaClient({ errorFormat: "pretty" })
+export const getOwnerBookings = async (request: Request, response: Response) => {
+    try {
+        /** get userId from token */
+        const userId = request.body.user?.id;
+        if (!userId) {
+            return response.status(401).json({
+                status: false,
+                message: "User belum login atau token tidak valid"
+            });
+        }
+
+        /** get user role to make sure it's an owner */
+        const user = await prisma.user.findFirst({
+            where: { id: Number(userId) },
+            select: { role: true }
+        });
+
+        if (!user || user.role !== 'owner') {
+            return response.status(403).json({
+                status: false,
+                message: "Hanya owner yang dapat mengakses data ini"
+            });
+        }
+
+        /** get requested data (data has been sent from request) */
+        const { status } = request.query;
+
+        /** build where condition */
+        let whereCondition: any = {
+            kos: {
+                userId: Number(userId)
+            }
+        };
+
+        // Add status filter if provided
+        if (status && status !== 'all') {
+            whereCondition.status = status.toString();
+        }
+
+        /** process to get bookings for owner's kos */
+        const ownerBookings = await prisma.book.findMany({
+            where: whereCondition,
+            orderBy: { createdAt: "desc" },
+            include: {
+                kos: {
+                    include: {
+                        images: true
+                    }
+                },
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        phone: true,
+                        profile_picture: true
+                    }
+                }
+            }
+        });
+
+        return response.json({
+            status: true,
+            books: ownerBookings,
+            message: `Owner bookings have been retrieved`
+        }).status(200);
+    } catch (error) {
+        return response
+            .json({
+                status: false,
+                message: `There is an error. ${error}`
+            })
+            .status(400);
+    }
+};
+
 export const getAllBooks = async (request: Request, response: Response) => {
     try {
         /** get userId from token */
@@ -225,7 +301,13 @@ export const updateStatusBook = async (request: Request, response: Response) => 
         const { status, payment, startDate, endDate, durationMonths } = request.body
 
         /** make sure that data is exists in database */
-        const findBook = await prisma.book.findFirst({ where: { id: Number(id) } })
+        const findBook = await prisma.book.findFirst({
+            where: { id: Number(id) },
+            include: {
+                user: true,
+                kos: true
+            }
+        })
         if (!findBook) return response
             .status(404)
             .json({ status: false, message: `Book is not found` })
@@ -258,6 +340,41 @@ export const updateStatusBook = async (request: Request, response: Response) => 
                 }
             }
         })
+
+        // Create notification if status changed
+        if (status && status !== findBook.status) {
+            try {
+                let notificationTitle = '';
+                let notificationMessage = '';
+                let notificationType = '';
+
+                if (status === 'accept') {
+                    notificationTitle = 'Booking Diterima';
+                    notificationMessage = `Booking Anda untuk ${findBook.kos.name} telah diterima. Silakan hubungi pemilik untuk tahap selanjutnya.`;
+                    notificationType = 'BOOKING_ACCEPTED';
+                } else if (status === 'reject') {
+                    notificationTitle = 'Booking Ditolak';
+                    notificationMessage = `Booking Anda untuk ${findBook.kos.name} telah ditolak. Silakan cari kos alternatif lainnya.`;
+                    notificationType = 'BOOKING_REJECTED';
+                }
+
+                if (notificationTitle) {
+                    await prisma.notification.create({
+                        data: {
+                            uuid: uuidv4(),
+                            userId: findBook.userId,
+                            title: notificationTitle,
+                            message: notificationMessage,
+                            type: notificationType as any,
+                            relatedId: updatedBook.id
+                        }
+                    });
+                }
+            } catch (notifError) {
+                console.error('Failed to create notification:', notifError);
+                // Don't fail the booking update if notification creation fails
+            }
+        }
 
         return response.status(200).json({
             status: true,

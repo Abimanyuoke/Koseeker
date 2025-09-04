@@ -24,7 +24,7 @@ export const middleware = async (request: NextRequest) => {
 
     // Proteksi untuk halaman /manager
     if (request.nextUrl.pathname.startsWith("/manager")) {
-        if (!token || role !== "MANAGER") {
+        if (!token || role !== "owner") {
             const redirectUrl = request.nextUrl.clone();
             redirectUrl.pathname = "/auth/login";
             return NextResponse.redirect(redirectUrl);

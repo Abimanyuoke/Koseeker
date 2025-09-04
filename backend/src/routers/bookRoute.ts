@@ -4,7 +4,8 @@ import {
     getBookByUUID,
     createBook,
     updateStatusBook,
-    deleteBook
+    deleteBook,
+    getOwnerBookings
 } from "../controllers/bookController";
 import {
     verifyAddBook,
@@ -17,6 +18,7 @@ const router = Router();
 
 // GET Routes
 router.get("/", verifyToken, getAllBooks);
+router.get("/owner", verifyToken, getOwnerBookings);
 router.get("/:uuid", getBookByUUID);
 
 // POST Routes

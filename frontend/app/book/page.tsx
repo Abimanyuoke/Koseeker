@@ -42,7 +42,7 @@ export default function BookingsPage() {
                 return
             }
 
-            const response = await fetch('http://localhost:5000/book', {
+            const response = await fetch('http://localhost:5000/books', {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }

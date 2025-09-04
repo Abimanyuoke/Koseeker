@@ -54,7 +54,7 @@ app.use(`/kos`, KosRoute)
 app.use(`/user`, UserRoute)
 app.use(`/like`, LikeRoute)
 app.use(`/review`, ReviewRoute)
-app.use(`/book`, BookRoute)
+app.use(`/books`, BookRoute)  // Changed from /book to /books to match frontend
 app.use(`/facilities`, KosFacilitiesRoute)
 app.use(`/booking-calendar`, BookingCalendarRoute)
 app.use(`/notifications`, NotificationRoute)
