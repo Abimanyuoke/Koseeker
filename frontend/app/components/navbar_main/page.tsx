@@ -211,8 +211,7 @@ const Navbar: React.FC = () => {
                 alt="profile image"
                 width={40}
                 height={40}
-                className="rounded-full"
-              />
+                className="rounded-full"/>
             </button>
 
             <AnimatePresence>

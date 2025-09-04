@@ -50,19 +50,17 @@ export default function NotificationBell({ className = '' }: NotificationBellPro
     }
 
     return (
-        <>
+        <div>
             <button
                 onClick={handleClick}
                 className={`relative p-2 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg ${className}`}
-                title="Notifikasi"
-            >
+                title="Notifikasi">
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         strokeWidth={2}
-                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
 
                 {/* Notification badge */}
@@ -71,7 +69,8 @@ export default function NotificationBell({ className = '' }: NotificationBellPro
                         {unreadCount > 99 ? '99+' : unreadCount}
                     </span>
                 )}
-            </button>            <NotificationCenter isOpen={isOpen} onClose={handleClose} />
-        </>
+            </button>
+            <NotificationCenter isOpen={isOpen} onClose={handleClose} />
+        </div>
     )
 }
