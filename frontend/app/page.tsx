@@ -22,7 +22,7 @@ const Main = () => {
 
 
     return (
-        <div className=''>
+        <div>
             <Navbar />
             <Home/>
             <Footer />

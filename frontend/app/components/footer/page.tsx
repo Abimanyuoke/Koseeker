@@ -7,58 +7,65 @@ import { BsTwitter } from "react-icons/bs"
 
 export default function Footer() {
     return (
-        <div className="bg-white font-lato mx-[185px] py-20">
-            <div className="mx-auto max-w-7xl">
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 ">
-                    <div className="flex flex-col gap-5">
-                        <div className='flex items-center gap-2 cursor-pointer'>
-                            <Image src="./images/logo.svg" alt="Logo" width={40} height={40} className="w-12 h-12 object-cover" />
-                            <span className="className='font-lato text-primary text-2xl font-extrabold'>">koseeker</span>
+        <div className="bg-white font-lato py-14">
+            <div className="mx-auto max-w-6xl">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 ">
+                    <div className="flex flex-col gap-5 col-span-3">
+                        <div className='flex items-center gap-1 cursor-pointer'>
+                            <Image src="./images/logo.svg" alt="Logo" width={40} height={40} className="w-16 h-16" />
+                            <span className="className='font-lato text-primary text-3xl font-extrabold">koseeker</span>
                         </div>
-                        <p className="font-normal text-base text-[#383746] mt-2.5">Dapatkan "info kost murah" hanya di Koseeker App.Mau "Sewa Kost Murah"?</p>
+                        <p className="font-normal text-base text-[#383746] mt-2.5 pr-4">Dapatkan "info kost murah  murah, nyaman, dan strategis" hanya di Koseeker App. Cocok untuk mahasiswa, pekerja, atau perantau. Fitur pencarian cepat, info lengkap, sewa kost jadi praktis dan hemat.</p>
                         <div className="flex gap-3">
-                            <Image src="./images/playstore.svg" alt={"playstore"} width={300} height={200} className="h-auto object-cover" />
-                            <Image src="./images/appstore.svg" alt={"logo appstore"} width={300} height={200} className="h-auto object-cover" />
+                            <Image src="./images/playstore.svg" alt={"playstore"} width={130} height={50} />
+                            <Image src="./images/appstore.svg" alt={"logo appstore"} width={120} height={50} />
                         </div>
                     </div>
                     <div>
-                        <h1>KOSEEKER</h1>
-                        <div>
-                            <Link href={"/"}>Tentang Kami</Link>
-                            <Link href={"/"}>Job Koseeker</Link>
-                            <Link href={"/"}>Promosikan Kos Anda</Link>
-                            <Link href={"/"}>Pusat Bantuan</Link>
-                            <Link href={"/"}>Blog Koseeker</Link>
+                        <h1 className="font-bold text-[#383746] text-base">KOSEEKER</h1>
+                        <div className="mt-10 font-normal text-sm flex flex-col gap-4">
+                            <Link href={"/"} className="hover:text-[#757575]" >Tentang Kami</Link>
+                            <Link href={"/"} className="hover:text-[#757575]">Job Koseeker</Link>
+                            <Link href={"/"} className="hover:text-[#757575]">Promosikan Kos Anda</Link>
+                            <Link href={"/"} className="hover:text-[#757575]">Pusat Bantuan</Link>
+                            <Link href={"/"} className="hover:text-[#757575]">Blog Koseeker</Link>
                         </div>
                     </div>
                     <div>
-                        <h1>KOSEEKER</h1>
-                        <div>
-                            <Link href={"/"}>Kebijakan Privasi</Link>
-                            <Link href={"/"}>Syarat dan Ketentuan Umum</Link>
+                        <h1 className="font-bold text-[#383746] text-base">KEBIJAKAN</h1>
+                        <div className="mt-10 font-normal text-sm flex flex-col gap-4">
+                            <Link href={"/"} className="hover:text-[#757575]">Kebijakan Privasi</Link>
+                            <Link href={"/"} className="hover:text-[#757575]">Syarat dan Ketentuan Umum</Link>
                         </div>
                     </div>
                     <div>
-                        <h1>HUBUNGI KAMI</h1>
-                        <div>
-                            <button className="flex items-center gap-2">
+                        <h1 className="font-bold text-[#383746] text-base">HUBUNGI KAMI</h1>
+                        <div className="mt-10 font-normal text-sm flex flex-col gap-4">
+                            <button className="flex items-center gap-2 hover:text-[#757575]">
                                 <MdEmail />
                                 <span>koseeker@gmail.com</span>
                             </button>
-                            <button className="flex items-center gap-2">
+                            <button className="flex items-center gap-2 hover:text-[#757575]">
                                 <FaWhatsapp />
                                 <span>+6282257313006</span>
                             </button>
                         </div>
-                        <div className="flex gap-3">
-                            <FaFacebook />
-                            <BsTwitter />
-                            <FaInstagram />
+                        <div className="flex gap-3 mt-5">
+                            <Link href={"/"} target="_blank" className="hover:text-[#757575]">
+                                <FaFacebook className="text-2xl"/>
+                            </Link>
+                            <Link href={"/"} target="_blank" className="hover:text-[#757575]">
+                                <BsTwitter className="text-2xl"/>
+                            </Link>
+                            <Link href={"/"} target="_blank" className="hover:text-[#757575]">
+                                <FaInstagram className="text-2xl"/>
+                            </Link>
                         </div>
                     </div>
                 </div>
-                <div>
-                    <span>
+                <div className="">
+                    <div className="border-t border-[#E0E0E0] my-10">{''}</div>
+                    <span className="flex justify-end text-sm">
                         © 2025 Koseeker.com. All rights reserved
                     </span>
                 </div>
