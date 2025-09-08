@@ -410,8 +410,7 @@ const JakartaKosPage = () => {
                                             {/* Button Lihat Detail */}
                                             <button
                                                 onClick={() => window.location.href = `/kos/${kos.id}`}
-                                                className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium"
-                                            >
+                                                className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 text-sm font-medium">
                                                 Lihat Detail
                                             </button>
                                         </div>

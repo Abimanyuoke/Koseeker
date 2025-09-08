@@ -59,6 +59,21 @@ export default function Home() {
                         <div className="px-10">
                             <Image src="./images/voucher/voucher3.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
                         </div>
+                        <div className="px-10">
+                            <Image src="./images/voucher/voucher4.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
+                        </div>
+                        <div className="px-10">
+                            <Image src="./images/voucher/voucher5.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
+                        </div>
+                        <div className="px-10">
+                            <Image src="./images/voucher/voucher6.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
+                        </div>
+                        <div className="px-10">
+                            <Image src="./images/voucher/voucher7.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
+                        </div>
+                        <div className="px-10">
+                            <Image src="./images/voucher/voucher8.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
+                        </div>
                     </Slider>
                     <div>
                         <CustomArrows
@@ -92,6 +107,26 @@ export default function Home() {
             <Kos />
             <KosPromoPage />
             <Blog />
+
+            {/* Area */}
+            <div className="py-20">
+                <div className="max-w-6xl mx-auto">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 justify-items-center">
+                        <button className="relative w-[250px] h-[200px]">
+                            <img src="./images/area/yogyakarta.svg" alt="Yogyakarta" className="w-full h-full object-cover rounded-lg" />
+                            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-2xl w-full font-bold hover:underline cursor-pointer">
+                                Kos Yogyakarta
+                            </span>
+                        </button>
+                        <button className="relative w-[250px] h-[200px]" onClick={() => window.location.href = `/area/jakarta`}>
+                            <img src="./images/area/yogyakarta.svg" alt="Yogyakarta" className="w-full h-full object-cover rounded-lg" />
+                            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-2xl w-full font-bold hover:underline cursor-pointer">
+                                Kos Jakarta
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
