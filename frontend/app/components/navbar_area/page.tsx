@@ -16,7 +16,7 @@ import { IoSearch } from 'react-icons/io5';
 import { FiLogOut } from 'react-icons/fi';
 import NotificationBell from '../notification/NotificationBell';
 
-const Navbar: React.FC = () => {
+const Navbar = () => {
 
   const [popup, setPopup] = useState(false);
   const [profile, setProfile] = useState<string>("");

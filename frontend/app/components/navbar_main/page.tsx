@@ -18,7 +18,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import logo from "../../../public/images/logo.svg";
 
-const Navbar: React.FC = () => {
+const NavbarMain = () => {
 
   const [popup, setPopup] = useState(false);
   const [profile, setProfile] = useState<string>("");
@@ -258,4 +258,4 @@ const Navbar: React.FC = () => {
   )
 }
 
-export default Navbar
+export default NavbarMain

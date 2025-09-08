@@ -10,6 +10,7 @@ export interface IProduct {
 }
 
 export interface IKos {
+    discountEndDate: string | undefined;
     id: number;
     uuid: string;
     userId: number;
