@@ -2,7 +2,7 @@
 
 import React, { useRef, useState } from 'react'
 import logo from "../../../public/images/logo.svg";
-import Search from "./search";
+import Search, { SearchRef } from "./search";
 import { useEffect } from "react";
 import { getCookies, removeCookie } from "@/lib/client-cookies";
 import { clearAuthData } from "@/lib/auth";
@@ -24,8 +24,15 @@ const Navbar = () => {
   const [role, setRole] = useState<string>("");
   const router = useRouter();
   const sidebarRef = useRef<HTMLDivElement>(null)
+  const searchRef = useRef<SearchRef>(null);
   const [scrolled, setScrolled] = useState(false);
   const [activeDown, setActiveDown] = useState<string | null>(null);
+
+  const handleSearchClick = () => {
+    if (searchRef.current) {
+      searchRef.current.performSearch();
+    }
+  };
 
   const toggleDown = (down: string) => {
     setActiveDown((prev) => (prev === down ? null : down));
@@ -107,8 +114,12 @@ const Navbar = () => {
                   <div className="flex items-center gap-1 shadow-md border-[1px] border-[#48484819] p-2 rounded-lg">
                     {/* icon kaca pembesar */}
                     <IoSearch className="text-2xl" />
-                    <Search url={"/area/jakarta"} search={""} />
-                    <button className="text-[16px] text-white cursor-pointer bg-primary font-bold px-8 py-2 rounded-sm">Cari</button>
+                    <Search ref={searchRef} search={""} />
+                    <button
+                      onClick={handleSearchClick}
+                      className="text-[16px] text-white cursor-pointer bg-primary font-bold px-8 py-2 rounded-sm">
+                      Cari
+                    </button>
                   </div>
                 </motion.div>
               )}

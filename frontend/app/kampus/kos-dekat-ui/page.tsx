@@ -6,7 +6,6 @@ import { IKos } from "../../types";
 import { get } from "../../../lib/bridge";
 import { BASE_IMAGE_KOS } from "../../../global";
 import Select from "../../components/select";
-import Navbar from "../../components/navbar_area/page";
 import PriceDisplay from "../../components/price/PriceDisplay";
 
 // Enum untuk kalender sesuai dengan Prisma
@@ -35,30 +34,11 @@ const priceOptions = [
     { value: "3000000-999999999", label: "Di atas Rp 3.000.000" }
 ];
 
-// Options untuk filter kota
-const kotaOptions = [
-    { value: "all", label: "Semua Kota" },
-    { value: "Jakarta", label: "Jakarta" },
-    { value: "Bandung", label: "Bandung" },
-    { value: "Surabaya", label: "Surabaya" },
-    { value: "Medan", label: "Medan" },
-    { value: "Semarang", label: "Semarang" },
-    { value: "Makassar", label: "Makassar" },
-    { value: "Palembang", label: "Palembang" },
-    { value: "Batam", label: "Batam" },
-    { value: "Malang", label: "Malang" },
-    { value: "Bogor", label: "Bogor" },
-    { value: "Depok", label: "Depok" },
-    { value: "Tangerang", label: "Tangerang" },
-    { value: "Solo", label: "Solo" },
-    { value: "Yogyakarta", label: "Yogyakarta" },
-    { value: "Bekasi", label: "Bekasi" }
-];
-
 const KampusKosPage = () => {
     const searchParams = useSearchParams();
     const searchQuery = searchParams.get('search') || '';
-    const kampusQuery = searchParams.get('kampus') || '';
+    // Fixed kampus to UI
+    const kampusQuery = 'UI';
 
     const [kosList, setKosList] = useState<IKos[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -66,42 +46,21 @@ const KampusKosPage = () => {
     const [selectedKalender, setSelectedKalender] = useState<string>("all");
     const [selectedGender, setSelectedGender] = useState<string>("all");
     const [selectedPrice, setSelectedPrice] = useState<string>("all");
-    const [selectedKota, setSelectedKota] = useState<string>("all");
 
     // Get kampus name for display
-    const getKampusDisplayName = (kampusCode: string) => {
-        const kampusNames: { [key: string]: string } = {
-            'UGM': 'Universitas Gadjah Mada',
-            'UNDIP': 'Universitas Diponegoro',
-            'UNPAD': 'Universitas Padjadjaran',
-            'STAN': 'Sekolah Tinggi Akuntansi Negara',
-            'UNAIR': 'Universitas Airlangga',
-            'UB': 'Universitas Brawijaya',
-            'UI': 'Universitas Indonesia',
-            'ITS': 'Institut Teknologi Sepuluh Nopember',
-            'ITB': 'Institut Teknologi Bandung',
-            'UNS': 'Universitas Sebelas Maret',
-            'TELKOM': 'Universitas Telkom',
-            'UNESA': 'Universitas Negeri Surabaya',
-            'BINUS': 'Binus University',
-            'UMM': 'Universitas Muhammadiyah Malang'
-        };
-        return kampusNames[kampusCode] || kampusCode;
-    };
 
     // Fetch kos data berdasarkan kampus
     const fetchKampusKos = async (filters: {
         kalender?: string;
         gender?: string;
         price?: string;
-        kota?: string;
         search?: string;
         kampus?: string;
     } = {}) => {
         setLoading(true);
         try {
             let url = "/kos";
-            const queryParams = [];
+            const queryParams: string[] = [];
 
             // Tambahkan filter kampus jika ada
             if (filters.kampus && filters.kampus.trim() !== "") {
@@ -121,11 +80,6 @@ const KampusKosPage = () => {
             // Tambahkan filter gender jika dipilih
             if (filters.gender && filters.gender !== "all") {
                 queryParams.push(`gender=${filters.gender}`);
-            }
-
-            // Tambahkan filter kota jika dipilih
-            if (filters.kota && filters.kota !== "all") {
-                queryParams.push(`kota=${encodeURIComponent(filters.kota)}`);
             }
 
             if (queryParams.length > 0) {
@@ -167,17 +121,43 @@ const KampusKosPage = () => {
         }
     };
 
-    // Load data pertama kali dan ketika search query atau kampus berubah
+    // Load data pertama kali dan ketika search query berubah (kampus tetap UI)
     useEffect(() => {
         fetchKampusKos({
             kalender: selectedKalender,
             gender: selectedGender,
             price: selectedPrice,
-            kota: selectedKota,
             search: searchQuery,
-            kampus: kampusQuery
+            kampus: kampusQuery // Always 'UI'
         });
-    }, [searchQuery, kampusQuery]);
+    }, [searchQuery]); // Removed kampusQuery from dependencies since it's fixed
+
+    // Listen untuk perubahan URL dari search component
+    useEffect(() => {
+        const handlePopState = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const newSearchQuery = urlParams.get('search') || '';
+
+            // Update search query state jika berbeda
+            if (newSearchQuery !== searchQuery) {
+                // Trigger re-fetch dengan search query baru
+                fetchKampusKos({
+                    kalender: selectedKalender,
+                    gender: selectedGender,
+                    price: selectedPrice,
+                    search: newSearchQuery,
+                    kampus: kampusQuery
+                });
+            }
+        };
+
+        // Listen untuk perubahan URL
+        window.addEventListener('popstate', handlePopState);
+
+        return () => {
+            window.removeEventListener('popstate', handlePopState);
+        };
+    }, [selectedKalender, selectedGender, selectedPrice, kampusQuery, searchQuery]);
 
     // Handle perubahan filter kalender
     const handleKalenderChange = (value: string) => {
@@ -186,7 +166,6 @@ const KampusKosPage = () => {
             kalender: value,
             gender: selectedGender,
             price: selectedPrice,
-            kota: selectedKota,
             search: searchQuery,
             kampus: kampusQuery
         });
@@ -199,7 +178,6 @@ const KampusKosPage = () => {
             kalender: selectedKalender,
             gender: value,
             price: selectedPrice,
-            kota: selectedKota,
             search: searchQuery,
             kampus: kampusQuery
         });
@@ -212,50 +190,16 @@ const KampusKosPage = () => {
             kalender: selectedKalender,
             gender: selectedGender,
             price: value,
-            kota: selectedKota,
             search: searchQuery,
             kampus: kampusQuery
         });
     };
-
-    // Handle perubahan filter kota
-    const handleKotaChange = (value: string) => {
-        setSelectedKota(value);
-        fetchKampusKos({
-            kalender: selectedKalender,
-            gender: selectedGender,
-            price: selectedPrice,
-            kota: value,
-            search: searchQuery,
-            kampus: kampusQuery
-        });
-    };
-
-    // Format harga dengan pemisah ribuan
-    const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('id-ID', {
-            style: 'currency',
-            currency: 'IDR',
-            minimumFractionDigits: 0
-        }).format(price);
-    };
-
-    // Tampilkan periode berdasarkan kalender
-    const getPeriodText = (kalender: string) => {
-        switch (kalender) {
-            case "minggu": return "/minggu";
-            case "bulan": return "/bulan";
-            case "tahun": return "/tahun";
-            default: return "/bulan";
-        }
-    };
-
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-                    <p className="text-gray-600">Memuat data kos {kampusQuery ? getKampusDisplayName(kampusQuery) : 'kampus'}...</p>
+                    <p className="text-gray-600">Memuat data kos Universitas Indonesia...</p>
                 </div>
             </div>
         );
@@ -263,26 +207,23 @@ const KampusKosPage = () => {
 
     return (
         <div>
-            <Navbar />
+            {/* <NavbarKampus /> */}
 
             <div className="min-h-screen bg-gray-50 py-8 mx-[150px]">
                 <div className="container mx-auto px-4">
                     {/* Header */}
                     <div className="mb-8">
                         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-                            {kampusQuery ? `Kos di sekitar ${getKampusDisplayName(kampusQuery)}` : 'Kos Berdasarkan Kampus'}
+                            Kos di sekitar Universitas Indonesia (UI)
                         </h1>
                         <p className="text-gray-600">
-                            {kampusQuery
-                                ? `Temukan kos terbaik di sekitar ${getKampusDisplayName(kampusQuery)} sesuai kebutuhan Anda`
-                                : 'Temukan kos terbaik berdasarkan kampus pilihan Anda'
-                            }
+                            Temukan kos terbaik di sekitar Universitas Indonesia sesuai kebutuhan Anda
                         </p>
                     </div>
 
                     {/* Filter Section */}
                     <div className="mb-8 bg-white p-6 rounded-lg shadow-sm">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                             {/* Filter Kalender */}
                             <div>
                                 <Select
@@ -333,23 +274,6 @@ const KampusKosPage = () => {
                                     ))}
                                 </Select>
                             </div>
-
-                            {/* Filter Kota */}
-                            <div>
-                                <Select
-                                    id="kota-filter"
-                                    value={selectedKota}
-                                    onChange={handleKotaChange}
-                                    label="Kota"
-                                    className="bg-white border-gray-300"
-                                >
-                                    {kotaOptions.map((option) => (
-                                        <option key={option.value} value={option.value}>
-                                            {option.label}
-                                        </option>
-                                    ))}
-                                </Select>
-                            </div>
                         </div>
                     </div>
 
@@ -366,10 +290,9 @@ const KampusKosPage = () => {
                             {/* Results Count */}
                             <div className="mb-4">
                                 <p className="text-gray-600">
-                                    Ditemukan {kosList.length} kos
-                                    {kampusQuery && ` di sekitar ${getKampusDisplayName(kampusQuery)}`}
+                                    Ditemukan {kosList.length} kos di sekitar Universitas Indonesia (UI)
                                     {searchQuery.trim() !== "" && ` untuk pencarian "${searchQuery}"`}
-                                    {(selectedKalender !== "all" || selectedGender !== "all" || selectedPrice !== "all" || selectedKota !== "all") && " dengan filter yang dipilih"}
+                                    {(selectedKalender !== "all" || selectedGender !== "all" || selectedPrice !== "all") && " dengan filter yang dipilih"}
                                 </p>
                             </div>
 
@@ -431,13 +354,6 @@ const KampusKosPage = () => {
                                                 </span>
                                             </div>
 
-                                            {/* Kota */}
-                                            <div className="mb-4">
-                                                <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded">
-                                                    🏙️ {kos.kota}
-                                                </span>
-                                            </div>
-
                                             {/* Fasilitas */}
                                             {kos.facilities && kos.facilities.length > 0 && (
                                                 <div className="mb-4">
@@ -478,9 +394,9 @@ const KampusKosPage = () => {
                                     Tidak ada kos ditemukan
                                 </h3>
                                 <p className="text-gray-500">
-                                    {selectedKalender !== "all" || selectedGender !== "all" || selectedPrice !== "all" || selectedKota !== "all" || searchQuery.trim() !== "" || kampusQuery.trim() !== ""
-                                        ? `Tidak ada kos ditemukan dengan kriteria pencarian yang dipilih`
-                                        : "Belum ada kos yang tersedia"
+                                    {selectedKalender !== "all" || selectedGender !== "all" || selectedPrice !== "all" || searchQuery.trim() !== ""
+                                        ? `Tidak ada kos ditemukan di sekitar Universitas Indonesia dengan kriteria pencarian yang dipilih`
+                                        : "Belum ada kos yang tersedia di sekitar Universitas Indonesia"
                                     }
                                 </p>
                             </div>
