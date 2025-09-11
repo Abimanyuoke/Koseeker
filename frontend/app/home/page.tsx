@@ -111,7 +111,7 @@ export default function Home() {
             {/* Area */}
             <div className="py-20">
                 <div className="max-w-6xl mx-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 justify-items-center">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-5 justify-items-center">
                         <button className="relative w-[280px] h-[230px]">
                             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
                             <img src="./images/area/3.svg" alt="Yogyakarta" className="w-full h-full object-cover rounded-lg" />
