@@ -246,8 +246,7 @@ const JakartaKosPage = () => {
                                     value={selectedKalender}
                                     onChange={handleKalenderChange}
                                     label="Periode Sewa"
-                                    className="bg-white border-gray-300"
-                                >
+                                    className="bg-white border-gray-300">
                                     {kalenderOptions.map((option) => (
                                         <option key={option.value} value={option.value}>
                                             {option.label}
@@ -263,8 +262,7 @@ const JakartaKosPage = () => {
                                     value={selectedGender}
                                     onChange={handleGenderChange}
                                     label="Gender"
-                                    className="bg-white border-gray-300"
-                                >
+                                    className="bg-white border-gray-300">
                                     {genderOptions.map((option) => (
                                         <option key={option.value} value={option.value}>
                                             {option.label}
@@ -280,8 +278,7 @@ const JakartaKosPage = () => {
                                     value={selectedPrice}
                                     onChange={handlePriceChange}
                                     label="Rentang Harga"
-                                    className="bg-white border-gray-300"
-                                >
+                                    className="bg-white border-gray-300">
                                     {priceOptions.map((option) => (
                                         <option key={option.value} value={option.value}>
                                             {option.label}
@@ -297,8 +294,7 @@ const JakartaKosPage = () => {
                                     value={selectedKampus}
                                     onChange={handleKampusChange}
                                     label="Kampus"
-                                    className="bg-white border-gray-300"
-                                >
+                                    className="bg-white border-gray-300">
                                     {kampusOptions.map((option) => (
                                         <option key={option.value} value={option.value}>
                                             {option.label}
@@ -318,7 +314,7 @@ const JakartaKosPage = () => {
 
                     {/* Kos Cards Grid */}
                     {kosList.length > 0 ? (
-                        <>
+                        <div>
                             {/* Results Count */}
                             <div className="mb-4">
                                 <p className="text-gray-600">
@@ -417,7 +413,7 @@ const JakartaKosPage = () => {
                                     </div>
                                 ))}
                             </div>
-                        </>
+                        </div>
                     ) : (
                         !loading && (
                             <div className="text-center py-12">
