@@ -5,7 +5,6 @@ import { IKos } from "../../types";
 import { get } from "../../../lib/bridge";
 import { BASE_IMAGE_KOS } from "../../../global";
 import Select from "../../components/select";
-import JakartaKosPage from "../jakarta/page";
 
 // Enum untuk kalender sesuai dengan Prisma
 const kalenderOptions = [
