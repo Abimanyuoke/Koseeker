@@ -134,18 +134,21 @@ export default function Home() {
                             </span>
                         </button>
                         <button className="relative w-[250px] h-[200px]" onClick={() => window.location.href = `/area/jakarta`}>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
                             <img src="./images/area/6.svg" alt="Yogyakarta" className="w-full h-full object-cover rounded-lg" />
                             <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-2xl w-full font-bold hover:underline cursor-pointer">
                                 Kos Jakarta
                             </span>
                         </button>
                         <button className="relative w-[250px] h-[200px]" onClick={() => window.location.href = `/area/jakarta`}>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
                             <img src="./images/area/7.svg" alt="Yogyakarta" className="w-full h-full object-cover rounded-lg" />
                             <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-2xl w-full font-bold hover:underline cursor-pointer">
                                 Kos Jakarta
                             </span>
                         </button>
                         <button className="relative w-[250px] h-[200px]" onClick={() => window.location.href = `/area/jakarta`}>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
                             <img src="./images/area/8.svg" alt="Yogyakarta" className="w-full h-full object-cover rounded-lg" />
                             <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-2xl w-full font-bold hover:underline cursor-pointer">
                                 Kos Jakarta
