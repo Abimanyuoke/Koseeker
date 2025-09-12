@@ -12,6 +12,8 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import KosPromoPage from "../kos_promo/page";
 import Blog from "../components/blog";
+import { FaArrowLeft } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa6";
 
 
 export default function Home() {
@@ -110,52 +112,7 @@ export default function Home() {
 
             {/* Area */}
             <div className="py-20">
-                <div className="max-w-6xl mx-auto">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-5 justify-items-center">
-                        <button className="relative w-[280px] h-[230px]">
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
-                            <img src="./images/area/3.svg" alt="Yogyakarta" className="w-full h-full object-cover rounded-lg" />
-                            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-2xl w-full font-bold hover:underline cursor-pointer">
-                                Kos Yogyakarta
-                            </span>
-                        </button>
-                        <button className="relative w-[280px] h-[230px]" onClick={() => window.location.href = `/area/jakarta`}>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
-                            <img src="./images/area/4.svg" alt="Yogyakarta" className="w-full h-full object-cover rounded-lg" />
-                            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-2xl w-full font-bold hover:underline cursor-pointer">
-                                Kos Jakarta
-                            </span>
-                        </button>
-                        <button className="relative w-[280px] h-[230px]" onClick={() => window.location.href = `/area/jakarta`}>
-                            <img src="./images/area/5.svg" alt="Yogyakarta" className="w-full h-full object-cover rounded-lg" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
-                            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-2xl w-full font-bold hover:underline cursor-pointer">
-                                Kos Jakarta
-                            </span>
-                        </button>
-                        <button className="relative w-[280px] h-[230px]" onClick={() => window.location.href = `/area/jakarta`}>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
-                            <img src="./images/area/6.svg" alt="Yogyakarta" className="w-full h-full object-cover rounded-lg" />
-                            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-2xl w-full font-bold hover:underline cursor-pointer">
-                                Kos Jakarta
-                            </span>
-                        </button>
-                        <button className="relative w-[280px] h-[230px]" onClick={() => window.location.href = `/area/jakarta`}>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
-                            <img src="./images/area/7.svg" alt="Yogyakarta" className="w-full h-full object-cover rounded-lg" />
-                            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-2xl w-full font-bold hover:underline cursor-pointer">
-                                Kos Jakarta
-                            </span>
-                        </button>
-                        <button className="relative w-[280px] h-[230px]" onClick={() => window.location.href = `/area/jakarta`}>
-                            <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-lg"></div>
-                            <img src="./images/area/8.svg" alt="Yogyakarta" className="w-full h-full object-cover rounded-lg" />
-                            <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-white text-2xl w-full font-bold hover:underline cursor-pointer">
-                                Kos Jakarta
-                            </span>
-                        </button>
-                    </div>
-                </div>
+                
             </div>
         </div>
     );
