@@ -1,7 +1,7 @@
 import React from "react";
 import { BsArrowRight } from "react-icons/bs";
 
-export default function KosArea() {
+export default function KampusArea() {
     return(
         <div className="max-w-6xl mx-auto font-lato">
                     <h1 className="text-2xl font-bold mb-10 text-[##323232]">Area Kos Terpopuler</h1>
