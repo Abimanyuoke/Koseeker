@@ -12,8 +12,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import KosPromoPage from "../kos_promo/page";
 import Blog from "../components/blog";
-import { FaArrowLeft } from "react-icons/fa";
-import { FaArrowRight } from "react-icons/fa6";
+import KosArea from "../components/kos_area";
 
 
 export default function Home() {
@@ -112,7 +111,7 @@ export default function Home() {
 
             {/* Area */}
             <div className="py-20">
-                
+                <KosArea/>
             </div>
         </div>
     );
