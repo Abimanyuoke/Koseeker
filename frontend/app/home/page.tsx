@@ -13,6 +13,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import KosPromoPage from "../kos_promo/page";
 import Blog from "../components/blog";
 import KosArea from "../components/kos_area";
+import KampusArea from "../components/kampus";
 
 
 export default function Home() {
@@ -112,9 +113,13 @@ export default function Home() {
             <KosPromoPage />
             <Blog />
 
-            {/* Area */}
+            {/* Area Kota */}
             <div className="py-20">
                 <KosArea/>
+            </div>
+            {/* Area Kampus */}
+            <div className="py-20">
+                <KampusArea/>
             </div>
         </div>
     );
