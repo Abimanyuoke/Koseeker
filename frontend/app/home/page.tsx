@@ -75,6 +75,9 @@ export default function Home() {
                         <div className="px-10">
                             <Image src="./images/voucher/voucher8.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
                         </div>
+                        <div className="px-10">
+                            <Image src="./images/voucher/voucher9.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
+                        </div>
                     </Slider>
                     <div>
                         <CustomArrows
