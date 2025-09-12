@@ -227,8 +227,8 @@ const BandungKosPage = () => {
                             </h3>
                             <p className="text-gray-500">
                                 {selectedKalender !== "all"
-                                    ? `Tidak ada kos dengan periode ${selectedKalender} di Jakarta`
-                                    : "Belum ada kos yang tersedia di Jakarta"
+                                    ? `Tidak ada kos dengan periode ${selectedKalender} di Bandung`
+                                    : "Belum ada kos yang tersedia di Bandung"
                                 }
                             </p>
                         </div>
