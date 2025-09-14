@@ -41,11 +41,11 @@ export const getUserById = async (request: Request, response: Response) => {
 
         if (!id) {
             return response
-            .json({
-                status: false,
-                message: `User Not Found`
-            })
-            .status(400)
+                .json({
+                    status: false,
+                    message: `User Not Found`
+                })
+                .status(400)
         }
 
         /** process to get user, contains means search name of user based on sent keyword */
@@ -71,7 +71,7 @@ export const getUserById = async (request: Request, response: Response) => {
 export const createUser = async (request: Request, response: Response) => {
     try {
         /** get requested data (data has been sent from request) */
-        const {name, email, password, role, phone } = request.body
+        const { name, email, password, role, phone } = request.body
         const uuid = uuidv4()
 
         /** variable filename use to define of uploaded file name */
@@ -122,7 +122,7 @@ export const updateUser = async (request: Request, response: Response) => {
             let path = `${BASE_URL}/../public/profile_picture/${findUser.profile_picture}`
             let exists = fs.existsSync(path)
             /** delete the old exists picture if reupload new file */
-            if(exists && findUser.profile_picture !== ``) fs.unlinkSync(path)
+            if (exists && findUser.profile_picture !== ``) fs.unlinkSync(path)
         }
 
         /** process to update user's data */
@@ -162,7 +162,7 @@ export const changePicture = async (request: Request, response: Response) => {
         if (!findUser) return response
             .status(200)
             .json({ status: false, message: `User is not found` })
-        
+
         /** default value filename of saved data */
         let filename = findUser.profile_picture
         if (request.file) {
@@ -172,9 +172,9 @@ export const changePicture = async (request: Request, response: Response) => {
             let path = `${BASE_URL}/../public/profile_picture/${findUser.profile_picture}`
             let exists = fs.existsSync(path)
             /** delete the old exists picture if reupload new file */
-            if(exists && findUser.profile_picture !== ``) fs.unlinkSync(path)
+            if (exists && findUser.profile_picture !== ``) fs.unlinkSync(path)
         }
-        
+
         /** process to update picture in database */
         const updatePicture = await prisma.user.update({
             data: { profile_picture: filename },
@@ -259,6 +259,58 @@ export const authentication = async (request: Request, response: Response) => {
         return response
             .status(200)
             .json({ status: true, logged: true, data: data, message: `Login Success`, token })
+    } catch (error) {
+        return response
+            .json({
+                status: false,
+                message: `There is an error. ${error}`
+            })
+            .status(400)
+    }
+}
+
+export const googleAuthentication = async (request: Request, response: Response) => {
+    try {
+        const { email, name, googleId, picture } = request.body /** get requested data from Google OAuth */
+
+        /** check if user exists with this email */
+        let findUser = await prisma.user.findFirst({
+            where: { email }
+        })
+
+        /** if user doesn't exist, create new user */
+        if (!findUser) {
+            const uuid = uuidv4()
+            findUser = await prisma.user.create({
+                data: {
+                    uuid,
+                    name: name || '',
+                    email: email || '',
+                    password: md5(googleId), // use googleId as password hash
+                    role: 'society', // default role for Google sign-in users
+                    profile_picture: picture || '',
+                    phone: ''
+                }
+            })
+        }
+
+        let data = {
+            id: findUser.id,
+            name: findUser.name,
+            email: findUser.email,
+            role: findUser.role,
+            profile_picture: findUser.profile_picture,
+        }
+
+        /** define payload to generate token */
+        let payload = JSON.stringify(data)
+
+        /** generate token */
+        let token = sign(payload, SECRET || "joss")
+
+        return response
+            .status(200)
+            .json({ status: true, logged: true, data: data, message: `Google Login Success`, token })
     } catch (error) {
         return response
             .json({

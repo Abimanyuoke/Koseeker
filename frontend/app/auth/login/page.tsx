@@ -6,12 +6,14 @@ import { useRouter } from "next/navigation"
 import { FormEvent, useState } from "react";
 import { HiEyeSlash } from "react-icons/hi2";
 import { IoEyeSharp } from "react-icons/io5";
+import { FcGoogle } from "react-icons/fc";
 import { toast } from "sonner";
 import axios from "axios";
 import Image from "next/image";
 import imgLogin from "../../../public/images/kosimage.jpeg";
 import logo from "../../../public/images/logo.svg";
 import siluet from "../../../public/images/siluetKota.png";
+import { signIn, getSession } from "next-auth/react";
 
 
 export default function Login() {
@@ -19,9 +21,12 @@ export default function Login() {
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [showPassword, setShowPassword] = useState<boolean>(false)
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
     const handleSubmit = async (e: FormEvent) => {
         try {
             e.preventDefault()
+            setIsLoading(true)
             const url = `${BASE_API_URL}/user/login`
             const payload = JSON.stringify({ email: email, password })
             const { data } = await axios.post<{
@@ -55,6 +60,60 @@ export default function Login() {
         } catch (error) {
             console.log(error);
             toast.error(`Something wrong`, { duration: 2000 })
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
+    const handleGoogleSignIn = async () => {
+        try {
+            setIsLoading(true)
+            const result = await signIn("google", {
+                redirect: false
+            })
+
+            if (result?.ok) {
+                // Get session data after successful sign in
+                const session = await getSession()
+                if (session?.user) {
+                    // Send user data to backend for processing
+                    const response = await axios.post(`${BASE_API_URL}/user/google-auth`, {
+                        email: session.user.email,
+                        name: session.user.name,
+                        googleId: session.user.id,
+                        picture: session.user.image,
+                    })
+
+                    const data = response.data
+                    if (data.status) {
+                        toast.success("Google login success", { duration: 2000 })
+
+                        // Store data in localStorage and cookies
+                        localStorage.setItem("token", data.token)
+                        localStorage.setItem("id", data.data.id.toString())
+                        localStorage.setItem("name", data.data.name)
+                        localStorage.setItem("role", data.data.role)
+                        localStorage.setItem("profile_picture", data.data.profile_picture || "")
+
+                        storeCookie("token", data.token)
+                        storeCookie("id", data.data.id.toString())
+                        storeCookie("name", data.data.name)
+                        storeCookie("role", data.data.role)
+                        storeCookie("profile_picture", data.data.profile_picture || "")
+
+                        setTimeout(() => router.replace("/"), 1000)
+                    } else {
+                        toast.error(data.message, { duration: 2000 })
+                    }
+                }
+            } else if (result?.error) {
+                toast.error("Failed to sign in with Google", { duration: 2000 })
+            }
+        } catch (error) {
+            console.error("Google sign in error:", error)
+            toast.error("Failed to sign in with Google", { duration: 2000 })
+        } finally {
+            setIsLoading(false)
         }
     }
 
@@ -105,15 +164,28 @@ export default function Login() {
                                     }
                                 </div>
                             </div>
-                            <button type="submit" className="mt-3 uppercase text-sm font-semibold bg-primary shadow-lg p-[10px]  hover:text-white duration-200 transition-all hover:scale-105  text-white py-2 rounded-full cursor-pointer">
-                                login
+                            <button type="submit" disabled={isLoading} className="mt-3 uppercase text-sm font-semibold bg-primary shadow-lg p-[10px] hover:text-white duration-200 transition-all hover:scale-105 text-white py-2 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                                {isLoading ? "Logging in..." : "login"}
                             </button>
+
+                            <p className="text-xs text-center text-slate-500 my-2">Or</p>
+
+                            <button
+                                type="button"
+                                onClick={handleGoogleSignIn}
+                                disabled={isLoading}
+                                className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 py-2 px-4 rounded-full font-medium transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
+                            >
+                                <FcGoogle className="text-lg" />
+                                {isLoading ? "Signing in..." : "Continue with Google"}
+                            </button>
+
                             <p className="text-xs text-center text-slate-500 my-2">Or</p>
                             <div className="flex flex-col justify-center text-center">
                                 <button onClick={() => { router.push("/auth/signup") }} className="uppercase text-sm text-primary border border-primary hover:scale-105 rounded-full py-2 cursor-pointer font-semibold duration-300 transition-all">create account</button>
                             </div>
                         </form>
-                    <Image src={siluet} alt="Logo" width={300} height={60} className=" object-cover absolute bottom-0 right-0 z-10" />
+                        <Image src={siluet} alt="Logo" width={300} height={60} className=" object-cover absolute bottom-0 right-0 z-10" />
                     </div>
                 </div>
             </div>
