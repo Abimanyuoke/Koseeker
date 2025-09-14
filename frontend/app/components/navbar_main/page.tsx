@@ -133,7 +133,6 @@ const NavbarMain = () => {
                   transition={{ duration: 0.3 }}
                   className="flex-1">
                   <div className="flex items-center gap-1 shadow-md border-[1px] border-[#48484819] p-2 rounded-lg">
-                    {/* icon kaca pembesar */}
                     <IoSearch className="text-2xl" />
                     <Search url={"/"} search={""} />
                     <button className="text-[16px] text-white cursor-pointer bg-primary font-bold px-8 py-2 rounded-sm">Cari</button>
