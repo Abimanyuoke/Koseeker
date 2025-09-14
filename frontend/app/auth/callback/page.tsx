@@ -20,6 +20,10 @@ export default function AuthCallback() {
         }
 
         if (session?.accessToken) {
+            // Debug: Log the session data
+            console.log("Session data:", session)
+            console.log("Profile picture from session:", session.user?.image)
+
             // Session exists with backend token, store in localStorage and cookies
             localStorage.setItem("token", session.accessToken)
             localStorage.setItem("id", session.userId || "")

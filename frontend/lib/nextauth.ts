@@ -32,12 +32,14 @@ export const authOptions: NextAuthOptions = {
                     })
 
                     const data = await response.json()
-                    
+
                     if (data.status) {
                         // Store token in user object to be accessible in session
                         user.token = data.token
                         user.userId = data.data.id
                         user.role = data.data.role
+                        // Use the profile picture URL from Google if available, fallback to backend data
+                        user.image = user.image || data.data.profile_picture
                         return true
                     }
                     return false
