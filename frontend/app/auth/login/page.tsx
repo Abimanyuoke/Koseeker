@@ -68,51 +68,13 @@ export default function Login() {
     const handleGoogleSignIn = async () => {
         try {
             setIsLoading(true)
-            const result = await signIn("google", {
-                redirect: false
+            // Use callbackUrl to redirect after successful login
+            await signIn("google", {
+                callbackUrl: "/auth/callback"
             })
-
-            if (result?.ok) {
-                // Get session data after successful sign in
-                const session = await getSession()
-                if (session?.user) {
-                    // Send user data to backend for processing
-                    const response = await axios.post(`${BASE_API_URL}/user/google-auth`, {
-                        email: session.user.email,
-                        name: session.user.name,
-                        googleId: session.user.id,
-                        picture: session.user.image,
-                    })
-
-                    const data = response.data
-                    if (data.status) {
-                        toast.success("Google login success", { duration: 2000 })
-
-                        // Store data in localStorage and cookies
-                        localStorage.setItem("token", data.token)
-                        localStorage.setItem("id", data.data.id.toString())
-                        localStorage.setItem("name", data.data.name)
-                        localStorage.setItem("role", data.data.role)
-                        localStorage.setItem("profile_picture", data.data.profile_picture || "")
-
-                        storeCookie("token", data.token)
-                        storeCookie("id", data.data.id.toString())
-                        storeCookie("name", data.data.name)
-                        storeCookie("role", data.data.role)
-                        storeCookie("profile_picture", data.data.profile_picture || "")
-
-                        setTimeout(() => router.replace("/"), 1000)
-                    } else {
-                        toast.error(data.message, { duration: 2000 })
-                    }
-                }
-            } else if (result?.error) {
-                toast.error("Failed to sign in with Google", { duration: 2000 })
-            }
         } catch (error) {
             console.error("Google sign in error:", error)
             toast.error("Failed to sign in with Google", { duration: 2000 })
-        } finally {
             setIsLoading(false)
         }
     }
