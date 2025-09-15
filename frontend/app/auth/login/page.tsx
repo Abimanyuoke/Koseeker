@@ -88,10 +88,10 @@ export default function Login() {
                 <path fill="#1baa" d="M37,-42.5C44.8,-29.1,45.9,-14.6,44.4,-1.5C42.9,11.6,38.8,23.1,30.9,30.5C23.1,37.9,11.6,41.2,-5.4,46.6C-22.4,52,-44.7,59.5,-54.4,52.1C-64.2,44.7,-61.3,22.4,-59,2.3C-56.7,-17.8,-55.1,-35.6,-45.3,-48.9C-35.6,-62.3,-17.8,-71.2,-1.6,-69.6C14.6,-68,29.1,-55.8,37,-42.5Z" transform="translate(100 100)" />
             </svg>
             <div className="w-full h-full flex justify-center items-center relative">
-                <div className="absolute flex max-h-[90%]">
+                <div className="absolute flex">
                     <div className="relative">
                         <div className="relative">
-                            <Image src={imgLogin} alt="Image Login" width={680} className="bg-cover rounded-l-lg" />
+                            <Image src={imgLogin} alt="Image Login" width={680} height={600} className="h-[605px] rounded-l-lg" />
                         </div>
                         <div className="absolute w-full">
                             <span className="absolute bottom-0 w-full h-[300px] bg-gradient-to-t opacity-30 from-black via-black to-transparent">{""}</span>
@@ -103,7 +103,7 @@ export default function Login() {
                             </div>
                         </div>
                     </div>
-                    <div className="w-3/5 p-10 bg-white rounded-r-lg relative">
+                    <div className="w-3/5 px-10 py-20 bg-white rounded-r-lg relative">
                         <div className="flex flex-col items-center justify-center mb-4">
                             <Image src={logo} alt="Logo" width={60} height={60} className="w-16 h-16 object-cover" />
                             <h1 className="text-2xl font-semibold ">
@@ -129,6 +129,9 @@ export default function Login() {
                             <button type="submit" disabled={isLoading} className="mt-3 uppercase text-sm font-semibold bg-primary shadow-lg p-[10px] hover:text-white duration-200 transition-all hover:scale-105 text-white py-2 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                                 {isLoading ? "Logging in..." : "login"}
                             </button>
+                            <div className="flex flex-col justify-center text-center">
+                                <button onClick={() => { router.push("/auth/signup") }} className="uppercase text-sm text-primary border border-primary hover:scale-105 rounded-full py-2 cursor-pointer font-semibold duration-300 transition-all">create account</button>
+                            </div>
                             <p className="text-xs text-center text-slate-500 my-2">Or</p>
                             <button
                                 type="button"
@@ -139,10 +142,6 @@ export default function Login() {
                                 {isLoading ? "Signing in..." : "Continue with Google"}
                             </button>
 
-                            <p className="text-xs text-center text-slate-500 my-2">Or</p>
-                            <div className="flex flex-col justify-center text-center">
-                                <button onClick={() => { router.push("/auth/signup") }} className="uppercase text-sm text-primary border border-primary hover:scale-105 rounded-full py-2 cursor-pointer font-semibold duration-300 transition-all">create account</button>
-                            </div>
                         </form>
                         <Image src={siluet} alt="Logo" width={300} height={60} className=" object-cover absolute bottom-0 right-0 z-10" />
                     </div>
