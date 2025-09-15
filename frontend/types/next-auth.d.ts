@@ -30,5 +30,6 @@ declare module "next-auth/jwt" {
         accessToken?: string
         userId?: string
         role?: string
+        profilePicture?: string
     }
 }

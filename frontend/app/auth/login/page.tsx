@@ -13,7 +13,7 @@ import Image from "next/image";
 import imgLogin from "../../../public/images/kosimage.jpeg";
 import logo from "../../../public/images/logo.svg";
 import siluet from "../../../public/images/siluetKota.png";
-import { signIn, getSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 
 export default function Login() {
@@ -129,15 +129,12 @@ export default function Login() {
                             <button type="submit" disabled={isLoading} className="mt-3 uppercase text-sm font-semibold bg-primary shadow-lg p-[10px] hover:text-white duration-200 transition-all hover:scale-105 text-white py-2 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                                 {isLoading ? "Logging in..." : "login"}
                             </button>
-
                             <p className="text-xs text-center text-slate-500 my-2">Or</p>
-
                             <button
                                 type="button"
                                 onClick={handleGoogleSignIn}
                                 disabled={isLoading}
-                                className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 py-2 px-4 rounded-full font-medium transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
+                                className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 py-2 px-4 rounded-full font-medium transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
                                 <FcGoogle className="text-lg" />
                                 {isLoading ? "Signing in..." : "Continue with Google"}
                             </button>

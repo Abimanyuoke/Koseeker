@@ -36,17 +36,19 @@ const NavbarMain = () => {
   // Function to get correct profile image URL
   const getProfileImageUrl = (profilePicture: string) => {
     if (!profilePicture) {
+      console.log("No profile picture, returning default avatar");
       // Return default avatar if no profile picture
       return "data:image/svg+xml,%3csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3clinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3e%3cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3e%3cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3e%3c/linearGradient%3e%3c/defs%3e%3crect width='100' height='100' fill='url(%23grad)' /%3e%3ctext x='50' y='50' font-family='Arial, sans-serif' font-size='36' fill='white' text-anchor='middle' dominant-baseline='middle'%3e👤%3c/text%3e%3c/svg%3e";
     }
 
     // Check if it's a Google profile picture URL (starts with https://)
     if (profilePicture.startsWith('https://')) {
-      return profilePicture;
     }
 
     // If it's a local file, use the BASE_IMAGE_PROFILE path
-    return `${BASE_IMAGE_PROFILE}/${profilePicture}`;
+    const localPath = `${BASE_IMAGE_PROFILE}/${profilePicture}`;
+    console.log("Local file detected, returning:", localPath);
+    return localPath;
   };
 
   const handleLogout = () => {
@@ -56,7 +58,6 @@ const NavbarMain = () => {
     removeCookie("name");
     removeCookie("role");
     removeCookie("profile_picture");
-
     // Hapus localStorage menggunakan utility function
     clearAuthData();
 
@@ -84,9 +85,17 @@ const NavbarMain = () => {
   }, []);
 
   useEffect(() => {
-    setProfile(getCookies("profile_picture") || "");
-    setUser(getCookies("name") || "");
-    setRole(getCookies("role") || "");
+    const profilePicture = getCookies("profile_picture") || "";
+    const userName = getCookies("name") || "";
+    const userRole = getCookies("role") || "";
+
+    console.log("Navbar useEffect - Profile picture from cookies:", profilePicture);
+    console.log("Navbar useEffect - User name:", userName);
+    console.log("Navbar useEffect - User role:", userRole);
+
+    setProfile(profilePicture);
+    setUser(userName);
+    setRole(userRole);
   }, []);
 
   const handlePopup = (state?: boolean) => {
@@ -221,12 +230,19 @@ const NavbarMain = () => {
             </div>
 
             <button className='cursor-pointer' onClick={() => handlePopup()}>
-              <img
+              <Image
                 src={getProfileImageUrl(profile)}
                 alt="profile image"
                 width={40}
                 height={40}
-                className="rounded-full" />
+                className="rounded-full"
+                onError={(e) => {
+                  console.error("Error loading profile image:", e);
+                  console.log("Failed to load image:", getProfileImageUrl(profile));
+                }}
+                onLoad={() => {
+                  console.log("Profile image loaded successfully:", getProfileImageUrl(profile));
+                }} />
             </button>
 
             <AnimatePresence>
@@ -248,7 +264,11 @@ const NavbarMain = () => {
                     <img
                       src={getProfileImageUrl(profile)}
                       alt='profile'
-                      className='w-10 h-10 rounded-full object-cover border-2 border-primary' />
+                      className='w-10 h-10 rounded-full object-cover border-2 border-primary'
+                      onError={(e) => {
+                        console.error("Error loading dropdown profile image:", e);
+                        e.currentTarget.src = "data:image/svg+xml,%3csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3clinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3e%3cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3e%3cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3e%3c/linearGradient%3e%3c/defs%3e%3crect width='100' height='100' fill='url(%23grad)' /%3e%3ctext x='50' y='50' font-family='Arial, sans-serif' font-size='36' fill='white' text-anchor='middle' dominant-baseline='middle'%3e👤%3c/text%3e%3c/svg%3e";
+                      }} />
                     <div>
                       <p className='text-sm font-semibold text-gray-700'>{user}</p>
                       <p className='text-xs text-gray-500 dark:text-gray-400'>{role}</p>
