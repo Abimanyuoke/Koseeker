@@ -1,1 +1,2 @@
 Update:
+1. untuk navbar bisa digunakan ketika  turun maka akan blur
