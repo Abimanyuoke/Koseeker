@@ -4,3 +4,4 @@ Update:
 3. untuk dibawah kos itu bisa ditambahkan untuk fasikitas.
 4. tambahkan untuk data kos dan gambar.
 5. menambah fitur kampus dekat dan kota
+6. deploy lewat vercel (frontend) dan supabase (backend)
