@@ -1,2 +1,3 @@
 Update:
-1. untuk navbar bisa digunakan ketika  turun maka akan blur
+1. untuk navbar bisa digunakan ketika  turun maka akan blur.
+2. transaksi bisa untuk  mengikuti.
