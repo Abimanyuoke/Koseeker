@@ -3,3 +3,4 @@ Update:
 2. transaksi bisa untuk  mengikuti.
 3. untuk dibawah kos itu bisa ditambahkan untuk fasikitas.
 4. tambahkan untuk data kos dan gambar.
+5. menambah fitur kampus dekat dan kota
