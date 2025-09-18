@@ -48,3 +48,23 @@ export function CustomArrows(props: { next: () => void; prev: () => void }) {
     );
 }
 
+export function ArrowKos(props: { next: () => void; prev: () => void }) {
+    const { next, prev } = props;
+
+    return (
+        <div className=" mt-4 flex items-center gap-3 z-10">
+            <button
+                onClick={prev}
+                className="bg-white shadow-lg shadow-gray-400/50 ring-1 ring-gray-300/30 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer">
+                <SlArrowLeft className="text-gray-700 text-xl" />
+            </button>
+
+            <button
+                onClick={next}
+                className="bg-white shadow-lg shadow-gray-400/50 ring-1 ring-gray-300/30 w-10 h-10 flex items-center justify-center rounded-full cursor-pointer">
+                <SlArrowRight className="text-gray-700 text-xl" />
+            </button>
+        </div>
+    );
+}
+
