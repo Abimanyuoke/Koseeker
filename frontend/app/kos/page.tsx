@@ -189,20 +189,18 @@ const KosPage = () => {
                                                     unoptimized />
 
                                                 {hasMultipleImages && (
-                                                    <>
+                                                    <div>
                                                         <button
                                                             onClick={(e) => handlePrevImage(e, kos.id, kos.images.length)}
-                                                            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-                                                        >
+                                                            className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                                                             <FaChevronLeft className="text-sm" />
                                                         </button>
                                                         <button
                                                             onClick={(e) => handleNextImage(e, kos.id, kos.images.length)}
-                                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-                                                        >
+                                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                                                             <FaChevronRight className="text-sm" />
                                                         </button>
-                                                    </>
+                                                    </div>
                                                 )}
 
                                                 {hasMultipleImages && (
@@ -264,8 +262,7 @@ const KosPage = () => {
                                                         <div
                                                             key={facility.id}
                                                             className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-lg"
-                                                            title={facility.facility}
-                                                        >
+                                                            title={facility.facility}>
                                                             {getFacilityIcon(facility.facility)}
                                                             <span className="text-xs text-gray-600 truncate max-w-16">
                                                                 {facility.facility.length > 8
@@ -288,7 +285,7 @@ const KosPage = () => {
 
                                         <div className="flex items-baseline gap-1">
                                             {kos.discountPercent && kos.discountPercent > 0 ? (
-                                                <>
+                                                <div>
                                                     <span className="text-xl font-bold text-red-500">
                                                         Rp {formatPrice(kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100))}
                                                     </span>
@@ -298,7 +295,7 @@ const KosPage = () => {
                                                     <span className="text-sm text-gray-500">
                                                         /bulan
                                                     </span>
-                                                </>
+                                                </div>
                                             ) : (
                                                 <>
                                                     <span className="text-xl font-bold text-green-600">
