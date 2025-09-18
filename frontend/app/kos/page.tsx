@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { IKos } from "@/app/types";
 import { getCookies } from "@/lib/client-cookies";
@@ -13,11 +13,29 @@ import Select from "../components/select";
 import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { MdLocalLaundryService, MdSecurity } from "react-icons/md";
 import { GiCook } from "react-icons/gi";
+import Slider from "react-slick";
+// import 'slick-carousel/slick/slick.css';
+// import 'slick-carousel/slick/slick-theme.css';
+import { CustomArrows } from "../components/arrow";
 
 const KosPage = () => {
     const searchParams = useSearchParams();
     const search = searchParams.get("search") || "";
     const router = useRouter();
+
+    // Slider untuk kos
+    const sliderRef = useRef<Slider | null>(null);
+
+    const settings = {
+        dots: false,
+        lazyLoad: "ondemand" as const,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 2.1,
+        slidesToScroll: 1,
+        initialSlide: 2,
+        arrow: false
+    };
 
     // Daftar kota berdasarkan enum Kota di Prisma
     const kotaOptions = [
@@ -133,21 +151,29 @@ const KosPage = () => {
                             </div>
                         </div>
 
-                        <div className="w-full md:w-64">
-                            <Select
-                                id="kota-select"
-                                value={selectedKota}
-                                onChange={(value) => setSelectedKota(value)}
-                                label="Pilih Kota"
-                                className="text-gray-900">
-                                <option value="all">Semua Kota</option>
-                                {kotaOptions.map((kota) => (
-                                    <option key={kota} value={kota}>
-                                        {kota}
-                                    </option>
-                                ))}
-                            </Select>
+                        <div>
+                            <div className="w-full md:w-64">
+                                <Select
+                                    id="kota-select"
+                                    value={selectedKota}
+                                    onChange={(value) => setSelectedKota(value)}
+                                    label="Pilih Kota"
+                                    className="text-gray-900">
+                                    <option value="all">Semua Kota</option>
+                                    {kotaOptions.map((kota) => (
+                                        <option key={kota} value={kota}>
+                                            {kota}
+                                        </option>
+                                    ))}
+                                </Select>
+                            </div>
+                            <div>
+                                <CustomArrows
+                                    next={() => sliderRef.current?.slickNext()}
+                                    prev={() => sliderRef.current?.slickPrev()} />
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>            {/* ----------------- KOS CARDS ----------------- */}
@@ -166,7 +192,9 @@ const KosPage = () => {
                         </AlertToko>
                     </div>
                 ) : (
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    <div>
+                        {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"> */}
+                        <Slider ref={sliderRef} {...settings}>
                         {kosData.map((kos) => {
                             const currentImageIndex = imageIndexes[kos.id] || 0;
                             const hasMultipleImages = kos.images && kos.images.length > 1;
@@ -315,6 +343,7 @@ const KosPage = () => {
                                 </div>
                             );
                         })}
+                        </Slider>
                     </div>
                 )}
             </div>
