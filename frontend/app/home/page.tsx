@@ -1,6 +1,7 @@
 "use client"
 
 import React from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import Search from "./search";
 import { IoSearch } from "react-icons/io5";
@@ -8,17 +9,17 @@ import { CustomArrows } from "../components/arrow";
 import Kos from "../kos/page";
 import bild from "../../public/images/building.svg";
 import Slider from "react-slick";
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import KosPromoPage from "../kos_promo/page";
 import Blog from "../components/blog";
 import KosArea from "../components/kos_area";
 import KampusArea from "../components/kampus";
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 
 export default function Home() {
 
-    const sliderRef = React.useRef<Slider | null>(null);
+    const sliderRef = useRef<Slider | null>(null);
 
     const settings = {
         dots: false,
@@ -112,7 +113,6 @@ export default function Home() {
             <Kos />
             <KosPromoPage />
             <Blog />
-
             {/* Area Kota */}
             <div className="py-20">
                 <KosArea/>

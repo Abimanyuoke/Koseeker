@@ -139,8 +139,7 @@ const KosPage = () => {
                                 value={selectedKota}
                                 onChange={(value) => setSelectedKota(value)}
                                 label="Pilih Kota"
-                                className="text-gray-900"
-                            >
+                                className="text-gray-900">
                                 <option value="all">Semua Kota</option>
                                 {kotaOptions.map((kota) => (
                                     <option key={kota} value={kota}>
@@ -176,8 +175,7 @@ const KosPage = () => {
                                 <div
                                     key={kos.id}
                                     className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer group transform hover:-translate-y-1"
-                                    onClick={() => router.push(`/kos/${kos.id}`)}
-                                >
+                                    onClick={() => router.push(`/kos/${kos.id}`)}>
                                     <div className="relative h-48 overflow-hidden">
                                         {kos.images && kos.images.length > 0 ? (
                                             <div>
@@ -297,14 +295,14 @@ const KosPage = () => {
                                                     </span>
                                                 </div>
                                             ) : (
-                                                <>
+                                                <div>
                                                     <span className="text-xl font-bold text-green-600">
                                                         Rp {formatPrice(kos.pricePerMonth)}
                                                     </span>
                                                     <span className="text-sm text-gray-500">
                                                         /bulan
                                                     </span>
-                                                </>
+                                                </div>
                                             )}
                                         </div>
 
