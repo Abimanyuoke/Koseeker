@@ -241,11 +241,11 @@ export const getKosById = async (request: Request, response: Response) => {
 
 export const createKos = async (req: Request, res: Response) => {
     try {
-        const { userId, name, address, pricePerMonth, discountPercent, gender, kampus, kota, kalender, images, facilities } = req.body;
+        const { userId, name, address, pricePerMonth, discountPercent, gender, kampus, kota, kalender, facilities } = req.body;
 
         console.log('=== CREATE KOS DEBUG ===');
         console.log('Full request body:', req.body);
-        console.log('Request headers:', req.headers);
+        console.log('Files:', req.files);
         console.log('Received discountPercent:', discountPercent, 'Type:', typeof discountPercent);
 
         // Robust validation for discountPercent
@@ -257,7 +257,23 @@ export const createKos = async (req: Request, res: Response) => {
             }
         }
 
+        // Parse facilities from JSON string if provided
+        let facilitiesData = [];
+        if (facilities) {
+            try {
+                facilitiesData = JSON.parse(facilities);
+            } catch (error) {
+                console.error('Error parsing facilities:', error);
+            }
+        }
+
+        // Get uploaded images from multer
+        const uploadedFiles = req.files as Express.Multer.File[];
+        const imagesData = uploadedFiles?.map(file => ({ file: file.filename })) || [];
+
         console.log('Processed discountPercent:', validDiscountPercent);
+        console.log('Facilities data:', facilitiesData);
+        console.log('Images data:', imagesData);
         console.log('========================');
 
         const newKos = await prisma.kos.create({
@@ -272,10 +288,10 @@ export const createKos = async (req: Request, res: Response) => {
                 kota,
                 kalender,
                 images: {
-                    create: images?.map((img: { file: any; }) => ({ file: img.file })) || []
+                    create: imagesData
                 },
                 facilities: {
-                    create: facilities?.map((fac: { facility: any; }) => ({ facility: fac.facility })) || []
+                    create: facilitiesData.map((fac: { facility: any; }) => ({ facility: fac.facility }))
                 }
             },
             include: {
@@ -290,6 +306,7 @@ export const createKos = async (req: Request, res: Response) => {
             data: newKos
         });
     } catch (error) {
+        console.error('Create Kos Error:', error);
         res.status(500).json({
             status: false,
             message: (error instanceof Error) ? error.message : String(error)
@@ -301,9 +318,9 @@ export const createKos = async (req: Request, res: Response) => {
 export const updateKos = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
-        const { name, pricePerMonth, discountPercent, gender, address } = request.body;
+        const { name, pricePerMonth, discountPercent, gender, address, kampus, kota, kalender } = request.body;
 
-        console.log('Update - Received discountPercent:', discountPercent, 'Type:', typeof discountPercent); // Debug log
+        console.log('Update Kos - Request body:', request.body);
 
         const findKos = await prisma.kos.findFirst({
             where: { id: Number(id) },
@@ -314,18 +331,28 @@ export const updateKos = async (request: Request, response: Response) => {
             return response.status(404).json({ status: false, message: `Kos is not found` });
         }
 
+        // Prepare update data
+        const updateData: any = {};
+
+        if (name !== undefined) updateData.name = name;
+        if (address !== undefined) updateData.address = address;
+        if (pricePerMonth !== undefined) updateData.pricePerMonth = Number(pricePerMonth);
+        if (gender !== undefined) updateData.gender = gender;
+        if (kampus !== undefined) updateData.kampus = kampus;
+        if (kota !== undefined) updateData.kota = kota;
+        if (kalender !== undefined) updateData.kalender = kalender;
+
+        // Handle discountPercent
+        if (discountPercent !== undefined) {
+            updateData.discountPercent = (discountPercent !== null && discountPercent !== '')
+                ? Number(discountPercent)
+                : null;
+        }
+
         // Update data utama kos
         const updatedKos = await prisma.kos.update({
             where: { id: Number(id) },
-            data: {
-                name: name || findKos.name,
-                pricePerMonth: pricePerMonth ? Number(pricePerMonth) : findKos.pricePerMonth,
-                discountPercent: discountPercent !== undefined
-                    ? (discountPercent !== null && discountPercent !== '' ? Number(discountPercent) : null)
-                    : findKos.discountPercent,
-                gender: gender || findKos.gender,
-                address: address || findKos.address
-            }
+            data: updateData
         });
 
         // Kalau ada file gambar baru

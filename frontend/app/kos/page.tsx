@@ -70,7 +70,7 @@ const KosPage = () => {
     /** ---------- STATE ---------- */
     const [kosData, setKosData] = useState<IKos[]>([]);
     const [loading, setLoading] = useState(true);
-    const [selectedKota, setSelectedKota] = useState<string>("Jakarta"); // Default kota
+    const [selectedKota, setSelectedKota] = useState<string>("all");
     const [imageIndexes, setImageIndexes] = useState<{ [key: number]: number }>({});
 
     /** ---------- FETCH KOS DATA ---------- */
@@ -124,19 +124,19 @@ const KosPage = () => {
         }
     };
 
-    const getFacilityIcon = (facility: string) => {
-        const facilityLower = facility.toLowerCase();
-        if (facilityLower.includes('wifi') || facilityLower.includes('internet')) return <FaWifi className="text-blue-500" />;
-        if (facilityLower.includes('kasur') || facilityLower.includes('bed')) return <FaBed className="text-green-500" />;
-        if (facilityLower.includes('parkir') || facilityLower.includes('parking')) return <FaCar className="text-gray-500" />;
-        if (facilityLower.includes('tv') || facilityLower.includes('television')) return <FaTv className="text-purple-500" />;
-        if (facilityLower.includes('ac') || facilityLower.includes('air conditioning')) return <FaSnowflake className="text-cyan-500" />;
-        if (facilityLower.includes('kamar mandi') || facilityLower.includes('bathroom')) return <FaShower className="text-blue-400" />;
-        if (facilityLower.includes('laundry') || facilityLower.includes('cuci')) return <MdLocalLaundryService className="text-indigo-500" />;
-        if (facilityLower.includes('dapur') || facilityLower.includes('kitchen')) return <GiCook className="text-orange-500" />;
-        if (facilityLower.includes('security') || facilityLower.includes('keamanan')) return <MdSecurity className="text-red-500" />;
-        return <div className="w-4 h-4 bg-gray-400 rounded-full"></div>;
-    };
+    // const getFacilityIcon = (facility: string) => {
+    //     const facilityLower = facility.toLowerCase();
+    //     if (facilityLower.includes('wifi') || facilityLower.includes('internet')) return <FaWifi className="text-blue-500" />;
+    //     if (facilityLower.includes('kasur') || facilityLower.includes('bed')) return <FaBed className="text-green-500" />;
+    //     if (facilityLower.includes('parkir') || facilityLower.includes('parking')) return <FaCar className="text-gray-500" />;
+    //     if (facilityLower.includes('tv') || facilityLower.includes('television')) return <FaTv className="text-purple-500" />;
+    //     if (facilityLower.includes('ac') || facilityLower.includes('air conditioning')) return <FaSnowflake className="text-cyan-500" />;
+    //     if (facilityLower.includes('kamar mandi') || facilityLower.includes('bathroom')) return <FaShower className="text-blue-400" />;
+    //     if (facilityLower.includes('laundry') || facilityLower.includes('cuci')) return <MdLocalLaundryService className="text-indigo-500" />;
+    //     if (facilityLower.includes('dapur') || facilityLower.includes('kitchen')) return <GiCook className="text-orange-500" />;
+    //     if (facilityLower.includes('security') || facilityLower.includes('keamanan')) return <MdSecurity className="text-red-500" />;
+    //     return <div className="w-4 h-4 bg-gray-400 rounded-full"></div>;
+    // };
 
     const handlePrevImage = (e: React.MouseEvent, kosId: number, totalImages: number) => {
         e.stopPropagation();
@@ -200,7 +200,8 @@ const KosPage = () => {
 
                     </div>
                 </div>
-            </div>            {/* ----------------- KOS CARDS ----------------- */}
+            </div>
+            {/* ----------------- KOS CARDS ----------------- */}
             <div className="max-w-6xl mx-auto py-8">
                 {loading ? (
                     <div className="flex items-center justify-center min-h-[250px]">
@@ -253,7 +254,7 @@ const KosPage = () => {
                                                             </div>
                                                         )}
 
-                                                        {hasMultipleImages && (
+                                                        {/* {hasMultipleImages && (
                                                             <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-1">
                                                                 {kos.images.map((_, index) => (
                                                                     <div
@@ -265,7 +266,7 @@ const KosPage = () => {
                                                                     />
                                                                 ))}
                                                             </div>
-                                                        )}
+                                                        )} */}
                                                     </div>
                                                 ) : (
                                                     <div className="w-full h-[200px] bg-gray-200 flex items-center justify-center">
@@ -304,16 +305,39 @@ const KosPage = () => {
 
                                                 {kos.facilities && kos.facilities.length > 0 && (
                                                     <div className="mb-4">
-                                                        <h4 className="text-sm font-semibold text-gray-700 mb-2">
-                                                            Fasilitas:
-                                                        </h4>
-                                                        <div className="flex flex-wrap gap-2">
+                                                        <div className="flex flex-wrap gap-1">
                                                             {kos.facilities.slice(0, 4).map((facility, index) => (
                                                                 <div
                                                                     key={facility.id}
-                                                                    className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-lg"
+                                                                    className="flex items-center gap-1 rounded-lg"
                                                                     title={facility.facility}>
-                                                                    {getFacilityIcon(facility.facility)}
+                                                                    {/* Icon lingkaran kecil muncul kalau bukan index pertama */}
+                                                                    {index > 0 && (
+                                                                        <span className="w-1 h-1 rounded-full bg-gray-400"></span>
+                                                                    )}
+                                                                    <span className="text-xs text-gray-600 truncate max-w-16">
+                                                                        {facility.facility.length > 8
+                                                                            ? facility.facility.substring(0, 8) + "..."
+                                                                            : facility.facility}
+                                                                    </span>
+                                                                </div>
+                                                            ))}
+
+                                                            {kos.facilities.length > 4 && (
+                                                                <div className="flex items-center justify-center bg-gray-100 px-2 py-1 rounded-lg">
+                                                                    <span className="text-xs text-gray-600">
+                                                                        +{kos.facilities.length - 4}
+                                                                    </span>
+                                                                </div>
+                                                            )}
+                                                        </div>
+
+                                                        {/* <div className="flex flex-wrap gap-2">
+                                                            {kos.facilities.slice(0, 4).map((facility, index) => (
+                                                                <div
+                                                                    key={facility.id}
+                                                                    className="gap-1 rounded-lg "
+                                                                    title={facility.facility}>
                                                                     <span className="text-xs text-gray-600 truncate max-w-16">
                                                                         {facility.facility.length > 8
                                                                             ? facility.facility.substring(0, 8) + "..."
@@ -329,7 +353,7 @@ const KosPage = () => {
                                                                     </span>
                                                                 </div>
                                                             )}
-                                                        </div>
+                                                        </div> */}
                                                     </div>
                                                 )}
 

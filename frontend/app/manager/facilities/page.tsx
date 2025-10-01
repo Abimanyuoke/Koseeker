@@ -31,13 +31,29 @@ export default function FacilitiesKosListPage() {
 
     const fetchKos = async () => {
         try {
-            const response = await fetch(`${BASE_API_URL}/kos?ownerId=${user?.id}`)
+            console.log('Fetching kos for user:', user?.id)
+            const response = await fetch(`${BASE_API_URL}/kos`)
             if (!response.ok) throw new Error('Gagal memuat data kos')
             const result = await response.json()
-            // Filtering kalau backend belum support ownerId query
-            const filtered = (result.data || []).filter((k: any) => k.userId === user?.id)
+
+            console.log('All kos data:', result.data)
+            console.log('User ID for filtering:', user?.id, 'Type:', typeof user?.id)
+
+            // Filtering kos berdasarkan userId (owner) - konversi ke number untuk perbandingan
+            const userIdNumber = Number(user?.id)
+            const filtered = (result.data || []).filter((k: any) => {
+                console.log(`Kos ${k.name} - userId: ${k.userId} (${typeof k.userId}), userIdNumber: ${userIdNumber} (${typeof userIdNumber}), match: ${k.userId === userIdNumber}`)
+                return k.userId === userIdNumber
+            })
+
+            console.log('Filtered kos:', filtered)
             setKosList(filtered)
+
+            if (filtered.length === 0) {
+                toast.info('Anda belum memiliki kos. Silakan tambahkan kos terlebih dahulu.')
+            }
         } catch (error: any) {
+            console.error('Error fetching kos:', error)
             toast.error(error.message || 'Gagal memuat data kos')
         } finally {
             setLoading(false)
