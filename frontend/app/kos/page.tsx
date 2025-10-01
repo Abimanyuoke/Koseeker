@@ -268,7 +268,7 @@ const KosPage = () => {
                                                         )}
                                                     </div>
                                                 ) : (
-                                                    <div className="w-full h-[150px] bg-gray-200 flex items-center justify-center">
+                                                    <div className="w-full h-[200px] bg-gray-200 flex items-center justify-center">
                                                         <span className="text-gray-400">No Image</span>
                                                     </div>
                                                 )}

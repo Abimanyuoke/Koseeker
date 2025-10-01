@@ -99,7 +99,7 @@ export default function Home() {
                     </div>
                     <div className="flex justify-between items-center bg-white shadow-lg rounded-lg p-7 gap-3">
                         <div className="flex flex-col space-y-2">
-                            <h1 className="font-black text-2xl">Kos Dikelola Mamikos, Terjamin Nyaman</h1>
+                            <h1 className="font-black text-2xl">Kos Dikelola Koseeker, Terjamin Nyaman</h1>
                             <p className="text-base font-normal">Disurvey langsung oleh Mamikos. Lokasi terverifikasi, bangunan kos lolos seleksi.</p>
                         </div>
                         <div className="flex items-center gap-8">
