@@ -45,7 +45,7 @@ const editKosSchema = Joi.object({
     name: Joi.string().optional(),
     address: Joi.string().optional(),
     pricePerMonth: Joi.number().min(0).optional(),
-    discountPercent: Joi.number().min(0).max(100).optional(),
+    discountPercent: Joi.number().allow(null).optional(),
     gender: Joi.string().valid('male', 'female', 'all').optional(),
     kampus: Joi.string().valid(
         "UGM", "UNDIP", "UNPAD", "STAN", "UNAIR", "UB", "UI", "ITS", "ITB",

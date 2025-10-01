@@ -258,7 +258,9 @@ export const createKos = async (req: Request, res: Response) => {
         }
 
         console.log('Processed discountPercent:', validDiscountPercent);
-        console.log('========================'); const newKos = await prisma.kos.create({
+        console.log('========================');
+
+        const newKos = await prisma.kos.create({
             data: {
                 userId: Number(userId),
                 name,

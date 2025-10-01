@@ -9,6 +9,7 @@ import LikeRoute from './routers/likeRoute'
 import ReviewRoute from './routers/reviewRoute'
 import BookRoute from './routers/bookRoute'
 import KosFacilitiesRoute from './routers/kosFacilitiesRoute'
+import KosImageRoute from './routers/kosImageRoute'
 import BookingCalendarRoute from './routers/bookingCalendarRoute'
 import NotificationRoute from './routers/notificationRoute'
 // import OrderRoute from '../../orderRoute'
@@ -56,10 +57,9 @@ app.use(`/like`, LikeRoute)
 app.use(`/review`, ReviewRoute)
 app.use(`/books`, BookRoute)  // Changed from /book to /books to match frontend
 app.use(`/facilities`, KosFacilitiesRoute)
+app.use(`/kos-images`, KosImageRoute)
 app.use(`/booking-calendar`, BookingCalendarRoute)
 app.use(`/notifications`, NotificationRoute)
-// app.use(`/order`, OrderRoute)
-// app.use(`/report`, ReportRoute)
 
 // Set public folder as static
 app.use(express.static(path.join(__dirname, '..', 'public')));
