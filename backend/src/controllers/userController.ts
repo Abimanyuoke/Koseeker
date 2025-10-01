@@ -273,6 +273,8 @@ export const googleAuthentication = async (request: Request, response: Response)
     try {
         const { email, name, googleId, picture } = request.body /** get requested data from Google OAuth */
 
+        console.log('Google Auth - Received data:', { email, name, googleId, picture })
+
         /** check if user exists with this email */
         let findUser = await prisma.user.findFirst({
             where: { email }
@@ -292,6 +294,16 @@ export const googleAuthentication = async (request: Request, response: Response)
                     phone: ''
                 }
             })
+        } else {
+            /** if user exists, update profile picture if it's from Google */
+            if (picture && picture.startsWith('https://')) {
+                findUser = await prisma.user.update({
+                    where: { id: findUser.id },
+                    data: {
+                        profile_picture: picture
+                    }
+                })
+            }
         }
 
         let data = {
@@ -301,6 +313,8 @@ export const googleAuthentication = async (request: Request, response: Response)
             role: findUser.role,
             profile_picture: findUser.profile_picture,
         }
+
+        console.log('Google Auth - Returning user data:', data)
 
         /** define payload to generate token */
         let payload = JSON.stringify(data)

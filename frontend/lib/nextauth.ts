@@ -41,8 +41,8 @@ export const authOptions: NextAuthOptions = {
                         user.token = data.token
                         user.userId = data.data.id
                         user.role = data.data.role
-                        // Ensure profile picture is the Google image URL
-                        user.image = user.image
+                        // Use profile picture from backend response (which should be Google URL)
+                        user.image = data.data.profile_picture || user.image
                         return true
                     }
                     return false
