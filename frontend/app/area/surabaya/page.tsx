@@ -219,8 +219,6 @@ const SurabayaKosPage = () => {
 
     return (
         <div>
-            <Navbar />
-
             {/* Promo Section - Outside container for full width */}
             <PromoSection city="Surabaya" />
 

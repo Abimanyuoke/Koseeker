@@ -25,11 +25,9 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${lato.variable}`}>
-        <Navbar />
         <Providers>
           {children}
         </Providers>
-        <Footer/>
       </body>
     </html>
   );

@@ -259,8 +259,7 @@ const UGMKosPage = () => {
                                     value={selectedKalender}
                                     onChange={handleKalenderChange}
                                     label="Periode Sewa"
-                                    className="bg-white border-gray-300"
-                                >
+                                    className="bg-white border-gray-300">
                                     {kalenderOptions.map((option) => (
                                         <option key={option.value} value={option.value}>
                                             {option.label}
