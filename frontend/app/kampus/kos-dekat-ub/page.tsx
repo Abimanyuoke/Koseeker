@@ -6,7 +6,6 @@ import { IKos } from "../../types";
 import { get } from "../../../lib/bridge";
 import { BASE_IMAGE_KOS } from "../../../global";
 import Select from "../../components/select";
-import Navbar from "../../components/navbar_area/page";
 import PriceDisplay from "../../components/price/PriceDisplay";
 
 // Enum untuk kalender sesuai dengan Prisma
@@ -235,8 +234,6 @@ const UGMKosPage = () => {
 
     return (
         <div>
-            <Navbar />
-
             <div className="min-h-screen bg-gray-50 py-8 mx-[150px]">
                 <div className="container mx-auto px-4">
                     {/* Header */}

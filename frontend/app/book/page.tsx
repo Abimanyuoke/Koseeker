@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { isAuthenticated, getAuthToken } from '@/lib/auth'
 import { BASE_IMAGE_KOS } from '@/global'
 
 interface Booking {

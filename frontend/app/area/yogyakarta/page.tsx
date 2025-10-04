@@ -6,7 +6,6 @@ import { IKos } from "../../types";
 import { get } from "../../../lib/bridge";
 import { BASE_IMAGE_KOS } from "../../../global";
 import Select from "../../components/select";
-import Navbar from "../../components/navbar_area/page";
 import PriceDisplay from "../../components/price/PriceDisplay";
 import PromoSection from "../../components/promo/PromoSection";
 
@@ -219,8 +218,6 @@ const YogyakartaKosPage = () => {
 
     return (
         <div>
-            <Navbar />
-
             {/* Promo Section - Outside container for full width */}
             <PromoSection city="Yogyakarta" />
 
