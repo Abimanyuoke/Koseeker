@@ -7,7 +7,21 @@ export const middleware = async (request: NextRequest) => {
     // Redirect jika mengakses root /
     if (request.nextUrl.pathname === "/") {
         const redirectUrl = request.nextUrl.clone();
-        redirectUrl.pathname = "/auth/login";
+
+        // Jika sudah login, redirect sesuai role
+        if (token && role) {
+            if (role === "owner") {
+                redirectUrl.pathname = "/manager";
+            } else if (role === "society") {
+                redirectUrl.pathname = "/home";
+            } else {
+                redirectUrl.pathname = "/home";
+            }
+        } else {
+            // Jika belum login, redirect ke login
+            redirectUrl.pathname = "/auth/login";
+        }
+
         return NextResponse.redirect(redirectUrl);
     }
 
@@ -22,6 +36,16 @@ export const middleware = async (request: NextRequest) => {
         return NextResponse.next(); // izinkan jika sudah login
     }
 
+    // Proteksi untuk halaman /home (hanya boleh diakses jika sudah login)
+    if (request.nextUrl.pathname.startsWith("/home")) {
+        if (!token) {
+            const redirectUrl = request.nextUrl.clone();
+            redirectUrl.pathname = "/auth/login";
+            return NextResponse.redirect(redirectUrl);
+        }
+        return NextResponse.next();
+    }
+
     // Proteksi untuk halaman /manager
     if (request.nextUrl.pathname.startsWith("/manager")) {
         if (!token || role !== "owner") {
@@ -34,7 +58,7 @@ export const middleware = async (request: NextRequest) => {
 
     // Proteksi untuk halaman /user
     if (request.nextUrl.pathname.startsWith("/user")) {
-        if (!token || role !== "USER") {
+        if (!token || role !== "society") {
             const redirectUrl = request.nextUrl.clone();
             redirectUrl.pathname = "/auth/login";
             return NextResponse.redirect(redirectUrl);
@@ -60,6 +84,7 @@ export const config = {
         "/manager/:path*",
         "/user/:path*",
         "/main/:path*", // Tambahkan ini agar /main diproteksi
+        "/home/:path*", // Proteksi untuk halaman home
         "/book/:path*", // Proteksi untuk halaman booking
         "/" // root
     ],

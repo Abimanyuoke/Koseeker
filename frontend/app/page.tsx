@@ -23,9 +23,7 @@ const Main = () => {
 
     return (
         <div>
-            <Navbar />
-            <Home/>
-            <Footer />
+            <Home />
         </div>
     )
 };

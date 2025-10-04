@@ -52,8 +52,11 @@ export default function Login() {
                     storeCookie("profile_picture", data.data.profile_picture || "")
 
                     let role = data.data.role
-                    if (role === `owner`) setTimeout(() => router.replace(`/`), 1000)
-                    else if (role === `society`) setTimeout(() => router.replace(`/`), 1000)
+                    if (role === `owner`) {
+                        setTimeout(() => router.replace(`/manager/kos`), 1000)
+                    } else if (role === `society`) {
+                        setTimeout(() => router.replace(`/home`), 1000)
+                    }
                 }
             }
             else toast.warning(data.message, { duration: 2000 })
