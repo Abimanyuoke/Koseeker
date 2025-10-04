@@ -3,9 +3,9 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
-import BookingCalendar from '../../components/calendar/BookingCalendar'
 import { BASE_IMAGE_KOS } from '@/global'
 import { isAuthenticated, getAuthToken } from '@/lib/auth'
+import { generateReceiptHTML } from '../../components/ReceiptTemplate'
 
 interface Kos {
     id: number
@@ -27,6 +27,14 @@ interface BookingData {
     payment: 'cash' | 'transfer'
 }
 
+// Duration options
+const DURATION_OPTIONS = [
+    { label: 'Per Bulan (1 Bulan)', value: 1 },
+    { label: 'Per 3 Bulan', value: 3 },
+    { label: 'Per 6 Bulan', value: 6 },
+    { label: 'Per Tahun (12 Bulan)', value: 12 },
+]
+
 export default function BookKosPage() {
     const params = useParams()
     const router = useRouter()
@@ -36,6 +44,10 @@ export default function BookKosPage() {
     const [submitting, setSubmitting] = useState(false)
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('')
+    const [bookedDates, setBookedDates] = useState<string[]>([])
+    const [showCalendar, setShowCalendar] = useState(false)
+    const [showReceipt, setShowReceipt] = useState(false)
+    const [bookingResult, setBookingResult] = useState<any>(null)
 
     const [bookingData, setBookingData] = useState<BookingData>({
         startDate: '',
@@ -46,6 +58,7 @@ export default function BookKosPage() {
 
     useEffect(() => {
         fetchKosDetail()
+        fetchBookedDates()
     }, [kosId])
 
     useEffect(() => {
@@ -62,10 +75,24 @@ export default function BookKosPage() {
     }, [router])
 
     useEffect(() => {
-        if (bookingData.startDate && bookingData.endDate) {
-            calculateDuration()
+        // Hitung endDate otomatis ketika startDate atau durationMonths berubah
+        if (bookingData.startDate && bookingData.durationMonths) {
+            calculateEndDate()
         }
-    }, [bookingData.startDate, bookingData.endDate])
+    }, [bookingData.startDate, bookingData.durationMonths])
+
+    useEffect(() => {
+        // Close calendar when clicking outside
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as HTMLElement
+            if (showCalendar && !target.closest('.calendar-container') && !target.closest('#startDate')) {
+                setShowCalendar(false)
+            }
+        }
+
+        document.addEventListener('mousedown', handleClickOutside)
+        return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, [showCalendar])
 
     const fetchKosDetail = async () => {
         try {
@@ -89,6 +116,30 @@ export default function BookKosPage() {
         }
     }
 
+    const fetchBookedDates = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/booking-calendar/kos/${kosId}`)
+            if (response.ok) {
+                const data = await response.json()
+                if (data.status && data.data) {
+                    // Ambil semua tanggal yang sudah dibooking
+                    const dates: string[] = []
+                    data.data.forEach((booking: any) => {
+                        const start = new Date(booking.startDate)
+                        const end = new Date(booking.endDate)
+                        // Loop semua tanggal dari start ke end
+                        for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
+                            dates.push(new Date(d).toISOString().split('T')[0])
+                        }
+                    })
+                    setBookedDates(dates)
+                }
+            }
+        } catch (err) {
+            console.error('Error fetching booked dates:', err)
+        }
+    }
+
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('id-ID').format(price)
     }
@@ -106,23 +157,34 @@ export default function BookKosPage() {
         return (kos.pricePerMonth * kos.discountPercent / 100) * bookingData.durationMonths
     }
 
-    const calculateDuration = () => {
+    const calculateEndDate = () => {
+        if (!bookingData.startDate) return
+
         const start = new Date(bookingData.startDate)
-        const end = new Date(bookingData.endDate)
-        const diffTime = Math.abs(end.getTime() - start.getTime())
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-        const months = Math.ceil(diffDays / 30)
+        // Tambahkan bulan sesuai durasi
+        const end = new Date(start)
+        end.setMonth(end.getMonth() + bookingData.durationMonths)
+
+        // Format tanggal ke YYYY-MM-DD
+        const endDateString = end.toISOString().split('T')[0]
 
         setBookingData(prev => ({
             ...prev,
-            durationMonths: months
+            endDate: endDateString
         }))
     }
 
-    const handleDateSelect = (date: string, type: 'start' | 'end') => {
+    const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setBookingData(prev => ({
             ...prev,
-            [type === 'start' ? 'startDate' : 'endDate']: date
+            startDate: e.target.value
+        }))
+    }
+
+    const handleDurationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setBookingData(prev => ({
+            ...prev,
+            durationMonths: parseInt(e.target.value)
         }))
     }
 
@@ -165,10 +227,18 @@ export default function BookKosPage() {
             })
 
             if (response.ok) {
+                const result = await response.json()
                 setSuccess('Booking berhasil dibuat! Menunggu konfirmasi dari pemilik kos.')
-                setTimeout(() => {
-                    router.push('/book')
-                }, 2000)
+
+                // Simpan data booking untuk struk
+                setBookingResult({
+                    ...result.data,
+                    kos: kos,
+                    totalPrice: getTotalPrice()
+                })
+
+                // Tampilkan modal struk
+                setShowReceipt(true)
             } else {
                 const data = await response.json()
                 setError(data.message || 'Gagal membuat booking')
@@ -190,11 +260,79 @@ export default function BookKosPage() {
         return today.toISOString().split('T')[0]
     }
 
-    const getMinEndDate = () => {
-        if (!bookingData.startDate) return getMinDate()
-        const startDate = new Date(bookingData.startDate)
-        startDate.setDate(startDate.getDate() + 1)
-        return startDate.toISOString().split('T')[0]
+    const handlePrintReceipt = () => {
+        const printWindow = window.open('', '_blank')
+        if (!printWindow) return
+
+        const userName = localStorage.getItem('name') || 'Pengguna'
+
+        const receiptHTML = generateReceiptHTML({
+            uuid: bookingResult?.uuid || '-',
+            status: 'pending',
+            userName: userName,
+            kosName: kos?.name || '-',
+            kosAddress: kos?.address || '-',
+            kampus: kos?.kampus,
+            kota: kos?.kota,
+            startDate: bookingData.startDate,
+            endDate: bookingData.endDate,
+            durationMonths: bookingData.durationMonths,
+            pricePerMonth: getDiscountedPrice(),
+            discountPercent: kos?.discountPercent,
+            savings: getSavings(),
+            totalPrice: getTotalPrice(),
+            payment: bookingData.payment,
+            createdAt: new Date().toISOString()
+        })
+
+        printWindow.document.write(receiptHTML)
+        printWindow.document.close()
+
+        setTimeout(() => {
+            printWindow.print()
+        }, 250)
+    }
+
+    const handleCloseReceipt = () => {
+        setShowReceipt(false)
+        router.push('/book')
+    }
+
+    const isDateBooked = (dateString: string) => {
+        return bookedDates.includes(dateString)
+    }
+
+    const generateCalendar = () => {
+        const today = new Date()
+        const currentMonth = today.getMonth()
+        const currentYear = today.getFullYear()
+
+        const firstDay = new Date(currentYear, currentMonth, 1)
+        const lastDay = new Date(currentYear, currentMonth + 1, 0)
+
+        const days = []
+        const startDay = firstDay.getDay()
+
+        // Add empty cells for days before month starts
+        for (let i = 0; i < startDay; i++) {
+            days.push(null)
+        }
+
+        // Add all days of the month
+        for (let day = 1; day <= lastDay.getDate(); day++) {
+            const date = new Date(currentYear, currentMonth, day)
+            const dateString = date.toISOString().split('T')[0]
+            days.push({
+                day,
+                dateString,
+                isToday: dateString === getMinDate(),
+                isBooked: isDateBooked(dateString),
+                isPast: date < today,
+                isSelected: dateString === bookingData.startDate
+            })
+        }
+
+        return days
     }
 
     if (loading) {
@@ -220,7 +358,7 @@ export default function BookKosPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="mb-8">
                     <Link href={`/kos/${kosId}`} className="text-blue-600 hover:text-blue-800 mb-4 inline-block">
                         ← Kembali ke detail kos
@@ -317,54 +455,177 @@ export default function BookKosPage() {
                         )}
 
                         <form onSubmit={handleSubmit} className="space-y-6">
-                            {/* Calendar Component - Outside form to prevent conflicts */}
-                        </form>
+                            {/* Tanggal Mulai & Durasi Sewa - Flex Layout */}
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {/* Tanggal Mulai */}
+                                <div>
+                                    <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-2">
+                                        Tanggal Mulai Sewa <span className="text-red-500">*</span>
+                                    </label>
+                                    <div className="relative">
+                                        <input
+                                            type="text"
+                                            id="startDate"
+                                            name="startDate"
+                                            required
+                                            readOnly
+                                            value={bookingData.startDate ? new Date(bookingData.startDate).toLocaleDateString('id-ID') : ''}
+                                            onClick={() => setShowCalendar(!showCalendar)}
+                                            placeholder="Pilih tanggal"
+                                            className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent cursor-pointer"
+                                        />
+                                        <svg className="absolute right-3 top-3.5 w-5 h-5 text-gray-400 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                    </div>
+                                    <p className="mt-1 text-xs text-gray-500">Klik untuk membuka kalender</p>
 
-                        {/* Calendar Component */}
-                        <div className="mb-6">
-                            <h3 className="text-sm font-medium text-gray-700 mb-4">Pilih Tanggal Booking</h3>
-                            <BookingCalendar
-                                kosId={parseInt(kosId)}
-                                selectedStartDate={bookingData.startDate}
-                                selectedEndDate={bookingData.endDate}
-                                onDateSelect={handleDateSelect}
-                            />
-                        </div>
+                                    {/* Custom Calendar */}
+                                    {showCalendar && (
+                                        <div className="calendar-container absolute z-50 mt-2 bg-white border border-gray-300 rounded-lg shadow-xl p-4 w-80">
+                                            <div className="flex items-center justify-between mb-4">
+                                                <h3 className="font-semibold text-gray-900">
+                                                    {new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}
+                                                </h3>
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setShowCalendar(false)}
+                                                    className="text-gray-500 hover:text-gray-700"
+                                                >
+                                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+                                                </button>
+                                            </div>
 
-                        <form onSubmit={handleSubmit} className="space-y-6">
-                            {/* Selected Dates Display */}
-                            {(bookingData.startDate || bookingData.endDate) && (
-                                <div className="bg-gray-50 p-4 rounded-lg">
-                                    <h4 className="font-medium text-gray-900 mb-2">Tanggal Dipilih</h4>
-                                    <div className="grid grid-cols-2 gap-4 text-sm">
-                                        <div>
-                                            <span className="text-gray-500">Check-in:</span>
-                                            <p className="font-medium">
-                                                {bookingData.startDate
-                                                    ? new Date(bookingData.startDate).toLocaleDateString('id-ID', {
-                                                        weekday: 'long',
-                                                        year: 'numeric',
-                                                        month: 'long',
-                                                        day: 'numeric'
-                                                    })
-                                                    : 'Belum dipilih'
-                                                }
+                                            {/* Days of week */}
+                                            <div className="grid grid-cols-7 gap-1 mb-2">
+                                                {['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'].map(day => (
+                                                    <div key={day} className="text-center text-xs font-medium text-gray-600 py-2">
+                                                        {day}
+                                                    </div>
+                                                ))}
+                                            </div>
+
+                                            {/* Calendar days */}
+                                            <div className="grid grid-cols-7 gap-1">
+                                                {generateCalendar().map((day, index) => {
+                                                    if (!day) {
+                                                        return <div key={`empty-${index}`} className="aspect-square" />
+                                                    }
+
+                                                    const isDisabled = day.isPast || day.isBooked
+
+                                                    return (
+                                                        <button
+                                                            key={day.dateString}
+                                                            type="button"
+                                                            disabled={isDisabled}
+                                                            onClick={() => {
+                                                                if (!isDisabled) {
+                                                                    setBookingData(prev => ({ ...prev, startDate: day.dateString }))
+                                                                    setShowCalendar(false)
+                                                                }
+                                                            }}
+                                                            className={`
+                                                                aspect-square rounded-lg text-sm font-medium transition-all
+                                                                ${day.isSelected ? 'bg-blue-600 text-white' : ''}
+                                                                ${day.isToday && !day.isSelected ? 'bg-blue-100 text-blue-600' : ''}
+                                                                ${day.isBooked ? 'bg-red-100 text-red-400 cursor-not-allowed line-through' : ''}
+                                                                ${day.isPast && !day.isBooked ? 'text-gray-300 cursor-not-allowed' : ''}
+                                                                ${!day.isSelected && !day.isToday && !day.isBooked && !day.isPast ? 'hover:bg-gray-100 text-gray-700' : ''}
+                                                            `}
+                                                        >
+                                                            {day.day}
+                                                        </button>
+                                                    )
+                                                })}
+                                            </div>
+
+                                            {/* Legend */}
+                                            <div className="mt-4 pt-4 border-t border-gray-200 space-y-2 text-xs">
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-4 h-4 bg-blue-600 rounded"></div>
+                                                    <span>Dipilih</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-4 h-4 bg-red-100 rounded"></div>
+                                                    <span>Sudah dibooking</span>
+                                                </div>
+                                                <div className="flex items-center gap-2">
+                                                    <div className="w-4 h-4 bg-blue-100 rounded"></div>
+                                                    <span>Hari ini</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Durasi Sewa */}
+                                <div>
+                                    <label htmlFor="duration" className="block text-sm font-medium text-gray-700 mb-2">
+                                        Durasi Sewa <span className="text-red-500">*</span>
+                                    </label>
+                                    <select
+                                        id="duration"
+                                        name="duration"
+                                        required
+                                        value={bookingData.durationMonths}
+                                        onChange={handleDurationChange}
+                                        disabled={!bookingData.startDate}
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                    >
+                                        {DURATION_OPTIONS.map((option) => (
+                                            <option key={option.value} value={option.value}>
+                                                {option.label}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    <p className="mt-1 text-xs text-gray-500">
+                                        {!bookingData.startDate
+                                            ? 'Pilih tanggal mulai terlebih dahulu'
+                                            : 'Pilih berapa lama Anda ingin menyewa kos'}
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Display Calculated Dates */}
+                            {bookingData.startDate && bookingData.endDate && (
+                                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                                    <h4 className="font-semibold text-blue-900 mb-3 flex items-center gap-2">
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        Periode Sewa
+                                    </h4>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div className="bg-white rounded-lg p-3">
+                                            <span className="text-xs text-gray-600 block mb-1">Tanggal Mulai</span>
+                                            <p className="font-semibold text-gray-900">
+                                                {new Date(bookingData.startDate).toLocaleDateString('id-ID', {
+                                                    weekday: 'long',
+                                                    day: 'numeric',
+                                                    month: 'long',
+                                                    year: 'numeric'
+                                                })}
                                             </p>
                                         </div>
-                                        <div>
-                                            <span className="text-gray-500">Check-out:</span>
-                                            <p className="font-medium">
-                                                {bookingData.endDate
-                                                    ? new Date(bookingData.endDate).toLocaleDateString('id-ID', {
-                                                        weekday: 'long',
-                                                        year: 'numeric',
-                                                        month: 'long',
-                                                        day: 'numeric'
-                                                    })
-                                                    : 'Belum dipilih'
-                                                }
+                                        <div className="bg-white rounded-lg p-3">
+                                            <span className="text-xs text-gray-600 block mb-1">Tanggal Selesai</span>
+                                            <p className="font-semibold text-gray-900">
+                                                {new Date(bookingData.endDate).toLocaleDateString('id-ID', {
+                                                    weekday: 'long',
+                                                    day: 'numeric',
+                                                    month: 'long',
+                                                    year: 'numeric'
+                                                })}
                                             </p>
                                         </div>
+                                    </div>
+                                    <div className="mt-3 text-center">
+                                        <span className="inline-block bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-semibold">
+                                            Total: {bookingData.durationMonths} Bulan
+                                        </span>
                                     </div>
                                 </div>
                             )}
@@ -442,6 +703,188 @@ export default function BookKosPage() {
                         </form>
                     </div>
                 </div>
+
+                {/* Modal Struk Pemesanan */}
+                {showReceipt && bookingResult && (
+                    <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+                        <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+                            {/* Header */}
+                            <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 rounded-t-2xl">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <h2 className="text-2xl font-bold mb-1">🎉 Booking Berhasil!</h2>
+                                        <p className="text-blue-100 text-sm">Struk pemesanan Anda</p>
+                                    </div>
+                                    <div className="text-right">
+                                        <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
+                                            <p className="text-xs text-blue-100">Booking ID</p>
+                                            <p className="font-bold text-lg">{bookingResult.uuid}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Content */}
+                            <div className="p-6 space-y-6">
+                                {/* Status Badge */}
+                                <div className="flex items-center justify-center">
+                                    <div className="bg-yellow-50 border-2 border-yellow-200 text-yellow-800 px-6 py-3 rounded-full">
+                                        <div className="flex items-center gap-2">
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                            <span className="font-semibold">Menunggu Konfirmasi Owner</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Detail Kos */}
+                                <div className="bg-gray-50 rounded-xl p-5">
+                                    <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                        </svg>
+                                        Detail Kos
+                                    </h3>
+                                    <div className="space-y-3">
+                                        <div>
+                                            <p className="text-sm text-gray-600 mb-1">Nama Kos</p>
+                                            <p className="font-semibold text-gray-900 text-lg">{kos?.name}</p>
+                                        </div>
+                                        <div>
+                                            <p className="text-sm text-gray-600 mb-1">Alamat</p>
+                                            <p className="text-gray-900">{kos?.address}</p>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div>
+                                                <p className="text-sm text-gray-600 mb-1">Kampus</p>
+                                                <p className="font-medium text-gray-900">{kos?.kampus}</p>
+                                            </div>
+                                            <div>
+                                                <p className="text-sm text-gray-600 mb-1">Kota</p>
+                                                <p className="font-medium text-gray-900">{kos?.kota}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Periode Sewa */}
+                                <div className="bg-blue-50 rounded-xl p-5 border border-blue-200">
+                                    <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        Periode Sewa
+                                    </h3>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="bg-white rounded-lg p-3">
+                                            <p className="text-xs text-gray-600 mb-1">Check-in</p>
+                                            <p className="font-semibold text-gray-900">
+                                                {new Date(bookingData.startDate).toLocaleDateString('id-ID', {
+                                                    day: 'numeric',
+                                                    month: 'long',
+                                                    year: 'numeric'
+                                                })}
+                                            </p>
+                                        </div>
+                                        <div className="bg-white rounded-lg p-3">
+                                            <p className="text-xs text-gray-600 mb-1">Check-out</p>
+                                            <p className="font-semibold text-gray-900">
+                                                {new Date(bookingData.endDate).toLocaleDateString('id-ID', {
+                                                    day: 'numeric',
+                                                    month: 'long',
+                                                    year: 'numeric'
+                                                })}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="mt-3 text-center">
+                                        <span className="inline-block bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-bold">
+                                            Durasi: {bookingData.durationMonths} Bulan
+                                        </span>
+                                    </div>
+                                </div>
+
+                                {/* Rincian Pembayaran */}
+                                <div className="bg-gray-50 rounded-xl p-5">
+                                    <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        Rincian Pembayaran
+                                    </h3>
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-gray-600">Harga per Bulan</span>
+                                            <span className="font-semibold text-gray-900">Rp {formatPrice(getDiscountedPrice())}</span>
+                                        </div>
+                                        {kos?.discountPercent && kos.discountPercent > 0 && (
+                                            <div className="flex justify-between items-center text-green-600">
+                                                <span>Hemat ({kos.discountPercent}% Diskon)</span>
+                                                <span className="font-semibold">- Rp {formatPrice(getSavings())}</span>
+                                            </div>
+                                        )}
+                                        <div className="flex justify-between items-center">
+                                            <span className="text-gray-600">Durasi</span>
+                                            <span className="font-semibold text-gray-900">x {bookingData.durationMonths}</span>
+                                        </div>
+                                        <div className="border-t-2 border-gray-300 pt-3 mt-3">
+                                            <div className="flex justify-between items-center">
+                                                <span className="text-lg font-bold text-gray-900">Total Pembayaran</span>
+                                                <span className="text-xl font-bold text-blue-600">Rp {formatPrice(getTotalPrice())}</span>
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-between items-center text-sm">
+                                            <span className="text-gray-600">Metode Pembayaran</span>
+                                            <span className="font-medium text-gray-900">
+                                                {bookingData.payment === 'cash' ? '💵 Tunai' : '🏦 Transfer Bank'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Info Tambahan */}
+                                <div className="bg-amber-50 border border-amber-200 rounded-xl p-4">
+                                    <div className="flex gap-3">
+                                        <svg className="w-6 h-6 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        <div>
+                                            <p className="font-semibold text-amber-900 mb-1">Informasi Penting</p>
+                                            <ul className="text-sm text-amber-800 space-y-1">
+                                                <li>• Booking Anda menunggu konfirmasi dari owner</li>
+                                                <li>• Simpan struk ini sebagai bukti booking</li>
+                                                <li>• Anda akan mendapat notifikasi saat booking dikonfirmasi</li>
+                                                <li>• Cek riwayat booking untuk status terkini</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Footer Actions */}
+                            <div className="border-t border-gray-200 p-6 bg-gray-50 rounded-b-2xl">
+                                <div className="flex gap-3">
+                                    <button
+                                        onClick={handlePrintReceipt}
+                                        className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-semibold shadow-lg"
+                                    >
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                        </svg>
+                                        Cetak Struk
+                                    </button>
+                                    <button
+                                        onClick={handleCloseReceipt}
+                                        className="flex-1 px-6 py-3 bg-white border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-semibold"
+                                    >
+                                        Lihat Riwayat Booking
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )

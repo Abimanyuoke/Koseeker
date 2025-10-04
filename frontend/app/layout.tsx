@@ -3,7 +3,6 @@ import { Lato } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
 import Navbar from "./components/navbar_main/page";
-import Footer from "./components/footer/page";
 
 const lato = Lato({
   variable: "--font-lato",
@@ -29,7 +28,6 @@ export default function RootLayout({
         <Providers>
           {children}
         </Providers>
-        <Footer/>
       </body>
     </html>
   );

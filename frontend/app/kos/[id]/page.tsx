@@ -16,7 +16,6 @@ import LikeButton from "@/app/components/likeButton";
 import ReviewContainer from "@/app/components/review/ReviewContainer";
 import Cookies from "js-cookie";
 import Image from "next/image";
-import Navbar from "../../components/navbar_main/page";
 
 const KosDetailPage = () => {
     const params = useParams();
@@ -146,7 +145,7 @@ const KosDetailPage = () => {
     /** ---------- RENDER ---------- */
     return (
         <div className="bg-gray-50 text-black duration-200 min-h-screen">
-            <div className="container mx-auto px-4 py-8 mt-16">
+            <div className="max-w-6xl mx-auto px-4 py-8 mt-16">
                 {/* Back Button */}
                 <button
                     onClick={() => router.back()}

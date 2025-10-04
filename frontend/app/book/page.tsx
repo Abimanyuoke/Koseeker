@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { BASE_IMAGE_KOS } from '@/global'
+import { generateReceiptHTML } from '../components/ReceiptTemplate'
 
 interface Booking {
     id: number
@@ -76,6 +77,39 @@ export default function BookingsPage() {
             case 'pending': return 'Menunggu'
             default: return status
         }
+    }
+
+    const formatPrice = (price: number) => {
+        return new Intl.NumberFormat('id-ID').format(price)
+    }
+
+    const handlePrintReceipt = (booking: Booking) => {
+        const printWindow = window.open('', '_blank')
+        if (!printWindow) return
+
+        const userName = localStorage.getItem('name') || 'Pengguna'
+
+        const receiptHTML = generateReceiptHTML({
+            uuid: booking.uuid,
+            status: booking.status,
+            userName: userName,
+            kosName: booking.kos.name,
+            kosAddress: booking.kos.address,
+            startDate: booking.startDate,
+            endDate: booking.endDate,
+            durationMonths: booking.durationMonths,
+            pricePerMonth: booking.kos.pricePerMonth,
+            totalPrice: booking.kos.pricePerMonth * booking.durationMonths,
+            payment: booking.payment,
+            createdAt: booking.createdAt
+        })
+
+        printWindow.document.write(receiptHTML)
+        printWindow.document.close()
+
+        setTimeout(() => {
+            printWindow.print()
+        }, 250)
     }
 
     if (loading) {
@@ -165,14 +199,23 @@ export default function BookingsPage() {
                                     </div>
 
                                     <div className="mt-4 pt-4 border-t border-gray-200">
-                                        <div className="flex justify-between items-center">
+                                        <div className="flex justify-between items-center mb-3">
                                             <span className="text-lg font-bold text-blue-600">
                                                 Total: Rp {(booking.kos.pricePerMonth * booking.durationMonths).toLocaleString()}
                                             </span>
                                         </div>
-                                        <p className="text-xs text-gray-500 mt-1">
+                                        <p className="text-xs text-gray-500 mb-3">
                                             Dibuat: {new Date(booking.createdAt).toLocaleDateString('id-ID')}
                                         </p>
+                                        <button
+                                            onClick={() => handlePrintReceipt(booking)}
+                                            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-medium text-sm shadow-md"
+                                        >
+                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+                                            </svg>
+                                            Cetak Struk
+                                        </button>
                                     </div>
                                 </div>
                             </div>
