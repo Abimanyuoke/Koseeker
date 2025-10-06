@@ -8,9 +8,14 @@ import { BASE_API_URL, BASE_IMAGE_KOS } from "../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../components/alert";
 import { FiLoader } from "react-icons/fi";
-import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaChevronLeft, FaChevronRight, FaChevronDown } from "react-icons/fa";
 import { MdLocalLaundryService, MdSecurity } from "react-icons/md";
 import { GiCook } from "react-icons/gi";
+import { BiMale, BiFemale, BiMoney, BiSort } from "react-icons/bi";
+import { MdMale, MdFemale, MdGroups } from "react-icons/md";
+import { HiOutlineSparkles } from "react-icons/hi";
+import { IoClose } from "react-icons/io5";
+import { RiDiscountPercentFill } from "react-icons/ri";
 import { ArrowKos, CustomArrows } from "../components/arrow";
 import Slider from "react-slick";
 import Select from "../components/select";
@@ -69,9 +74,31 @@ const KosPage = () => {
 
     /** ---------- STATE ---------- */
     const [kosData, setKosData] = useState<IKos[]>([]);
+    const [filteredKosData, setFilteredKosData] = useState<IKos[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedKota, setSelectedKota] = useState<string>("all");
     const [imageIndexes, setImageIndexes] = useState<{ [key: number]: number }>({});
+
+    // Filter states
+    const [selectedGender, setSelectedGender] = useState<string>("all");
+    const [priceRange, setPriceRange] = useState<{ min: number; max: number }>({ min: 0, max: 10000000 });
+    const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
+    const [sortBy, setSortBy] = useState<string>("recommended");
+    const [showPromo, setShowPromo] = useState(false);
+    const [showRecommended, setShowRecommended] = useState(false);
+
+    // Dropdown states
+    const [showGenderDropdown, setShowGenderDropdown] = useState(false);
+    const [showPriceDropdown, setShowPriceDropdown] = useState(false);
+    const [showFacilitiesDropdown, setShowFacilitiesDropdown] = useState(false);
+    const [showSortDropdown, setShowSortDropdown] = useState(false);
+
+    const genderRef = useRef<HTMLDivElement>(null);
+    const priceRef = useRef<HTMLDivElement>(null);
+    const facilitiesRef = useRef<HTMLDivElement>(null);
+    const sortRef = useRef<HTMLDivElement>(null);
+
+    const facilityOptions = ["WiFi", "AC", "Kasur", "Lemari", "Meja", "Kursi", "Kamar Mandi Dalam", "Dapur", "Laundry", "Parkir"];
 
     /** ---------- FETCH KOS DATA ---------- */
     const getKosData = async (kota?: string) => {
@@ -101,6 +128,109 @@ const KosPage = () => {
     useEffect(() => {
         getKosData(selectedKota);
     }, [search, selectedKota]);
+
+    // Close dropdowns when clicking outside
+    useEffect(() => {
+        const handleClickOutside = (e: MouseEvent) => {
+            if (genderRef.current && !genderRef.current.contains(e.target as Node)) {
+                setShowGenderDropdown(false);
+            }
+            if (priceRef.current && !priceRef.current.contains(e.target as Node)) {
+                setShowPriceDropdown(false);
+            }
+            if (facilitiesRef.current && !facilitiesRef.current.contains(e.target as Node)) {
+                setShowFacilitiesDropdown(false);
+            }
+            if (sortRef.current && !sortRef.current.contains(e.target as Node)) {
+                setShowSortDropdown(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
+
+    // Apply filters whenever filter states change
+    useEffect(() => {
+        applyFilters();
+    }, [kosData, selectedGender, priceRange, selectedFacilities, sortBy, showPromo, showRecommended]);
+
+    /** ---------- APPLY FILTERS ---------- */
+    const applyFilters = () => {
+        let filtered = [...kosData];
+
+        // Filter by gender
+        if (selectedGender !== "all") {
+            filtered = filtered.filter(kos => kos.gender === selectedGender);
+        }
+
+        // Filter by price range
+        filtered = filtered.filter(kos => {
+            const price = kos.discountPercent && kos.discountPercent > 0
+                ? kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100)
+                : kos.pricePerMonth;
+            return price >= priceRange.min && price <= priceRange.max;
+        });
+
+        // Filter by facilities
+        if (selectedFacilities.length > 0) {
+            filtered = filtered.filter(kos => {
+                const kosFacilities = kos.facilities?.map(f => f.facility.toLowerCase()) || [];
+                return selectedFacilities.every(selectedFacility =>
+                    kosFacilities.some(kosFacility => kosFacility.includes(selectedFacility.toLowerCase()))
+                );
+            });
+        }
+
+        // Filter by promo
+        if (showPromo) {
+            filtered = filtered.filter(kos => kos.discountPercent && kos.discountPercent > 0);
+        }
+
+        // Sort
+        if (sortBy === "price-low") {
+            filtered.sort((a, b) => {
+                const priceA = a.discountPercent ? a.pricePerMonth - (a.pricePerMonth * a.discountPercent / 100) : a.pricePerMonth;
+                const priceB = b.discountPercent ? b.pricePerMonth - (b.pricePerMonth * b.discountPercent / 100) : b.pricePerMonth;
+                return priceA - priceB;
+            });
+        } else if (sortBy === "price-high") {
+            filtered.sort((a, b) => {
+                const priceA = a.discountPercent ? a.pricePerMonth - (a.pricePerMonth * a.discountPercent / 100) : a.pricePerMonth;
+                const priceB = b.discountPercent ? b.pricePerMonth - (b.pricePerMonth * b.discountPercent / 100) : b.pricePerMonth;
+                return priceB - priceA;
+            });
+        }
+
+        setFilteredKosData(filtered);
+    };
+
+    const resetFilters = () => {
+        setSelectedGender("all");
+        setPriceRange({ min: 0, max: 10000000 });
+        setSelectedFacilities([]);
+        setSortBy("recommended");
+        setShowPromo(false);
+        setShowRecommended(false);
+    };
+
+    const toggleFacility = (facility: string) => {
+        setSelectedFacilities(prev =>
+            prev.includes(facility)
+                ? prev.filter(f => f !== facility)
+                : [...prev, facility]
+        );
+    };
+
+    const getActiveFiltersCount = () => {
+        let count = 0;
+        if (selectedGender !== "all") count++;
+        if (priceRange.min > 0 || priceRange.max < 10000000) count++;
+        if (selectedFacilities.length > 0) count++;
+        if (showPromo) count++;
+        if (showRecommended) count++;
+        return count;
+    };
 
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('id-ID').format(price);
@@ -201,6 +331,203 @@ const KosPage = () => {
                     </div>
                 </div>
             </div>
+            {/* ----------------- FILTER PILLS ----------------- */}
+            <div className="max-w-6xl mx-auto px-4 py-4">
+                <div className="flex items-center gap-3 flex-wrap">
+                    {/* Gender Filter */}
+                    <div ref={genderRef} className="relative">
+                        <button
+                            onClick={() => setShowGenderDropdown(!showGenderDropdown)}
+                            className={`flex items-center gap-2 px-4 py-2.5 rounded-full border-2 whitespace-nowrap transition-all duration-200 shadow-sm ${selectedGender !== "all"
+                                ? "bg-blue-600 text-white border-blue-600 shadow-blue-200"
+                                : "bg-white text-gray-700 border-gray-300 hover:border-blue-500 hover:shadow-md"
+                                }`}>
+                            {selectedGender === "all" ? (
+                                <MdGroups className="text-lg" />
+                            ) : selectedGender === "male" ? (
+                                <MdMale className="text-lg" />
+                            ) : (
+                                <MdFemale className="text-lg" />
+                            )}
+                            <span className="font-medium">
+                                {selectedGender === "all" ? "Semua Gender" : selectedGender === "male" ? "Pria" : selectedGender === "female" ? "Wanita" : "Campur"}
+                            </span>
+                            <FaChevronDown className={`text-xs transition-transform duration-200 ${showGenderDropdown ? 'rotate-180' : ''}`} />
+                        </button>
+                        {showGenderDropdown && (
+                            <div className="absolute top-full mt-2 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-[60] min-w-[180px]">
+                                <button
+                                    onClick={() => { setSelectedGender("all"); setShowGenderDropdown(false); }}
+                                    className="w-full text-left px-4 py-2.5 hover:bg-blue-50 flex items-center gap-3 transition-colors">
+                                    <MdGroups className="text-gray-600 text-lg" />
+                                    <span className="font-medium">Semua</span>
+                                </button>
+                                <button
+                                    onClick={() => { setSelectedGender("male"); setShowGenderDropdown(false); }}
+                                    className="w-full text-left px-4 py-2.5 hover:bg-blue-50 flex items-center gap-3 transition-colors">
+                                    <MdMale className="text-blue-600 text-lg" />
+                                    <span className="font-medium">Pria</span>
+                                </button>
+                                <button
+                                    onClick={() => { setSelectedGender("female"); setShowGenderDropdown(false); }}
+                                    className="w-full text-left px-4 py-2.5 hover:bg-blue-50 flex items-center gap-3 transition-colors">
+                                    <MdFemale className="text-pink-600 text-lg" />
+                                    <span className="font-medium">Wanita</span>
+                                </button>
+                                <button
+                                    onClick={() => { setSelectedGender("all"); setShowGenderDropdown(false); }}
+                                    className="w-full text-left px-4 py-2.5 hover:bg-blue-50 flex items-center gap-3 transition-colors">
+                                    <MdGroups className="text-green-600 text-lg" />
+                                    <span className="font-medium">Campur</span>
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Price Range Filter */}
+                    <div ref={priceRef} className="relative">
+                        <button
+                            onClick={() => setShowPriceDropdown(!showPriceDropdown)}
+                            className={`flex items-center gap-2 px-4 py-2.5 rounded-full border-2 whitespace-nowrap transition-all duration-200 shadow-sm ${priceRange.min > 0 || priceRange.max < 10000000
+                                ? "bg-blue-600 text-white border-blue-600 shadow-blue-200"
+                                : "bg-white text-gray-700 border-gray-300 hover:border-blue-500 hover:shadow-md"
+                                }`}>
+                            <BiMoney className="text-xl" />
+                            <span className="font-medium">Harga</span>
+                            <FaChevronDown className={`text-xs transition-transform duration-200 ${showPriceDropdown ? 'rotate-180' : ''}`} />
+                        </button>
+                        {showPriceDropdown && (
+                            <div className="absolute top-full mt-2 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-[60] min-w-[220px]">
+                                <button
+                                    onClick={() => { setPriceRange({ min: 0, max: 10000000 }); setShowPriceDropdown(false); }}
+                                    className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors">
+                                    <span className="font-medium">Semua Harga</span>
+                                </button>
+                                <div className="border-t border-gray-100 my-1"></div>
+                                <button
+                                    onClick={() => { setPriceRange({ min: 0, max: 1000000 }); setShowPriceDropdown(false); }}
+                                    className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors">
+                                    <span className="font-medium">&lt; Rp 1 juta</span>
+                                </button>
+                                <button
+                                    onClick={() => { setPriceRange({ min: 1000000, max: 2000000 }); setShowPriceDropdown(false); }}
+                                    className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors">
+                                    <span className="font-medium">Rp 1 - 2 juta</span>
+                                </button>
+                                <button
+                                    onClick={() => { setPriceRange({ min: 2000000, max: 3000000 }); setShowPriceDropdown(false); }}
+                                    className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors">
+                                    <span className="font-medium">Rp 2 - 3 juta</span>
+                                </button>
+                                <button
+                                    onClick={() => { setPriceRange({ min: 3000000, max: 10000000 }); setShowPriceDropdown(false); }}
+                                    className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors">
+                                    <span className="font-medium">&gt; Rp 3 juta</span>
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Facilities Filter */}
+                    <div ref={facilitiesRef} className="relative">
+                        <button
+                            onClick={() => setShowFacilitiesDropdown(!showFacilitiesDropdown)}
+                            className={`flex items-center gap-2 px-4 py-2.5 rounded-full border-2 whitespace-nowrap transition-all duration-200 shadow-sm ${selectedFacilities.length > 0
+                                ? "bg-blue-600 text-white border-blue-600 shadow-blue-200"
+                                : "bg-white text-gray-700 border-gray-300 hover:border-blue-500 hover:shadow-md"
+                                }`}>
+                            <FaBed className="text-lg" />
+                            <span className="font-medium">
+                                {selectedFacilities.length === 0 ? "Fasilitas" : `${selectedFacilities.length} Fasilitas`}
+                            </span>
+                            <FaChevronDown className={`text-xs transition-transform duration-200 ${showFacilitiesDropdown ? 'rotate-180' : ''}`} />
+                        </button>
+                        {showFacilitiesDropdown && (
+                            <div className="absolute top-full mt-2 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-[60] min-w-[240px] max-h-[320px] overflow-y-auto">
+                                {facilityOptions.map(facility => (
+                                    <label key={facility} className="flex items-center gap-3 px-4 py-2.5 hover:bg-blue-50 cursor-pointer transition-colors">
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedFacilities.includes(facility)}
+                                            onChange={() => toggleFacility(facility)}
+                                            className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
+                                        />
+                                        <span className="font-medium">{facility}</span>
+                                    </label>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Sort Filter */}
+                    <div ref={sortRef} className="relative">
+                        <button
+                            onClick={() => setShowSortDropdown(!showSortDropdown)}
+                            className={`flex items-center gap-2 px-4 py-2.5 rounded-full border-2 whitespace-nowrap transition-all duration-200 shadow-sm ${sortBy !== "recommended"
+                                ? "bg-blue-600 text-white border-blue-600 shadow-blue-200"
+                                : "bg-white text-gray-700 border-gray-300 hover:border-blue-500 hover:shadow-md"
+                                }`}>
+                            <BiSort className="text-xl" />
+                            <span className="font-medium">
+                                {sortBy === "recommended" ? "Direkomendasikan" : sortBy === "price-low" ? "Termurah" : "Termahal"}
+                            </span>
+                            <FaChevronDown className={`text-xs transition-transform duration-200 ${showSortDropdown ? 'rotate-180' : ''}`} />
+                        </button>
+                        {showSortDropdown && (
+                            <div className="absolute top-full mt-2 bg-white rounded-xl shadow-xl border border-gray-200 py-2 z-[60] min-w-[200px]">
+                                <button
+                                    onClick={() => { setSortBy("recommended"); setShowSortDropdown(false); }}
+                                    className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors">
+                                    <span className="font-medium">Direkomendasikan</span>
+                                </button>
+                                <button
+                                    onClick={() => { setSortBy("price-low"); setShowSortDropdown(false); }}
+                                    className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors">
+                                    <span className="font-medium">Harga Termurah</span>
+                                </button>
+                                <button
+                                    onClick={() => { setSortBy("price-high"); setShowSortDropdown(false); }}
+                                    className="w-full text-left px-4 py-2.5 hover:bg-blue-50 transition-colors">
+                                    <span className="font-medium">Harga Termahal</span>
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Promo Filter */}
+                    <button
+                        onClick={() => setShowPromo(!showPromo)}
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-full border-2 whitespace-nowrap transition-all duration-200 shadow-sm ${showPromo
+                            ? "bg-red-500 text-white border-red-500 shadow-red-200"
+                            : "bg-white text-gray-700 border-gray-300 hover:border-red-500 hover:shadow-md"
+                            }`}>
+                        <RiDiscountPercentFill className="text-lg" />
+                        <span className="font-medium">Promo</span>
+                    </button>
+
+                    {/* Recommended Filter */}
+                    <button
+                        onClick={() => setShowRecommended(!showRecommended)}
+                        className={`flex items-center gap-2 px-4 py-2.5 rounded-full border-2 whitespace-nowrap transition-all duration-200 shadow-sm ${showRecommended
+                            ? "bg-purple-600 text-white border-purple-600 shadow-purple-200"
+                            : "bg-white text-gray-700 border-gray-300 hover:border-purple-500 hover:shadow-md"
+                            }`}>
+                        <HiOutlineSparkles className="text-lg" />
+                        <span className="font-medium">Kos Andalan</span>
+                    </button>
+
+                    {/* Reset Filters */}
+                    {getActiveFiltersCount() > 0 && (
+                        <button
+                            onClick={resetFilters}
+                            className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-gray-200 hover:to-gray-300 whitespace-nowrap transition-all duration-200 shadow-sm hover:shadow-md border-2 border-gray-300">
+                            <IoClose className="text-lg font-bold" />
+                            <span className="font-medium">Reset ({getActiveFiltersCount()})</span>
+                        </button>
+                    )}
+                </div>
+            </div>
+
             {/* ----------------- KOS CARDS ----------------- */}
             <div className="max-w-6xl mx-auto py-8">
                 {loading ? (
@@ -210,16 +537,21 @@ const KosPage = () => {
                             <p className="text-gray-600 text-lg">Memuat data kos...</p>
                         </div>
                     </div>
-                ) : kosData.length === 0 ? (
+                ) : filteredKosData.length === 0 ? (
                     <div className="text-start py-4">
                         <AlertToko title="Informasi">
-                            Tidak ada kos yang ditemukan di {selectedKota === "all" ? "semua kota" : selectedKota}
+                            {getActiveFiltersCount() > 0
+                                ? "Tidak ada kos yang sesuai dengan filter yang dipilih. Coba ubah atau reset filter."
+                                : `Tidak ada kos yang ditemukan di ${selectedKota === "all" ? "semua kota" : selectedKota}`}
                         </AlertToko>
                     </div>
                 ) : (
                     <div>
+                        <div className="mb-4 text-gray-600">
+                            Menampilkan {filteredKosData.length} dari {kosData.length} kos
+                        </div>
                         <Slider ref={sliderRef} {...settings} >
-                            {kosData.map((kos) => {
+                            {filteredKosData.map((kos) => {
                                 const currentImageIndex = imageIndexes[kos.id] || 0;
                                 const hasMultipleImages = kos.images && kos.images.length > 1;
 

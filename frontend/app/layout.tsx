@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
-import Navbar from "./components/navbar_main/page";
+import { HomeIcon } from "lucide-react";
 
 const lato = Lato({
   variable: "--font-lato",

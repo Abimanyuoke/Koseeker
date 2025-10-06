@@ -75,11 +75,6 @@ const KosDetailPage = () => {
         }
     }, []);
 
-
-
-
-
-
     const getGenderText = (gender: string) => {
         switch (gender) {
             case 'male': return 'Khusus Pria';
