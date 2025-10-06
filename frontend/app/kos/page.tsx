@@ -8,20 +8,19 @@ import { BASE_API_URL, BASE_IMAGE_KOS } from "../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../components/alert";
 import { FiLoader } from "react-icons/fi";
-import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaChevronLeft, FaChevronRight, FaChevronDown } from "react-icons/fa";
-import { MdLocalLaundryService, MdSecurity } from "react-icons/md";
-import { GiCook } from "react-icons/gi";
-import { BiMale, BiFemale, BiMoney, BiSort } from "react-icons/bi";
+import { FaBed, FaChevronLeft, FaChevronRight, FaChevronDown } from "react-icons/fa";
+import { BiMoney, BiSort } from "react-icons/bi";
 import { MdMale, MdFemale, MdGroups } from "react-icons/md";
 import { HiOutlineSparkles } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
 import { RiDiscountPercentFill } from "react-icons/ri";
-import { ArrowKos, CustomArrows } from "../components/arrow";
+import { ArrowKos } from "../components/arrow";
 import Slider from "react-slick";
 import Select from "../components/select";
 import Image from "next/image";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import ButtonBack from "../components/button_back/page";
 
 const KosPage = () => {
     const searchParams = useSearchParams();
@@ -286,51 +285,52 @@ const KosPage = () => {
 
     /** ---------- RENDER ---------- */
     return (
-        <div className="bg-white white duration-200 ">
-            <div className="bg-white">
-                <div className="max-w-6xl mx-auto px-4 py-6">
-                    <div className="grid grid-cols-7 items-center gap-4">
-                        <div className="flex items-center gap-4 col-span-5">
-                            <div>
-                                <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
-                                    Rekomendasi Kos di{" "}
-                                    <span className="text-green-600">
-                                        {selectedKota === "all" ? "Semua Kota" : selectedKota}
-                                    </span>
-                                </h1>
-                                <p className="text-gray-600 mt-1">
-                                    Temukan kos terbaik dengan fasilitas lengkap
-                                </p>
-                            </div>
+        <div className="bg-white duration-200 ">
+            <div className="max-w-6xl mx-auto px-4 py-6">
+                <div className="grid grid-cols-7 items-center gap-4">
+                    <div className="flex items-center gap-4 col-span-5">
+                        <div>
+                            <ButtonBack/>
+                            <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
+                                Rekomendasi Kos di{" "}
+                                <span className="text-green-600">
+                                    {selectedKota === "all" ? "Semua Kota" : selectedKota}
+                                </span>
+                            </h1>
+                            <p className="text-gray-600 mt-1">
+                                Temukan kos terbaik dengan fasilitas lengkap
+                            </p>
                         </div>
-
-                        <div className="relative flex items-center gap-4 w-full md:w-auto col-span-2">
-                            <div className="w-full md:w-64">
-                                <Select
-                                    id="kota-select"
-                                    value={selectedKota}
-                                    onChange={(value) => setSelectedKota(value)}
-                                    label="Pilih Kota"
-                                    className="text-gray-900">
-                                    <option value="all">Semua Kota</option>
-                                    {kotaOptions.map((kota) => (
-                                        <option key={kota} value={kota}>
-                                            {kota}
-                                        </option>
-                                    ))}
-                                </Select>
-                            </div>
-                            <div className="border-l-2 border-slate-300 h-8 mt-4"></div>
-                            <div>
-                                <ArrowKos
-                                    next={() => sliderRef.current?.slickNext()}
-                                    prev={() => sliderRef.current?.slickPrev()} />
-                            </div>
-                        </div>
-
                     </div>
+
+                    <div className="relative flex items-center gap-4 w-full md:w-auto col-span-2">
+                        <div className="w-full md:w-64">
+                            <Select
+                                id="kota-select"
+                                value={selectedKota}
+                                onChange={(value) => setSelectedKota(value)}
+                                label="Pilih Kota"
+                                className="text-gray-900">
+                                <option value="all">Semua Kota</option>
+                                {kotaOptions.map((kota) => (
+                                    <option key={kota} value={kota}>
+                                        {kota}
+                                    </option>
+                                ))}
+                            </Select>
+                        </div>
+                        <div className="border-l-2 border-slate-300 h-8 mt-4"></div>
+                        <div>
+                            <ArrowKos
+                                next={() => sliderRef.current?.slickNext()}
+                                prev={() => sliderRef.current?.slickPrev()} />
+                        </div>
+                    </div>
+
                 </div>
             </div>
+
+
             {/* ----------------- FILTER PILLS ----------------- */}
             <div className="max-w-6xl mx-auto px-4 py-4">
                 <div className="flex items-center gap-3 flex-wrap">
@@ -735,3 +735,4 @@ const KosPage = () => {
 };
 
 export default KosPage;
+

@@ -6,7 +6,7 @@ import Image from "next/image";
 import Search from "./search";
 import { IoSearch } from "react-icons/io5";
 import { CustomArrows } from "../components/arrow";
-import Kos from "../kos/page";
+import Kos from "../components/kos/page";
 import bild from "../../public/images/building.svg";
 import Slider from "react-slick";
 import KosPromoPage from "../kos_promo/page";
