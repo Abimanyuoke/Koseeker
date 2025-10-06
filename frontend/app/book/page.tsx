@@ -79,10 +79,6 @@ export default function BookingsPage() {
         }
     }
 
-    const formatPrice = (price: number) => {
-        return new Intl.NumberFormat('id-ID').format(price)
-    }
-
     const handlePrintReceipt = (booking: Booking) => {
         const printWindow = window.open('', '_blank')
         if (!printWindow) return
@@ -145,8 +141,7 @@ export default function BookingsPage() {
                         <p className="text-gray-500 mb-6">Mulai cari kos impian Anda dan lakukan booking</p>
                         <Link
                             href="/kos"
-                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        >
+                            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                             Cari Kos
                         </Link>
                     </div>

@@ -47,34 +47,30 @@ const Countdown: React.FC<CountdownProps> = ({ endDate }) => {
     }, [endDate]);
 
     return (
-        <div className="flex items-center justify-center space-x-2 text-sm font-bold mb-8">
-            <span className="text-white text-lg">Akan berakhir dalam waktu:</span>
-            <div className="flex space-x-2">
-                <div className="bg-slate-700 text-white px-3 py-2 rounded-lg">
-                    <div className="text-center">
-                        <div className="text-lg font-bold">{String(timeLeft.days).padStart(2, '0')}</div>
-                        <div className="text-xs">Hari</div>
+        <div className="flex items-center justify-center gap-4">
+            <div className="flex items-center gap-2">
+                <div className="bg-white rounded-lg p-2 shadow-sm">
+                    <div className="flex items-center gap-3">
+                        <div className="text-base font-bold text-gray-900">{String(timeLeft.days).padStart(2, '0')}</div>
+                        <div className="font-semibold">Hari</div>
                     </div>
                 </div>
-                <span className="text-white text-2xl">:</span>
-                <div className="bg-slate-700 text-white px-3 py-2 rounded-lg">
+                <span className="text-gray-400 text-base font-bold">:</span>
+                <div className="bg-white rounded-lg p-2 shadow-sm">
                     <div className="text-center">
-                        <div className="text-lg font-bold">{String(timeLeft.hours).padStart(2, '0')}</div>
-                        <div className="text-xs">Jam</div>
+                        <div className="text-base font-bold text-gray-900">{String(timeLeft.hours).padStart(2, '0')}</div>
                     </div>
                 </div>
-                <span className="text-white text-2xl">:</span>
-                <div className="bg-slate-700 text-white px-3 py-2 rounded-lg">
+                <span className="text-gray-400 text-base font-bold">:</span>
+                <div className="bg-white rounded-lg p-2 shadow-sm">
                     <div className="text-center">
-                        <div className="text-lg font-bold">{String(timeLeft.minutes).padStart(2, '0')}</div>
-                        <div className="text-xs">Menit</div>
+                        <div className="text-base font-bold text-gray-900">{String(timeLeft.minutes).padStart(2, '0')}</div>
                     </div>
                 </div>
-                <span className="text-white text-2xl">:</span>
-                <div className="bg-slate-700 text-white px-3 py-2 rounded-lg">
+                <span className="text-gray-400 text-base font-bold">:</span>
+                <div className="bg-white rounded-lg p-2 shadow-sm">
                     <div className="text-center">
-                        <div className="text-lg font-bold">{String(timeLeft.seconds).padStart(2, '0')}</div>
-                        <div className="text-xs">Detik</div>
+                        <div className="text-base font-bold text-gray-900">{String(timeLeft.seconds).padStart(2, '0')}</div>
                     </div>
                 </div>
             </div>
@@ -187,51 +183,55 @@ const KosPromoPage = () => {
     /** ---------- RENDER ---------- */
     return (
         <div className="bg-white duration-200 ">
-            <div className="bg-white">
-                <div className="max-w-6xl mx-auto py-6">
-                    <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-                        <div className="flex items-center gap-4">
-                            <div>
-                                <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
-                                    Promo Ngebut di{" "}
-                                    <span className="text-red-600">
-                                        {selectedKota === "all" ? "Semua Kota" : selectedKota}
-                                    </span>
-                                </h1>
-                                <p className="text-gray-600 mt-1">
-                                    Temukan kos terbaik dengan diskon menarik
-                                </p>
+            <div className="max-w-6xl mx-auto py-6">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                        <div>
+                            <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
+                                Promo Ngebut di{" "}
+                                <span className="text-red-600">
+                                    {selectedKota === "all" ? "Semua Kota" : selectedKota}
+                                </span>
+                            </h1>
+                            <p className="text-gray-600 mt-1">
+                                Temukan kos terbaik dengan diskon menarik
+                            </p>
+                        </div>
+                    </div>
+
+                    {/* Countdown Timer Section */}
+                    <div className="py-8">
+                        <div className="px-4 flex items-center gap-4">
+                            <div className="text-base font-medium flex flex-col text-right">
+                                <span>Akan Berakhir</span>
+                                <span>dalam waktu:</span>
+                            </div>
+                            <div className="bg-gradient-to-r from-gray-50 to-gray-100 rounded-lg p-2 border border-gray-200">
+                                <Countdown endDate={promoEndDate} />
                             </div>
                         </div>
+                    </div>
 
-                        <div className="w-full md:w-64">
-                            <Select
-                                id="kota-select"
-                                value={selectedKota}
-                                onChange={(value) => setSelectedKota(value)}
-                                label="Pilih Kota"
-                                className="text-gray-900"
-                            >
-                                <option value="all">Semua Kota</option>
-                                {kotaOptions.map((kota) => (
-                                    <option key={kota} value={kota}>
-                                        {kota}
-                                    </option>
-                                ))}
-                            </Select>
-                        </div>
+
+                    <div className="w-full md:w-64">
+                        <Select
+                            id="kota-select"
+                            value={selectedKota}
+                            onChange={(value) => setSelectedKota(value)}
+                            label="Pilih Kota"
+                            className="text-gray-900">
+                            <option value="all">Semua Kota</option>
+                            {kotaOptions.map((kota) => (
+                                <option key={kota} value={kota}>
+                                    {kota}
+                                </option>
+                            ))}
+                        </Select>
                     </div>
                 </div>
             </div>
 
-            {/* Countdown Timer Section */}
-            <div className="py-8">
-                <div className="max-w-6xl mx-auto px-4">
-                    <div className="bg-black/20 backdrop-blur-sm rounded-2xl p-6 max-w-4xl mx-auto">
-                        <Countdown endDate={promoEndDate} />
-                    </div>
-                </div>
-            </div>
+
 
             {/* ----------------- KOS CARDS ----------------- */}
             <div className="max-w-6xl mx-auto py-8">
@@ -260,8 +260,7 @@ const KosPromoPage = () => {
                                 <div
                                     key={kos.id}
                                     className="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 overflow-hidden cursor-pointer group transform hover:-translate-y-1"
-                                    onClick={() => router.push(`/kos/${kos.id}`)}
-                                >
+                                    onClick={() => router.push(`/kos/${kos.id}`)}>
                                     <div className="relative h-48 overflow-hidden">
                                         {/* Discount Badge */}
                                         {kos.discountPercent && (
@@ -277,11 +276,10 @@ const KosPromoPage = () => {
                                                     alt={kos.name}
                                                     fill
                                                     className="object-cover group-hover:scale-105 transition-transform duration-300"
-                                                    unoptimized
-                                                />
+                                                    unoptimized />
 
                                                 {hasMultipleImages && (
-                                                    <>
+                                                    <div>
                                                         <button
                                                             onClick={(e) => handlePrevImage(e, kos.id, kos.images.length)}
                                                             className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
@@ -290,11 +288,10 @@ const KosPromoPage = () => {
                                                         </button>
                                                         <button
                                                             onClick={(e) => handleNextImage(e, kos.id, kos.images.length)}
-                                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"
-                                                        >
+                                                            className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
                                                             <FaChevronRight className="text-sm" />
                                                         </button>
-                                                    </>
+                                                    </div>
                                                 )}
 
                                                 {hasMultipleImages && (
@@ -349,8 +346,7 @@ const KosPromoPage = () => {
                                                         <div
                                                             key={facility.id}
                                                             className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-lg"
-                                                            title={facility.facility}
-                                                        >
+                                                            title={facility.facility}>
                                                             {getFacilityIcon(facility.facility)}
                                                             <span className="text-xs text-gray-600 truncate max-w-16">
                                                                 {facility.facility.length > 8
@@ -374,7 +370,7 @@ const KosPromoPage = () => {
                                         {/* Price with Discount */}
                                         <div className="flex items-baseline gap-1">
                                             {kos.discountPercent ? (
-                                                <>
+                                                <div>
                                                     <span className="text-xl font-bold text-red-500">
                                                         Rp {formatPrice(discountedPrice)}
                                                     </span>
@@ -384,16 +380,16 @@ const KosPromoPage = () => {
                                                     <span className="text-sm text-gray-500">
                                                         /bulan
                                                     </span>
-                                                </>
+                                                </div>
                                             ) : (
-                                                <>
+                                                <div>
                                                     <span className="text-xl font-bold text-green-600">
                                                         Rp {formatPrice(originalPrice)}
                                                     </span>
                                                     <span className="text-sm text-gray-500">
                                                         /bulan
                                                     </span>
-                                                </>
+                                                </div>
                                             )}
                                         </div>
 
