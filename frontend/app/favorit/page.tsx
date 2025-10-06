@@ -67,7 +67,7 @@ export default function FavoritPage() {
             if (response.ok) {
                 const data = await response.json()
                 console.log('Response data:', data)
-                
+
                 if (data.status) {
                     setFavorites(data.data)
                 } else {
