@@ -7,10 +7,11 @@ import { getCookies } from "@/lib/client-cookies";
 import { BASE_API_URL, BASE_IMAGE_KOS } from "../../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
-import { FiLoader, FiArrowLeft, FiShare2 } from "react-icons/fi";
-import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaUser, FaPhone, FaEnvelope } from "react-icons/fa";
-import { MdLocalLaundryService, MdSecurity } from "react-icons/md";
-import { GiCook } from "react-icons/gi";
+import { FiLoader, FiArrowLeft, FiShare2, FiHeart, FiCheckCircle } from "react-icons/fi";
+import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaPhone, FaEnvelope, FaRulerCombined, FaToilet, FaCouch, FaDoorOpen, FaWhatsapp } from "react-icons/fa";
+import { MdLocalLaundryService, MdSecurity, MdOutlineBedroomParent } from "react-icons/md";
+import { GiCook, GiWindow } from "react-icons/gi";
+import { IoClose } from "react-icons/io5";
 import { ButtonPrimary } from "../../components/button";
 import LikeButton from "@/app/components/likeButton";
 import ReviewContainer from "@/app/components/review/ReviewContainer";
@@ -112,6 +113,31 @@ const KosDetailPage = () => {
         router.push(`/book/${id}`);
     };
 
+    const handleWhatsAppChat = () => {
+        const phoneNumber = kosDetail?.owner?.phone || '';
+
+        if (!phoneNumber || phoneNumber.trim() === '' || phoneNumber === 'Tidak tersedia') {
+            alert('Nomor WhatsApp pemilik tidak tersedia. Silakan hubungi melalui email atau ajukan sewa langsung.');
+            return;
+        }
+
+        // Remove all non-digit characters and add country code if not present
+        let cleanPhone = phoneNumber.replace(/\D/g, '');
+
+        // Add Indonesian country code if not present
+        if (!cleanPhone.startsWith('62')) {
+            if (cleanPhone.startsWith('0')) {
+                cleanPhone = '62' + cleanPhone.substring(1);
+            } else {
+                cleanPhone = '62' + cleanPhone;
+            }
+        }
+
+        const message = `Halo Kak, saya tertarik dengan kos *${kosDetail?.name}*\n\nLokasi: ${kosDetail?.address}\nHarga: Rp ${formatPrice(kosDetail?.pricePerMonth || 0)}/bulan\n\nBisakah saya mendapatkan informasi lebih lanjut?`;
+        const waUrl = `https://wa.me/${cleanPhone}?text=${encodeURIComponent(message)}`;
+        window.open(waUrl, '_blank');
+    };
+
     if (loading) {
         return (
             <div className="bg-gray-50 text-black duration-200 min-h-screen">
@@ -140,57 +166,430 @@ const KosDetailPage = () => {
     /** ---------- RENDER ---------- */
     return (
         <div className="bg-gray-50 text-black duration-200 min-h-screen">
-            <div className="max-w-6xl mx-auto px-4 py-8 mt-16">
+            <div className="max-w-7xl mx-auto px-4 py-8 mt-16">
                 {/* Back Button */}
                 <button
                     onClick={() => router.back()}
-                    className="flex items-center gap-2 text-gray-600 hover:text-green-600 mb-6">
+                    className="flex items-center gap-2 text-gray-600 hover:text-green-600 mb-6 transition-colors">
                     <FiArrowLeft className="text-xl" />
-                    <span>Kembali ke Daftar Kos</span>
+                    <span className="font-medium">Kembali</span>
                 </button>
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                    <div className="space-y-4">
-                        <div className="relative h-96 rounded-xl overflow-hidden">
-                            {kosDetail.images && kosDetail.images.length > 0 ? (
-                                <Image
-                                    src={`${BASE_IMAGE_KOS}/${kosDetail.images[currentImageIndex]?.file || kosDetail.images[0].file}`}
-                                    alt={kosDetail.name}
-                                    fill
-                                    className="object-cover"
-                                    unoptimized
-                                />
-                            ) : (
-                                <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                                    <span className="text-gray-400">No Image</span>
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Thumbnail Images */}
-                        {kosDetail.images && kosDetail.images.length > 1 && (
-                            <div className="grid grid-cols-4 gap-2">
-                                {kosDetail.images.map((image, index) => (
-                                    <div
-                                        key={image.id}
-                                        className={`relative h-20 rounded-lg overflow-hidden cursor-pointer border-2 ${currentImageIndex === index ? 'border-green-600' : 'border-transparent'
-                                            }`}
-                                        onClick={() => setCurrentImageIndex(index)}
-                                    >
+                {/* Image Gallery - Full Width */}
+                <div className="w-full max-w-6xl mx-auto mb-8">
+                    <div className="bg-white rounded-2xl overflow-hidden shadow-lg relative">
+                        {kosDetail.images && kosDetail.images.length > 0 ? (
+                            <div className="w-full">
+                                {/* Single Image */}
+                                {kosDetail.images.length === 1 && (
+                                    <div className="relative w-full h-[500px] rounded-xl overflow-hidden cursor-pointer group m-2">
                                         <Image
-                                            src={`${BASE_IMAGE_KOS}/${image.file}`}
-                                            alt={`${kosDetail.name} ${index + 1}`}
+                                            src={`${BASE_IMAGE_KOS}/${kosDetail.images[0].file}`}
+                                            alt={kosDetail.name}
                                             fill
-                                            className="object-cover"
+                                            className="object-cover transition-transform duration-500 group-hover:scale-110"
                                             unoptimized
                                         />
+                                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
                                     </div>
-                                ))}
+                                )}
+
+                                {/* Two Images */}
+                                {kosDetail.images.length === 2 && (
+                                    <div className="grid grid-cols-2 gap-2 p-2">
+                                        {kosDetail.images.map((image, index) => (
+                                            <div
+                                                key={image.id}
+                                                className="relative w-full h-[500px] rounded-xl overflow-hidden cursor-pointer group"
+                                                onClick={() => setCurrentImageIndex(index)}
+                                            >
+                                                <Image
+                                                    src={`${BASE_IMAGE_KOS}/${image.file}`}
+                                                    alt={`${kosDetail.name} ${index + 1}`}
+                                                    fill
+                                                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                                    unoptimized
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* Three Images */}
+                                {kosDetail.images.length === 3 && (
+                                    <div className="grid grid-cols-2 grid-rows-2 gap-2 p-2">
+                                        {/* First large image takes full left side */}
+                                        <div
+                                            className="relative w-full row-span-2 h-[500px] rounded-xl overflow-hidden cursor-pointer group"
+                                            onClick={() => setCurrentImageIndex(0)}
+                                        >
+                                            <Image
+                                                src={`${BASE_IMAGE_KOS}/${kosDetail.images[0].file}`}
+                                                alt={`${kosDetail.name} 1`}
+                                                fill
+                                                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                                unoptimized
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                                        </div>
+                                        {/* Two smaller images on right */}
+                                        {kosDetail.images.slice(1, 3).map((image, index) => (
+                                            <div
+                                                key={image.id}
+                                                className="relative w-full h-[245px] rounded-xl overflow-hidden cursor-pointer group"
+                                                onClick={() => setCurrentImageIndex(index + 1)}
+                                            >
+                                                <Image
+                                                    src={`${BASE_IMAGE_KOS}/${image.file}`}
+                                                    alt={`${kosDetail.name} ${index + 2}`}
+                                                    fill
+                                                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                                    unoptimized
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {/* Four or More Images */}
+                                {kosDetail.images.length >= 4 && (
+                                    <div className="grid grid-cols-4 grid-rows-2 gap-2 p-2">
+                                        {/* First large image takes 2x2 grid */}
+                                        <div
+                                            className="relative w-full col-span-2 row-span-2 h-[500px] rounded-xl overflow-hidden cursor-pointer group"
+                                            onClick={() => setCurrentImageIndex(0)}
+                                        >
+                                            <Image
+                                                src={`${BASE_IMAGE_KOS}/${kosDetail.images[0].file}`}
+                                                alt={`${kosDetail.name} 1`}
+                                                fill
+                                                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                                unoptimized
+                                            />
+                                            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+                                        </div>
+                                        {/* Remaining images fill the right side */}
+                                        {kosDetail.images.slice(1, 5).map((image, index) => (
+                                            <div
+                                                key={image.id}
+                                                className="relative w-full h-[245px] rounded-xl overflow-hidden cursor-pointer group"
+                                                onClick={() => setCurrentImageIndex(index + 1)}
+                                            >
+                                                <Image
+                                                    src={`${BASE_IMAGE_KOS}/${image.file}`}
+                                                    alt={`${kosDetail.name} ${index + 2}`}
+                                                    fill
+                                                    className="object-cover transition-transform duration-500 group-hover:scale-110"
+                                                    unoptimized
+                                                />
+                                                <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
+
+                                                {/* Show more indicator on last visible image */}
+                                                {index === 3 && kosDetail.images.length > 5 && (
+                                                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+                                                        <div className="text-center">
+                                                            <span className="text-white text-3xl font-bold block">
+                                                                +{kosDetail.images.length - 5}
+                                                            </span>
+                                                            <span className="text-white text-sm">Foto Lainnya</span>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        ) : (
+                            <div className="w-full h-[500px] bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+                                <span className="text-gray-400">No Image</span>
                             </div>
                         )}
 
-                        {/* Reviews Section - Same width as images */}
-                        <div className="mt-8">
+                        {/* Like and Share buttons overlay */}
+                        <div className="absolute top-6 right-6 flex gap-2 z-10">
+                            {user && token ? (
+                                <LikeButton
+                                    kosId={kosDetail.id}
+                                    userId={user.id}
+                                    token={token.toString()}
+                                />
+                            ) : (
+                                <button className="p-3 rounded-full bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm transition-all hover:scale-110">
+                                    <FiHeart className="text-xl text-red-500" />
+                                </button>
+                            )}
+                            <button className="p-3 rounded-full bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm transition-all hover:scale-110">
+                                <FiShare2 className="text-xl text-gray-700" />
+                            </button>
+                        </div>
+
+                        {/* Gender Badge */}
+                        <div className="absolute bottom-6 left-6 z-10">
+                            <span className={`px-4 py-2 rounded-full text-sm font-semibold shadow-lg backdrop-blur-sm bg-opacity-95 ${getGenderColor(kosDetail.gender)}`}>
+                                {getGenderText(kosDetail.gender)}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Content Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    {/* Left & Middle Section - 2/3 width */}
+                    <div className="lg:col-span-2 space-y-6">
+                        {/* Header Info */}
+                        <div className="bg-white rounded-2xl p-6 shadow-lg">
+                            <div className="flex items-start justify-between mb-4">
+                                <div className="flex-1">
+                                    <div className="flex items-center gap-2 mb-2">
+                                        <span className="text-xs font-semibold text-green-600 bg-green-50 px-3 py-1 rounded-full">
+                                            Kos {kosDetail.kampus}
+                                        </span>
+                                    </div>
+                                    <h1 className="text-3xl font-bold text-gray-900 mb-3">
+                                        {kosDetail.name}
+                                    </h1>
+                                    <div className="flex items-start gap-2 text-gray-600">
+                                        <FaMapMarkerAlt className="text-green-600 mt-1 flex-shrink-0" />
+                                        <span className="text-sm">{kosDetail.address}, {kosDetail.kota}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Spesifikasi Kamar */}
+                        <div className="bg-white rounded-2xl p-6 shadow-lg">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <MdOutlineBedroomParent className="text-green-600 text-3xl" />
+                                Spesifikasi Kamar
+                            </h2>
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FaRulerCombined className="text-blue-600 text-2xl" />
+                                    <div>
+                                        <p className="text-xs text-gray-600">Luas Kamar</p>
+                                        <p className="font-semibold text-gray-900">3 x 4 meter</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <GiWindow className="text-yellow-600 text-2xl" />
+                                    <div>
+                                        <p className="text-xs text-gray-600">Jendela</p>
+                                        <p className="font-semibold text-gray-900">Ada</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FaBed className="text-green-600 text-2xl" />
+                                    <div>
+                                        <p className="text-xs text-gray-600">Kasur</p>
+                                        <p className="font-semibold text-gray-900">Single Bed</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FaDoorOpen className="text-purple-600 text-2xl" />
+                                    <div>
+                                        <p className="text-xs text-gray-600">Pintu</p>
+                                        <p className="font-semibold text-gray-900">Kunci Pribadi</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Fasilitas Kamar */}
+                        {kosDetail.facilities && kosDetail.facilities.length > 0 && (
+                            <div className="bg-white rounded-2xl p-6 shadow-lg">
+                                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                    <FaBed className="text-green-600" />
+                                    Fasilitas Kamar
+                                </h2>
+                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                    {kosDetail.facilities.map((facility) => (
+                                        <div
+                                            key={facility.id}
+                                            className="flex items-center gap-3 p-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100 hover:shadow-md transition-shadow"
+                                        >
+                                            {getFacilityIcon(facility.facility)}
+                                            <span className="text-sm font-medium text-gray-700">
+                                                {facility.facility}
+                                            </span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Fasilitas Kamar Mandi */}
+                        <div className="bg-white rounded-2xl p-6 shadow-lg">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <FaShower className="text-blue-600 text-3xl" />
+                                Fasilitas Kamar Mandi
+                            </h2>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FaShower className="text-blue-600 text-2xl" />
+                                    <span className="text-sm font-medium text-gray-700">Shower</span>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FaToilet className="text-blue-600 text-2xl" />
+                                    <span className="text-sm font-medium text-gray-700">Toilet Duduk</span>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FaSnowflake className="text-cyan-600 text-2xl" />
+                                    <span className="text-sm font-medium text-gray-700">Air Dingin</span>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FaShower className="text-red-600 text-2xl" />
+                                    <span className="text-sm font-medium text-gray-700">Air Panas</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Fasilitas Umum */}
+                        <div className="bg-white rounded-2xl p-6 shadow-lg">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <FaCouch className="text-orange-600 text-3xl" />
+                                Fasilitas Umum
+                            </h2>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FaWifi className="text-blue-600 text-2xl" />
+                                    <span className="text-sm font-medium text-gray-700">WiFi</span>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <MdLocalLaundryService className="text-indigo-600 text-2xl" />
+                                    <span className="text-sm font-medium text-gray-700">Laundry</span>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <GiCook className="text-orange-600 text-2xl" />
+                                    <span className="text-sm font-medium text-gray-700">Dapur Bersama</span>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FaTv className="text-purple-600 text-2xl" />
+                                    <span className="text-sm font-medium text-gray-700">Ruang TV</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Fasilitas Parkir */}
+                        <div className="bg-white rounded-2xl p-6 shadow-lg">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <FaCar className="text-gray-600 text-3xl" />
+                                Fasilitas Parkir
+                            </h2>
+                            <div className="grid grid-cols-2 gap-3">
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FaCar className="text-gray-600 text-2xl transform -rotate-12" />
+                                    <span className="text-sm font-medium text-gray-700">Parkir Motor</span>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FaCar className="text-gray-600 text-2xl" />
+                                    <span className="text-sm font-medium text-gray-700">Parkir Mobil</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Peraturan di Kos */}
+                        <div className="bg-white rounded-2xl p-6 shadow-lg">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <MdSecurity className="text-red-600 text-3xl" />
+                                Peraturan di Kos
+                            </h2>
+                            <div className="space-y-3">
+                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <IoClose className="text-red-500 text-xl mt-0.5 flex-shrink-0" />
+                                    <p className="text-sm text-gray-700">Dilarang membawa tamu menginap</p>
+                                </div>
+                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <IoClose className="text-red-500 text-xl mt-0.5 flex-shrink-0" />
+                                    <p className="text-sm text-gray-700">Jam bertamu maksimal pukul 21.00 WIB</p>
+                                </div>
+                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <IoClose className="text-red-500 text-xl mt-0.5 flex-shrink-0" />
+                                    <p className="text-sm text-gray-700">Dilarang membawa hewan peliharaan</p>
+                                </div>
+                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FiCheckCircle className="text-green-500 text-xl mt-0.5 flex-shrink-0" />
+                                    <p className="text-sm text-gray-700">Wajib menjaga kebersihan bersama</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Ketentuan Penyewaan */}
+                        <div className="bg-white rounded-2xl p-6 shadow-lg">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <FiCheckCircle className="text-green-600 text-3xl" />
+                                Ketentuan Penyewaan
+                            </h2>
+                            <div className="space-y-3">
+                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FiCheckCircle className="text-green-500 text-xl mt-0.5 flex-shrink-0" />
+                                    <div>
+                                        <p className="font-semibold text-gray-900">Minimal Sewa</p>
+                                        <p className="text-sm text-gray-600">1 bulan</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FiCheckCircle className="text-green-500 text-xl mt-0.5 flex-shrink-0" />
+                                    <div>
+                                        <p className="font-semibold text-gray-900">Pembayaran</p>
+                                        <p className="text-sm text-gray-600">Di muka setiap bulan tanggal 1-5</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FiCheckCircle className="text-green-500 text-xl mt-0.5 flex-shrink-0" />
+                                    <div>
+                                        <p className="font-semibold text-gray-900">Deposit</p>
+                                        <p className="text-sm text-gray-600">1 bulan sewa (dikembalikan saat checkout)</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:shadow-md transition-shadow">
+                                    <FiCheckCircle className="text-green-500 text-xl mt-0.5 flex-shrink-0" />
+                                    <div>
+                                        <p className="font-semibold text-gray-900">Listrik & Air</p>
+                                        <p className="text-sm text-gray-600">Sudah termasuk dalam harga sewa</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Catatan Tambahan */}
+                        <div className="bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 rounded-2xl p-6 shadow-lg border border-blue-200">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                <FaMapMarkerAlt className="text-blue-600 text-3xl" />
+                                Catatan Tambahan
+                            </h2>
+                            <div className="space-y-3 text-gray-700">
+                                <div className="flex items-start gap-3">
+                                    <FiCheckCircle className="text-green-500 text-lg mt-0.5 flex-shrink-0" />
+                                    <p className="text-sm leading-relaxed">
+                                        Lokasi strategis dekat dengan kampus {kosDetail.kampus}
+                                    </p>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <FiCheckCircle className="text-green-500 text-lg mt-0.5 flex-shrink-0" />
+                                    <p className="text-sm leading-relaxed">
+                                        Lingkungan aman dengan penjagaan 24 jam
+                                    </p>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <FiCheckCircle className="text-green-500 text-lg mt-0.5 flex-shrink-0" />
+                                    <p className="text-sm leading-relaxed">
+                                        Akses mudah ke transportasi umum
+                                    </p>
+                                </div>
+                                <div className="flex items-start gap-3">
+                                    <FiCheckCircle className="text-green-500 text-lg mt-0.5 flex-shrink-0" />
+                                    <p className="text-sm leading-relaxed">
+                                        Dekat dengan minimarket, warung makan, dan fasilitas umum lainnya
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Reviews Section */}
+                        <div className="bg-white rounded-2xl p-6 shadow-lg">
                             <h2 className="text-2xl font-bold text-gray-900 mb-6">
                                 Reviews & Ulasan
                             </h2>
@@ -201,170 +600,121 @@ const KosDetailPage = () => {
                         </div>
                     </div>
 
-                    {/* Right Side - Details */}
-                    <div className="space-y-6">
-                        {/* Header */}
-                        <div>
-                            <div className="flex items-start justify-between mb-4">
-                                <div>
-                                    <h1 className="text-3xl font-bold text-gray-900-2">
-                                        {kosDetail.name}
-                                    </h1>
-                                    <div className="flex items-center gap-2 text-gray-600 mb-2">
-                                        <FaMapMarkerAlt className="text-green-600" />
-                                        <span>{kosDetail.address}</span>
+                    {/* Right Sidebar - Price, Actions & Owner Info */}
+                    <div className="lg:col-span-1">
+                        <div className="sticky top-24 space-y-4">
+                            {/* Price Card */}
+                            <div className="bg-white rounded-2xl p-6 shadow-xl border border-gray-100">
+                                {kosDetail.discountPercent && kosDetail.discountPercent > 0 ? (
+                                    <div>
+                                        <div className="inline-block bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-1.5 rounded-full text-xs font-bold mb-3 shadow-md">
+                                            🔥 Hemat {kosDetail.discountPercent}%
+                                        </div>
+                                        <div className="mb-2">
+                                            <div className="flex items-baseline gap-2">
+                                                <span className="text-3xl font-bold text-red-500">
+                                                    Rp {formatPrice(kosDetail.pricePerMonth - (kosDetail.pricePerMonth * kosDetail.discountPercent / 100))}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-2 mt-1">
+                                                <span className="text-sm text-gray-500 line-through">
+                                                    Rp {formatPrice(kosDetail.pricePerMonth)}
+                                                </span>
+                                                <span className="text-sm text-gray-500">/bulan</span>
+                                            </div>
+                                        </div>
+                                        <div className="bg-red-50 p-3 rounded-lg mt-3">
+                                            <p className="text-red-600 text-xs font-semibold">
+                                                💰 Hemat Rp {formatPrice(kosDetail.pricePerMonth * kosDetail.discountPercent / 100)} per bulan!
+                                            </p>
+                                        </div>
                                     </div>
-                                    <p className="text-sm text-gray-500">
-                                        {kosDetail.kota}
-                                    </p>
-                                </div>
+                                ) : (
+                                    <div>
+                                        <div className="flex items-baseline gap-2 mb-2">
+                                            <span className="text-3xl font-bold text-green-600">
+                                                Rp {formatPrice(kosDetail.pricePerMonth)}
+                                            </span>
+                                            <span className="text-lg text-gray-500">/bulan</span>
+                                        </div>
+                                        <div className="bg-green-50 p-3 rounded-lg mt-3">
+                                            <p className="text-green-700 text-xs font-medium">
+                                                ✓ Sudah termasuk listrik & air
+                                            </p>
+                                        </div>
+                                    </div>
+                                )}
 
-                                <div className="flex gap-2">
-                                    {user && token ? (
-                                        <LikeButton
-                                            kosId={kosDetail.id}
-                                            userId={user.id}
-                                            token={token.toString()}
-                                        />
-                                    ) : (
-                                        <p className="text-gray-500">Login dulu untuk like ❤️</p>
-                                    )}
+                                <div className="border-t border-gray-200 my-4"></div>
 
-                                    <button className="p-2 rounded-full bg-gray-100 hover:bg-gray-200-600">
-                                        <FiShare2 className="text-xl text-gray-600" />
+                                {/* Action Buttons */}
+                                <div className="space-y-3">
+                                    <button
+                                        onClick={handleWhatsAppChat}
+                                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all font-semibold shadow-lg hover:shadow-xl"
+                                    >
+                                        <FaWhatsapp className="text-2xl" />
+                                        Tanya via WhatsApp
                                     </button>
+
+                                    <ButtonPrimary
+                                        type="button"
+                                        onClick={() => router.push(`/book/${kosDetail.id}`)}
+                                        className="w-full py-3 text-base font-semibold rounded-xl shadow-lg"
+                                    >
+                                        Ajukan Sewa
+                                    </ButtonPrimary>
+                                </div>
+
+                                <div className="text-center mt-4 space-y-1">
+                                    <p className="text-xs text-gray-500 flex items-center justify-center gap-1">
+                                        <FiCheckCircle className="text-green-500" />
+                                        Respon cepat dari pemilik
+                                    </p>
+                                    <p className="text-xs text-gray-400">
+                                        Chat langsung via WhatsApp
+                                    </p>
                                 </div>
                             </div>
 
-                            {/* Gender Badge */}
-                            <div className="mb-4">
-                                <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getGenderColor(kosDetail.gender)}`}>
-                                    {getGenderText(kosDetail.gender)}
-                                </span>
-                            </div>
-                        </div>
-
-                        {/* Price */}
-                        <div className="bg-white rounded-xl p-6 shadow-lg">
-                            {kosDetail.discountPercent && kosDetail.discountPercent > 0 ? (
-                                <div>
-                                    {/* Discount Badge */}
-                                    <div className="inline-block bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold mb-3">
-                                        Hemat {kosDetail.discountPercent}%
+                            {/* Owner Info Card */}
+                            {kosDetail.owner && (
+                                <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+                                    <h3 className="text-lg font-bold text-gray-900 mb-4">
+                                        Informasi Pemilik
+                                    </h3>
+                                    <div className="space-y-4">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-blue-500 rounded-full flex items-center justify-center text-white font-bold text-lg">
+                                                {kosDetail.owner.name.charAt(0).toUpperCase()}
+                                            </div>
+                                            <div>
+                                                <p className="font-semibold text-gray-900">{kosDetail.owner.name}</p>
+                                                <p className="text-xs text-gray-500">Pemilik Kos</p>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-2">
+                                            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                                                <FaPhone className="text-green-600" />
+                                                <span className="text-sm text-gray-700">
+                                                    {kosDetail.owner.phone || 'Tidak tersedia'}
+                                                </span>
+                                            </div>
+                                            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                                                <FaEnvelope className="text-blue-600" />
+                                                <span className="text-sm text-gray-700 truncate">
+                                                    {kosDetail.owner.email}
+                                                </span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="flex items-baseline gap-2 mb-2">
-                                        <span className="text-3xl font-bold text-red-500">
-                                            Rp {formatPrice(kosDetail.pricePerMonth - (kosDetail.pricePerMonth * kosDetail.discountPercent / 100))}
-                                        </span>
-                                        <span className="text-lg text-gray-500 line-through">
-                                            Rp {formatPrice(kosDetail.pricePerMonth)}
-                                        </span>
-                                        <span className="text-lg text-gray-500">
-                                            /bulan
-                                        </span>
-                                    </div>
-                                    <p className="text-red-600 text-sm font-semibold">
-                                        Hemat Rp {formatPrice(kosDetail.pricePerMonth * kosDetail.discountPercent / 100)} per bulan!
-                                    </p>
-                                </div>
-                            ) : (
-                                <div>
-                                    <div className="flex items-baseline gap-2 mb-2">
-                                        <span className="text-3xl font-bold text-green-600">
-                                            Rp {formatPrice(kosDetail.pricePerMonth)}
-                                        </span>
-                                        <span className="text-lg text-gray-500">
-                                            /bulan
-                                        </span>
-                                    </div>
-                                    <p className="text-gray-600 text-sm">
-                                        Harga sudah termasuk listrik dan air
-                                    </p>
                                 </div>
                             )}
                         </div>
-
-                        {/* Book Now Button */}
-                        <div className="bg-white rounded-xl p-6 shadow-lg">
-                            <ButtonPrimary
-                                type="button"
-                                className="w-full"
-                                onClick={() => router.push(`/book/${kosDetail.id}`)}
-                            >
-                                Book Sekarang
-                            </ButtonPrimary>
-                            <p className="text-center text-sm text-gray-500 mt-3">
-                                Hubungi pemilik untuk info lebih lanjut
-                            </p>
-                        </div>
-
-                        {/* Facilities */}
-                        {kosDetail.facilities && kosDetail.facilities.length > 0 && (
-                            <div className="bg-white rounded-xl p-6 shadow-lg">
-                                <h3 className="text-xl font-bold text-gray-900-4">
-                                    Fasilitas
-                                </h3>
-                                <div className="grid grid-cols-2 gap-3">
-                                    {kosDetail.facilities.map((facility) => (
-                                        <div
-                                            key={facility.id}
-                                            className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg"
-                                        >
-                                            {getFacilityIcon(facility.facility)}
-                                            <span className="text-sm text-gray-700">
-                                                {facility.facility}
-                                            </span>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Booking Button */}
-                        <div className="bg-white rounded-xl p-6 shadow-lg">
-                            <ButtonPrimary
-                                type="button"
-                                onClick={handleBooking}
-                                className="w-full py-4 text-lg font-semibold"
-                            >
-                                Pesan Sekarang
-                            </ButtonPrimary>
-                            <p className="text-center text-gray-500 text-sm mt-2">
-                                Hubungi pemilik untuk info lebih lanjut
-                            </p>
-                        </div>
-
-                        {/* Owner Info */}
-                        {kosDetail.owner && (
-                            <div className="bg-white rounded-xl p-6 shadow-lg">
-                                <h3 className="text-xl font-bold text-gray-900-4">
-                                    Informasi Pemilik
-                                </h3>
-                                <div className="space-y-3">
-                                    <div className="flex items-center gap-3">
-                                        <FaUser className="text-gray-500" />
-                                        <span className="text-gray-700">
-                                            {kosDetail.owner.name}
-                                        </span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <FaPhone className="text-gray-500" />
-                                        <span className="text-gray-700">
-                                            {kosDetail.owner.phone || 'Tidak tersedia'}
-                                        </span>
-                                    </div>
-                                    <div className="flex items-center gap-3">
-                                        <FaEnvelope className="text-gray-500" />
-                                        <span className="text-gray-700">
-                                            {kosDetail.owner.email}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        )}
                     </div>
                 </div>
             </div>
+
         </div>
     );
 };
