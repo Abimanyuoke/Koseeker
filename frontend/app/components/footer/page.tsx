@@ -12,13 +12,13 @@ export default function Footer() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 ">
                     <div className="flex flex-col gap-5 col-span-3">
                         <div className='flex items-center gap-1 cursor-pointer'>
-                            <Image src="./images/logo.svg" alt="Logo" width={40} height={40} className="w-16 h-16" />
+                            <Image src="/images/logo.svg" alt="Logo" width={40} height={40} className="w-16 h-16" />
                             <span className="className='font-lato text-primary text-3xl font-extrabold">koseeker</span>
                         </div>
                         <p className="font-normal text-base text-[#383746] mt-2.5 pr-4">Dapatkan "info kost murah  murah, nyaman, dan strategis" hanya di Koseeker App. Cocok untuk mahasiswa, pekerja, atau perantau. Fitur pencarian cepat, info lengkap, sewa kost jadi praktis dan hemat.</p>
                         <div className="flex gap-3">
-                            <Image src="./images/playstore.svg" alt={"playstore"} width={130} height={50} />
-                            <Image src="./images/appstore.svg" alt={"logo appstore"} width={120} height={50} />
+                            <Image src="/images/playstore.svg" alt={"playstore"} width={130} height={50} />
+                            <Image src="/images/appstore.svg" alt={"logo appstore"} width={120} height={50} />
                         </div>
                     </div>
                     <div>
@@ -52,13 +52,13 @@ export default function Footer() {
                         </div>
                         <div className="flex gap-3 mt-5">
                             <Link href={"/"} target="_blank" className="hover:text-[#757575]">
-                                <FaFacebook className="text-2xl"/>
+                                <FaFacebook className="text-2xl" />
                             </Link>
                             <Link href={"/"} target="_blank" className="hover:text-[#757575]">
-                                <BsTwitter className="text-2xl"/>
+                                <BsTwitter className="text-2xl" />
                             </Link>
                             <Link href={"/"} target="_blank" className="hover:text-[#757575]">
-                                <FaInstagram className="text-2xl"/>
+                                <FaInstagram className="text-2xl" />
                             </Link>
                         </div>
                     </div>

@@ -31,7 +31,6 @@ const RootLayout = ({ children }: PropsLayout) => {
             <Navbar/>
             {/* <NavbarMain/> */}
             {children}
-            <Footer/> 
         </div>
     )
 }

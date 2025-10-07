@@ -285,7 +285,7 @@ const KosPage = () => {
 
     /** ---------- RENDER ---------- */
     return (
-        <div className="bg-white duration-200 ">
+        <div className="bg-white duration-200 font-lato">
             <div className="max-w-6xl mx-auto px-4 py-6">
                 <div className="grid grid-cols-7 items-center gap-4">
                     <div className="flex items-center gap-4 col-span-5">
