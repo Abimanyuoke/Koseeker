@@ -4,8 +4,8 @@ import React from "react"
 import AOS from "aos";
 import "aos/dist/aos.css"
 import { Toaster } from "sonner";
-import NavbarMain from "../components/navbar_main/page";
 import Footer from "../components/footer/page";
+import Navbar from "../components/navbar_main/page";
 
 
 type PropsLayout = {
@@ -28,9 +28,10 @@ const RootLayout = ({ children }: PropsLayout) => {
     return (
         <div className="h-svh">
             <Toaster position="top-right" richColors/>
+            <Navbar/>
             {/* <NavbarMain/> */}
             {children}
-            <Footer/>
+            <Footer/> 
         </div>
     )
 }
