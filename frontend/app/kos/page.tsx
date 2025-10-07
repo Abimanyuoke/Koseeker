@@ -290,7 +290,7 @@ const KosPage = () => {
                 <div className="grid grid-cols-7 items-center gap-4">
                     <div className="flex items-center gap-4 col-span-5">
                         <div>
-                            <ButtonBack/>
+                            <ButtonBack />
                             <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
                                 Rekomendasi Kos di{" "}
                                 <span className="text-green-600">
@@ -558,9 +558,10 @@ const KosPage = () => {
                                 return (
                                     <div key={kos.id} className="px-3">
                                         <div
-                                            className="rounded-2xl h-[400px] w-[280px] mx-auto transition-all duration-300 cursor-pointer"
-                                            // className="bg-white rounded-2xl h-[400px] w-[280px] mx-auto shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group transform hover:-translate-y-1"
+                                            className="bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 cursor-pointer group transform hover:-translate-y-1"
                                             onClick={() => router.push(`/kos/${kos.id}`)}>
+
+                                            {/* Image Section */}
                                             <div className="relative h-[200px] overflow-hidden">
                                                 {kos.images && kos.images.length > 0 ? (
                                                     <div>
@@ -568,146 +569,114 @@ const KosPage = () => {
                                                             src={`${BASE_IMAGE_KOS}/${kos.images[currentImageIndex].file}`}
                                                             alt={kos.name}
                                                             fill
-                                                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                                            className="object-cover group-hover:scale-110 transition-transform duration-500"
                                                             unoptimized />
 
                                                         {hasMultipleImages && (
                                                             <div>
                                                                 <button
                                                                     onClick={(e) => handlePrevImage(e, kos.id, kos.images.length)}
-                                                                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                                                                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 shadow-lg">
                                                                     <FaChevronLeft className="text-sm" />
                                                                 </button>
                                                                 <button
                                                                     onClick={(e) => handleNextImage(e, kos.id, kos.images.length)}
-                                                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+                                                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 shadow-lg">
                                                                     <FaChevronRight className="text-sm" />
                                                                 </button>
                                                             </div>
                                                         )}
 
-                                                        {/* {hasMultipleImages && (
-                                                            <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-1">
-                                                                {kos.images.map((_, index) => (
-                                                                    <div
-                                                                        key={index}
-                                                                        className={`w-2 h-2 rounded-full transition-all duration-300 ${index === currentImageIndex
-                                                                            ? 'bg-white'
-                                                                            : 'bg-white/50'
-                                                                            }`}
-                                                                    />
-                                                                ))}
+                                                        {/* Top Left Badge - Platform/Gender */}
+                                                        <div className="absolute top-3 left-3">
+                                                            <span className="bg-white/95 backdrop-blur-sm px-3 py-1 rounded-md text-xs font-bold text-gray-700 shadow-sm">
+                                                                {getGenderText(kos.gender)}
+                                                            </span>
+                                                        </div>
+
+                                                        {/* Top Right - Discount Badge */}
+                                                        {kos.discountPercent && Number(kos.discountPercent) > 0 && (
+                                                            <div className="absolute top-3 right-3 z-20">
+                                                                <div className="bg-red-500 text-white px-3 py-1.5 rounded-md text-sm font-bold shadow-lg">
+                                                                    Diskon {kos.discountPercent}rb
+                                                                </div>
                                                             </div>
-                                                        )} */}
+                                                        )}
                                                     </div>
                                                 ) : (
-                                                    <div className="w-full h-[200px] bg-gray-200 flex items-center justify-center">
-                                                        <span className="text-gray-400">No Image</span>
-                                                    </div>
-                                                )}
-
-                                                {/* Badge Gender */}
-                                                <div className="absolute top-3 left-3">
-                                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${getGenderColor(kos.gender)}`}>
-                                                        {getGenderText(kos.gender)}
-                                                    </span>
-                                                </div>
-
-                                                {/* Discount Badge - hanya tampil jika discount > 0 */}
-                                                {kos.discountPercent && Number(kos.discountPercent) > 0 && (
-                                                    <div className="absolute top-3 right-3 z-20 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                                                        -{kos.discountPercent}%
+                                                    <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                                                        <span className="text-gray-400 font-medium">No Image</span>
                                                     </div>
                                                 )}
                                             </div>
 
-                                            {/* Konten Kos */}
-                                            <div className="p-5">
-                                                <div className="mb-3">
-                                                    <h3 className="font-bold text-lg text-gray-900  mb-1 line-clamp-1">
-                                                        {kos.name}
-                                                    </h3>
-                                                    <p className="text-sm text-gray-600 line-clamp-2">
-                                                        {kos.address}
-                                                    </p>
-                                                    <p className="text-xs text-gray-500 mt-1">
-                                                        {kos.kota}
-                                                    </p>
+                                            {/* Content Section */}
+                                            <div className="p-4">
+                                                {/* Rating & Gender Badge */}
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <div className="flex items-center gap-1 bg-green-50 px-2 py-1 rounded">
+                                                        <span className="text-green-600 text-sm">⭐</span>
+                                                        <span className="text-green-700 font-bold text-sm">4.9</span>
+                                                    </div>
+                                                    <span className="text-xs text-gray-500">
+                                                        Sisa 3 kamar
+                                                    </span>
                                                 </div>
 
-                                                {kos.facilities && kos.facilities.length > 0 && (
-                                                    <div className="mb-4">
-                                                        <div className="flex flex-wrap gap-1">
-                                                            {kos.facilities.slice(0, 4).map((facility, index) => (
-                                                                <div
-                                                                    key={facility.id}
-                                                                    className="flex items-center gap-1 rounded-lg"
-                                                                    title={facility.facility}>
-                                                                    {/* Icon lingkaran kecil muncul kalau bukan index pertama */}
-                                                                    {index > 0 && (
-                                                                        <span className="w-1 h-1 rounded-full bg-gray-400"></span>
-                                                                    )}
-                                                                    <span className="text-xs text-gray-600 truncate max-w-16">
-                                                                        {facility.facility.length > 8
-                                                                            ? facility.facility.substring(0, 8) + "..."
-                                                                            : facility.facility}
-                                                                    </span>
-                                                                </div>
-                                                            ))}
+                                                {/* Title */}
+                                                <h3 className="font-bold text-base text-gray-900 mb-1 line-clamp-2 leading-tight">
+                                                    {kos.name}
+                                                </h3>
 
-                                                            {kos.facilities.length > 4 && (
-                                                                <div className="flex items-center justify-center bg-gray-100 px-2 py-1 rounded-lg">
-                                                                    <span className="text-xs text-gray-600">
-                                                                        +{kos.facilities.length - 4}
-                                                                    </span>
-                                                                </div>
+                                                {/* Location */}
+                                                <p className="text-xs text-gray-600 mb-3 line-clamp-1">
+                                                    Kecamatan {kos.address?.split(',')[0] || 'Beji'}
+                                                </p>
+
+                                                {/* Facilities */}
+                                                {kos.facilities && kos.facilities.length > 0 && (
+                                                    <div className="mb-3">
+                                                        <div className="flex flex-wrap gap-1 text-xs text-gray-600">
+                                                            {kos.facilities.slice(0, 3).map((facility, index) => (
+                                                                <span key={facility.id}>
+                                                                    {facility.facility}
+                                                                    {index < Math.min(kos.facilities.length - 1, 2) && " • "}
+                                                                </span>
+                                                            ))}
+                                                            {kos.facilities.length > 3 && (
+                                                                <span className="text-gray-500">
+                                                                    Akses 24 Jam
+                                                                </span>
                                                             )}
                                                         </div>
-
-                                                        {/* <div className="flex flex-wrap gap-2">
-                                                            {kos.facilities.slice(0, 4).map((facility, index) => (
-                                                                <div
-                                                                    key={facility.id}
-                                                                    className="gap-1 rounded-lg "
-                                                                    title={facility.facility}>
-                                                                    <span className="text-xs text-gray-600 truncate max-w-16">
-                                                                        {facility.facility.length > 8
-                                                                            ? facility.facility.substring(0, 8) + "..."
-                                                                            : facility.facility
-                                                                        }
-                                                                    </span>
-                                                                </div>
-                                                            ))}
-                                                            {kos.facilities.length > 4 && (
-                                                                <div className="flex items-center justify-center bg-gray-100  px-2 py-1 rounded-lg">
-                                                                    <span className="text-xs text-gray-600">
-                                                                        +{kos.facilities.length - 4}
-                                                                    </span>
-                                                                </div>
-                                                            )}
-                                                        </div> */}
                                                     </div>
                                                 )}
 
-                                                <div className="flex items-baseline gap-1">
+                                                {/* Price Section */}
+                                                <div className="border-t pt-3 mt-3">
                                                     {kos.discountPercent && kos.discountPercent > 0 ? (
                                                         <div>
-                                                            <span className="text-xl font-bold text-red-500">
-                                                                Rp {formatPrice(kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100))}
-                                                            </span>
-                                                            <div className="flex">
-                                                                <span className="text-sm text-gray-500 line-through">
-                                                                    Rp {formatPrice(kos.pricePerMonth)}
+                                                            <div className="flex items-center gap-2 mb-1">
+                                                                <span className="bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded">
+                                                                    Diskon {kos.discountPercent}rb
+                                                                </span>
+                                                                <span className="text-xs text-gray-500 line-through">
+                                                                    Rp{formatPrice(kos.pricePerMonth)}
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex items-baseline gap-1">
+                                                                <span className="text-xl font-bold text-gray-900">
+                                                                    Rp{formatPrice(kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100))}
                                                                 </span>
                                                                 <span className="text-sm text-gray-500">
-                                                                    /bulan
+                                                                    (Bulan pertama)
                                                                 </span>
                                                             </div>
                                                         </div>
                                                     ) : (
-                                                        <div>
-                                                            <span className="text-xl font-bold text-green-600">
-                                                                Rp {formatPrice(kos.pricePerMonth)}
+                                                        <div className="flex items-baseline gap-1">
+                                                            <span className="text-xl font-bold text-gray-900">
+                                                                Rp{formatPrice(kos.pricePerMonth)}
                                                             </span>
                                                             <span className="text-sm text-gray-500">
                                                                 /bulan
@@ -715,12 +684,6 @@ const KosPage = () => {
                                                         </div>
                                                     )}
                                                 </div>
-
-                                                {kos.books && (
-                                                    <div className="mt-2 text-xs text-gray-500">
-                                                        Sisa kamar tersedia
-                                                    </div>
-                                                )}
                                             </div>
                                         </div>
                                     </div>
