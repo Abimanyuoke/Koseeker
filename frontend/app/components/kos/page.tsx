@@ -15,6 +15,7 @@ import Select from "../../components/select";
 import Image from "next/image";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { BsFillLightningChargeFill } from "react-icons/bs";
 
 const Kos = () => {
     const searchParams = useSearchParams();
@@ -108,16 +109,16 @@ const Kos = () => {
         switch (gender) {
             case 'male': return 'Pria';
             case 'female': return 'Wanita';
-            case 'all': return 'Campur';
+            case 'all': return 'Campuran';
             default: return gender;
         }
     };
 
     const getGenderColor = (gender: string) => {
         switch (gender) {
-            case 'male': return 'bg-blue-100 text-blue-800';
-            case 'female': return 'bg-pink-100 text-pink-800';
-            case 'all': return 'bg-green-100 text-green-800';
+            case 'male': return 'text-[404040]';
+            case 'female': return 'text-[404040]';
+            case 'all': return 'text-[404040]';
             default: return 'bg-gray-100 text-gray-800';
         }
     };
@@ -140,7 +141,7 @@ const Kos = () => {
 
     /** ---------- RENDER ---------- */
     return (
-        <div className="bg-white white duration-200 ">
+        <div className="bg-white white duration-200 font-lato">
             <div className="bg-white">
                 <div className="max-w-6xl mx-auto px-4 py-6">
                     <div className="grid grid-cols-7 items-center gap-4">
@@ -257,29 +258,19 @@ const Kos = () => {
                                                         <span className="text-gray-400">No Image</span>
                                                     </div>
                                                 )}
-
-                                                {/* Badge Gender */}
-                                                <div className="absolute top-3 left-3">
-                                                    <span className={`px-2 py-1 rounded-full text-xs font-semibold backdrop-blur-sm ${getGenderColor(kos.gender)}`}>
-                                                        {getGenderText(kos.gender)}
-                                                    </span>
-                                                </div>
-
-                                                {/* Discount Badge - hanya tampil jika discount > 0 */}
-                                                {kos.discountPercent && Number(kos.discountPercent) > 0 && (
-                                                    <div className="absolute top-3 right-3 z-20 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold">
-                                                        -{kos.discountPercent}%
-                                                    </div>
-                                                )}
                                             </div>
 
                                             {/* Konten Kos */}
                                             <div className="p-5">
-                                                <div className="mb-3">
-                                                    <h3 className="font-bold text-lg text-gray-900  mb-1 line-clamp-1">
+                                                {/* Badge Gender */}
+                                                <span className={`px-2 py-1 rounded text-[14px] font-bold border border-slate-300  ${getGenderColor(kos.gender)}`}>
+                                                    {getGenderText(kos.gender)}
+                                                </span>
+                                                <div className="mt-4">
+                                                    <h3 className="text-sm text-gray-900 line-clamp-1">
                                                         {kos.name}
                                                     </h3>
-                                                    <p className="text-sm text-gray-600 line-clamp-2">
+                                                    <p className="text-sm font-semibold text-gray-600 line-clamp-2">
                                                         {kos.address}
                                                     </p>
                                                     <p className="text-xs text-gray-500 mt-1">
@@ -288,7 +279,7 @@ const Kos = () => {
                                                 </div>
 
                                                 {kos.facilities && kos.facilities.length > 0 && (
-                                                    <div className="mb-4">
+                                                    <div className="mb-4 mt-2">
                                                         <div className="flex flex-wrap gap-1">
                                                             {kos.facilities.slice(0, 4).map((facility, index) => (
                                                                 <div
@@ -299,8 +290,8 @@ const Kos = () => {
                                                                     {index > 0 && (
                                                                         <span className="w-1 h-1 rounded-full bg-gray-400"></span>
                                                                     )}
-                                                                    <span className="text-xs text-gray-600 truncate max-w-16">
-                                                                        {facility.facility.length > 8
+                                                                    <span className="text-xs text-gray-600 truncate max-w-24">
+                                                                        {facility.facility.length > 30
                                                                             ? facility.facility.substring(0, 8) + "..."
                                                                             : facility.facility}
                                                                     </span>
@@ -344,25 +335,34 @@ const Kos = () => {
                                                 <div className="flex items-baseline gap-1">
                                                     {kos.discountPercent && kos.discountPercent > 0 ? (
                                                         <div>
-                                                            <span className="text-xl font-bold text-red-500">
-                                                                Rp {formatPrice(kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100))}
-                                                            </span>
-                                                            <div className="flex">
+                                                            {/* Discount Badge - hanya tampil jika discount > 0 */}
+                                                            <div className="flex items-center gap-2">
+                                                                {kos.discountPercent && Number(kos.discountPercent) > 0 && (
+                                                                    <div className="text-red-500 py-1 text-sm font-bold flex items-center gap-2">
+                                                                        <BsFillLightningChargeFill />
+                                                                        Diskon -{kos.discountPercent}%
+                                                                    </div>
+                                                                )}
                                                                 <span className="text-sm text-gray-500 line-through">
                                                                     Rp {formatPrice(kos.pricePerMonth)}
                                                                 </span>
-                                                                <span className="text-sm text-gray-500">
-                                                                    /bulan
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="text-base font-bold text-red-500">
+                                                                    Rp {formatPrice(kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100))}
+                                                                </span>
+                                                                <span className="text-sm text-black">
+                                                                    ( Bulan pertama )
                                                                 </span>
                                                             </div>
                                                         </div>
                                                     ) : (
-                                                        <div>
-                                                            <span className="text-xl font-bold text-green-600">
+                                                        <div className="space-x-1 flex items-center">
+                                                            <span className="text-base font-bold text-green-600">
                                                                 Rp {formatPrice(kos.pricePerMonth)}
                                                             </span>
-                                                            <span className="text-sm text-gray-500">
-                                                                /bulan
+                                                            <span className="text-sm text-black">
+                                                                ( Bulan pertama )
                                                             </span>
                                                         </div>
                                                     )}
