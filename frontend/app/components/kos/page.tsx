@@ -206,12 +206,11 @@ const Kos = () => {
                         <Slider ref={sliderRef} {...settings} >
                             {kosData.map((kos) => {
                                 const currentImageIndex = imageIndexes[kos.id] || 0;
-                                const hasMultipleImages = kos.images && kos.images.length > 1;
+                                // const hasMultipleImages = kos.images && kos.images.length > 1;
 
                                 return (
                                     <div key={kos.id} className="px-3">
-                                        <div
-                                            className="rounded-2xl h-[400px] w-[280px] mx-auto transition-all duration-300 cursor-pointer"
+                                        <div className="rounded-xl h-[400px] w-[280px] mx-auto transition-all duration-300 cursor-pointer"
                                             // className="bg-white rounded-2xl h-[400px] w-[280px] mx-auto shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer group transform hover:-translate-y-1"
                                             onClick={() => router.push(`/kos/${kos.id}`)}>
                                             <div className="relative h-[200px] overflow-hidden">
@@ -221,10 +220,10 @@ const Kos = () => {
                                                             src={`${BASE_IMAGE_KOS}/${kos.images[currentImageIndex].file}`}
                                                             alt={kos.name}
                                                             fill
-                                                            className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                                            className="object-cover group-hover:scale-105 transition-transform duration-300 rounded-xl"
                                                             unoptimized />
 
-                                                        {hasMultipleImages && (
+                                                        {/* {hasMultipleImages && (
                                                             <div>
                                                                 <button
                                                                     onClick={(e) => handlePrevImage(e, kos.id, kos.images.length)}
@@ -237,7 +236,7 @@ const Kos = () => {
                                                                     <FaChevronRight className="text-sm" />
                                                                 </button>
                                                             </div>
-                                                        )}
+                                                        )} */}
 
                                                         {/* {hasMultipleImages && (
                                                             <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex gap-1">
@@ -338,7 +337,7 @@ const Kos = () => {
                                                             {/* Discount Badge - hanya tampil jika discount > 0 */}
                                                             <div className="flex items-center gap-2">
                                                                 {kos.discountPercent && Number(kos.discountPercent) > 0 && (
-                                                                    <div className="text-red-500 py-1 text-sm font-bold flex items-center gap-2">
+                                                                    <div className="text-red-500 py-1 text-sm font-bold flex items-center gap-1">
                                                                         <BsFillLightningChargeFill />
                                                                         Diskon -{kos.discountPercent}%
                                                                     </div>
@@ -352,7 +351,7 @@ const Kos = () => {
                                                                     Rp {formatPrice(kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100))}
                                                                 </span>
                                                                 <span className="text-sm text-black">
-                                                                    ( Bulan pertama )
+                                                                    (Bulan pertama)
                                                                 </span>
                                                             </div>
                                                         </div>
@@ -362,7 +361,7 @@ const Kos = () => {
                                                                 Rp {formatPrice(kos.pricePerMonth)}
                                                             </span>
                                                             <span className="text-sm text-black">
-                                                                ( Bulan pertama )
+                                                                (Bulan pertama)
                                                             </span>
                                                         </div>
                                                     )}
