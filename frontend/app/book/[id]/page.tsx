@@ -48,6 +48,7 @@ export default function BookKosPage() {
     const [showCalendar, setShowCalendar] = useState(false)
     const [showReceipt, setShowReceipt] = useState(false)
     const [bookingResult, setBookingResult] = useState<any>(null)
+    const [calendarDate, setCalendarDate] = useState(new Date())
 
     const [bookingData, setBookingData] = useState<BookingData>({
         startDate: '',
@@ -80,6 +81,13 @@ export default function BookKosPage() {
             calculateEndDate()
         }
     }, [bookingData.startDate, bookingData.durationMonths])
+
+    useEffect(() => {
+        // Reset calendar to current month when opened
+        if (showCalendar) {
+            setCalendarDate(new Date())
+        }
+    }, [showCalendar])
 
     useEffect(() => {
         // Close calendar when clicking outside
@@ -302,10 +310,33 @@ export default function BookKosPage() {
         return bookedDates.includes(dateString)
     }
 
-    const generateCalendar = () => {
+    const navigateCalendar = (direction: 'prev' | 'next') => {
+        setCalendarDate(prev => {
+            const newDate = new Date(prev)
+            if (direction === 'prev') {
+                newDate.setMonth(prev.getMonth() - 1)
+            } else {
+                newDate.setMonth(prev.getMonth() + 1)
+            }
+            return newDate
+        })
+    }
+
+    const canNavigatePrev = () => {
         const today = new Date()
         const currentMonth = today.getMonth()
         const currentYear = today.getFullYear()
+        const calendarMonth = calendarDate.getMonth()
+        const calendarYear = calendarDate.getFullYear()
+
+        // Cannot go to previous months before current month
+        return calendarYear > currentYear || (calendarYear === currentYear && calendarMonth > currentMonth)
+    }
+
+    const generateCalendar = () => {
+        const today = new Date()
+        const currentMonth = calendarDate.getMonth()
+        const currentYear = calendarDate.getFullYear()
 
         const firstDay = new Date(currentYear, currentMonth, 1)
         const lastDay = new Date(currentYear, currentMonth + 1, 0)
@@ -322,12 +353,18 @@ export default function BookKosPage() {
         for (let day = 1; day <= lastDay.getDate(); day++) {
             const date = new Date(currentYear, currentMonth, day)
             const dateString = date.toISOString().split('T')[0]
+
+            // Mark as past if date is before today
+            const todayStart = new Date(today)
+            todayStart.setHours(0, 0, 0, 0)
+            const isPastDate = date < todayStart
+
             days.push({
                 day,
                 dateString,
                 isToday: dateString === getMinDate(),
                 isBooked: isDateBooked(dateString),
-                isPast: date < today,
+                isPast: isPastDate,
                 isSelected: dateString === bookingData.startDate
             })
         }
@@ -427,8 +464,7 @@ export default function BookKosPage() {
                                         {kos.facilities.map((facility, index) => (
                                             <span
                                                 key={index}
-                                                className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded"
-                                            >
+                                                className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
                                                 {facility.facility}
                                             </span>
                                         ))}
@@ -484,14 +520,39 @@ export default function BookKosPage() {
                                     {showCalendar && (
                                         <div className="calendar-container absolute z-50 mt-2 bg-white border border-gray-300 rounded-lg shadow-xl p-4 w-80">
                                             <div className="flex items-center justify-between mb-4">
-                                                <h3 className="font-semibold text-gray-900">
-                                                    {new Date().toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}
-                                                </h3>
+                                                <div className="flex items-center gap-2">
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => navigateCalendar('prev')}
+                                                        disabled={!canNavigatePrev()}
+                                                        className="p-2 hover:bg-gray-100 rounded-lg disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                                                        aria-label="Previous month"
+                                                    >
+                                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                                                        </svg>
+                                                    </button>
+
+                                                    <h3 className="font-semibold text-gray-900 min-w-[140px] text-center">
+                                                        {calendarDate.toLocaleDateString('id-ID', { month: 'long', year: 'numeric' })}
+                                                    </h3>
+
+                                                    <button
+                                                        type="button"
+                                                        onClick={() => navigateCalendar('next')}
+                                                        className="p-2 hover:bg-gray-100 rounded-lg"
+                                                        aria-label="Next month"
+                                                    >
+                                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+
                                                 <button
                                                     type="button"
                                                     onClick={() => setShowCalendar(false)}
-                                                    className="text-gray-500 hover:text-gray-700"
-                                                >
+                                                    className="text-gray-500 hover:text-gray-700">
                                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                                     </svg>
@@ -534,8 +595,7 @@ export default function BookKosPage() {
                                                                 ${day.isBooked ? 'bg-red-100 text-red-400 cursor-not-allowed line-through' : ''}
                                                                 ${day.isPast && !day.isBooked ? 'text-gray-300 cursor-not-allowed' : ''}
                                                                 ${!day.isSelected && !day.isToday && !day.isBooked && !day.isPast ? 'hover:bg-gray-100 text-gray-700' : ''}
-                                                            `}
-                                                        >
+                                                            `}>
                                                             {day.day}
                                                         </button>
                                                     )
@@ -573,8 +633,7 @@ export default function BookKosPage() {
                                         value={bookingData.durationMonths}
                                         onChange={handleDurationChange}
                                         disabled={!bookingData.startDate}
-                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                    >
+                                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed">
                                         {DURATION_OPTIONS.map((option) => (
                                             <option key={option.value} value={option.value}>
                                                 {option.label}
