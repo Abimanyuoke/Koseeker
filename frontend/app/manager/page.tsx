@@ -4,11 +4,12 @@ import { useState, useEffect, useRef } from 'react'
 import { toast } from 'sonner'
 import { getUserData, getAuthToken, clearAuthData } from '../../lib/auth'
 import NotificationBell from '../components/notification/NotificationBell'
-import { removeCookie } from '@/lib/client-cookies'
+import { getCookies, removeCookie } from '@/lib/client-cookies'
 import { useRouter } from 'next/navigation'
 import { FiLogOut } from 'react-icons/fi'
 import { AnimatePresence, motion } from 'framer-motion'
 import { IoMdArrowDropup } from 'react-icons/io'
+import { BASE_IMAGE_PROFILE } from '@/global'
 
 
 
@@ -47,6 +48,9 @@ export default function ManagerPage() {
     const router = useRouter()
     const [bookings, setBookings] = useState<Booking[]>([])
     const [loading, setLoading] = useState(true)
+    const [profile, setProfile] = useState<string>("");
+    const [role, setRole] = useState<string>("");
+    const [user, setUser] = useState<string>("");
     const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
@@ -56,7 +60,40 @@ export default function ManagerPage() {
     const [userData, setUserData] = useState<any>(null)
     const [popup, setPopup] = useState(false);
     const sidebarRef = useRef<HTMLDivElement>(null)
-    
+
+    const getProfileImageUrl = (profilePicture: string) => {
+        if (!profilePicture) {
+            console.log("No profile picture, returning default avatar");
+            // Return default avatar if no profile picture
+            return "data:image/svg+xml,%3csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3clinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3e%3cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3e%3cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3e%3c/linearGradient%3e%3c/defs%3e%3crect width='100' height='100' fill='url(%23grad)' /%3e%3ctext x='50' y='50' font-family='Arial, sans-serif' font-size='36' fill='white' text-anchor='middle' dominant-baseline='middle'%3e👤%3c/text%3e%3c/svg%3e";
+        }
+
+        // Check if it's a Google profile picture URL (starts with https://)
+        if (profilePicture.startsWith('https://')) {
+            console.log("Google profile picture detected, returning:", profilePicture);
+            return profilePicture;
+        }
+
+        // If it's a local file, use the BASE_IMAGE_PROFILE path
+        const localPath = `${BASE_IMAGE_PROFILE}/${profilePicture}`;
+        console.log("Local file detected, returning:", localPath);
+        return localPath;
+    };
+
+    useEffect(() => {
+        const profilePicture = getCookies("profile_picture") || "";
+        const userName = getCookies("name") || "";
+        const userRole = getCookies("role") || "";
+
+        console.log("Navbar useEffect - Profile picture from cookies:", profilePicture);
+        console.log("Navbar useEffect - User name:", userName);
+        console.log("Navbar useEffect - User role:", userRole);
+
+        setProfile(profilePicture);
+        setUser(userName);
+        setRole(userRole);
+    }, []);
+
 
     useEffect(() => {
         const user = getUserData()
@@ -256,14 +293,14 @@ export default function ManagerPage() {
                             Refresh
                         </button>
                         <NotificationBell />
-                        <div className="flex items-center gap-2">
-                            {/* <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden">
+                        <div className="flex items-center gap-2 relative">
+                            <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden">
+                                <button className='cursor-pointer w-full h-full' onClick={() => setPopup(!popup)}>
                                 {userData?.profile_picture ? (
                                     <img
                                         src={`http://localhost:5000/profile_picture/${userData.profile_picture}`}
                                         alt="Profile"
-                                        className="w-full h-full object-cover"
-                                    />
+                                        className="w-full h-full object-cover"/>
                                 ) : (
                                     <div className="w-full h-full bg-gray-400 flex items-center justify-center">
                                         <span className="text-white text-sm font-medium">
@@ -271,7 +308,8 @@ export default function ManagerPage() {
                                         </span>
                                     </div>
                                 )}
-                            </div> */}
+                                </button>
+                            </div>
 
                             <AnimatePresence>
                                 {popup && (
@@ -282,12 +320,7 @@ export default function ManagerPage() {
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -10 }}
                                         transition={{ duration: 0.3 }}
-                                        className='absolute top-full -right-24 translate-x-16 mt-2 w-52 bg-white border border-gray-200 rounded-xl shadow-lg p-4 z-50'>
-                                        <div
-                                            className='absolute -top-4  text-gray-700 text-2xl cursor-pointer'
-                                            onClick={() => setPopup(false)}>
-                                            <IoMdArrowDropup />
-                                        </div>
+                                        className='absolute top-full -right-14 translate-x-16 mt-2 w-52 bg-white border border-gray-200 rounded-xl shadow-lg p-4 z-50'>
                                         <div className='flex items-center gap-3 mb-3'>
                                             <img
                                                 src={getProfileImageUrl(profile)}
@@ -394,8 +427,7 @@ export default function ManagerPage() {
                             className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filter === status
                                 ? 'bg-blue-600 text-white'
                                 : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                                }`}
-                        >
+                                }`}>
                             {status === 'all' ? 'Semua' : getStatusText(status)}
                         </button>
                     ))}
@@ -510,18 +542,16 @@ export default function ManagerPage() {
                                                             setSelectedBooking(booking)
                                                             setIsModalOpen(true)
                                                         }}
-                                                        className="text-blue-600 hover:text-blue-900 font-medium"
-                                                    >
+                                                        className="text-blue-600 hover:text-blue-900 font-medium">
                                                         Detail
                                                     </button>
 
                                                     {booking.status === 'pending' && (
-                                                        <>
+                                                        <div>
                                                             <span className="text-gray-300">|</span>
                                                             <button
                                                                 onClick={() => handleStatusAction(booking, 'accept')}
-                                                                className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-700 bg-green-100 rounded hover:bg-green-200 transition-colors"
-                                                            >
+                                                                className="inline-flex items-center px-2 py-1 text-xs font-medium text-green-700 bg-green-100 rounded hover:bg-green-200 transition-colors">
                                                                 <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                                                 </svg>
@@ -529,14 +559,13 @@ export default function ManagerPage() {
                                                             </button>
                                                             <button
                                                                 onClick={() => handleStatusAction(booking, 'reject')}
-                                                                className="inline-flex items-center px-2 py-1 text-xs font-medium text-red-700 bg-red-100 rounded hover:bg-red-200 transition-colors"
-                                                            >
+                                                                className="inline-flex items-center px-2 py-1 text-xs font-medium text-red-700 bg-red-100 rounded hover:bg-red-200 transition-colors">
                                                                 <svg className="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                                                 </svg>
                                                                 Tolak
                                                             </button>
-                                                        </>
+                                                        </div>
                                                     )}
                                                 </div>
                                             </td>
@@ -681,8 +710,7 @@ export default function ManagerPage() {
                                         console.log('Closing confirmation modal')
                                         setIsConfirmModalOpen(false)
                                     }
-                                }}
-                            ></div>
+                                }}></div>
 
                             <div className="inline-block w-full max-w-md p-6 my-8 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl relative z-10">
                                 <div className="flex items-center justify-between mb-4">
@@ -740,8 +768,7 @@ export default function ManagerPage() {
                                             setIsConfirmModalOpen(false)
                                         }}
                                         disabled={processingAction}
-                                        className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                                    >
+                                        className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 border border-gray-300 rounded-lg hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:opacity-50 disabled:cursor-not-allowed">
                                         Batal
                                     </button>
                                     <button
@@ -753,8 +780,7 @@ export default function ManagerPage() {
                                         className={`flex-1 px-4 py-2 text-sm font-medium text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed ${confirmAction.status === 'accept'
                                             ? 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
                                             : 'bg-red-600 hover:bg-red-700 focus:ring-red-500'
-                                            }`}
-                                    >
+                                            }`}>
                                         {processingAction ? (
                                             <div className="flex items-center justify-center">
                                                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
