@@ -1,9 +1,16 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { toast } from 'sonner'
-import { getUserData, getAuthToken } from '../../lib/auth'
+import { getUserData, getAuthToken, clearAuthData } from '../../lib/auth'
 import NotificationBell from '../components/notification/NotificationBell'
+import { removeCookie } from '@/lib/client-cookies'
+import { useRouter } from 'next/navigation'
+import { FiLogOut } from 'react-icons/fi'
+import { AnimatePresence, motion } from 'framer-motion'
+import { IoMdArrowDropup } from 'react-icons/io'
+
+
 
 interface User {
     id: number
@@ -37,6 +44,7 @@ interface Booking {
 }
 
 export default function ManagerPage() {
+    const router = useRouter()
     const [bookings, setBookings] = useState<Booking[]>([])
     const [loading, setLoading] = useState(true)
     const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
@@ -46,6 +54,9 @@ export default function ManagerPage() {
     const [processingAction, setProcessingAction] = useState(false)
     const [filter, setFilter] = useState<'all' | 'pending' | 'accept' | 'reject'>('all')
     const [userData, setUserData] = useState<any>(null)
+    const [popup, setPopup] = useState(false);
+    const sidebarRef = useRef<HTMLDivElement>(null)
+    
 
     useEffect(() => {
         const user = getUserData()
@@ -199,6 +210,19 @@ export default function ManagerPage() {
         }).format(price)
     }
 
+    const handleLogout = () => {
+        // Hapus cookies
+        removeCookie("token");
+        removeCookie("id");
+        removeCookie("name");
+        removeCookie("role");
+        removeCookie("profile_picture");
+        // Hapus localStorage menggunakan utility function
+        clearAuthData();
+
+        router.replace(`/auth/login`);
+    };
+
     if (userData?.role !== 'owner') {
         return (
             <div className="min-h-screen bg-white">
@@ -233,7 +257,7 @@ export default function ManagerPage() {
                         </button>
                         <NotificationBell />
                         <div className="flex items-center gap-2">
-                            <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden">
+                            {/* <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden">
                                 {userData?.profile_picture ? (
                                     <img
                                         src={`http://localhost:5000/profile_picture/${userData.profile_picture}`}
@@ -247,7 +271,49 @@ export default function ManagerPage() {
                                         </span>
                                     </div>
                                 )}
-                            </div>
+                            </div> */}
+
+                            <AnimatePresence>
+                                {popup && (
+                                    <motion.div
+                                        ref={sidebarRef}
+                                        key="profile-popup"
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: -10 }}
+                                        transition={{ duration: 0.3 }}
+                                        className='absolute top-full -right-24 translate-x-16 mt-2 w-52 bg-white border border-gray-200 rounded-xl shadow-lg p-4 z-50'>
+                                        <div
+                                            className='absolute -top-4  text-gray-700 text-2xl cursor-pointer'
+                                            onClick={() => setPopup(false)}>
+                                            <IoMdArrowDropup />
+                                        </div>
+                                        <div className='flex items-center gap-3 mb-3'>
+                                            <img
+                                                src={getProfileImageUrl(profile)}
+                                                alt='profile'
+                                                className='w-10 h-10 rounded-full object-cover border-2 border-primary'
+                                                onError={(e) => {
+                                                    console.error("Error loading dropdown profile image:", e);
+                                                    e.currentTarget.src = "data:image/svg+xml,%3csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3clinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3e%3cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3e%3cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3e%3c/linearGradient%3e%3c/defs%3e%3crect width='100' height='100' fill='url(%23grad)' /%3e%3ctext x='50' y='50' font-family='Arial, sans-serif' font-size='36' fill='white' text-anchor='middle' dominant-baseline='middle'%3e👤%3c/text%3e%3c/svg%3e";
+                                                }} />
+                                            <div>
+                                                <p className='text-sm font-semibold text-gray-700'>{user}</p>
+                                                <p className='text-xs text-gray-500 dark:text-gray-400'>{role}</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="border-t pt-3 mt-3">
+                                            <button
+                                                onClick={handleLogout}
+                                                className="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-100 dark:text-red-400 rounded-md transition cursor-pointer">
+                                                <FiLogOut className="text-lg" />
+                                                <span>Logout</span>
+                                            </button>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                             <span className="text-sm font-medium text-gray-700">{userData?.name}</span>
                         </div>
                     </div>
