@@ -48,6 +48,11 @@ export default function FacilitiesDetailPage() {
     const [editingFacility, setEditingFacility] = useState<Facility | null>(null)
     const [editFacilityName, setEditFacilityName] = useState('')
     const [deletingFacility, setDeletingFacility] = useState<Facility | null>(null)
+    // Predefined common facilities for quick-add
+    const predefinedFacilities = [
+        'WiFi', 'AC', 'Kasur', 'Kamar mandi dalam', 'TV', 'Dapur', 'Parkir', 'Laundry', 'Keamanan'
+    ]
+    const [checkedFacilities, setCheckedFacilities] = useState<Record<string, boolean>>({})
 
     // Loading states
     const [isSubmitting, setIsSubmitting] = useState(false)
@@ -78,34 +83,54 @@ export default function FacilitiesDetailPage() {
     }
 
     const handleAddFacility = async () => {
-        if (!newFacility.trim()) {
-            toast.error('Nama fasilitas tidak boleh kosong')
+        // collect checked facilities and custom input
+        const selected = Object.keys(checkedFacilities).filter(k => checkedFacilities[k])
+        const custom = newFacility.trim()
+        const toAdd = [...selected]
+        if (custom) toAdd.push(custom)
+
+        if (toAdd.length === 0) {
+            toast.error('Pilih setidaknya satu fasilitas atau ketik fasilitas baru')
             return
         }
 
         try {
             setIsSubmitting(true)
-            const response = await fetch(`${BASE_API_URL}/facilities`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    kosId: Number(kosId),
-                    facility: newFacility.trim()
-                })
-            })
-
-            const result = await response.json()
-
-            if (result.status) {
-                toast.success('Fasilitas berhasil ditambahkan')
-                setNewFacility('')
-                setIsAddModalOpen(false)
-                fetchKosDetail()
-            } else {
-                toast.error(result.message || 'Gagal menambahkan fasilitas')
+            let anyFailed = false
+            for (const facilityName of toAdd) {
+                try {
+                    const response = await fetch(`${BASE_API_URL}/facilities`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            kosId: Number(kosId),
+                            facility: facilityName
+                        })
+                    })
+                    const result = await response.json()
+                    if (!result.status) {
+                        anyFailed = true
+                        console.error('Failed to add facility:', facilityName, result)
+                    }
+                } catch (err) {
+                    anyFailed = true
+                    console.error('Error adding facility', facilityName, err)
+                }
             }
+
+            if (!anyFailed) {
+                toast.success('Fasilitas berhasil ditambahkan')
+            } else {
+                toast.success('Sebagian fasilitas ditambahkan. Periksa konsol untuk detail.')
+            }
+
+            // reset form
+            setNewFacility('')
+            setCheckedFacilities({})
+            setIsAddModalOpen(false)
+            fetchKosDetail()
         } catch (error: any) {
             toast.error(error.message || 'Terjadi kesalahan')
         } finally {
@@ -352,18 +377,31 @@ export default function FacilitiesDetailPage() {
                     <div className='bg-white rounded-2xl shadow-2xl w-full max-w-md transform transition-all'>
                         <div className='p-6 border-b border-gray-200'>
                             <h3 className='text-2xl font-bold text-gray-900'>Tambah Fasilitas Baru</h3>
-                            <p className='text-gray-600 text-sm mt-1'>Masukkan nama fasilitas yang ingin ditambahkan</p>
+                            <p className='text-gray-600 text-sm mt-1'>Pilih fasilitas umum lalu tambahkan fasilitas custom jika diperlukan</p>
                         </div>
                         <div className='p-6'>
-                            <label className='block text-sm font-medium text-gray-700 mb-2'>
-                                Nama Fasilitas
-                            </label>
+                            <label className='block text-sm font-medium text-gray-700 mb-3'>Fasilitas Umum</label>
+                            <div className='grid grid-cols-2 gap-2 mb-4'>
+                                {predefinedFacilities.map((f) => (
+                                    <label key={f} className='flex items-center gap-2 p-2 border rounded-lg hover:bg-gray-50 cursor-pointer'>
+                                        <input
+                                            type='checkbox'
+                                            checked={!!checkedFacilities[f]}
+                                            onChange={() => setCheckedFacilities(prev => ({ ...prev, [f]: !prev[f] }))}
+                                            className='form-checkbox h-4 w-4 text-blue-600'
+                                        />
+                                        <span className='text-sm'>{f}</span>
+                                    </label>
+                                ))}
+                            </div>
+
+                            <label className='block text-sm font-medium text-gray-700 mb-2'>Tambah Fasilitas (Kustom)</label>
                             <input
                                 type='text'
                                 value={newFacility}
                                 onChange={(e) => setNewFacility(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && handleAddFacility()}
-                                placeholder='Contoh: WiFi, AC, Kasur, dll'
+                                placeholder='Contoh: WiFi 24 jam, Mesin Cuci, dll'
                                 className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition'
                                 autoFocus
                             />
@@ -373,6 +411,7 @@ export default function FacilitiesDetailPage() {
                                 onClick={() => {
                                     setIsAddModalOpen(false)
                                     setNewFacility('')
+                                    setCheckedFacilities({})
                                 }}
                                 disabled={isSubmitting}
                                 className='flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition font-medium disabled:opacity-50'>
@@ -380,7 +419,7 @@ export default function FacilitiesDetailPage() {
                             </button>
                             <button
                                 onClick={handleAddFacility}
-                                disabled={isSubmitting || !newFacility.trim()}
+                                disabled={isSubmitting}
                                 className='flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
                                 {isSubmitting ? (
                                     <>

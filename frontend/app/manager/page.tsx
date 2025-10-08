@@ -6,9 +6,6 @@ import { getUserData, getAuthToken, clearAuthData } from '../../lib/auth'
 import NotificationBell from '../components/notification/NotificationBell'
 import { getCookies, removeCookie } from '@/lib/client-cookies'
 import { useRouter } from 'next/navigation'
-import { FiLogOut, FiHome, FiLayers, FiCalendar, FiUsers, FiSettings } from 'react-icons/fi'
-import { AnimatePresence, motion } from 'framer-motion'
-import { IoMdArrowDropup } from 'react-icons/io'
 import { BASE_IMAGE_PROFILE } from '@/global'
 
 
@@ -59,7 +56,6 @@ export default function ManagerPage() {
     const [filter, setFilter] = useState<'all' | 'pending' | 'accept' | 'reject'>('all')
     const [userData, setUserData] = useState<any>(null)
     const [popup, setPopup] = useState(false);
-    const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
     const sidebarRef = useRef<HTMLDivElement>(null)
 
 
@@ -278,111 +274,11 @@ export default function ManagerPage() {
     return (
         <div className="min-h-screen bg-white">
             <div className="max-w-7xl mx-auto px-4 py-8 relative">
-                {/* Sidebar */}
-                <aside className="hidden lg:flex flex-col fixed left-0 top-0 bottom-0 w-[260px] bg-white text-gray-900 p-6 shadow-lg border-r">
-                    <div className="flex items-center gap-3 mb-6">
-                        <div className="w-14 h-14 rounded-full overflow-hidden border-2 border-white flex-shrink-0">
-                            <img
-                                src={getProfileImageUrl(profile)}
-                                alt="profile"
-                                className="w-full h-full object-cover"
-                                onError={(e) => { e.currentTarget.src = "data:image/svg+xml,%3csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3clinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3e%3cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3e%3cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3e%3c/linearGradient%3e%3c/defs%3e%3crect width='100' height='100' fill='url(%23grad)' /%3e%3ctext x='50' y='50' font-family='Arial, sans-serif' font-size='36' fill='white' text-anchor='middle' dominant-baseline='middle'%3e👤%3c/text%3e%3c/svg%3e" }}
-                            />
-                        </div>
-                        <div>
-                            <div className="text-lg font-semibold">{user || 'Manager'}</div>
-                            <div className="text-xs opacity-80">{role || 'Owner'}</div>
-                        </div>
-                    </div>
-
-                    <nav className="mt-4">
-                        <ul className="space-y-2">
-                            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer">
-                                <FiHome className="w-5 h-5 text-gray-600" />
-                                <span className="text-sm font-medium">Dashboard</span>
-                            </li>
-                            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer">
-                                <FiLayers className="w-5 h-5 text-gray-600" />
-                                <span className="text-sm">Kelola Kos</span>
-                            </li>
-                            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer">
-                                <FiCalendar className="w-5 h-5 text-gray-600" />
-                                <span className="text-sm">Booking</span>
-                            </li>
-                            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer">
-                                <FiUsers className="w-5 h-5 text-gray-600" />
-                                <span className="text-sm">Penyewa</span>
-                            </li>
-                            <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer">
-                                <FiSettings className="w-5 h-5 text-gray-600" />
-                                <span className="text-sm">Pengaturan</span>
-                            </li>
-                        </ul>
-                    </nav>
-
-                    <div className="mt-6 pt-4 border-t">
-                        <button
-                            onClick={handleLogout}
-                            className="w-full flex items-center gap-2 px-3 py-2 text-sm font-medium rounded-lg bg-gray-100 hover:bg-gray-200">
-                            <FiLogOut className="text-gray-700" />
-                            Logout
-                        </button>
-                    </div>
-                </aside>
+                {/* Sidebar is provided by manager layout (app/manager/layout.tsx) */}
 
                 {/* Main content */}
-                <main className="lg:ml-[260px]">
-                    {/* Mobile Drawer */}
-                    <AnimatePresence>
-                        {mobileSidebarOpen && (
-                            <div>
-                                <motion.div
-                                    key="drawer-overlay"
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                    className="fixed inset-0 bg-black/40 z-40"
-                                    onClick={() => setMobileSidebarOpen(false)}/>
-
-                                <motion.aside
-                                    key="drawer"
-                                    initial={{ x: '-100%' }}
-                                    animate={{ x: 0 }}
-                                    exit={{ x: '-100%' }}
-                                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                                    className="fixed left-0 top-0 bottom-0 w-72 bg-white z-50 shadow-lg p-6 overflow-y-auto">
-                                    <div className="flex items-center justify-between mb-4">
-                                        <div className="flex items-center gap-3">
-                                            <div className="w-12 h-12 rounded-full overflow-hidden border">
-                                                <img src={getProfileImageUrl(profile)} alt="profile" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = "data:image/svg+xml,%3csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3clinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3e%3cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3e%3cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3e%3c/linearGradient%3e%3c/defs%3e%3crect width='100' height='100' fill='url(%23grad)' /%3e%3ctext x='50' y='50' font-family='Arial, sans-serif' font-size='36' fill='white' text-anchor='middle' dominant-baseline='middle'%3e👤%3c/text%3e%3c/svg%3e" }} /></div>
-                                            <div>
-                                                <div className="font-semibold">{user || 'Manager'}</div>
-                                                <div className="text-xs text-gray-500">{role || 'Owner'}</div>
-                                            </div>
-                                        </div>
-                                        <button onClick={() => setMobileSidebarOpen(false)} className="p-2 rounded-md text-gray-600 hover:bg-gray-100">
-                                            <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
-                                        </button>
-                                    </div>
-
-                                    <nav className="space-y-2">
-                                        <button onClick={() => setMobileSidebarOpen(false)} className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><FiHome className="w-5 h-5 text-gray-600" /><span>Dashboard</span></button>
-                                        <button onClick={() => setMobileSidebarOpen(false)} className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><FiLayers className="w-5 h-5 text-gray-600" /><span>Kelola Kos</span></button>
-                                        <button onClick={() => setMobileSidebarOpen(false)} className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><FiCalendar className="w-5 h-5 text-gray-600" /><span>Booking</span></button>
-                                        <button onClick={() => setMobileSidebarOpen(false)} className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><FiUsers className="w-5 h-5 text-gray-600" /><span>Penyewa</span></button>
-                                        <button onClick={() => setMobileSidebarOpen(false)} className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><FiSettings className="w-5 h-5 text-gray-600" /><span>Pengaturan</span></button>
-                                    </nav>
-
-                                    <div className="mt-6 border-t pt-4">
-                                        <button onClick={() => { setMobileSidebarOpen(false); handleLogout(); }} className="w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200">
-                                            <FiLogOut className="text-gray-700" /> Logout
-                                        </button>
-                                    </div>
-                                </motion.aside>
-                            </div>
-                        )}
-                    </AnimatePresence>
+                <main>
+                    {/* Mobile drawer handled in layout */}
                     {/* Header */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
                         <div>
@@ -390,15 +286,7 @@ export default function ManagerPage() {
                             <p className="text-gray-600">Kelola booking kos Anda</p>
                         </div>
                         <div className="flex items-center gap-4 mt-4 sm:mt-0">
-                            {/* Mobile hamburger to open drawer */}
-                            <button
-                                aria-label="Open menu"
-                                onClick={() => setMobileSidebarOpen(true)}
-                                className="lg:hidden inline-flex items-center justify-center p-2 rounded-md text-gray-600 hover:bg-gray-100">
-                                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                                </svg>
-                            </button>
+                            {/* Mobile hamburger is in layout */}
                             <button
                                 onClick={fetchOwnerBookings}
                                 disabled={loading}
@@ -411,18 +299,18 @@ export default function ManagerPage() {
                             <NotificationBell />
                             <div className="flex items-center gap-2 relative">
                                 <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden">
-                                        {userData?.profile_picture ? (
-                                            <img
-                                                src={`http://localhost:5000/profile_picture/${userData.profile_picture}`}
-                                                alt="Profile"
-                                                className="w-full h-full object-cover" />
-                                        ) : (
-                                            <div className="w-full h-full bg-gray-400 flex items-center justify-center">
-                                                <span className="text-white text-sm font-medium">
-                                                    {userData?.name?.[0]?.toUpperCase()}
-                                                </span>
-                                            </div>
-                                        )}
+                                    {userData?.profile_picture ? (
+                                        <img
+                                            src={`http://localhost:5000/profile_picture/${userData.profile_picture}`}
+                                            alt="Profile"
+                                            className="w-full h-full object-cover" />
+                                    ) : (
+                                        <div className="w-full h-full bg-gray-400 flex items-center justify-center">
+                                            <span className="text-white text-sm font-medium">
+                                                {userData?.name?.[0]?.toUpperCase()}
+                                            </span>
+                                        </div>
+                                    )}
                                 </div>
                                 <span className="text-sm font-medium text-gray-700">{userData?.name}</span>
                             </div>
