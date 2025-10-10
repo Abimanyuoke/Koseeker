@@ -7,11 +7,6 @@ import { BASE_API_URL } from '@/global'
 import { toast } from 'sonner'
 import { FaArrowLeft, FaHome, FaMapMarkerAlt, FaMoneyBillWave, FaPercent, FaUsers, FaUniversity, FaCity, FaCalendarAlt, FaImage, FaList, FaCheck, FaTimes } from 'react-icons/fa'
 
-interface FacilityInput {
-    id: string
-    facility: string
-}
-
 export default function CreateKosPage() {
     const router = useRouter()
     const user = getUserData()
@@ -28,9 +23,12 @@ export default function CreateKosPage() {
         kalender: 'bulan'
     })
 
-    const [facilities, setFacilities] = useState<FacilityInput[]>([
-        { id: '1', facility: '' }
-    ])
+    // Predefined facilities dengan checkbox
+    const predefinedFacilities = [
+        'WiFi', 'AC', 'Kasur', 'Kamar mandi dalam', 'TV', 'Dapur', 'Parkir', 'Laundry', 'Keamanan'
+    ]
+    const [checkedFacilities, setCheckedFacilities] = useState<Record<string, boolean>>({})
+    const [customFacility, setCustomFacility] = useState('')
 
     const [selectedImages, setSelectedImages] = useState<File[]>([])
     const [previewUrls, setPreviewUrls] = useState<string[]>([])
@@ -58,18 +56,8 @@ export default function CreateKosPage() {
         setFormData(prev => ({ ...prev, [name]: value }))
     }
 
-    const handleAddFacility = () => {
-        setFacilities(prev => [...prev, { id: Date.now().toString(), facility: '' }])
-    }
-
-    const handleRemoveFacility = (id: string) => {
-        if (facilities.length > 1) {
-            setFacilities(prev => prev.filter(f => f.id !== id))
-        }
-    }
-
-    const handleFacilityChange = (id: string, value: string) => {
-        setFacilities(prev => prev.map(f => f.id === id ? { ...f, facility: value } : f))
+    const togglePredefinedFacility = (facility: string) => {
+        setCheckedFacilities(prev => ({ ...prev, [facility]: !prev[facility] }))
     }
 
     const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -145,8 +133,15 @@ export default function CreateKosPage() {
             return
         }
 
-        const validFacilities = facilities.filter(f => f.facility.trim() !== '')
-        if (validFacilities.length === 0) {
+        // Collect selected facilities
+        const selectedPredefined = Object.keys(checkedFacilities).filter(k => checkedFacilities[k])
+        const customFacilityTrimmed = customFacility.trim()
+        const allFacilities = [...selectedPredefined]
+        if (customFacilityTrimmed) {
+            allFacilities.push(customFacilityTrimmed)
+        }
+
+        if (allFacilities.length === 0) {
             toast.error('Minimal 1 fasilitas diperlukan')
             return
         }
@@ -160,7 +155,12 @@ export default function CreateKosPage() {
             submitData.append('name', formData.name.trim())
             submitData.append('address', formData.address.trim())
             submitData.append('pricePerMonth', formData.pricePerMonth)
-            submitData.append('discountPercent', formData.discountPercent || '0')
+
+            // Set discount to null if empty, otherwise use the value
+            if (formData.discountPercent && formData.discountPercent.trim() !== '') {
+                submitData.append('discountPercent', formData.discountPercent)
+            }
+
             submitData.append('gender', formData.gender)
             submitData.append('kampus', formData.kampus)
             submitData.append('kota', formData.kota)
@@ -172,7 +172,7 @@ export default function CreateKosPage() {
             })
 
             // Add facilities as JSON string
-            const facilitiesData = validFacilities.map(f => ({ facility: f.facility.trim() }))
+            const facilitiesData = allFacilities.map(f => ({ facility: f }))
             submitData.append('facilities', JSON.stringify(facilitiesData))
 
             const response = await fetch(`${BASE_API_URL}/kos`, {
@@ -355,8 +355,8 @@ export default function CreateKosPage() {
                                             type='button'
                                             onClick={() => setFormData(prev => ({ ...prev, gender: option.value }))}
                                             className={`p-4 border-2 rounded-lg transition ${formData.gender === option.value
-                                                    ? 'border-blue-600 bg-blue-50'
-                                                    : 'border-gray-300 hover:border-gray-400'
+                                                ? 'border-blue-600 bg-blue-50'
+                                                : 'border-gray-300 hover:border-gray-400'
                                                 }`}>
                                             <div className='text-3xl mb-2'>{option.icon}</div>
                                             <div className='font-semibold text-gray-900'>{option.label}</div>
@@ -377,8 +377,8 @@ export default function CreateKosPage() {
                                             type='button'
                                             onClick={() => setFormData(prev => ({ ...prev, kalender: option.value }))}
                                             className={`p-4 border-2 rounded-lg transition ${formData.kalender === option.value
-                                                    ? 'border-blue-600 bg-blue-50'
-                                                    : 'border-gray-300 hover:border-gray-400'
+                                                ? 'border-blue-600 bg-blue-50'
+                                                : 'border-gray-300 hover:border-gray-400'
                                                 }`}>
                                             <div className='text-2xl mb-2'>{option.icon}</div>
                                             <div className='font-semibold text-gray-900 text-sm'>{option.label}</div>
@@ -391,44 +391,58 @@ export default function CreateKosPage() {
 
                     {/* Fasilitas */}
                     <div className='bg-white rounded-2xl shadow-lg p-6 mb-6'>
-                        <div className='flex items-center justify-between mb-6 pb-4 border-b border-gray-200'>
-                            <div className='flex items-center gap-3'>
-                                <div className='p-3 bg-purple-100 rounded-lg'>
-                                    <FaList className='text-purple-600 text-xl' />
-                                </div>
-                                <div>
-                                    <h2 className='text-xl font-bold text-gray-900'>Fasilitas</h2>
-                                    <p className='text-sm text-gray-600'>Daftar fasilitas yang tersedia</p>
-                                </div>
+                        <div className='flex items-center gap-3 mb-6 pb-4 border-b border-gray-200'>
+                            <div className='p-3 bg-purple-100 rounded-lg'>
+                                <FaList className='text-purple-600 text-xl' />
                             </div>
-                            <button
-                                type='button'
-                                onClick={handleAddFacility}
-                                className='px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm font-medium'>
-                                + Tambah
-                            </button>
+                            <div>
+                                <h2 className='text-xl font-bold text-gray-900'>Fasilitas</h2>
+                                <p className='text-sm text-gray-600'>Pilih fasilitas yang tersedia di kos Anda</p>
+                            </div>
                         </div>
 
-                        <div className='space-y-3'>
-                            {facilities.map((facility, index) => (
-                                <div key={facility.id} className='flex gap-3'>
-                                    <input
-                                        type='text'
-                                        value={facility.facility}
-                                        onChange={(e) => handleFacilityChange(facility.id, e.target.value)}
-                                        placeholder={`Fasilitas ${index + 1} (contoh: WiFi, AC, Kasur)`}
-                                        className='flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition'
-                                    />
-                                    {facilities.length > 1 && (
-                                        <button
-                                            type='button'
-                                            onClick={() => handleRemoveFacility(facility.id)}
-                                            className='px-4 py-3 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition'>
-                                            <FaTimes />
-                                        </button>
-                                    )}
+                        <div className='space-y-5'>
+                            {/* Predefined Facilities */}
+                            <div>
+                                <label className='block text-sm font-semibold text-gray-700 mb-3'>
+                                    Fasilitas Umum <span className='text-red-500'>*</span>
+                                </label>
+                                <div className='grid grid-cols-2 md:grid-cols-3 gap-3'>
+                                    {predefinedFacilities.map((facility) => (
+                                        <label
+                                            key={facility}
+                                            className={`flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer transition ${checkedFacilities[facility]
+                                                    ? 'border-purple-600 bg-purple-50'
+                                                    : 'border-gray-300 hover:border-gray-400'
+                                                }`}>
+                                            <input
+                                                type='checkbox'
+                                                checked={!!checkedFacilities[facility]}
+                                                onChange={() => togglePredefinedFacility(facility)}
+                                                className='w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500'
+                                            />
+                                            <span className='text-sm font-medium text-gray-900'>{facility}</span>
+                                        </label>
+                                    ))}
                                 </div>
-                            ))}
+                            </div>
+
+                            {/* Custom Facility */}
+                            <div>
+                                <label className='block text-sm font-semibold text-gray-700 mb-2'>
+                                    Fasilitas Tambahan (Opsional)
+                                </label>
+                                <input
+                                    type='text'
+                                    value={customFacility}
+                                    onChange={(e) => setCustomFacility(e.target.value)}
+                                    placeholder='Contoh: WiFi 100 Mbps, Mesin Cuci Pribadi, dll'
+                                    className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition'
+                                />
+                                <p className='text-xs text-gray-500 mt-2'>
+                                    Tambahkan fasilitas khusus yang tidak ada di daftar di atas
+                                </p>
+                            </div>
                         </div>
                     </div>
 
