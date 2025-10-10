@@ -173,7 +173,8 @@ export default function CreateKosPage() {
 
             // Add facilities as JSON string
             const facilitiesData = allFacilities.map(f => ({ facility: f }))
-            submitData.append('facilities', JSON.stringify(facilitiesData))
+            const facilitiesJSON = JSON.stringify(facilitiesData)
+            submitData.append('facilities', facilitiesJSON)
 
             const response = await fetch(`${BASE_API_URL}/kos`, {
                 method: 'POST',
@@ -412,8 +413,8 @@ export default function CreateKosPage() {
                                         <label
                                             key={facility}
                                             className={`flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer transition ${checkedFacilities[facility]
-                                                    ? 'border-purple-600 bg-purple-50'
-                                                    : 'border-gray-300 hover:border-gray-400'
+                                                ? 'border-purple-600 bg-purple-50'
+                                                : 'border-gray-300 hover:border-gray-400'
                                                 }`}>
                                             <input
                                                 type='checkbox'
