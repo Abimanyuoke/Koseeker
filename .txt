@@ -5,3 +5,4 @@ Update:
 4. tambahkan untuk data kos dan gambar.
 5. menambah fitur kampus dekat dan kota
 6. deploy lewat vercel (frontend) dan supabase (backend)
+7. buat menjadi lebih estetik
