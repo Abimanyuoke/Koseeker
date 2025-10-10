@@ -1,8 +1,7 @@
 Update:
-1. untuk navbar bisa digunakan ketika  turun maka akan blur.
-2. transaksi bisa untuk  mengikuti.
-3. untuk dibawah kos itu bisa ditambahkan untuk fasikitas.
+3. untuk dibawah kos itu bisa ditambahkan untuk fasikitas (diperbaiki).
 4. tambahkan untuk data kos dan gambar.
 5. menambah fitur kampus dekat dan kota
 6. deploy lewat vercel (frontend) dan supabase (backend)
 7. buat menjadi lebih estetik
+8. buat
