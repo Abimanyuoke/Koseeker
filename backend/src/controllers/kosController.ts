@@ -243,13 +243,6 @@ export const createKos = async (req: Request, res: Response) => {
     try {
         const { userId, name, address, pricePerMonth, discountPercent, gender, kampus, kota, kalender, facilities } = req.body;
 
-        console.log('=== CREATE KOS DEBUG ===');
-        console.log('Full request body:', req.body);
-        console.log('Files:', req.files);
-        console.log('Raw facilities from body:', facilities);
-        console.log('Type of facilities:', typeof facilities);
-        console.log('Received discountPercent:', discountPercent, 'Type:', typeof discountPercent);
-
         // Robust validation for discountPercent
         let validDiscountPercent = null;
         if (discountPercent !== undefined && discountPercent !== null && discountPercent !== '') {
@@ -266,13 +259,11 @@ export const createKos = async (req: Request, res: Response) => {
             // If it's already an array (parsed by middleware)
             if (Array.isArray(facilities)) {
                 facilitiesData = facilities;
-                console.log('Facilities is already an array:', facilitiesData);
             }
             // If it's still a string (middleware didn't run or failed)
             else if (typeof facilities === 'string') {
                 try {
                     facilitiesData = JSON.parse(facilities);
-                    console.log('Parsed facilities from string:', facilitiesData);
                 } catch (error) {
                     console.error('Error parsing facilities string:', error);
                     facilitiesData = [];
@@ -284,18 +275,10 @@ export const createKos = async (req: Request, res: Response) => {
         const uploadedFiles = req.files as Express.Multer.File[];
         const imagesData = uploadedFiles?.map(file => ({ file: file.filename })) || [];
 
-        console.log('Processed discountPercent:', validDiscountPercent);
-        console.log('Final facilitiesData:', facilitiesData);
-        console.log('facilitiesData length:', facilitiesData.length);
-        console.log('Images data:', imagesData);
-        console.log('========================');
-
         // Prepare facilities for Prisma create
         const facilitiesForCreate = facilitiesData.map(fac => ({
             facility: fac.facility
         }));
-
-        console.log('Facilities for Prisma create:', facilitiesForCreate);
 
         const newKos = await prisma.kos.create({
             data: {
@@ -321,9 +304,6 @@ export const createKos = async (req: Request, res: Response) => {
             }
         });
 
-        console.log('Created Kos:', newKos);
-        console.log('Created facilities count:', newKos.facilities?.length);
-
         res.status(201).json({
             status: true,
             message: 'Kos berhasil ditambahkan',
@@ -337,8 +317,6 @@ export const createKos = async (req: Request, res: Response) => {
         });
     }
 };
-
-
 export const updateKos = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
