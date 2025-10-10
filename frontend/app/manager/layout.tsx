@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react"
 import { Toaster } from "sonner"
 import { getCookies, removeCookie } from '@/lib/client-cookies'
-import { getUserData, clearAuthData } from '../../lib/auth'
+import { clearAuthData } from '../../lib/auth'
 import { FiLogOut, FiHome, FiLayers, FiCalendar, FiUsers, FiSettings } from 'react-icons/fi'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useRouter } from 'next/navigation'
@@ -75,13 +75,13 @@ const RootLayout = ({ children }: PropsLayout) => {
                 </div>
 
                 <nav className="mt-4">
-                    <ul className="space-y-2">
-                        <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer"><FiHome className="w-5 h-5 text-gray-600" /><span className="text-sm">Dashboard</span></li>
-                        <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer"><FiLayers className="w-5 h-5 text-gray-600" /><span className="text-sm">Kelola Kos</span></li>
-                        <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer"><FiCalendar className="w-5 h-5 text-gray-600" /><span className="text-sm">Booking</span></li>
-                        <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer"><FiUsers className="w-5 h-5 text-gray-600" /><span className="text-sm">Penyewa</span></li>
-                        <li className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer"><FiSettings className="w-5 h-5 text-gray-600" /><span className="text-sm">Pengaturan</span></li>
-                    </ul>
+                    <div className="space-y-2">
+                        <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer" onClick={() => router.replace('/manager')}><FiHome className="w-5 h-5 text-gray-600" /><span className="text-sm">Dashboard</span></button>
+                        <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer" onClick={() => router.replace('/manager/kos')}><FiLayers className="w-5 h-5 text-gray-600" /><span className="text-sm">Kelola Kos</span></button>
+                        <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer" onClick={() => router.replace('/manager/facilities')}><FiCalendar className="w-5 h-5 text-gray-600" /><span className="text-sm">Fasilitas</span></button>
+                        <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer" onClick={() => router.replace('/manager/penyewa')}><FiUsers className="w-5 h-5 text-gray-600" /><span className="text-sm">Penyewa</span></button>
+                        <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 cursor-pointer" onClick={() => router.replace('/manager/pengaturan')}><FiSettings className="w-5 h-5 text-gray-600" /><span className="text-sm">Pengaturan</span></button>
+                    </div>
                 </nav>
 
                 <div className="mt-auto pt-4">
@@ -92,7 +92,7 @@ const RootLayout = ({ children }: PropsLayout) => {
             {/* Mobile drawer (overlay) */}
             <AnimatePresence>
                 {mobileSidebarOpen && (
-                    <>
+                    <div>
                         <motion.div key="mgr-overlay" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }} className="fixed inset-0 bg-black/40 z-40" onClick={() => setMobileSidebarOpen(false)} />
                         <motion.aside key="mgr-drawer" initial={{ x: '-100%' }} animate={{ x: 0 }} exit={{ x: '-100%' }} transition={{ type: 'spring', stiffness: 300, damping: 30 }} className="fixed left-0 top-0 bottom-0 w-72 bg-white z-50 shadow-lg p-6 overflow-y-auto">
                             <div className="flex items-center justify-between mb-4">
@@ -117,7 +117,7 @@ const RootLayout = ({ children }: PropsLayout) => {
                                 <button onClick={() => { setMobileSidebarOpen(false); handleLogout(); }} className="w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-gray-100 hover:bg-gray-200"><FiLogOut className="text-gray-700" /> Logout</button>
                             </div>
                         </motion.aside>
-                    </>
+                    </div>
                 )}
             </AnimatePresence>
 

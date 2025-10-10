@@ -105,7 +105,7 @@ export const updateUser = async (request: Request, response: Response) => {
         /** get id of user's id that sent in parameter of URL */
         const { id } = request.params
         /** get requested data (data has been sent from request) */
-        const { name, email, password, role } = request.body
+        const { name, email, password, role, phone } = request.body
 
         /** make sure that data is exists in database */
         const findUser = await prisma.user.findFirst({ where: { id: Number(id) } })
@@ -132,6 +132,7 @@ export const updateUser = async (request: Request, response: Response) => {
                 email: email || findUser.email,
                 password: password ? md5(password) : findUser.password,
                 role: role || findUser.role,
+                phone: phone || findUser.phone,
                 profile_picture: filename
             },
             where: { id: Number(id) }
@@ -141,6 +142,49 @@ export const updateUser = async (request: Request, response: Response) => {
             status: true,
             data: updatedUser,
             message: `user has updated`
+        }).status(200)
+    } catch (error) {
+        return response
+            .json({
+                status: false,
+                message: `There is an error. ${error}`
+            })
+            .status(400)
+    }
+}
+
+export const changePassword = async (request: Request, response: Response) => {
+    try {
+        /** get id of user's id that sent in parameter of URL */
+        const { id } = request.params
+        /** get requested data (data has been sent from request) */
+        const { currentPassword, newPassword } = request.body
+
+        /** make sure that data is exists in database */
+        const findUser = await prisma.user.findFirst({ where: { id: Number(id) } })
+        if (!findUser) return response
+            .status(404)
+            .json({ status: false, message: `User is not found` })
+
+        /** verify current password */
+        if (md5(currentPassword) !== findUser.password) {
+            return response
+                .status(400)
+                .json({ status: false, message: `Password lama tidak sesuai` })
+        }
+
+        /** process to update password */
+        const updatedUser = await prisma.user.update({
+            data: {
+                password: md5(newPassword)
+            },
+            where: { id: Number(id) }
+        })
+
+        return response.json({
+            status: true,
+            data: updatedUser,
+            message: `Password has been changed`
         }).status(200)
     } catch (error) {
         return response

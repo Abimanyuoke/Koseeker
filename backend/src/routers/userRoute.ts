@@ -1,5 +1,5 @@
 import express from "express"
-import { getAllUsers, createUser, updateUser, deleteUser, changePicture, authentication, getUserById, googleAuthentication } from "../controllers/userController"
+import { getAllUsers, createUser, updateUser, deleteUser, changePicture, authentication, getUserById, googleAuthentication, changePassword } from "../controllers/userController"
 import { verifyAddUser, verifyEditUser, verifyAuthentication } from "../middlewares/userValidation"
 import uploadFile from "../middlewares/profilUpload"
 import { verifyToken, verifyRole } from "../middlewares/authorization"
@@ -11,7 +11,8 @@ app.get(`/`, getAllUsers)
 app.get(`/:id`, getUserById)
 app.post(`/`, uploadFile.single("picture"), verifyAddUser, createUser)
 // app.post(`/`, [verifyToken, verifyRole(["MANAGER"]), uploadFile.single("picture"), verifyAddUser], createUser)
-app.put(`/:id`, [verifyToken, verifyRole(["USER", "MANAGER"]), uploadFile.single("picture"), verifyEditUser], updateUser)
+app.put(`/:id`, uploadFile.single("profile_picture"), updateUser)
+app.put(`/:id/password`, changePassword)
 app.put(`/profile/:id`, [verifyToken, verifyRole(["USER", "MANAGER"]), uploadFile.single("picture")], changePicture)
 app.delete(`/:id`, deleteUser)
 app.post(`/login`, [verifyAuthentication], authentication)
