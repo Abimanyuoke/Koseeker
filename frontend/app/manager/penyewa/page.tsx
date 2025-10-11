@@ -333,8 +333,7 @@ export default function PenyewaPage() {
                                         border: '1px solid #e5e7eb',
                                         borderRadius: '8px',
                                         boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
-                                    }}
-                                />
+                                    }} />
                                 <Legend />
                                 <Line type='monotone' dataKey='penyewa' stroke='#8b5cf6' strokeWidth={3} name='Total' dot={{ fill: '#8b5cf6', r: 5 }} />
                                 <Line type='monotone' dataKey='accepted' stroke='#10b981' strokeWidth={2} name='Diterima' dot={{ fill: '#10b981', r: 4 }} />
@@ -356,16 +355,24 @@ export default function PenyewaPage() {
                                     data={pieData}
                                     cx='50%'
                                     cy='50%'
-                                    labelLine={false}
+                                    labelLine={true}
                                     label={({ name, percent }: any) => `${name} ${(percent * 100).toFixed(0)}%`}
-                                    outerRadius={80}
+                                    outerRadius={90}
                                     fill='#8884d8'
-                                    dataKey='value'>
+                                    dataKey='value'
+                                    style={{ fontSize: '13px', fontWeight: '600' }}>
                                     {pieData.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={entry.color} />
                                     ))}
                                 </Pie>
-                                <Tooltip />
+                                <Tooltip
+                                    contentStyle={{
+                                        backgroundColor: '#fff',
+                                        border: '1px solid #e5e7eb',
+                                        borderRadius: '8px',
+                                        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+                                    }}
+                                />
                             </PieChart>
                         </ResponsiveContainer>
                     </div>
