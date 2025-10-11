@@ -73,18 +73,33 @@ export default function PenyewaPage() {
     const fetchBookings = async () => {
         try {
             setLoading(true)
-            const response = await fetch(`${BASE_API_URL}/books/owner`)
+            const token = localStorage.getItem('token')
+
+            if (!token) {
+                toast.error('Token tidak ditemukan, silakan login kembali')
+                setLoading(false)
+                return
+            }
+
+            const response = await fetch(`${BASE_API_URL}/books/owner`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
             const result = await response.json()
 
             if (result.status) {
-                const ownerBookings = result.data.filter((booking: Booking) =>
+                // Backend mengirim dengan key 'books' bukan 'data'
+                const ownerBookings = (result.books || []).filter((booking: Booking) =>
                     booking.kos && booking.user
                 )
                 setBookings(ownerBookings)
                 calculateStats(ownerBookings)
                 generateMonthlyData(ownerBookings)
             } else {
-                toast.error('Gagal memuat data penyewa')
+                toast.error(result.message || 'Gagal memuat data penyewa')
             }
         } catch (error: any) {
             console.error('Error fetching bookings:', error)
@@ -510,8 +525,8 @@ export default function PenyewaPage() {
                                             </td>
                                             <td className='px-6 py-4'>
                                                 <span className={`px-3 py-1 text-sm font-semibold rounded-full ${booking.status === 'accept' ? 'bg-green-100 text-green-700' :
-                                                        booking.status === 'reject' ? 'bg-red-100 text-red-700' :
-                                                            'bg-yellow-100 text-yellow-700'
+                                                    booking.status === 'reject' ? 'bg-red-100 text-red-700' :
+                                                        'bg-yellow-100 text-yellow-700'
                                                     }`}>
                                                     {booking.status === 'accept' ? 'Diterima' :
                                                         booking.status === 'reject' ? 'Ditolak' :
