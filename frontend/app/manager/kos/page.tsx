@@ -6,7 +6,7 @@ import { getUserData } from '@/lib/auth'
 import { BASE_API_URL, BASE_IMAGE_KOS } from '@/global'
 import { toast } from 'sonner'
 import Link from 'next/link'
-import { FaImage, FaList, FaEdit, FaTrash, FaPlus, FaMapMarkerAlt, FaMoneyBillWave, FaHome } from 'react-icons/fa'
+import { FaImage, FaList, FaEdit, FaTrash, FaPlus, FaMapMarkerAlt, FaHome } from 'react-icons/fa'
 import { MdFavorite } from 'react-icons/md'
 
 interface KosItem {
@@ -252,8 +252,7 @@ export default function ManagerKosListPage() {
                                         <img
                                             src={imgUrl}
                                             alt={kos.name}
-                                            className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300'
-                                        />
+                                            className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300'/>
                                         {kos.discountPercent && kos.discountPercent > 0 && (
                                             <span className='absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg'>
                                                 -{kos.discountPercent}%
@@ -282,11 +281,10 @@ export default function ManagerKosListPage() {
                                         </div>
 
                                         <div className='flex items-center gap-2 mb-4'>
-                                            <FaMoneyBillWave className='text-green-600' />
                                             <span className='text-xl font-bold text-green-600'>
                                                 Rp {formatPrice(kos.pricePerMonth)}
                                             </span>
-                                            <span className='text-sm text-gray-500'>/bulan</span>
+                                            <span className='text-sm text-gray-500'>/ bulan</span>
                                         </div>
 
                                         {/* Stats */}

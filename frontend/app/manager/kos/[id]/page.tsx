@@ -537,7 +537,7 @@ export default function ManageKosImagesPage() {
                                                 </div>
                                             </div>
                                         ) : (
-                                            <>
+                                            <div>
                                                 <div className='relative aspect-video rounded-xl overflow-hidden border-2 border-blue-500 bg-gray-50'>
                                                     <img
                                                         src={replacePreviewUrl}
@@ -564,7 +564,7 @@ export default function ManageKosImagesPage() {
                                                     className='mt-3 w-full text-sm text-red-600 hover:text-red-800 transition disabled:opacity-50'>
                                                     Pilih gambar lain
                                                 </button>
-                                            </>
+                                            </div>
                                         )}
                                     </div>
                                 </div>
@@ -600,14 +600,14 @@ export default function ManageKosImagesPage() {
                                         disabled={!replaceFile || replacing}
                                         className='flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium'>
                                         {replacing ? (
-                                            <>
+                                            <div>
                                                 <div className='animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full'></div>
                                                 Mengganti...
-                                            </>
+                                            </div>
                                         ) : (
-                                            <>
+                                            <div>
                                                 <FaExchangeAlt /> Ganti Gambar
-                                            </>
+                                            </div>
                                         )}
                                     </button>
                                 </div>
