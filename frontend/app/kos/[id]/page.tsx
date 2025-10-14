@@ -18,6 +18,7 @@ import ReviewContainer from "@/app/components/review/ReviewContainer";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import { IoIosArrowForward } from "react-icons/io";
+import { LuMapPin } from "react-icons/lu";
 
 const KosDetailPage = () => {
     const params = useParams();
@@ -193,7 +194,7 @@ const KosDetailPage = () => {
 
                 {/* Image Gallery - Full Width */}
                 <div className="w-full max-w-6xl mx-auto mb-8">
-                    <div className="bg-white rounded-2xl overflow-hidden shadow-lg relative">
+                    <div className="bg-white rounded-2xl overflow-hidden relative">
                         {kosDetail.images && kosDetail.images.length > 0 ? (
                             <div className="w-full">
                                 {/* Single Image */}
@@ -298,8 +299,7 @@ const KosDetailPage = () => {
                                                     alt={`${kosDetail.name} ${index + 2}`}
                                                     fill
                                                     className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                                    unoptimized
-                                                />
+                                                    unoptimized/>
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
 
                                                 {/* Show more indicator on last visible image */}
@@ -356,7 +356,7 @@ const KosDetailPage = () => {
                     {/* Left & Middle Section - 2/3 width */}
                     <div className="lg:col-span-2 space-y-6">
                         {/* Header Info */}
-                        <div className="bg-white rounded-2xl p-6 shadow-lg">
+                        <div className="bg-white rounded-2xl">
                             <div className="flex items-start justify-between mb-4">
                                 <div className="flex-1">
                                     <div className="flex items-center gap-2 mb-2">
@@ -368,17 +368,16 @@ const KosDetailPage = () => {
                                         {kosDetail.name}
                                     </h1>
                                     <div className="flex items-start gap-2 text-gray-600">
-                                        <FaMapMarkerAlt className="text-green-600 mt-1 flex-shrink-0" />
-                                        <span className="text-sm">{kosDetail.address}, {kosDetail.kota}</span>
+                                        <LuMapPin className="text-gray-500 mt-1 flex-shrink-0" />
+                                        <span className="text-sm">{kosDetail.kota}</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Spesifikasi Kamar */}
-                        <div className="bg-white rounded-2xl p-6 shadow-lg">
+                        <div className="bg-white rounded-2xl py-6">
                             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <MdOutlineBedroomParent className="text-green-600 text-3xl" />
                                 Spesifikasi Kamar
                             </h2>
                             <div className="grid grid-cols-2 gap-4">
