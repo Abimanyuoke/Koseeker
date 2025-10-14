@@ -7,9 +7,9 @@ import { getCookies } from "@/lib/client-cookies";
 import { BASE_API_URL, BASE_IMAGE_KOS } from "../../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
-import { FiLoader, FiArrowLeft, FiShare2, FiHeart, FiCheckCircle } from "react-icons/fi";
+import { FiLoader, FiShare2, FiHeart, FiCheckCircle } from "react-icons/fi";
 import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaPhone, FaEnvelope, FaRulerCombined, FaToilet, FaCouch, FaDoorOpen, FaWhatsapp } from "react-icons/fa";
-import { MdLocalLaundryService, MdSecurity, MdOutlineBedroomParent } from "react-icons/md";
+import { MdLocalLaundryService, MdSecurity } from "react-icons/md";
 import { GiCook, GiWindow } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
 import { ButtonPrimary } from "../../components/button";
@@ -18,7 +18,8 @@ import ReviewContainer from "@/app/components/review/ReviewContainer";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import { IoIosArrowForward } from "react-icons/io";
-import { LuMapPin } from "react-icons/lu";
+import { LuDot, LuMapPin } from "react-icons/lu";
+import { PiDoorOpen } from "react-icons/pi";
 
 const KosDetailPage = () => {
     const params = useParams();
@@ -89,10 +90,10 @@ const KosDetailPage = () => {
 
     const getGenderColor = (gender: string) => {
         switch (gender) {
-            case 'male': return 'bg-blue-100 text-blue-800';
-            case 'female': return 'bg-pink-100 text-pink-800';
-            case 'all': return 'bg-green-100 text-green-800';
-            default: return 'bg-gray-100 text-gray-800';
+            case 'male': return 'border text-gray-700';
+            case 'female': return 'border text-gray-700';
+            case 'all': return 'border text-gray-700';
+            default: return 'border text-gray-700';
         }
     };
 
@@ -163,7 +164,7 @@ const KosDetailPage = () => {
 
     /** ---------- RENDER ---------- */
     return (
-        <div className="bg-gray-50 text-black duration-200 min-h-screen">
+        <div className="bg-gray-50 text-black duration-200 min-h-screen font-lato">
             <div className="max-w-6xl mx-auto px-4 py-4">
                 {/* Breadcrumb Navigation */}
                 <div className="flex items-center gap-1 mb-6">
@@ -218,8 +219,7 @@ const KosDetailPage = () => {
                                             <div
                                                 key={image.id}
                                                 className="relative w-full h-[500px] rounded-xl overflow-hidden cursor-pointer group"
-                                                onClick={() => setCurrentImageIndex(index)}
-                                            >
+                                                onClick={() => setCurrentImageIndex(index)}>
                                                 <Image
                                                     src={`${BASE_IMAGE_KOS}/${image.file}`}
                                                     alt={`${kosDetail.name} ${index + 1}`}
@@ -235,19 +235,17 @@ const KosDetailPage = () => {
 
                                 {/* Three Images */}
                                 {kosDetail.images.length === 3 && (
-                                    <div className="grid grid-cols-2 grid-rows-2 gap-2 p-2">
+                                    <div className="grid grid-cols-2 grid-rows-2 gap-2">
                                         {/* First large image takes full left side */}
                                         <div
                                             className="relative w-full row-span-2 h-[500px] rounded-xl overflow-hidden cursor-pointer group"
-                                            onClick={() => setCurrentImageIndex(0)}
-                                        >
+                                            onClick={() => setCurrentImageIndex(0)}>
                                             <Image
                                                 src={`${BASE_IMAGE_KOS}/${kosDetail.images[0].file}`}
                                                 alt={`${kosDetail.name} 1`}
                                                 fill
                                                 className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                                unoptimized
-                                            />
+                                                unoptimized />
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
                                         </div>
                                         {/* Two smaller images on right */}
@@ -255,15 +253,13 @@ const KosDetailPage = () => {
                                             <div
                                                 key={image.id}
                                                 className="relative w-full h-[245px] rounded-xl overflow-hidden cursor-pointer group"
-                                                onClick={() => setCurrentImageIndex(index + 1)}
-                                            >
+                                                onClick={() => setCurrentImageIndex(index + 1)}>
                                                 <Image
                                                     src={`${BASE_IMAGE_KOS}/${image.file}`}
                                                     alt={`${kosDetail.name} ${index + 2}`}
                                                     fill
                                                     className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                                    unoptimized
-                                                />
+                                                    unoptimized />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
                                             </div>
                                         ))}
@@ -272,19 +268,17 @@ const KosDetailPage = () => {
 
                                 {/* Four or More Images */}
                                 {kosDetail.images.length >= 4 && (
-                                    <div className="grid grid-cols-4 grid-rows-2 gap-2 p-2">
+                                    <div className="grid grid-cols-4 grid-rows-2 gap-2">
                                         {/* First large image takes 2x2 grid */}
                                         <div
                                             className="relative w-full col-span-2 row-span-2 h-[500px] rounded-xl overflow-hidden cursor-pointer group"
-                                            onClick={() => setCurrentImageIndex(0)}
-                                        >
+                                            onClick={() => setCurrentImageIndex(0)}>
                                             <Image
                                                 src={`${BASE_IMAGE_KOS}/${kosDetail.images[0].file}`}
                                                 alt={`${kosDetail.name} 1`}
                                                 fill
                                                 className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                                unoptimized
-                                            />
+                                                unoptimized />
                                             <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
                                         </div>
                                         {/* Remaining images fill the right side */}
@@ -292,14 +286,13 @@ const KosDetailPage = () => {
                                             <div
                                                 key={image.id}
                                                 className="relative w-full h-[245px] rounded-xl overflow-hidden cursor-pointer group"
-                                                onClick={() => setCurrentImageIndex(index + 1)}
-                                            >
+                                                onClick={() => setCurrentImageIndex(index + 1)} >
                                                 <Image
                                                     src={`${BASE_IMAGE_KOS}/${image.file}`}
                                                     alt={`${kosDetail.name} ${index + 2}`}
                                                     fill
                                                     className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                                    unoptimized/>
+                                                    unoptimized />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
 
                                                 {/* Show more indicator on last visible image */}
@@ -323,31 +316,6 @@ const KosDetailPage = () => {
                                 <span className="text-gray-400">No Image</span>
                             </div>
                         )}
-
-                        {/* Like and Share buttons overlay */}
-                        <div className="absolute top-6 right-6 flex gap-2 z-10">
-                            {user && token ? (
-                                <LikeButton
-                                    kosId={kosDetail.id}
-                                    userId={user.id}
-                                    token={token.toString()}
-                                />
-                            ) : (
-                                <button className="p-3 rounded-full bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm transition-all hover:scale-110">
-                                    <FiHeart className="text-xl text-red-500" />
-                                </button>
-                            )}
-                            <button className="p-3 rounded-full bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm transition-all hover:scale-110">
-                                <FiShare2 className="text-xl text-gray-700" />
-                            </button>
-                        </div>
-
-                        {/* Gender Badge */}
-                        <div className="absolute bottom-6 left-6 z-10">
-                            <span className={`px-4 py-2 rounded-full text-sm font-semibold shadow-lg backdrop-blur-sm bg-opacity-95 ${getGenderColor(kosDetail.gender)}`}>
-                                {getGenderText(kosDetail.gender)}
-                            </span>
-                        </div>
                     </div>
                 </div>
 
@@ -359,17 +327,47 @@ const KosDetailPage = () => {
                         <div className="bg-white rounded-2xl">
                             <div className="flex items-start justify-between mb-4">
                                 <div className="flex-1">
-                                    <div className="flex items-center gap-2 mb-2">
-                                        <span className="text-xs font-semibold text-green-600 bg-green-50 px-3 py-1 rounded-full">
-                                            Kos {kosDetail.kampus}
-                                        </span>
+                                    <div className="flex justify-start gap-2 mb-2">
+                                        <img src="/images/logo1.svg" alt="logo" className="w-32 -my-6" />
                                     </div>
-                                    <h1 className="text-3xl font-bold text-gray-900 mb-3">
+                                    <h1 className="text-3xl font-black text-[#383746] mb-3">
                                         {kosDetail.name}
                                     </h1>
-                                    <div className="flex items-start gap-2 text-gray-600">
-                                        <LuMapPin className="text-gray-500 mt-1 flex-shrink-0" />
-                                        <span className="text-sm">{kosDetail.kota}</span>
+                                    <div className="flex items-center gap-1 my-8">
+                                        {/* Gender Badge */}
+                                        <div>
+                                            <span className={`px-4 py-2 rounded-md text-sm font-semibold shadow-lg backdrop-blur-sm bg-opacity-95 ${getGenderColor(kosDetail.gender)}`}>
+                                                {getGenderText(kosDetail.gender)}
+                                            </span>
+                                        </div>
+                                        <LuDot className="text-gray-800 text-base" />
+                                        <div className="flex items-start gap-2">
+                                            <LuMapPin className="text-gray-700 mt-1 flex-shrink-0 text-xl" />
+                                            <span className="text-base text-gray-800">{kosDetail.kota}</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex justify-between items-center ">
+                                        <div className="flex items-center gap-2">
+                                            <PiDoorOpen className="flex-shrink-0 text-lg text-gray-700" />
+                                            <span className="text-[#383746] text-base font-normal">Banyak pilihan kamar untukmu</span>
+                                        </div>
+
+                                        {/* Like and Share buttons overlay */}
+                                        <div className="flex gap-2 z-10">
+                                            {user && token ? (
+                                                <LikeButton
+                                                    kosId={kosDetail.id}
+                                                    userId={user.id}
+                                                    token={token.toString()} />
+                                            ) : (
+                                                <button className="p-3 rounded-full bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm transition-all hover:scale-110">
+                                                    <FiHeart className="text-xl text-red-500" />
+                                                </button>
+                                            )}
+                                            <button className="p-3 rounded-full bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm transition-all hover:scale-110">
+                                                <FiShare2 className="text-xl text-gray-700" />
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

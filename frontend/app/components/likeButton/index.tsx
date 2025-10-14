@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
+import { IoMdHeartEmpty } from "react-icons/io";
 
 interface LikeButtonProps {
     kosId: number;
     userId: number;
-    token: string; // JWT dari login
+    token: string;
 }
 
 export default function LikeButton({ kosId, userId, token }: LikeButtonProps) {
@@ -52,7 +53,7 @@ export default function LikeButton({ kosId, userId, token }: LikeButtonProps) {
             onClick={toggleLike}
             className="flex items-center gap-2 text-red-500"
         >
-            {liked ? <FaHeart size={24} /> : <FaRegHeart size={24} />}
+            {liked ? <IoMdHeartEmpty  size={24} /> : <FaRegHeart size={24} />}
             <span>{likeCount}</span>
         </button>
     );
