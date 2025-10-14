@@ -17,6 +17,7 @@ import LikeButton from "@/app/components/likeButton";
 import ReviewContainer from "@/app/components/review/ReviewContainer";
 import Cookies from "js-cookie";
 import Image from "next/image";
+import { IoIosArrowForward } from "react-icons/io";
 
 const KosDetailPage = () => {
     const params = useParams();
@@ -108,10 +109,6 @@ const KosDetailPage = () => {
         return <div className="w-4 h-4 bg-gray-400 rounded-full"></div>;
     };
 
-    const handleBooking = () => {
-        // Redirect to booking page or open booking modal
-        router.push(`/book/${id}`);
-    };
 
     const handleWhatsAppChat = () => {
         const phoneNumber = kosDetail?.owner?.phone || '';
@@ -166,14 +163,33 @@ const KosDetailPage = () => {
     /** ---------- RENDER ---------- */
     return (
         <div className="bg-gray-50 text-black duration-200 min-h-screen">
-            <div className="max-w-7xl mx-auto px-4 py-8 mt-16">
-                {/* Back Button */}
-                <button
-                    onClick={() => router.back()}
-                    className="flex items-center gap-2 text-gray-600 hover:text-green-600 mb-6 transition-colors">
-                    <FiArrowLeft className="text-xl" />
-                    <span className="font-medium">Kembali</span>
-                </button>
+            <div className="max-w-6xl mx-auto px-4 py-4">
+                {/* Breadcrumb Navigation */}
+                <div className="flex items-center gap-1 mb-6">
+                    <button
+                        onClick={() => router.push('/home')}
+                        className="flex items-center gap-1 text-gray-500 hover:text-green-600 transition-colors">
+                        <span className="font-normal text-sm">Beranda</span>
+                        <IoIosArrowForward className="text-sm text-gray-400" />
+                    </button>
+                    <button
+                        onClick={() => router.push(`/area/${kosDetail?.kota?.toLowerCase().replace(/\s+/g, '-')}`)}
+                        className="flex items-center gap-1 text-gray-500 hover:text-green-600 transition-colors">
+                        <span className="font-normal text-sm">Kos {kosDetail?.kota}</span>
+                        <IoIosArrowForward className="text-sm text-gray-400" />
+                    </button>
+
+                    <button
+                        onClick={() => router.push(`/kampus/${kosDetail?.kampus?.toLowerCase().replace(/\s+/g, '-')}`)}
+                        className="flex items-center gap-1 text-gray-500 hover:text-green-600 transition-colors">
+                        <span className="font-normal text-sm">Kos {kosDetail?.kampus}</span>
+                        <IoIosArrowForward className="text-sm text-gray-400" />
+                    </button>
+
+                    <span className="font-medium text-sm text-gray-900">
+                        {kosDetail?.name}
+                    </span>
+                </div>
 
                 {/* Image Gallery - Full Width */}
                 <div className="w-full max-w-6xl mx-auto mb-8">
