@@ -33,6 +33,7 @@ const KosDetailPage = () => {
     const [kosDetail, setKosDetail] = useState<IKos | null>(null);
     const [loading, setLoading] = useState(true);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
+    const [showAllRules, setShowAllRules] = useState(false);
 
     /** ---------- FETCH KOS DETAIL ---------- */
     const getKosDetail = async () => {
@@ -577,7 +578,6 @@ const KosDetailPage = () => {
                             return parkingFacilities.length > 0 && (
                                 <div className="bg-white py-6">
                                     <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                        <FaCar className="text-gray-600 text-3xl" />
                                         Fasilitas Parkir
                                     </h2>
                                     <div className="grid grid-cols-2 gap-3">
@@ -597,29 +597,106 @@ const KosDetailPage = () => {
                         })()}
 
                         {/* Peraturan di Kos */}
-                        <div className="bg-white rounded-2xl p-6 shadow-lg">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <MdSecurity className="text-red-600 text-3xl" />
-                                Peraturan di Kos
+                        <div className="bg-white rounded-2xl p-6 border border-gray-200">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                                Peraturan di kos ini
                             </h2>
-                            <div className="space-y-3">
-                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <IoClose className="text-red-500 text-xl mt-0.5 flex-shrink-0" />
-                                    <p className="text-sm text-gray-700">Dilarang membawa tamu menginap</p>
+                            <div className="space-y-4">
+                                {/* Always visible rules */}
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                        <IoClose className="text-gray-700 text-2xl" />
+                                    </div>
+                                    <div>
+                                        <p className="text-base text-gray-900 font-medium">Akses 24 Jam</p>
+                                    </div>
                                 </div>
-                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <IoClose className="text-red-500 text-xl mt-0.5 flex-shrink-0" />
-                                    <p className="text-sm text-gray-700">Jam bertamu maksimal pukul 21.00 WIB</p>
+
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                        <FaBed className="text-gray-700 text-xl" />
+                                    </div>
+                                    <div>
+                                        <p className="text-base text-gray-900 font-medium">Maks. 2 orang/ kamar</p>
+                                    </div>
                                 </div>
-                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <IoClose className="text-red-500 text-xl mt-0.5 flex-shrink-0" />
-                                    <p className="text-sm text-gray-700">Dilarang membawa hewan peliharaan</p>
+
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                        <IoClose className="text-gray-700 text-2xl" />
+                                    </div>
+                                    <div>
+                                        <p className="text-base text-gray-900 font-medium">Tidak boleh bawa anak</p>
+                                    </div>
                                 </div>
-                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FiCheckCircle className="text-green-500 text-xl mt-0.5 flex-shrink-0" />
-                                    <p className="text-sm text-gray-700">Wajib menjaga kebersihan bersama</p>
+
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                        <IoClose className="text-gray-700 text-2xl" />
+                                    </div>
+                                    <div>
+                                        <p className="text-base text-gray-900 font-medium">Dilarang merokok di kamar</p>
+                                    </div>
                                 </div>
+
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                        <IoClose className="text-gray-700 text-2xl" />
+                                    </div>
+                                    <div>
+                                        <p className="text-base text-gray-900 font-medium">Tidak untuk pasutri</p>
+                                    </div>
+                                </div>
+
+                                {/* Additional rules - shown when expanded */}
+                                {showAllRules && (
+                                    <>
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                                <IoClose className="text-gray-700 text-2xl" />
+                                            </div>
+                                            <div>
+                                                <p className="text-base text-gray-900 font-medium">Dilarang membawa tamu menginap</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                                <IoClose className="text-gray-700 text-2xl" />
+                                            </div>
+                                            <div>
+                                                <p className="text-base text-gray-900 font-medium">Jam bertamu maksimal pukul 21.00 WIB</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                                <IoClose className="text-gray-700 text-2xl" />
+                                            </div>
+                                            <div>
+                                                <p className="text-base text-gray-900 font-medium">Dilarang membawa hewan peliharaan</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                                <FiCheckCircle className="text-gray-700 text-2xl" />
+                                            </div>
+                                            <div>
+                                                <p className="text-base text-gray-900 font-medium">Wajib menjaga kebersihan bersama</p>
+                                            </div>
+                                        </div>
+                                    </>
+                                )}
                             </div>
+
+                            {/* Lihat semua peraturan button */}
+                            <button
+                                onClick={() => setShowAllRules(!showAllRules)}
+                                className="mt-6 w-full py-3 px-4 border border-gray-900 rounded-lg text-gray-900 font-semibold hover:bg-gray-50 transition-colors duration-200"
+                            >
+                                {showAllRules ? 'Sembunyikan peraturan' : 'Lihat semua peraturan'}
+                            </button>
                         </div>
 
                         {/* Ketentuan Penyewaan */}
