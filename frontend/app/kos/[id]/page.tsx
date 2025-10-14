@@ -7,19 +7,20 @@ import { getCookies } from "@/lib/client-cookies";
 import { BASE_API_URL, BASE_IMAGE_KOS } from "../../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
-import { FiLoader, FiShare2, FiHeart, FiCheckCircle } from "react-icons/fi";
-import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaPhone, FaEnvelope, FaRulerCombined, FaToilet, FaCouch, FaDoorOpen, FaWhatsapp, FaRegHeart } from "react-icons/fa";
+import { FiLoader, FiShare2, FiCheckCircle } from "react-icons/fi";
+import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaPhone, FaEnvelope, FaRulerCombined, FaToilet, FaCouch, FaDoorOpen, FaWhatsapp, FaRegHeart, FaMotorcycle } from "react-icons/fa";
 import { MdLocalLaundryService, MdSecurity } from "react-icons/md";
-import { GiCook, GiWindow } from "react-icons/gi";
+import { GiCook } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
 import { ButtonPrimary } from "../../components/button";
 import LikeButton from "@/app/components/likeButton";
 import ReviewContainer from "@/app/components/review/ReviewContainer";
 import Cookies from "js-cookie";
 import Image from "next/image";
-import { IoIosArrowForward, IoMdHeartEmpty } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 import { LuDot, LuMapPin } from "react-icons/lu";
 import { PiDoorOpen } from "react-icons/pi";
+import { AiFillThunderbolt } from "react-icons/ai";
 
 const KosDetailPage = () => {
     const params = useParams();
@@ -101,13 +102,17 @@ const KosDetailPage = () => {
         const facilityLower = facility.toLowerCase();
         if (facilityLower.includes('wifi') || facilityLower.includes('internet')) return <FaWifi className="text-gray-500" />;
         if (facilityLower.includes('kasur') || facilityLower.includes('bed')) return <FaBed className="text-gray-500" />;
-        if (facilityLower.includes('parkir') || facilityLower.includes('parking')) return <FaCar className="text-gray-500" />;
+        if (facilityLower.includes('motor') || facilityLower.includes('motorcycle')) return <FaMotorcycle className="text-gray-500" />;
+        if (facilityLower.includes('mobil') || facilityLower.includes('car')) return <FaCar className="text-gray-500" />;
+        if (facilityLower.includes('parkir') || facilityLower.includes('parking') || facilityLower.includes('garase')) return <FaCar className="text-gray-500" />;
         if (facilityLower.includes('tv') || facilityLower.includes('television')) return <FaTv className="text-gray-500" />;
         if (facilityLower.includes('ac') || facilityLower.includes('air conditioning')) return <FaSnowflake className="text-gray-500" />;
         if (facilityLower.includes('kamar mandi') || facilityLower.includes('bathroom')) return <FaShower className="text-gray-500" />;
+        if (facilityLower.includes('shower')) return <FaShower className="text-gray-500" />;
+        if (facilityLower.includes('toilet')) return <FaToilet className="text-gray-500" />;
         if (facilityLower.includes('laundry') || facilityLower.includes('cuci')) return <MdLocalLaundryService className="text-gray-500" />;
         if (facilityLower.includes('dapur') || facilityLower.includes('kitchen')) return <GiCook className="text-gray-500" />;
-        if (facilityLower.includes('security') || facilityLower.includes('keamanan')) return <MdSecurity className="text-gray-500" />;
+        if (facilityLower.includes('security') || facilityLower.includes('keamanan') || facilityLower.includes('cctv')) return <MdSecurity className="text-gray-500" />;
         return <div className="w-4 h-4 bg-gray-400 rounded-full"></div>;
     };
 
@@ -405,34 +410,34 @@ const KosDetailPage = () => {
                         </div>
 
                         {/* Spesifikasi Kamar */}
-                        <div className="bg-white rounded-2xl py-6">
+                        <div className="bg-white  py-6">
                             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                                 Spesifikasi Kamar
                             </h2>
-                            <div className="grid grid-cols-2 gap-4">
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FaRulerCombined className="text-blue-600 text-2xl" />
+                            <div className="grid grid-cols-2 gap-8">
+                                <div className="flex items-center gap-3 ">
+                                    <FaRulerCombined className="text-gray-500 text-2xl" />
                                     <div>
                                         <p className="text-xs text-gray-600">Luas Kamar</p>
                                         <p className="font-semibold text-gray-900">3 x 4 meter</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-yellow-50 to-yellow-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <GiWindow className="text-yellow-600 text-2xl" />
+                                <div className="flex items-center gap-3 ">
+                                    <AiFillThunderbolt className="text-gray-500 text-2xl" />
                                     <div>
-                                        <p className="text-xs text-gray-600">Jendela</p>
-                                        <p className="font-semibold text-gray-900">Ada</p>
+                                        <p className="text-xs text-gray-600">Listrik</p>
+                                        <p className="font-semibold text-gray-900">Termasuk Ada</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FaBed className="text-green-600 text-2xl" />
+                                <div className="flex items-center gap-3 ">
+                                    <FaBed className="text-gray-500 text-2xl" />
                                     <div>
                                         <p className="text-xs text-gray-600">Kasur</p>
                                         <p className="font-semibold text-gray-900">Single Bed</p>
                                     </div>
                                 </div>
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FaDoorOpen className="text-purple-600 text-2xl" />
+                                <div className="flex items-center gap-3 ">
+                                    <FaDoorOpen className="text-gray-500 text-2xl" />
                                     <div>
                                         <p className="text-xs text-gray-600">Pintu</p>
                                         <p className="font-semibold text-gray-900">Kunci Pribadi</p>
@@ -442,96 +447,154 @@ const KosDetailPage = () => {
                         </div>
 
                         {/* Fasilitas Kamar */}
-                        {kosDetail.facilities && kosDetail.facilities.length > 0 && (
-                            <div className="bg-white rounded-2xl p-6 shadow-lg">
-                                <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                    <FaBed className="text-green-600" />
-                                    Fasilitas Kamar
-                                </h2>
-                                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                                    {kosDetail.facilities.map((facility) => (
-                                        <div
-                                            key={facility.id}
-                                            className="flex items-center gap-3 p-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
-                                            {getFacilityIcon(facility.facility)}
-                                            <span className="text-sm font-medium text-gray-700">
-                                                {facility.facility}
-                                            </span>
-                                        </div>
-                                    ))}
+                        {kosDetail.facilities && kosDetail.facilities.length > 0 && (() => {
+                            // Filter fasilitas kamar (exclude yang mengandung kata "kamar mandi", "bathroom", "shower", "toilet", "air")
+                            const roomFacilities = kosDetail.facilities.filter(f => {
+                                const facilityLower = f.facility.toLowerCase();
+                                return !facilityLower.includes('kamar mandi') &&
+                                    !facilityLower.includes('k.mandi') &&
+                                    !facilityLower.includes('bathroom') &&
+                                    !facilityLower.includes('shower') &&
+                                    !facilityLower.includes('toilet') &&
+                                    !facilityLower.includes('air panas') &&
+                                    !facilityLower.includes('air dingin');
+                            });
+
+                            return roomFacilities.length > 0 && (
+                                <div className="bg-white rounded-2xl">
+                                    <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                        Fasilitas Kamar
+                                    </h2>
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                                        {roomFacilities.map((facility) => (
+                                            <div
+                                                key={facility.id}
+                                                className="flex items-center gap-3 py-4">
+                                                {getFacilityIcon(facility.facility)}
+                                                <span className="text-sm font-medium text-gray-700">
+                                                    {facility.facility}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                            </div>
-                        )}
+                            );
+                        })()}
 
                         {/* Fasilitas Kamar Mandi */}
-                        <div className="bg-white rounded-2xl p-6 shadow-lg">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <FaShower className="text-blue-600 text-3xl" />
-                                Fasilitas Kamar Mandi
-                            </h2>
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FaShower className="text-blue-600 text-2xl" />
-                                    <span className="text-sm font-medium text-gray-700">Shower</span>
+                        {kosDetail.facilities && kosDetail.facilities.length > 0 && (() => {
+                            // Filter fasilitas kamar mandi
+                            const bathroomFacilities = kosDetail.facilities.filter(f => {
+                                const facilityLower = f.facility.toLowerCase();
+                                return facilityLower.includes('kamar mandi') ||
+                                    facilityLower.includes('k.mandi') ||
+                                    facilityLower.includes('bathroom') ||
+                                    facilityLower.includes('shower') ||
+                                    facilityLower.includes('toilet') ||
+                                    facilityLower.includes('air panas') ||
+                                    facilityLower.includes('air dingin');
+                            });
+
+                            return bathroomFacilities.length > 0 && (
+                                <div className="bg-white rounded-2xl">
+                                    <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                        Fasilitas Kamar Mandi
+                                    </h2>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {bathroomFacilities.map((facility) => (
+                                            <div
+                                                key={facility.id}
+                                                className="flex items-center gap-3 py-4">
+                                                {getFacilityIcon(facility.facility)}
+                                                <span className="text-sm font-medium text-gray-700">
+                                                    {facility.facility}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FaToilet className="text-blue-600 text-2xl" />
-                                    <span className="text-sm font-medium text-gray-700">Toilet Duduk</span>
-                                </div>
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-cyan-50 to-cyan-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FaSnowflake className="text-cyan-600 text-2xl" />
-                                    <span className="text-sm font-medium text-gray-700">Air Dingin</span>
-                                </div>
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-red-50 to-red-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FaShower className="text-red-600 text-2xl" />
-                                    <span className="text-sm font-medium text-gray-700">Air Panas</span>
-                                </div>
-                            </div>
-                        </div>
+                            );
+                        })()}
 
                         {/* Fasilitas Umum */}
-                        <div className="bg-white rounded-2xl p-6 shadow-lg">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <FaCouch className="text-orange-600 text-3xl" />
-                                Fasilitas Umum
-                            </h2>
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FaWifi className="text-blue-600 text-2xl" />
-                                    <span className="text-sm font-medium text-gray-700">WiFi</span>
+                        {kosDetail.facilities && kosDetail.facilities.length > 0 && (() => {
+                            // Filter fasilitas umum (wifi, laundry, dapur, tv, ruang bersama, dll)
+                            const publicFacilities = kosDetail.facilities.filter(f => {
+                                const facilityLower = f.facility.toLowerCase();
+                                return (facilityLower.includes('wifi') ||
+                                    facilityLower.includes('internet') ||
+                                    facilityLower.includes('laundry') ||
+                                    facilityLower.includes('cuci') ||
+                                    facilityLower.includes('dapur') ||
+                                    facilityLower.includes('kitchen') ||
+                                    facilityLower.includes('tv') ||
+                                    facilityLower.includes('ruang') ||
+                                    facilityLower.includes('taman') ||
+                                    facilityLower.includes('jemuran') ||
+                                    facilityLower.includes('keamanan') ||
+                                    facilityLower.includes('security') ||
+                                    facilityLower.includes('cctv')) &&
+                                    !facilityLower.includes('parkir') &&
+                                    !facilityLower.includes('parking') &&
+                                    !facilityLower.includes('motor') &&
+                                    !facilityLower.includes('mobil');
+                            });
+
+                            return publicFacilities.length > 0 && (
+                                <div className="bg-white py-6">
+                                    <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                        Fasilitas Umum
+                                    </h2>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {publicFacilities.map((facility) => (
+                                            <div
+                                                key={facility.id}
+                                                className="flex items-center gap-3 py-4">
+                                                {getFacilityIcon(facility.facility)}
+                                                <span className="text-sm font-medium text-gray-700">
+                                                    {facility.facility}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-indigo-50 to-indigo-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <MdLocalLaundryService className="text-indigo-600 text-2xl" />
-                                    <span className="text-sm font-medium text-gray-700">Laundry</span>
-                                </div>
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <GiCook className="text-orange-600 text-2xl" />
-                                    <span className="text-sm font-medium text-gray-700">Dapur Bersama</span>
-                                </div>
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FaTv className="text-purple-600 text-2xl" />
-                                    <span className="text-sm font-medium text-gray-700">Ruang TV</span>
-                                </div>
-                            </div>
-                        </div>
+                            );
+                        })()}
 
                         {/* Fasilitas Parkir */}
-                        <div className="bg-white rounded-2xl p-6 shadow-lg">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <FaCar className="text-gray-600 text-3xl" />
-                                Fasilitas Parkir
-                            </h2>
-                            <div className="grid grid-cols-2 gap-3">
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FaCar className="text-gray-600 text-2xl transform -rotate-12" />
-                                    <span className="text-sm font-medium text-gray-700">Parkir Motor</span>
+                        {kosDetail.facilities && kosDetail.facilities.length > 0 && (() => {
+                            // Filter fasilitas parkir
+                            const parkingFacilities = kosDetail.facilities.filter(f => {
+                                const facilityLower = f.facility.toLowerCase();
+                                return facilityLower.includes('parkir') ||
+                                    facilityLower.includes('parking') ||
+                                    facilityLower.includes('motor') ||
+                                    facilityLower.includes('mobil') ||
+                                    facilityLower.includes('garase') ||
+                                    facilityLower.includes('garage');
+                            });
+
+                            return parkingFacilities.length > 0 && (
+                                <div className="bg-white py-6">
+                                    <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                        <FaCar className="text-gray-600 text-3xl" />
+                                        Fasilitas Parkir
+                                    </h2>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        {parkingFacilities.map((facility) => (
+                                            <div
+                                                key={facility.id}
+                                                className="flex items-center gap-3 py-4">
+                                                {getFacilityIcon(facility.facility)}
+                                                <span className="text-sm font-medium text-gray-700">
+                                                    {facility.facility}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
-                                <div className="flex items-center gap-3 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FaCar className="text-gray-600 text-2xl" />
-                                    <span className="text-sm font-medium text-gray-700">Parkir Mobil</span>
-                                </div>
-                            </div>
-                        </div>
+                            );
+                        })()}
 
                         {/* Peraturan di Kos */}
                         <div className="bg-white rounded-2xl p-6 shadow-lg">
