@@ -50,6 +50,15 @@ export const ButtonPrimary = ({ children, type, onClick, className }: Props) => 
     )
 }
 
+export const ButtonPrimary2 = ({ children, type, onClick, className }: Props) => {
+    return (
+        <button className={`text-sm border border-green-500 text-green-500 rounded-md py-2 px-4 bg-white font-bold cursor-pointer transition-all duration-300 ${className}`}
+            type={type} onClick={() => { if (onClick) onClick() }}>
+            {children}
+        </button>
+    )
+}
+
 export const ButtonOrder = ({ children, type, onClick, className }: Props) => {
     return (
         <button className={`bg-primary hover:scale-105 duration-300 text-white py-1 px-4 rounded-full mt-4 group-hover:bg-white group-hover:text-primary transition-all ${className}`}

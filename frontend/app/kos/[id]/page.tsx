@@ -12,7 +12,7 @@ import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaPh
 import { MdFamilyRestroom, MdLocalLaundryService, MdSecurity } from "react-icons/md";
 import { GiCook } from "react-icons/gi";
 import { IoClose, IoTimeOutline } from "react-icons/io5";
-import { ButtonPrimary } from "../../components/button";
+import { ButtonPrimary, ButtonPrimary2 } from "../../components/button";
 import LikeButton from "@/app/components/likeButton";
 import ReviewContainer from "@/app/components/review/ReviewContainer";
 import Cookies from "js-cookie";
@@ -822,12 +822,12 @@ const KosDetailPage = () => {
                                         </div>
                                     </div>
                                 ) : (
-                                    <div>
-                                        <div className="flex items-baseline gap-2 mb-2">
-                                            <span className="text-3xl font-bold text-green-600">
+                                    <div className="font-lato">
+                                        <div className="flex items-baseline gap-1 mb-2">
+                                            <span className="text-2xl font-bold text-[#303030]">
                                                 Rp {formatPrice(kosDetail.pricePerMonth)}
                                             </span>
-                                            <span className="text-lg text-gray-500">/bulan</span>
+                                            <span className="text-base text-[#303030]">(Bulan Pertama)</span>
                                         </div>
                                         <div className="bg-green-50 p-3 rounded-lg mt-3">
                                             <p className="text-green-700 text-xs font-medium">
@@ -842,16 +842,16 @@ const KosDetailPage = () => {
                                 {/* Action Buttons */}
                                 <div className="space-y-3">
 
-                                    <ButtonPrimary
+                                    <ButtonPrimary2
                                         type="button"
                                         onClick={() => router.push(`/book/${kosDetail.id}`)}
-                                        className="w-full py-3 text-base font-semibold rounded-xl shadow-lg">
+                                        className="w-full py-3 text-base font-semibold rounded-md shadow-lg">
                                         Ajukan Sewa
-                                    </ButtonPrimary>
+                                    </ButtonPrimary2>
 
                                     <button
                                         onClick={handleWhatsAppChat}
-                                        className="w-full flex items-center text-base justify-center gap-2 px-4 py-3 rounded-md border border-green-400 transition-all font-semibold shadow-lg hover:shadow-xl">
+                                        className="w-full flex items-center text-sm justify-center gap-2 px-4 py-3 rounded-md bg-green-600 hover:bg-green-700 cursor-pointer text-white transition-all font-semibold shadow-lg hover:shadow-xl">
                                         <FaWhatsapp className="text-xl" />
                                         Tanya via WhatsApp
                                     </button>
@@ -862,7 +862,7 @@ const KosDetailPage = () => {
                                         <FiCheckCircle className="text-green-500" />
                                         Respon cepat dari pemilik
                                     </p>
-                                    <p className="text-xs text-gray-400">
+                                    <p className="text-xs text-gray-500">
                                         Chat langsung via WhatsApp
                                     </p>
                                 </div>
