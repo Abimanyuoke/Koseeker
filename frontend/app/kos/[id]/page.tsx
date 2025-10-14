@@ -408,8 +408,7 @@ const KosDetailPage = () => {
                                     {kosDetail.facilities.map((facility) => (
                                         <div
                                             key={facility.id}
-                                            className="flex items-center gap-3 p-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100 hover:shadow-md transition-shadow"
-                                        >
+                                            className="flex items-center gap-3 p-4 bg-gradient-to-br from-gray-50 to-white rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
                                             {getFacilityIcon(facility.facility)}
                                             <span className="text-sm font-medium text-gray-700">
                                                 {facility.facility}

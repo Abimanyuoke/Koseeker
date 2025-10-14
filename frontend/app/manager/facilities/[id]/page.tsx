@@ -202,16 +202,16 @@ export default function FacilitiesDetailPage() {
 
     const getFacilityIcon = (facility: string) => {
         const facilityLower = facility.toLowerCase()
-        if (facilityLower.includes('wifi') || facilityLower.includes('internet')) return <FaWifi className="text-blue-500 text-xl" />
-        if (facilityLower.includes('kasur') || facilityLower.includes('bed')) return <FaBed className="text-green-500 text-xl" />
-        if (facilityLower.includes('parkir') || facilityLower.includes('parking')) return <FaCar className="text-gray-500 text-xl" />
-        if (facilityLower.includes('tv') || facilityLower.includes('television')) return <FaTv className="text-purple-500 text-xl" />
-        if (facilityLower.includes('ac') || facilityLower.includes('air conditioning')) return <FaSnowflake className="text-cyan-500 text-xl" />
-        if (facilityLower.includes('kamar mandi') || facilityLower.includes('bathroom')) return <FaShower className="text-blue-400 text-xl" />
-        if (facilityLower.includes('k.mandi dalam') || facilityLower.includes('bathroom')) return <FaShower className="text-blue-400 text-xl" />
-        if (facilityLower.includes('laundry') || facilityLower.includes('cuci')) return <MdLocalLaundryService className="text-indigo-500 text-xl" />
-        if (facilityLower.includes('dapur') || facilityLower.includes('kitchen')) return <GiCook className="text-orange-500 text-xl" />
-        if (facilityLower.includes('security') || facilityLower.includes('keamanan')) return <MdSecurity className="text-red-500 text-xl" />
+        if (facilityLower.includes('wifi') || facilityLower.includes('internet')) return <FaWifi className="text-gray-500" />
+        if (facilityLower.includes('kasur') || facilityLower.includes('bed')) return <FaBed className="text-gray-500" />
+        if (facilityLower.includes('parkir') || facilityLower.includes('parking')) return <FaCar className="text-gray-500" />
+        if (facilityLower.includes('tv') || facilityLower.includes('television')) return <FaTv className="text-gray-500" />
+        if (facilityLower.includes('ac') || facilityLower.includes('air conditioning')) return <FaSnowflake className="text-gray-500" />
+        if (facilityLower.includes('kamar mandi') || facilityLower.includes('bathroom')) return <FaShower className="text-gray-500" />
+        if (facilityLower.includes('k.mandi dalam') || facilityLower.includes('bathroom')) return <FaShower className="text-gray-500" />
+        if (facilityLower.includes('laundry') || facilityLower.includes('cuci')) return <MdLocalLaundryService className="text-gray-500" />
+        if (facilityLower.includes('dapur') || facilityLower.includes('kitchen')) return <GiCook className="text-gray-500" />
+        if (facilityLower.includes('security') || facilityLower.includes('keamanan')) return <MdSecurity className="text-gray-500" />
         return <div className="w-5 h-5 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full"></div>
     }
 
