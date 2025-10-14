@@ -9,9 +9,9 @@ import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
 import { FiLoader, FiShare2, FiCheckCircle } from "react-icons/fi";
 import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaPhone, FaEnvelope, FaRulerCombined, FaToilet, FaCouch, FaDoorOpen, FaWhatsapp, FaRegHeart, FaMotorcycle } from "react-icons/fa";
-import { MdLocalLaundryService, MdSecurity } from "react-icons/md";
+import { MdFamilyRestroom, MdLocalLaundryService, MdSecurity } from "react-icons/md";
 import { GiCook } from "react-icons/gi";
-import { IoClose } from "react-icons/io5";
+import { IoClose, IoTimeOutline } from "react-icons/io5";
 import { ButtonPrimary } from "../../components/button";
 import LikeButton from "@/app/components/likeButton";
 import ReviewContainer from "@/app/components/review/ReviewContainer";
@@ -19,8 +19,10 @@ import Cookies from "js-cookie";
 import Image from "next/image";
 import { IoIosArrowForward } from "react-icons/io";
 import { LuDot, LuMapPin } from "react-icons/lu";
-import { PiDoorOpen } from "react-icons/pi";
+import { PiCigaretteSlashFill, PiDoorOpen } from "react-icons/pi";
 import { AiFillThunderbolt } from "react-icons/ai";
+import { BsLightningFill } from "react-icons/bs";
+import { FaChildren } from "react-icons/fa6";
 
 const KosDetailPage = () => {
     const params = useParams();
@@ -597,15 +599,15 @@ const KosDetailPage = () => {
                         })()}
 
                         {/* Peraturan di Kos */}
-                        <div className="bg-white rounded-2xl p-6 border border-gray-200">
+                        <div className="bg-white rounded-2xl">
                             <h2 className="text-2xl font-bold text-gray-900 mb-6">
                                 Peraturan di kos ini
                             </h2>
                             <div className="space-y-4">
                                 {/* Always visible rules */}
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-                                        <IoClose className="text-gray-700 text-2xl" />
+                                    <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+                                        <IoTimeOutline className="text-gray-700 text-2xl" />
                                     </div>
                                     <div>
                                         <p className="text-base text-gray-900 font-medium">Akses 24 Jam</p>
@@ -613,7 +615,25 @@ const KosDetailPage = () => {
                                 </div>
 
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                    <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+                                        <PiCigaretteSlashFill className="text-gray-700 text-xl" />
+                                    </div>
+                                    <div>
+                                        <p className="text-base text-gray-900 font-medium">Dilarang merokok di kamar</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+                                        <BsLightningFill className="text-gray-700 text-xl" />
+                                    </div>
+                                    <div>
+                                        <p className="text-base text-gray-900 font-medium">Tambahan biaya untuk barang elektonik</p>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center gap-4">
+                                    <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
                                         <FaBed className="text-gray-700 text-xl" />
                                     </div>
                                     <div>
@@ -622,8 +642,8 @@ const KosDetailPage = () => {
                                 </div>
 
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-                                        <IoClose className="text-gray-700 text-2xl" />
+                                    <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+                                        <FaChildren className="text-gray-700 text-2xl" />
                                     </div>
                                     <div>
                                         <p className="text-base text-gray-900 font-medium">Tidak boleh bawa anak</p>
@@ -631,17 +651,8 @@ const KosDetailPage = () => {
                                 </div>
 
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-                                        <IoClose className="text-gray-700 text-2xl" />
-                                    </div>
-                                    <div>
-                                        <p className="text-base text-gray-900 font-medium">Dilarang merokok di kamar</p>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
-                                        <IoClose className="text-gray-700 text-2xl" />
+                                    <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+                                        <MdFamilyRestroom className="text-gray-700 text-2xl" />
                                     </div>
                                     <div>
                                         <p className="text-base text-gray-900 font-medium">Tidak untuk pasutri</p>
@@ -650,9 +661,9 @@ const KosDetailPage = () => {
 
                                 {/* Additional rules - shown when expanded */}
                                 {showAllRules && (
-                                    <>
+                                    <div>
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                            <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
                                                 <IoClose className="text-gray-700 text-2xl" />
                                             </div>
                                             <div>
@@ -661,7 +672,7 @@ const KosDetailPage = () => {
                                         </div>
 
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                            <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
                                                 <IoClose className="text-gray-700 text-2xl" />
                                             </div>
                                             <div>
@@ -670,7 +681,7 @@ const KosDetailPage = () => {
                                         </div>
 
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                            <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
                                                 <IoClose className="text-gray-700 text-2xl" />
                                             </div>
                                             <div>
@@ -679,22 +690,21 @@ const KosDetailPage = () => {
                                         </div>
 
                                         <div className="flex items-center gap-4">
-                                            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0">
+                                            <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
                                                 <FiCheckCircle className="text-gray-700 text-2xl" />
                                             </div>
                                             <div>
                                                 <p className="text-base text-gray-900 font-medium">Wajib menjaga kebersihan bersama</p>
                                             </div>
                                         </div>
-                                    </>
+                                    </div>
                                 )}
                             </div>
 
                             {/* Lihat semua peraturan button */}
                             <button
                                 onClick={() => setShowAllRules(!showAllRules)}
-                                className="mt-6 w-full py-3 px-4 border border-gray-900 rounded-lg text-gray-900 font-semibold hover:bg-gray-50 transition-colors duration-200"
-                            >
+                                className="mt-6 w-full py-3 px-4 border border-gray-900 rounded-lg text-gray-900 font-semibold hover:bg-gray-50 transition-colors duration-200">
                                 {showAllRules ? 'Sembunyikan peraturan' : 'Lihat semua peraturan'}
                             </button>
                         </div>
@@ -702,7 +712,6 @@ const KosDetailPage = () => {
                         {/* Ketentuan Penyewaan */}
                         <div className="bg-white rounded-2xl p-6 shadow-lg">
                             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <FiCheckCircle className="text-green-600 text-3xl" />
                                 Ketentuan Penyewaan
                             </h2>
                             <div className="space-y-3">
@@ -832,21 +841,20 @@ const KosDetailPage = () => {
 
                                 {/* Action Buttons */}
                                 <div className="space-y-3">
-                                    <button
-                                        onClick={handleWhatsAppChat}
-                                        className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl hover:from-green-600 hover:to-green-700 transition-all font-semibold shadow-lg hover:shadow-xl"
-                                    >
-                                        <FaWhatsapp className="text-2xl" />
-                                        Tanya via WhatsApp
-                                    </button>
 
                                     <ButtonPrimary
                                         type="button"
                                         onClick={() => router.push(`/book/${kosDetail.id}`)}
-                                        className="w-full py-3 text-base font-semibold rounded-xl shadow-lg"
-                                    >
+                                        className="w-full py-3 text-base font-semibold rounded-xl shadow-lg">
                                         Ajukan Sewa
                                     </ButtonPrimary>
+
+                                    <button
+                                        onClick={handleWhatsAppChat}
+                                        className="w-full flex items-center text-base justify-center gap-2 px-4 py-3 rounded-md border border-green-400 transition-all font-semibold shadow-lg hover:shadow-xl">
+                                        <FaWhatsapp className="text-xl" />
+                                        Tanya via WhatsApp
+                                    </button>
                                 </div>
 
                                 <div className="text-center mt-4 space-y-1">
@@ -861,7 +869,7 @@ const KosDetailPage = () => {
                             </div>
 
                             {/* Owner Info Card */}
-                            {kosDetail.owner && (
+                            {/* {kosDetail.owner && (
                                 <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
                                     <h3 className="text-lg font-bold text-gray-900 mb-4">
                                         Informasi Pemilik
@@ -892,7 +900,7 @@ const KosDetailPage = () => {
                                         </div>
                                     </div>
                                 </div>
-                            )}
+                            )} */}
                         </div>
                     </div>
                 </div>
