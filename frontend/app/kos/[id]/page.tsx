@@ -8,7 +8,7 @@ import { BASE_API_URL, BASE_IMAGE_KOS } from "../../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
 import { FiLoader, FiShare2, FiHeart, FiCheckCircle } from "react-icons/fi";
-import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaPhone, FaEnvelope, FaRulerCombined, FaToilet, FaCouch, FaDoorOpen, FaWhatsapp } from "react-icons/fa";
+import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaPhone, FaEnvelope, FaRulerCombined, FaToilet, FaCouch, FaDoorOpen, FaWhatsapp, FaRegHeart } from "react-icons/fa";
 import { MdLocalLaundryService, MdSecurity } from "react-icons/md";
 import { GiCook, GiWindow } from "react-icons/gi";
 import { IoClose } from "react-icons/io5";
@@ -17,7 +17,7 @@ import LikeButton from "@/app/components/likeButton";
 import ReviewContainer from "@/app/components/review/ReviewContainer";
 import Cookies from "js-cookie";
 import Image from "next/image";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward, IoMdHeartEmpty } from "react-icons/io";
 import { LuDot, LuMapPin } from "react-icons/lu";
 import { PiDoorOpen } from "react-icons/pi";
 
@@ -111,6 +111,34 @@ const KosDetailPage = () => {
         return <div className="w-4 h-4 bg-gray-400 rounded-full"></div>;
     };
 
+
+    const handleShare = async () => {
+        const shareUrl = window.location.href;
+        const shareTitle = kosDetail?.name || 'Kos Terbaik';
+        const shareText = `${kosDetail?.name}\n\nLokasi: ${kosDetail?.address}, ${kosDetail?.kota}\nHarga: Rp ${formatPrice(kosDetail?.pricePerMonth || 0)}/bulan\n\nLihat detailnya di:`;
+
+        // Check if Web Share API is supported
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: shareTitle,
+                    text: shareText,
+                    url: shareUrl,
+                });
+            } catch (error) {
+                console.log('Error sharing:', error);
+            }
+        } else {
+            // Fallback: Copy to clipboard
+            try {
+                await navigator.clipboard.writeText(`${shareText}\n${shareUrl}`);
+                alert('Link berhasil disalin ke clipboard!');
+            } catch (error) {
+                console.error('Failed to copy:', error);
+                alert('Gagal menyalin link. Silakan salin manual dari address bar.');
+            }
+        }
+    };
 
     const handleWhatsAppChat = () => {
         const phoneNumber = kosDetail?.owner?.phone || '';
@@ -225,8 +253,7 @@ const KosDetailPage = () => {
                                                     alt={`${kosDetail.name} ${index + 1}`}
                                                     fill
                                                     className="object-cover transition-transform duration-500 group-hover:scale-110"
-                                                    unoptimized
-                                                />
+                                                    unoptimized />
                                                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
                                             </div>
                                         ))}
@@ -353,19 +380,23 @@ const KosDetailPage = () => {
                                         </div>
 
                                         {/* Like and Share buttons overlay */}
-                                        <div className="flex gap-2 z-10">
+                                        <div className="flex gap-4 z-10">
                                             {user && token ? (
                                                 <LikeButton
                                                     kosId={kosDetail.id}
                                                     userId={user.id}
                                                     token={token.toString()} />
                                             ) : (
-                                                <button className="p-3 rounded-full bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm transition-all hover:scale-110">
-                                                    <FiHeart className="text-xl text-red-500" />
+                                                <button className="p-3 rounded-md hover:text-gray-500 hover:border-gray-500 transition-all hover:scale-110">
+                                                    <FaRegHeart />
                                                 </button>
                                             )}
-                                            <button className="p-3 rounded-full bg-white/90 hover:bg-white shadow-lg backdrop-blur-sm transition-all hover:scale-110">
-                                                <FiShare2 className="text-xl text-gray-700" />
+                                            <button
+                                                onClick={handleShare}
+                                                className="flex items-center gap-2 px-6 rounded-md border border-gray-400 hover:text-gray-500 hover:border-gray-500 transition-all cursor-pointer"
+                                                title="Bagikan kos ini">
+                                                <FiShare2 className="text-sm text-gray-700" />
+                                                <span className="hover:text-[#717171] text-sm font-bold">Bagikan</span>
                                             </button>
                                         </div>
                                     </div>
