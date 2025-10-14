@@ -426,7 +426,7 @@ const KosDetailPage = () => {
                                     <AiFillThunderbolt className="text-gray-500 text-2xl" />
                                     <div>
                                         <p className="text-xs text-gray-600">Listrik</p>
-                                        <p className="font-semibold text-gray-900">Termasuk Ada</p>
+                                        <p className="font-semibold text-gray-900">Termasuk</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3 ">
