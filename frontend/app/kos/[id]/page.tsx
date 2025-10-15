@@ -9,9 +9,9 @@ import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
 import { FiLoader, FiShare2, FiCheckCircle } from "react-icons/fi";
 import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaPhone, FaEnvelope, FaRulerCombined, FaToilet, FaCouch, FaDoorOpen, FaWhatsapp, FaRegHeart, FaMotorcycle } from "react-icons/fa";
-import { MdFamilyRestroom, MdLocalLaundryService, MdSecurity } from "react-icons/md";
-import { GiCook } from "react-icons/gi";
-import { IoClose, IoTimeOutline } from "react-icons/io5";
+import { MdFamilyRestroom, MdLocalLaundryService, MdOutlineCleaningServices, MdOutlinePets, MdSecurity } from "react-icons/md";
+import { GiCook, GiNightSleep } from "react-icons/gi";
+import { IoClose, IoCloudyNight, IoHome, IoTimeOutline } from "react-icons/io5";
 import { ButtonPrimary, ButtonPrimary2 } from "../../components/button";
 import LikeButton from "@/app/components/likeButton";
 import ReviewContainer from "@/app/components/review/ReviewContainer";
@@ -603,9 +603,9 @@ const KosDetailPage = () => {
                             <h2 className="text-2xl font-bold text-gray-900 mb-6">
                                 Peraturan di kos ini
                             </h2>
-                            <div className="space-y-4">
+                            <div className="space-y-2">
                                 {/* Always visible rules */}
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2">
                                     <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
                                         <IoTimeOutline className="text-gray-700 text-2xl" />
                                     </div>
@@ -614,7 +614,7 @@ const KosDetailPage = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2">
                                     <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
                                         <PiCigaretteSlashFill className="text-gray-700 text-xl" />
                                     </div>
@@ -623,7 +623,7 @@ const KosDetailPage = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2">
                                     <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
                                         <BsLightningFill className="text-gray-700 text-xl" />
                                     </div>
@@ -632,7 +632,7 @@ const KosDetailPage = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2">
                                     <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
                                         <FaBed className="text-gray-700 text-xl" />
                                     </div>
@@ -641,7 +641,7 @@ const KosDetailPage = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2">
                                     <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
                                         <FaChildren className="text-gray-700 text-2xl" />
                                     </div>
@@ -650,7 +650,7 @@ const KosDetailPage = () => {
                                     </div>
                                 </div>
 
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-2">
                                     <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
                                         <MdFamilyRestroom className="text-gray-700 text-2xl" />
                                     </div>
@@ -662,27 +662,27 @@ const KosDetailPage = () => {
                                 {/* Additional rules - shown when expanded */}
                                 {showAllRules && (
                                     <div>
-                                        <div className="flex items-center gap-4">
+                                        <div className="flex items-center gap-2">
                                             <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-                                                <IoClose className="text-gray-700 text-2xl" />
+                                                <IoHome className="text-gray-700 text-2xl" />
                                             </div>
                                             <div>
-                                                <p className="text-base text-gray-900 font-medium">Dilarang membawa tamu menginap</p>
+                                                <p className="text-base text-gray-900 font-medium">Tamu menginap dikenakan biaya</p>
                                             </div>
                                         </div>
 
                                         <div className="flex items-center gap-4">
                                             <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-                                                <IoClose className="text-gray-700 text-2xl" />
+                                                <GiNightSleep className="text-gray-700 text-2xl" />
                                             </div>
                                             <div>
-                                                <p className="text-base text-gray-900 font-medium">Jam bertamu maksimal pukul 21.00 WIB</p>
+                                                <p className="text-base text-gray-900 font-medium">Ada jam malam</p>
                                             </div>
                                         </div>
 
                                         <div className="flex items-center gap-4">
                                             <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-                                                <IoClose className="text-gray-700 text-2xl" />
+                                                <MdOutlinePets className="text-gray-700 text-2xl" />
                                             </div>
                                             <div>
                                                 <p className="text-base text-gray-900 font-medium">Dilarang membawa hewan peliharaan</p>
@@ -691,10 +691,19 @@ const KosDetailPage = () => {
 
                                         <div className="flex items-center gap-4">
                                             <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
-                                                <FiCheckCircle className="text-gray-700 text-2xl" />
+                                                <MdOutlineCleaningServices className="text-gray-700 text-2xl" />
                                             </div>
                                             <div>
                                                 <p className="text-base text-gray-900 font-medium">Wajib menjaga kebersihan bersama</p>
+                                            </div>
+                                        </div>
+
+                                        <div className="flex items-center gap-4">
+                                            <div className="w-12 h-12 flex items-center justify-center flex-shrink-0">
+                                                <IoCloudyNight className="text-gray-700 text-2xl" />
+                                            </div>
+                                            <div>
+                                                <p className="text-base text-gray-900 font-medium">Ada jam malam untuk tamu</p>
                                             </div>
                                         </div>
                                     </div>
@@ -704,39 +713,28 @@ const KosDetailPage = () => {
                             {/* Lihat semua peraturan button */}
                             <button
                                 onClick={() => setShowAllRules(!showAllRules)}
-                                className="mt-6 w-full py-3 px-4 border border-gray-900 rounded-lg text-gray-900 font-semibold hover:bg-gray-50 transition-colors duration-200">
+                                className="mt-6 text-sm py-3 px-4 border-2 border-slate-300 rounded-lg text-gray-900 font-semibold hover:bg-gray-50 transition-colors duration-200">
                                 {showAllRules ? 'Sembunyikan peraturan' : 'Lihat semua peraturan'}
                             </button>
                         </div>
 
                         {/* Ketentuan Penyewaan */}
-                        <div className="bg-white rounded-2xl p-6 shadow-lg">
+                        <div className="bg-white rounded-2xl">
                             <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
                                 Ketentuan Penyewaan
                             </h2>
                             <div className="space-y-3">
-                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FiCheckCircle className="text-green-500 text-xl mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <p className="font-semibold text-gray-900">Minimal Sewa</p>
-                                        <p className="text-sm text-gray-600">1 bulan</p>
-                                    </div>
+                                <div className="text-base text-[#383746]">
+                                    <h1 className="font-bold">Bisa bayar DP (uang muka) dulu</h1>
+                                    <span className="font-normal">Biaya DP adalah 30% dari biaya yang dipilih.</span>
                                 </div>
-                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FiCheckCircle className="text-green-500 text-xl mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <p className="font-semibold text-gray-900">Pembayaran</p>
-                                        <p className="text-sm text-gray-600">Di muka setiap bulan tanggal 1-5</p>
-                                    </div>
-                                </div>
-                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:shadow-md transition-shadow">
-                                    <FiCheckCircle className="text-green-500 text-xl mt-0.5 flex-shrink-0" />
+                                <div className="flex items-start gap-3">
                                     <div>
                                         <p className="font-semibold text-gray-900">Deposit</p>
                                         <p className="text-sm text-gray-600">1 bulan sewa (dikembalikan saat checkout)</p>
                                     </div>
                                 </div>
-                                <div className="flex items-start gap-3 p-4 bg-gradient-to-br from-green-50 to-green-100 rounded-xl hover:shadow-md transition-shadow">
+                                <div className="flex items-start gap-3">
                                     <FiCheckCircle className="text-green-500 text-xl mt-0.5 flex-shrink-0" />
                                     <div>
                                         <p className="font-semibold text-gray-900">Listrik & Air</p>
@@ -800,7 +798,7 @@ const KosDetailPage = () => {
                                 {kosDetail.discountPercent && kosDetail.discountPercent > 0 ? (
                                     <div>
                                         <div className="inline-block bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-1.5 rounded-full text-xs font-bold mb-3 shadow-md">
-                                            🔥 Hemat {kosDetail.discountPercent}%
+                                            Hemat {kosDetail.discountPercent}%
                                         </div>
                                         <div className="mb-2">
                                             <div className="flex items-baseline gap-2">
