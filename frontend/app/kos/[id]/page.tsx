@@ -414,7 +414,7 @@ const KosDetailPage = () => {
 
                         {/* Spesifikasi Kamar */}
                         <div className="bg-white  py-6">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                            <h2 className="text-2xl font-black text-gray-900 mb-4 flex items-center gap-2">
                                 Spesifikasi Kamar
                             </h2>
                             <div className="grid grid-cols-2 gap-8">
@@ -465,7 +465,7 @@ const KosDetailPage = () => {
 
                             return roomFacilities.length > 0 && (
                                 <div className="bg-white rounded-2xl">
-                                    <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                    <h2 className="text-2xl font-black text-gray-900 mb-4 flex items-center gap-2">
                                         Fasilitas Kamar
                                     </h2>
                                     <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
@@ -500,7 +500,7 @@ const KosDetailPage = () => {
 
                             return bathroomFacilities.length > 0 && (
                                 <div className="bg-white rounded-2xl">
-                                    <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                    <h2 className="text-2xl font-black text-gray-900 mb-4 flex items-center gap-2">
                                         Fasilitas Kamar Mandi
                                     </h2>
                                     <div className="grid grid-cols-2 gap-3">
@@ -545,7 +545,7 @@ const KosDetailPage = () => {
 
                             return publicFacilities.length > 0 && (
                                 <div className="bg-white py-6">
-                                    <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                    <h2 className="text-2xl font-black text-gray-900 mb-4 flex items-center gap-2">
                                         Fasilitas Umum
                                     </h2>
                                     <div className="grid grid-cols-2 gap-3">
@@ -600,7 +600,7 @@ const KosDetailPage = () => {
 
                         {/* Peraturan di Kos */}
                         <div className="bg-white rounded-2xl">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                            <h2 className="text-2xl font-black text-gray-900 mb-6">
                                 Peraturan di kos ini
                             </h2>
                             <div className="space-y-2">
@@ -720,11 +720,11 @@ const KosDetailPage = () => {
 
                         {/* Ketentuan Penyewaan */}
                         <div className="bg-white rounded-2xl">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                            <h2 className="text-2xl font-black text-gray-900 mb-4 flex items-center gap-2">
                                 Ketentuan Penyewaan
                             </h2>
                             <div className="space-y-3">
-                                <div className="text-base text-[#383746]">
+                                <div className="text-base text-[#383746] py-4 space-y-1">
                                     <h1 className="font-bold">Bisa bayar DP (uang muka) dulu</h1>
                                     <span className="font-normal">Biaya DP adalah 30% dari biaya yang dipilih.</span>
                                 </div>
