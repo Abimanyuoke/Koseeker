@@ -11,7 +11,7 @@ import { FiLoader, FiShare2, FiCheckCircle } from "react-icons/fi";
 import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaPhone, FaEnvelope, FaRulerCombined, FaToilet, FaCouch, FaDoorOpen, FaWhatsapp, FaRegHeart, FaMotorcycle } from "react-icons/fa";
 import { MdFamilyRestroom, MdLocalLaundryService, MdOutlineCleaningServices, MdOutlinePets, MdSecurity } from "react-icons/md";
 import { GiCook, GiNightSleep } from "react-icons/gi";
-import { IoClose, IoCloudyNight, IoHome, IoTimeOutline } from "react-icons/io5";
+import { IoCalendarOutline, IoClose, IoCloudyNight, IoHome, IoTimeOutline } from "react-icons/io5";
 import { ButtonPrimary, ButtonPrimary2 } from "../../components/button";
 import LikeButton from "@/app/components/likeButton";
 import ReviewContainer from "@/app/components/review/ReviewContainer";
@@ -23,6 +23,7 @@ import { PiCigaretteSlashFill, PiDoorOpen } from "react-icons/pi";
 import { AiFillThunderbolt } from "react-icons/ai";
 import { BsLightningFill } from "react-icons/bs";
 import { FaChildren } from "react-icons/fa6";
+import { HiOutlineClipboardDocumentCheck, HiOutlineClipboardDocumentList, HiOutlineDocumentText } from "react-icons/hi2";
 
 const KosDetailPage = () => {
     const params = useParams();
@@ -731,29 +732,34 @@ const KosDetailPage = () => {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="flex items-start gap-3">
                                         <div className="flex flex-col">
-                                            <p className="font-semibold text-gray-900">Deposit</p>
+                                            <div className="flex items-center gap-1">
+                                                <HiOutlineClipboardDocumentCheck />
+                                                <p className="font-semibold text-gray-900">Deposit</p>
+                                            </div>
                                             <p className="text-sm text-gray-600">1 bulan sewa (dikembalikan saat checkout)</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-3">
                                         <div className="flex flex-col">
-                                            <p className="font-semibold text-gray-900">Waktu mulai ngekos terdekat:</p>
+                                            <div className="flex items-center gap-1">
+                                                <HiOutlineDocumentText />
+                                                <p className="font-semibold text-gray-900">Waktu mulai ngekos terdekat:</p>
+                                            </div>
                                             <p className="text-sm text-gray-600">Bisa di hari H setelah pengajuan sewa.</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-3">
                                         <div className="flex flex-col">
-                                            <div>
-                                                
+                                            <div className="flex items-center gap-1">
+                                                <HiOutlineClipboardDocumentList />
                                                 <p className="font-semibold text-gray-900">Waktu mulai ngekos terjauh:</p>
                                             </div>
                                             <p className="text-sm text-gray-600">1 bulan setelah pengajuan sewa.</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-3">
-                                        <div className="flex flex-col">
-                                            <p className="font-semibold text-gray-900">Calon penyewa wajib sertakan KTP.</p>
-                                        </div>
+                                        <IoCalendarOutline />
+                                        <p className="font-semibold text-gray-900">Calon penyewa wajib sertakan KTP.</p>
                                     </div>
                                 </div>
                             </div>
