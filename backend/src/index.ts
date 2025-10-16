@@ -12,8 +12,7 @@ import KosFacilitiesRoute from './routers/kosFacilitiesRoute'
 import KosImageRoute from './routers/kosImageRoute'
 import BookingCalendarRoute from './routers/bookingCalendarRoute'
 import NotificationRoute from './routers/notificationRoute'
-// import OrderRoute from '../../orderRoute'
-// import ReportRoute from '../../reportRoute'
+
 
 import { PORT } from './global'
 
