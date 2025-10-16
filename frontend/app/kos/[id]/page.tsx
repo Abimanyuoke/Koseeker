@@ -731,34 +731,28 @@ const KosDetailPage = () => {
                                 </div>
                                 <div className="grid grid-cols-2 gap-4">
                                     <div className="flex items-start gap-3">
-                                        <div className="flex flex-col">
-                                            <div className="flex items-center gap-1">
-                                                <HiOutlineClipboardDocumentCheck />
-                                                <p className="font-semibold text-gray-900">Deposit</p>
-                                            </div>
+                                        <HiOutlineClipboardDocumentCheck className="mt-1 text-2xl text-gray-500" />
+                                        <div className="flex flex-col gap-1.5">
+                                            <p className="font-semibold text-gray-900">Deposit</p>
                                             <p className="text-sm text-gray-600">1 bulan sewa (dikembalikan saat checkout)</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-3">
-                                        <div className="flex flex-col">
-                                            <div className="flex items-center gap-1">
-                                                <HiOutlineDocumentText />
-                                                <p className="font-semibold text-gray-900">Waktu mulai ngekos terdekat:</p>
-                                            </div>
+                                        <HiOutlineDocumentText className="mt-1 text-2xl text-gray-500" />
+                                        <div className="flex flex-col gap-1.5">
+                                            <p className="font-semibold text-gray-900">Waktu mulai ngekos terdekat:</p>
                                             <p className="text-sm text-gray-600">Bisa di hari H setelah pengajuan sewa.</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-3">
-                                        <div className="flex flex-col">
-                                            <div className="flex items-center gap-1">
-                                                <HiOutlineClipboardDocumentList />
-                                                <p className="font-semibold text-gray-900">Waktu mulai ngekos terjauh:</p>
-                                            </div>
+                                        <HiOutlineClipboardDocumentList className="mt-1 text-2xl text-gray-500" />
+                                        <div className="flex flex-col gap-1.5">
+                                            <p className="font-semibold text-gray-900">Waktu mulai ngekos terjauh:</p>
                                             <p className="text-sm text-gray-600">1 bulan setelah pengajuan sewa.</p>
                                         </div>
                                     </div>
                                     <div className="flex items-start gap-3">
-                                        <IoCalendarOutline />
+                                        <IoCalendarOutline className="text-2xl text-gray-500" />
                                         <p className="font-semibold text-gray-900">Calon penyewa wajib sertakan KTP.</p>
                                     </div>
                                 </div>
