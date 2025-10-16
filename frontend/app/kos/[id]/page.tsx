@@ -728,17 +728,32 @@ const KosDetailPage = () => {
                                     <h1 className="font-bold">Bisa bayar DP (uang muka) dulu</h1>
                                     <span className="font-normal">Biaya DP adalah 30% dari biaya yang dipilih.</span>
                                 </div>
-                                <div className="flex items-start gap-3">
-                                    <div>
-                                        <p className="font-semibold text-gray-900">Deposit</p>
-                                        <p className="text-sm text-gray-600">1 bulan sewa (dikembalikan saat checkout)</p>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div className="flex items-start gap-3">
+                                        <div className="flex flex-col">
+                                            <p className="font-semibold text-gray-900">Deposit</p>
+                                            <p className="text-sm text-gray-600">1 bulan sewa (dikembalikan saat checkout)</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <FiCheckCircle className="text-green-500 text-xl mt-0.5 flex-shrink-0" />
-                                    <div>
-                                        <p className="font-semibold text-gray-900">Listrik & Air</p>
-                                        <p className="text-sm text-gray-600">Sudah termasuk dalam harga sewa</p>
+                                    <div className="flex items-start gap-3">
+                                        <div className="flex flex-col">
+                                            <p className="font-semibold text-gray-900">Waktu mulai ngekos terdekat:</p>
+                                            <p className="text-sm text-gray-600">Bisa di hari H setelah pengajuan sewa.</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <div className="flex flex-col">
+                                            <div>
+                                                
+                                                <p className="font-semibold text-gray-900">Waktu mulai ngekos terjauh:</p>
+                                            </div>
+                                            <p className="text-sm text-gray-600">1 bulan setelah pengajuan sewa.</p>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-start gap-3">
+                                        <div className="flex flex-col">
+                                            <p className="font-semibold text-gray-900">Calon penyewa wajib sertakan KTP.</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
