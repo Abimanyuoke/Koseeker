@@ -794,7 +794,7 @@ const KosDetailPage = () => {
                         </div>
 
                         {/* Reviews Section */}
-                        <div className="bg-white rounded-2xl p-6 shadow-lg">
+                        <div className="bg-white rounded-2xl">
                             <h2 className="text-2xl font-bold text-gray-900 mb-6">
                                 Reviews & Ulasan
                             </h2>
@@ -841,11 +841,6 @@ const KosDetailPage = () => {
                                                 Rp {formatPrice(kosDetail.pricePerMonth)}
                                             </span>
                                             <span className="text-base text-[#303030]">(Bulan Pertama)</span>
-                                        </div>
-                                        <div className="bg-green-50 p-3 rounded-lg mt-3">
-                                            <p className="text-green-700 text-xs font-medium">
-                                                ✓ Sudah termasuk listrik & air
-                                            </p>
                                         </div>
                                     </div>
                                 )}
