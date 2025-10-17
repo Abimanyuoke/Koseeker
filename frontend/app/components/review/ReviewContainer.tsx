@@ -130,7 +130,7 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
             )}
 
             {/* Already Reviewed Notice */}
-            {userId && userHasReviewed && !showReviewForm && (
+            {/* {userId && userHasReviewed && !showReviewForm && (
                 <div className="bg-blue-50/20 border border-blue-200 rounded-lg p-4 mb-6">
                     <div className="flex items-center">
                         <div className="flex-shrink-0">
@@ -145,7 +145,7 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
 
             {/* Login Notice */}
             {!userId && (

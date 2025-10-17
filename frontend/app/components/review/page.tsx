@@ -15,20 +15,20 @@ const ReviewStats: React.FC<ReviewStatsProps> = ({ reviews }) => {
     const totalReviews = reviews.length;
 
     return (
-        <div className="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 mb-6">
+        <div className="bg-white  p-6 mb-6">
             {/* Review Count */}
             <div className="flex items-center gap-4 mb-6">
                 <div className="flex items-center gap-2">
                     <span className="text-green-600 text-2xl font-bold">💬</span>
-                    <span className="text-2xl font-bold text-gray-900 dark:text-white">{totalReviews}</span>
-                    <span className="text-gray-600 dark:text-gray-300">
+                    <span className="text-2xl font-bold text-gray-900 ">{totalReviews}</span>
+                    <span className="text-gray-600">
                         {totalReviews === 1 ? 'review' : 'reviews'}
                     </span>
                 </div>
             </div>
 
             {totalReviews > 0 && (
-                <div className="text-sm text-gray-600 dark:text-gray-400">
+                <div className="text-sm text-gray-600">
                     <p>Lihat pengalaman penghuni lainnya di kos ini</p>
                 </div>
             )}
@@ -61,7 +61,7 @@ const ReviewComment: React.FC<ReviewCommentProps> = ({ review, showOwnerReply = 
     };
 
     return (
-        <div className="border-b border-gray-100 dark:border-gray-700 py-6 last:border-b-0">
+        <div className=" py-6 last:">
             {/* User Info */}
             <div className="flex items-start gap-4">
                 {/* Profile Picture */}
@@ -73,8 +73,8 @@ const ReviewComment: React.FC<ReviewCommentProps> = ({ review, showOwnerReply = 
                             className="w-10 h-10 rounded-full object-cover"
                         />
                     ) : (
-                        <div className="w-10 h-10 bg-gray-300 dark:bg-gray-600 rounded-full flex items-center justify-center">
-                            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+                            <span className="text-sm font-medium text-gray-700">
                                 {review.user ? getInitials(review.user.name) : 'A'}
                             </span>
                         </div>
@@ -85,35 +85,35 @@ const ReviewComment: React.FC<ReviewCommentProps> = ({ review, showOwnerReply = 
                 <div className="flex-1">
                     {/* Header */}
                     <div className="flex items-center gap-2 mb-2">
-                        <h4 className="font-medium text-gray-900 dark:text-white">
+                        <h4 className="font-medium text-gray-900 ">
                             {review.user?.name || 'Anonim'}
                         </h4>
                     </div>
 
                     {/* Time */}
-                    <p className="text-sm text-gray-500 dark:text-gray-400 mb-3">
+                    <p className="text-sm text-gray-500 mb-3">
                         {formatDate(review.createdAt)}
                     </p>
 
                     {/* Comment */}
-                    <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
+                    <p className="text-gray-700 leading-relaxed mb-4">
                         {review.comment}
                     </p>
 
                     {/* Owner Reply */}
                     {showOwnerReply && (
-                        <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border-l-4 border-green-500">
+                        <div className="bg-gray-50 rounded-lg p-4">
                             <div className="flex items-center gap-2 mb-2">
-                                <span className="text-sm font-medium text-green-600 dark:text-green-400">
+                                <span className="text-sm font-medium text-green-600">
                                     Balasan dari Pemilik kos
                                 </span>
-                                <span className="text-xs text-gray-500 dark:text-gray-400">
+                                <span className="text-xs text-gray-500">
                                     {formatDate(review.updatedAt)}
                                 </span>
                             </div>
-                            <p className="text-sm text-gray-700 dark:text-gray-300">
+                            <p className="text-sm text-gray-700">
                                 Halo, Kakak. Terima kasih atas review dan ratingnya. Kami sangat senang mendengar Anda
-                                nyaman selama bersama kami :)
+                                nyaman selama bersama kami.
                             </p>
                         </div>
                     )}
@@ -142,16 +142,16 @@ const ReviewComponent: React.FC<ReviewComponentProps> = ({ kosId, userId }) => {
     if (loading) {
         return (
             <div className="space-y-4 w-full animate-pulse">
-                <div className="h-32 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-                <div className="h-24 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
-                <div className="h-24 bg-gray-200 dark:bg-gray-700 rounded-lg"></div>
+                <div className="h-32 bg-gray-200 rounded-lg"></div>
+                <div className="h-24 bg-gray-200 rounded-lg"></div>
+                <div className="h-24 bg-gray-200 rounded-lg"></div>
             </div>
         );
     }
 
     if (error) {
         return (
-            <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+            <div className="bg-red-50  dark: rounded-lg p-4">
                 <div className="text-red-700 dark:text-red-300 text-center">
                     <p className="font-medium">Gagal memuat review</p>
                     <p className="text-sm mt-1">{error}</p>
@@ -177,15 +177,15 @@ const ReviewComponent: React.FC<ReviewComponentProps> = ({ kosId, userId }) => {
             <div className="space-y-4">
                 {reviews.length === 0 ? (
                     <div className="text-center py-8">
-                        <div className="text-gray-400 dark:text-gray-500 mb-2">
+                        <div className="text-gray-400 mb-2">
                             <svg className="w-16 h-16 mx-auto mb-4" fill="currentColor" viewBox="0 0 20 20">
                                 <path fillRule="evenodd" d="M18 13V5a2 2 0 00-2-2H4a2 2 0 00-2 2v8a2 2 0 002 2h3l3 3 3-3h3a2 2 0 002-2zM5 7a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1zm1 3a1 1 0 100 2h3a1 1 0 100-2H6z" clipRule="evenodd" />
                             </svg>
                         </div>
-                        <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                        <h3 className="text-lg font-medium text-gray-900 mb-2">
                             Belum ada review
                         </h3>
-                        <p className="text-gray-500 dark:text-gray-400">
+                        <p className="text-gray-500">
                             Jadilah yang pertama memberikan review untuk kos ini!
                         </p>
                     </div>
@@ -249,15 +249,15 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
 
     if (!userId) {
         return (
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6">
+            <div className="bg-yellow-50  rounded-lg p-4 mb-6">
                 <div className="flex items-center">
                     <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-yellow-400 dark:text-yellow-300" viewBox="0 0 20 20" fill="currentColor">
+                        <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
                             <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                         </svg>
                     </div>
                     <div className="ml-3">
-                        <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                        <p className="text-sm text-yellow-700">
                             Login terlebih dahulu untuk memberikan review.
                         </p>
                     </div>
@@ -268,7 +268,7 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
 
     if (userHasReviewed) {
         return (
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
+            <div className="bg-blue-50  rounded-lg p-4 mb-6">
                 <div className="flex items-center">
                     <div className="flex-shrink-0">
                         <svg className="h-5 w-5 text-blue-400 dark:text-blue-300" viewBox="0 0 20 20" fill="currentColor">
@@ -286,8 +286,8 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
     }
 
     return (
-        <div className="bg-white dark:bg-gray-800 border dark:border-gray-700 rounded-lg p-6 mb-6">
-            <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">
+        <div className="bg-white  p-6 mb-6">
+            <h3 className="text-lg font-bold mb-4 text-gray-900 ">
                 ✍️ Tulis Review Anda
             </h3>
 
@@ -299,18 +299,16 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
                         placeholder="Bagaimana pengalaman Anda di kos ini? Ceritakan untuk membantu orang lain..."
                         rows={4}
                         maxLength={500}
-                        className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400"
-                        disabled={isSubmitting}
-                    />
+                        className="w-full px-4 py-3  rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:-none bg-white text-gray-900  placeholder-gray-500"
+                        disabled={isSubmitting}/>
                     <div className="flex justify-between items-center mt-2">
-                        <p className="text-sm text-gray-500 dark:text-gray-400">
+                        <p className="text-sm text-gray-500">
                             {comment.length}/500 karakter (minimal 10 karakter)
                         </p>
                         <ButtonSuccess
                             type="submit"
                             className={`px-6 py-2 ${isSubmitting || comment.trim().length < 10 ? 'opacity-50 cursor-not-allowed' : ''}`}
-                            disabled={isSubmitting || comment.trim().length < 10}
-                        >
+                            disabled={isSubmitting || comment.trim().length < 10}>
                             {isSubmitting ? 'Mengirim...' : 'Kirim Review'}
                         </ButtonSuccess>
                     </div>

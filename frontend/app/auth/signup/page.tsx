@@ -12,7 +12,7 @@ import FileInput from "../../components/fileInput"
 import { IoEyeSharp } from "react-icons/io5";
 import { HiEyeSlash } from "react-icons/hi2";
 import Image from "next/image";
-import imgSignup from "../../../public/image/signup.jpeg"
+import imgSignup from "../../../public/images/kosimage.jpeg"
 import { BsFillTelephoneForwardFill } from "react-icons/bs";
 import { SiGooglemaps } from "react-icons/si";
 
@@ -143,7 +143,7 @@ export default function SignUp() {
                             </button>
                             <div className="flex flex-col justify-center text-center">
                                 <p className="text-xs text-slate-500 my-4">Or</p>
-                                <button onClick={() => { router.push("/auth/login") }} className="uppercase text-sm bg-white text-primary shadow-cyan-100 border border-secondary hover:bg-secondary hover:text-white rounded-full py-2 cursor-pointer font-semibold duration-300 transition-colors">login</button>
+                                <button type="button" onClick={() => { router.push("/auth/login") }} className="uppercase text-sm bg-white text-primary shadow-cyan-100 border border-secondary hover:bg-secondary hover:text-white rounded-full py-2 cursor-pointer font-semibold duration-300 transition-colors">login</button>
                             </div>
                         </form>
                     </div>

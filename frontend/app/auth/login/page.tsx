@@ -133,7 +133,7 @@ export default function Login() {
                                 {isLoading ? "Logging in..." : "login"}
                             </button>
                             <div className="flex flex-col justify-center text-center">
-                                <button onClick={() => { router.push("/auth/signup") }} className="uppercase text-sm text-primary border border-primary hover:scale-105 rounded-full py-2 cursor-pointer font-semibold duration-300 transition-all">create account</button>
+                                <button type="button" onClick={() => { router.push("/auth/signup") }} className="uppercase text-sm text-primary border border-primary hover:scale-105 rounded-full py-2 cursor-pointer font-semibold duration-300 transition-all">create account</button>
                             </div>
                             <p className="text-xs text-center text-slate-500 my-2">Or</p>
                             <button
