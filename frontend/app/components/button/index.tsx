@@ -14,8 +14,7 @@ export const ButtonSuccess = ({ children, type, onClick, className, disabled }: 
             className={`text-sm bg-green-600 text-white rounded-md py-2 px-4 hover:bg-green-700 font-bold ${className}`}
             type={type}
             onClick={() => { if (onClick && !disabled) onClick() }}
-            disabled={disabled}
-        >
+            disabled={disabled}>
             {children}
         </button>
     )

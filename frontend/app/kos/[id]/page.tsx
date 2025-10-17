@@ -17,11 +17,11 @@ import LikeButton from "@/app/components/likeButton";
 import ReviewContainer from "@/app/components/review/ReviewContainer";
 import Cookies from "js-cookie";
 import Image from "next/image";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward, IoIosCheckmarkCircle } from "react-icons/io";
 import { LuDot, LuMapPin } from "react-icons/lu";
 import { PiCigaretteSlashFill, PiDoorOpen } from "react-icons/pi";
-import { AiFillThunderbolt } from "react-icons/ai";
-import { BsFillLightningChargeFill, BsLightningFill } from "react-icons/bs";
+import { AiFillThunderbolt, AiOutlineFileProtect } from "react-icons/ai";
+import { BsFillLightningChargeFill, BsLightningFill, BsPersonFillCheck } from "react-icons/bs";
 import { FaChildren } from "react-icons/fa6";
 import { HiOutlineClipboardDocumentCheck, HiOutlineClipboardDocumentList, HiOutlineDocumentText } from "react-icons/hi2";
 
@@ -761,34 +761,45 @@ const KosDetailPage = () => {
 
                         {/* Catatan Tambahan */}
                         <div className="bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 rounded-2xl p-6 shadow-lg border border-blue-200">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                <FaMapMarkerAlt className="text-blue-600 text-3xl" />
-                                Catatan Tambahan
+                            <h2 className="text-2xl font-black text-gray-900 mb-8 flex items-center gap-2">
+                                Keunggulan KOSEEKER
                             </h2>
-                            <div className="space-y-3 text-gray-700">
-                                <div className="flex items-start gap-3">
-                                    <FiCheckCircle className="text-green-500 text-lg mt-0.5 flex-shrink-0" />
-                                    <p className="text-sm leading-relaxed">
-                                        Lokasi strategis dekat dengan kampus {kosDetail.kampus}
-                                    </p>
+                            <div className="space-y-10 text-gray-700">
+                                <div className="flex items-center gap-3">
+                                    <div className="relative">
+                                        <img src="/images/logokos.svg" alt="logo koseeker" className="w-10 h-10" />
+                                        <IoIosCheckmarkCircle className="text-gray-700 text-lg mt-0.5 flex-shrink-0 absolute bottom-0 right-1" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                        <p className="text-lg font-bold text-black tracking-wide">
+                                            Dikelola Koseeker: Dijamin Akurat
+                                        </p>
+                                        <p className="text-sm font-normal text-gray-500 tracking-wide">
+                                            Fasilitas tidak sesuai dengan iklan yang kamu lihat, kami garansi refund.
+                                        </p>
+                                    </div>
                                 </div>
                                 <div className="flex items-start gap-3">
-                                    <FiCheckCircle className="text-green-500 text-lg mt-0.5 flex-shrink-0" />
-                                    <p className="text-sm leading-relaxed">
-                                        Lingkungan aman dengan penjagaan 24 jam
-                                    </p>
+                                    <AiOutlineFileProtect className="text-gray-700 text-2xl mt-2  flex-shrink-0 " />
+                                    <div className="flex flex-col">
+                                        <p className="text-lg font-bold text-black tracking-wide">
+                                            Asuransi Khusus Penyewa
+                                        </p>
+                                        <p className="text-sm font-normal text-gray-500 tracking-wide">
+                                            Perlindungan atas kompensasi kehilangan barang & fasilitas pada unit kamar. Disediakan oleh Penyedia Jasa Asuransi yang terdaftar OJK. S&K berlaku.
+                                        </p>
+                                    </div>
                                 </div>
                                 <div className="flex items-start gap-3">
-                                    <FiCheckCircle className="text-green-500 text-lg mt-0.5 flex-shrink-0" />
-                                    <p className="text-sm leading-relaxed">
-                                        Akses mudah ke transportasi umum
-                                    </p>
-                                </div>
-                                <div className="flex items-start gap-3">
-                                    <FiCheckCircle className="text-green-500 text-lg mt-0.5 flex-shrink-0" />
-                                    <p className="text-sm leading-relaxed">
-                                        Dekat dengan minimarket, warung makan, dan fasilitas umum lainnya
-                                    </p>
+                                    <BsPersonFillCheck className="text-gray-700 text-2xl mt-2 flex-shrink-0" />
+                                    <div className="flex flex-col">
+                                        <p className="text-lg font-bold text-black tracking-wide">
+                                            Penanganan Profesional
+                                        </p>
+                                        <p className="text-sm font-normal text-gray-500 tracking-wide">
+                                            Tim Koseeker selalu siap membantumu. Mulai dari survei kos, pengajuan sewa, hingga selama kamu ngekos.
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

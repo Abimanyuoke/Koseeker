@@ -15,6 +15,7 @@ import KosArea from "../components/kos_area";
 import KampusArea from "../components/kampus";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import Voucher from "../components/voucher";
 
 
 export default function Home() {
@@ -53,33 +54,18 @@ export default function Home() {
                 {/* Carousel */}
                 <div className="pt-16 h-[350px] relative">
                     <Slider ref={sliderRef} {...settings}>
-                        <div className="px-10">
-                            <Image src="./images/voucher/voucher1.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
-                        </div>
-                        <div className="px-10">
-                            <Image src="./images/voucher/voucher2.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
-                        </div>
-                        <div className="px-10">
-                            <Image src="./images/voucher/voucher3.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
-                        </div>
-                        <div className="px-10">
-                            <Image src="./images/voucher/voucher4.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
-                        </div>
-                        <div className="px-10">
-                            <Image src="./images/voucher/voucher5.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
-                        </div>
-                        <div className="px-10">
-                            <Image src="./images/voucher/voucher6.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
-                        </div>
-                        <div className="px-10">
-                            <Image src="./images/voucher/voucher7.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
-                        </div>
-                        <div className="px-10">
-                            <Image src="./images/voucher/voucher8.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
-                        </div>
-                        <div className="px-10">
-                            <Image src="./images/voucher/voucher9.svg" alt="Abstract 1" width={800} height={300} className=" h-auto object-cover" />
-                        </div>
+                            <Voucher img="/images/voucher/voucher1.svg" alt="Voucher 10"/>
+                            <Voucher img="/images/voucher/voucher2.svg" alt="Voucher 10"/>
+                            <Voucher img="/images/voucher/voucher3.svg" alt="Voucher 10"/>
+                            <Voucher img="/images/voucher/voucher4.svg" alt="Voucher 10"/>
+                            <Voucher img="/images/voucher/voucher5.svg" alt="Voucher 10"/>
+                            <Voucher img="/images/voucher/voucher6.svg" alt="Voucher 10"/>
+                            <Voucher img="/images/voucher/voucher7.svg" alt="Voucher 10"/>
+                            <Voucher img="/images/voucher/voucher8.svg" alt="Voucher 10"/>
+                            <Voucher img="/images/voucher/voucher9.svg" alt="Voucher 10"/>
+                            <Voucher img="/images/voucher/voucher10.svg" alt="Voucher 10"/>
+                            <Voucher img="/images/voucher/voucher11.svg" alt="Voucher 10"/>
+                            <Voucher img="/images/voucher/voucher12.svg" alt="Voucher 10"/>
                     </Slider>
                     <div>
                         <CustomArrows
