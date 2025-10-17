@@ -15,23 +15,24 @@ const ReviewStats: React.FC<ReviewStatsProps> = ({ reviews }) => {
     const totalReviews = reviews.length;
 
     return (
-        <div className="bg-white  p-6 mb-6">
+        <div className="bg-white mb-6">
             {/* Review Count */}
             <div className="flex items-center gap-4 mb-6">
                 <div className="flex items-center gap-2">
-                    <span className="text-green-600 text-2xl font-bold">💬</span>
-                    <span className="text-2xl font-bold text-gray-900 ">{totalReviews}</span>
-                    <span className="text-gray-600">
+                    (
+                    <span className="text-xl font-bold text-gray-900 ">{totalReviews}</span>
+                    <span className="text-gray-900">
                         {totalReviews === 1 ? 'review' : 'reviews'}
                     </span>
+                    )
+
+                    {totalReviews > 0 && (
+                        <div className="text-sm text-gray-600">
+                            <p>Lihat pengalaman penghuni lainnya di kos ini</p>
+                        </div>
+                    )}
                 </div>
             </div>
-
-            {totalReviews > 0 && (
-                <div className="text-sm text-gray-600">
-                    <p>Lihat pengalaman penghuni lainnya di kos ini</p>
-                </div>
-            )}
         </div>
     );
 };
@@ -170,8 +171,7 @@ const ReviewComponent: React.FC<ReviewComponentProps> = ({ kosId, userId }) => {
                 kosId={kosId}
                 userId={userId}
                 onSubmit={handleAddReview}
-                userHasReviewed={userHasReviewed}
-            />
+                userHasReviewed={userHasReviewed} />
 
             {/* Review List */}
             <div className="space-y-4">
@@ -286,9 +286,9 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
     }
 
     return (
-        <div className="bg-white  p-6 mb-6">
+        <div className="bg-white mb-6">
             <h3 className="text-lg font-bold mb-4 text-gray-900 ">
-                ✍️ Tulis Review Anda
+                Tulis Review Anda
             </h3>
 
             <form onSubmit={handleSubmit}>
@@ -299,8 +299,8 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
                         placeholder="Bagaimana pengalaman Anda di kos ini? Ceritakan untuk membantu orang lain..."
                         rows={4}
                         maxLength={500}
-                        className="w-full px-4 py-3  rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:-none bg-white text-gray-900  placeholder-gray-500"
-                        disabled={isSubmitting}/>
+                        className="w-full px-4 py-3  rounded-lg focus:outline-none border border-slate-300 bg-white text-gray-900  placeholder-gray-500"
+                        disabled={isSubmitting} />
                     <div className="flex justify-between items-center mt-2">
                         <p className="text-sm text-gray-500">
                             {comment.length}/500 karakter (minimal 10 karakter)

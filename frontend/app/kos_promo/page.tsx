@@ -10,9 +10,7 @@ import { AlertToko } from "../components/alert";
 import Image from "next/image";
 import { FiLoader } from "react-icons/fi";
 import Select from "../components/select";
-import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { MdLocalLaundryService, MdSecurity } from "react-icons/md";
-import { GiCook } from "react-icons/gi";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BsFillLightningChargeFill } from "react-icons/bs";
 
 interface CountdownProps {
@@ -147,19 +145,19 @@ const KosPromoPage = () => {
         }
     };
 
-    const getFacilityIcon = (facility: string) => {
-        const facilityLower = facility.toLowerCase();
-        if (facilityLower.includes('wifi') || facilityLower.includes('internet')) return <FaWifi className="text-gray-500" />;
-        if (facilityLower.includes('kasur') || facilityLower.includes('bed')) return <FaBed className="text-gray-500" />;
-        if (facilityLower.includes('parkir') || facilityLower.includes('parking')) return <FaCar className="text-gray-500" />;
-        if (facilityLower.includes('tv') || facilityLower.includes('television')) return <FaTv className="text-gray-500" />;
-        if (facilityLower.includes('ac') || facilityLower.includes('air conditioning')) return <FaSnowflake className="text-gray-500" />;
-        if (facilityLower.includes('kamar mandi') || facilityLower.includes('bathroom')) return <FaShower className="text-gray-500" />;
-        if (facilityLower.includes('laundry') || facilityLower.includes('cuci')) return <MdLocalLaundryService className="text-gray-500" />;
-        if (facilityLower.includes('dapur') || facilityLower.includes('kitchen')) return <GiCook className="text-gray-500" />;
-        if (facilityLower.includes('security') || facilityLower.includes('keamanan')) return <MdSecurity className="text-gray-500" />;
-        return <div className="w-4 h-4 bg-gray-400 rounded-full"></div>;
-    };
+    // const getFacilityIcon = (facility: string) => {
+    //     const facilityLower = facility.toLowerCase();
+    //     if (facilityLower.includes('wifi') || facilityLower.includes('internet')) return <FaWifi className="text-gray-500" />;
+    //     if (facilityLower.includes('kasur') || facilityLower.includes('bed')) return <FaBed className="text-gray-500" />;
+    //     if (facilityLower.includes('parkir') || facilityLower.includes('parking')) return <FaCar className="text-gray-500" />;
+    //     if (facilityLower.includes('tv') || facilityLower.includes('television')) return <FaTv className="text-gray-500" />;
+    //     if (facilityLower.includes('ac') || facilityLower.includes('air conditioning')) return <FaSnowflake className="text-gray-500" />;
+    //     if (facilityLower.includes('kamar mandi') || facilityLower.includes('bathroom')) return <FaShower className="text-gray-500" />;
+    //     if (facilityLower.includes('laundry') || facilityLower.includes('cuci')) return <MdLocalLaundryService className="text-gray-500" />;
+    //     if (facilityLower.includes('dapur') || facilityLower.includes('kitchen')) return <GiCook className="text-gray-500" />;
+    //     if (facilityLower.includes('security') || facilityLower.includes('keamanan')) return <MdSecurity className="text-gray-500" />;
+    //     return <div className="w-4 h-4 bg-gray-400 rounded-full"></div>;
+    // };
 
     const handlePrevImage = (e: React.MouseEvent, kosId: number, totalImages: number) => {
         e.stopPropagation();

@@ -52,7 +52,7 @@ export default function LikeButton({ kosId, userId, token }: LikeButtonProps) {
             onClick={toggleLike}
             className="flex items-center gap-2 px-4 py-2 rounded-md border border-gray-400 hover:text-gray-500 transition-all cursor-pointer">
             {liked ? <FaHeart size={15} className="text-red-600"/> : <FaRegHeart  size={15} />}
-            <span className="hover:text-[#717171] text-sm font-bold">Simpan</span>
+            {liked ? <span className="hover:text-[#717171] text-sm font-bold">Hapus</span> : <span className="hover:text-[#717171] text-sm font-bold">Simpan</span>}
         </button>
     );
 }

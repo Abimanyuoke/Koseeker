@@ -8,7 +8,7 @@ import { BASE_API_URL, BASE_IMAGE_KOS } from "../../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
 import { FiLoader, FiShare2, FiCheckCircle } from "react-icons/fi";
-import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaPhone, FaEnvelope, FaRulerCombined, FaToilet, FaCouch, FaDoorOpen, FaWhatsapp, FaRegHeart, FaMotorcycle } from "react-icons/fa";
+import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaRulerCombined, FaToilet, FaDoorOpen, FaWhatsapp, FaRegHeart, FaMotorcycle } from "react-icons/fa";
 import { MdFamilyRestroom, MdLocalLaundryService, MdOutlineCleaningServices, MdOutlinePets, MdSecurity } from "react-icons/md";
 import { GiCook, GiNightSleep } from "react-icons/gi";
 import { IoCalendarOutline, IoCloudyNight, IoHome, IoTimeOutline } from "react-icons/io5";
@@ -21,7 +21,7 @@ import { IoIosArrowForward } from "react-icons/io";
 import { LuDot, LuMapPin } from "react-icons/lu";
 import { PiCigaretteSlashFill, PiDoorOpen } from "react-icons/pi";
 import { AiFillThunderbolt } from "react-icons/ai";
-import { BsLightningFill } from "react-icons/bs";
+import { BsFillLightningChargeFill, BsLightningFill } from "react-icons/bs";
 import { FaChildren } from "react-icons/fa6";
 import { HiOutlineClipboardDocumentCheck, HiOutlineClipboardDocumentList, HiOutlineDocumentText } from "react-icons/hi2";
 
@@ -812,26 +812,24 @@ const KosDetailPage = () => {
                             <div className="bg-white rounded-2xl p-6 shadow-xl border border-gray-100">
                                 {kosDetail.discountPercent && kosDetail.discountPercent > 0 ? (
                                     <div>
-                                        <div className="inline-block bg-gradient-to-r from-red-500 to-pink-500 text-white px-4 py-1.5 rounded-full text-xs font-bold mb-3 shadow-md">
-                                            Hemat {kosDetail.discountPercent}%
-                                        </div>
-                                        <div className="mb-2">
-                                            <div className="flex items-baseline gap-2">
-                                                <span className="text-3xl font-bold text-red-500">
-                                                    Rp {formatPrice(kosDetail.pricePerMonth - (kosDetail.pricePerMonth * kosDetail.discountPercent / 100))}
-                                                </span>
+                                        <div className="flex items-center gap-2">
+                                            <div className="text-red-500 py-1 text-sm font-bold flex items-center gap-1">
+                                                <BsFillLightningChargeFill />
+                                                Diskon -{kosDetail.discountPercent}%
                                             </div>
-                                            <div className="flex items-center gap-2 mt-1">
+                                            <div className="flex items-center gap-2">
                                                 <span className="text-sm text-gray-500 line-through">
                                                     Rp {formatPrice(kosDetail.pricePerMonth)}
                                                 </span>
-                                                <span className="text-sm text-gray-500">/bulan</span>
                                             </div>
                                         </div>
-                                        <div className="bg-red-50 p-3 rounded-lg mt-3">
-                                            <p className="text-red-600 text-xs font-semibold">
-                                                💰 Hemat Rp {formatPrice(kosDetail.pricePerMonth * kosDetail.discountPercent / 100)} per bulan!
-                                            </p>
+                                        <div className="mb-2">
+                                            <div className="flex items-baseline gap-2">
+                                                <span className="text-3xl font-bold text-black">
+                                                    Rp {formatPrice(kosDetail.pricePerMonth - (kosDetail.pricePerMonth * kosDetail.discountPercent / 100))}
+                                                </span>
+                                            </div>
+
                                         </div>
                                     </div>
                                 ) : (

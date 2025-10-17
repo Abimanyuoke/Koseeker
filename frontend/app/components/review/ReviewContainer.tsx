@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import ReviewComponent from './page';
 import ReviewForm from './ReviewForm';
 import { useReviews } from './useReviews';
-import { ButtonPrimary } from '../button';
+// import { ButtonPrimary } from '../button';
 
 interface ReviewContainerProps {
     kosId: number;
@@ -108,7 +108,7 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
             )}
 
             {/* Add Review Button */}
-            {userId && !userHasReviewed && !showReviewForm && (
+            {/* {userId && !userHasReviewed && !showReviewForm && (
                 <div className="mb-6">
                     <ButtonPrimary
                         type="button"
@@ -117,7 +117,7 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
                         Tulis Review
                     </ButtonPrimary>
                 </div>
-            )}
+            )} */}
 
             {/* Review Form */}
             {showReviewForm && userId && (
