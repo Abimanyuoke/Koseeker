@@ -6,14 +6,6 @@ import { BASE_IMAGE_PROFILE } from '../../../global';
 import { ButtonSuccess } from '../button';
 import { useReviews } from './useReviews';
 
-// Star Rating Component
-interface StarRatingProps {
-    rating: number;
-    maxRating?: number;
-    size?: 'sm' | 'md' | 'lg';
-    readonly?: boolean;
-    onRatingChange?: (rating: number) => void;
-}
 
 interface ReviewStatsProps {
     reviews: IReview[];
