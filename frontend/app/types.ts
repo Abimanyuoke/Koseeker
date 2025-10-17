@@ -102,8 +102,7 @@ export interface IUser {
     password: string,
     profile_picture: string,
     role: string,
-    alamat: string,
-    telephone: string,
+    phone: string,
     createdAt: string,
     updatedAt: string
 }

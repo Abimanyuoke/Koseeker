@@ -98,7 +98,6 @@ export default function Home() {
             {/* fitur kos */}
             <Kos />
             <KosPromoPage />
-            <Blog />
             {/* Area Kota */}
             <div className="py-20">
                 <KosArea/>
@@ -107,6 +106,7 @@ export default function Home() {
             <div className="py-20">
                 <KampusArea/>
             </div>
+            <Blog />
         </div>
     );
 }

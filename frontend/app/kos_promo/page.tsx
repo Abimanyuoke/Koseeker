@@ -426,15 +426,6 @@ const KosPromoPage = () => {
                         })}
                     </div>
                 )}
-
-                {/* Footer */}
-                {kosData.length > 0 && (
-                    <div className="text-center mt-8">
-                        <p className="text-gray-600 text-sm">
-                            *Promo berlaku selama persediaan masih ada
-                        </p>
-                    </div>
-                )}
             </div>
         </div>
     );
