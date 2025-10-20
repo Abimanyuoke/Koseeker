@@ -2,3 +2,5 @@ Update:
 3. untuk dibawah kos itu bisa ditambahkan untuk fasikitas (diperbaiki).
 6. deploy lewat vercel (frontend) dan supabase (backend)
 7. buat menjadi lebih estetik
+
+Ich spreche Deutsch nicht so gut aber ich versuche immer Übung machen.
