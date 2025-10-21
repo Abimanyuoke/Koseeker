@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { getUserData } from '@/lib/auth'
 import { BASE_API_URL } from '@/global'
 import { toast } from 'sonner'
-import { FaArrowLeft, FaHome, FaMapMarkerAlt, FaMoneyBillWave, FaPercent, FaUsers, FaUniversity, FaCity, FaCalendarAlt, FaImage, FaList, FaCheck, FaTimes } from 'react-icons/fa'
+import { FaArrowLeft, FaHome, FaMapMarkerAlt, FaMoneyBillWave, FaPercent, FaUsers, FaUniversity, FaCity, FaCalendarAlt, FaImage, FaList, FaCheck, FaTimes, FaMale, FaFemale, FaUserFriends, FaCalendarWeek, FaCalendarDay, FaCalendar } from 'react-icons/fa'
 
 export default function CreateKosPage() {
     const router = useRouter()
@@ -17,10 +17,10 @@ export default function CreateKosPage() {
         address: '',
         pricePerMonth: '',
         discountPercent: '',
-        gender: 'male',
-        kampus: 'UGM',
-        kota: 'Jakarta',
-        kalender: 'bulan'
+        gender: '',
+        kampus: '',
+        kota: '',
+        kalender: ''
     })
 
     // Predefined facilities dengan checkbox
@@ -36,9 +36,9 @@ export default function CreateKosPage() {
 
     // Enums dari schema
     const genderOptions = [
-        { value: 'male', label: 'Pria', icon: '👨' },
-        { value: 'female', label: 'Wanita', icon: '👩' },
-        { value: 'all', label: 'Campur', icon: '👥' }
+        { value: 'male', label: 'Pria', Icon: FaMale },
+        { value: 'female', label: 'Wanita', Icon: FaFemale },
+        { value: 'all', label: 'Campur', Icon: FaUserFriends }
     ]
 
     const kampusOptions = ['UGM', 'UNDIP', 'UNPAD', 'STAN', 'UNAIR', 'UB', 'UI', 'ITS', 'ITB', 'UNS', 'TELKOM', 'UNESA', 'BINUS', 'UMM']
@@ -46,9 +46,9 @@ export default function CreateKosPage() {
     const kotaOptions = ['Jakarta', 'Bandung', 'Surabaya', 'Medan', 'Semarang', 'Makassar', 'Palembang', 'Batam', 'Malang', 'Bogor', 'Depok', 'Tangerang', 'Solo', 'Makasar', 'Yogyakarta', 'Bekasi']
 
     const kalenderOptions = [
-        { value: 'minggu', label: 'Per Minggu', icon: '📅' },
-        { value: 'bulan', label: 'Per Bulan', icon: '📆' },
-        { value: 'tahun', label: 'Per Tahun', icon: '🗓️' }
+        { value: 'minggu', label: 'Per Minggu', Icon: FaCalendarWeek },
+        { value: 'bulan', label: 'Per Bulan', Icon: FaCalendarDay },
+        { value: 'tahun', label: 'Per Tahun', Icon: FaCalendar }
     ]
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
@@ -162,7 +162,12 @@ export default function CreateKosPage() {
             }
 
             submitData.append('gender', formData.gender)
-            submitData.append('kampus', formData.kampus)
+
+            // Only add kampus if it's not empty
+            if (formData.kampus && formData.kampus.trim() !== '') {
+                submitData.append('kampus', formData.kampus)
+            }
+
             submitData.append('kota', formData.kota)
             submitData.append('kalender', formData.kalender)
 
@@ -215,26 +220,26 @@ export default function CreateKosPage() {
                 <div className='mb-8'>
                     <button
                         onClick={() => router.push('/manager/kos')}
-                        className='flex items-center gap-2 text-gray-600 hover:text-gray-900 mb-4 transition'>
+                        className='flex items-center gap-2 text-gray-500 hover:text-gray-700 mb-4 transition'>
                         <FaArrowLeft /> Kembali
                     </button>
 
-                    <div className='bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl shadow-lg p-6 text-white'>
-                        <h1 className='text-3xl font-bold mb-2'>Tambah Kos Baru</h1>
-                        <p className='text-blue-100'>Lengkapi informasi kos Anda untuk menarik lebih banyak penyewa</p>
+                    <div className='bg-white border border-gray-200 rounded-2xl shadow-sm p-6'>
+                        <h1 className='text-3xl font-bold mb-2 text-gray-800'>Tambah Kos Baru</h1>
+                        <p className='text-gray-500'>Lengkapi informasi kos Anda untuk menarik lebih banyak penyewa</p>
                     </div>
                 </div>
 
                 <form onSubmit={handleSubmit}>
                     {/* Informasi Dasar */}
-                    <div className='bg-white rounded-2xl shadow-lg p-6 mb-6'>
+                    <div className='bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-6'>
                         <div className='flex items-center gap-3 mb-6 pb-4 border-b border-gray-200'>
-                            <div className='p-3 bg-blue-100 rounded-lg'>
-                                <FaHome className='text-blue-600 text-xl' />
+                            <div className='p-3 bg-gray-100 rounded-lg'>
+                                <FaHome className='text-gray-500 text-xl' />
                             </div>
                             <div>
-                                <h2 className='text-xl font-bold text-gray-900'>Informasi Dasar</h2>
-                                <p className='text-sm text-gray-600'>Data utama tentang kos Anda</p>
+                                <h2 className='text-xl font-bold text-gray-800'>Informasi Dasar</h2>
+                                <p className='text-sm text-gray-500'>Data utama tentang kos Anda</p>
                             </div>
                         </div>
 
@@ -257,8 +262,8 @@ export default function CreateKosPage() {
 
                             {/* Alamat */}
                             <div>
-                                <label className=' text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2'>
-                                    <FaMapMarkerAlt className='text-red-500' /> Alamat Lengkap <span className='text-red-500'>*</span>
+                                <label className='text-sm font-semibold text-gray-700 mb-2 flex items-center gap-2'>
+                                    <FaMapMarkerAlt className='text-gray-500' /> Alamat Lengkap <span className='text-red-500'>*</span>
                                 </label>
                                 <textarea
                                     name='address'
@@ -266,7 +271,7 @@ export default function CreateKosPage() {
                                     onChange={handleInputChange}
                                     rows={3}
                                     placeholder='Jl. Contoh No. 123, RT 01/RW 02, Kelurahan...'
-                                    className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition'
+                                    className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-transparent transition'
                                     required
                                 />
                             </div>
@@ -275,13 +280,13 @@ export default function CreateKosPage() {
                             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                                 <div>
                                     <label className='flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2'>
-                                        <FaCity className='text-gray-600' /> Kota <span className='text-red-500'>*</span>
+                                        <FaCity className='text-gray-500' /> Kota <span className='text-red-500'>*</span>
                                     </label>
                                     <select
                                         name='kota'
                                         value={formData.kota}
                                         onChange={handleInputChange}
-                                        className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition'
+                                        className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-transparent transition'
                                         required>
                                         {kotaOptions.map(kota => (
                                             <option key={kota} value={kota}>{kota}</option>
@@ -291,14 +296,14 @@ export default function CreateKosPage() {
 
                                 <div>
                                     <label className='flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2'>
-                                        <FaUniversity className='text-gray-600' /> Kampus Terdekat <span className='text-red-500'>*</span>
+                                        <FaUniversity className='text-gray-500' /> Kampus Terdekat
                                     </label>
                                     <select
                                         name='kampus'
                                         value={formData.kampus}
                                         onChange={handleInputChange}
-                                        className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition'
-                                        required>
+                                        className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-transparent transition'>
+                                        <option value=''>Pilih Kampus (Opsional)</option>
                                         {kampusOptions.map(kampus => (
                                             <option key={kampus} value={kampus}>{kampus}</option>
                                         ))}
@@ -310,7 +315,7 @@ export default function CreateKosPage() {
                             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
                                 <div>
                                     <label className='flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2'>
-                                        <FaMoneyBillWave className='text-green-600' /> Harga Sewa <span className='text-red-500'>*</span>
+                                        <FaMoneyBillWave className='text-gray-500' /> Harga Sewa <span className='text-red-500'>*</span>
                                     </label>
                                     <div className='relative'>
                                         <span className='absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 font-medium'>Rp</span>
@@ -320,7 +325,7 @@ export default function CreateKosPage() {
                                             value={formData.pricePerMonth}
                                             onChange={handleInputChange}
                                             placeholder='1500000'
-                                            className='w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition'
+                                            className='w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-transparent transition'
                                             required
                                             min='0'
                                         />
@@ -329,7 +334,7 @@ export default function CreateKosPage() {
 
                                 <div>
                                     <label className='flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2'>
-                                        <FaPercent className='text-red-600' /> Diskon (%)
+                                        <FaPercent className='text-gray-500' /> Diskon (%)
                                     </label>
                                     <input
                                         type='number'
@@ -337,7 +342,7 @@ export default function CreateKosPage() {
                                         value={formData.discountPercent}
                                         onChange={handleInputChange}
                                         placeholder='0'
-                                        className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition'
+                                        className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-transparent transition'
                                         min='0'
                                         max='100'
                                     />
@@ -347,7 +352,7 @@ export default function CreateKosPage() {
                             {/* Gender */}
                             <div>
                                 <label className='flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3'>
-                                    <FaUsers className='text-purple-600' /> Tipe Penghuni <span className='text-red-500'>*</span>
+                                    <FaUsers className='text-gray-500' /> Tipe Penghuni <span className='text-red-500'>*</span>
                                 </label>
                                 <div className='grid grid-cols-3 gap-3'>
                                     {genderOptions.map(option => (
@@ -356,11 +361,11 @@ export default function CreateKosPage() {
                                             type='button'
                                             onClick={() => setFormData(prev => ({ ...prev, gender: option.value }))}
                                             className={`p-4 border-2 rounded-lg transition ${formData.gender === option.value
-                                                ? 'border-blue-600 bg-blue-50'
+                                                ? 'bg-gray-700 text-white'
                                                 : 'border-gray-300 hover:border-gray-400'
                                                 }`}>
-                                            <div className='text-3xl mb-2'>{option.icon}</div>
-                                            <div className='font-semibold text-gray-900'>{option.label}</div>
+                                            <option.Icon className={`text-2xl mb-2 mx-auto ${formData.gender === option.value ? 'text-white' : 'text-gray-500'}`} />
+                                            <div className={`font-semibold text-gray-700 text-sm ${formData.gender === option.value ? 'text-white' : 'text-gray-500'}`}>{option.label}</div>
                                         </button>
                                     ))}
                                 </div>
@@ -369,7 +374,7 @@ export default function CreateKosPage() {
                             {/* Periode Sewa */}
                             <div>
                                 <label className='flex items-center gap-2 text-sm font-semibold text-gray-700 mb-3'>
-                                    <FaCalendarAlt className='text-orange-600' /> Periode Pembayaran <span className='text-red-500'>*</span>
+                                    <FaCalendarAlt className='text-gray-500' /> Periode Pembayaran <span className='text-red-500'>*</span>
                                 </label>
                                 <div className='grid grid-cols-3 gap-3'>
                                     {kalenderOptions.map(option => (
@@ -378,11 +383,11 @@ export default function CreateKosPage() {
                                             type='button'
                                             onClick={() => setFormData(prev => ({ ...prev, kalender: option.value }))}
                                             className={`p-4 border-2 rounded-lg transition ${formData.kalender === option.value
-                                                ? 'border-blue-600 bg-blue-50'
+                                                ? 'bg-gray-700 text-white'
                                                 : 'border-gray-300 hover:border-gray-400'
                                                 }`}>
-                                            <div className='text-2xl mb-2'>{option.icon}</div>
-                                            <div className='font-semibold text-gray-900 text-sm'>{option.label}</div>
+                                            <option.Icon className={`text-2xl mb-2 mx-auto ${formData.kalender === option.value ? 'text-white' : 'text-gray-500'}`} />
+                                            <div className={`font-semibold text-gray-700 text-sm ${formData.kalender === option.value ? 'text-white' : 'text-gray-500'}`}>{option.label}</div>
                                         </button>
                                     ))}
                                 </div>
@@ -391,14 +396,14 @@ export default function CreateKosPage() {
                     </div>
 
                     {/* Fasilitas */}
-                    <div className='bg-white rounded-2xl shadow-lg p-6 mb-6'>
+                    <div className='bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-6'>
                         <div className='flex items-center gap-3 mb-6 pb-4 border-b border-gray-200'>
-                            <div className='p-3 bg-purple-100 rounded-lg'>
-                                <FaList className='text-purple-600 text-xl' />
+                            <div className='p-3 bg-gray-100 rounded-lg'>
+                                <FaList className='text-gray-500 text-xl' />
                             </div>
                             <div>
-                                <h2 className='text-xl font-bold text-gray-900'>Fasilitas</h2>
-                                <p className='text-sm text-gray-600'>Pilih fasilitas yang tersedia di kos Anda</p>
+                                <h2 className='text-xl font-bold text-gray-800'>Fasilitas</h2>
+                                <p className='text-sm text-gray-500'>Pilih fasilitas yang tersedia di kos Anda</p>
                             </div>
                         </div>
 
@@ -413,16 +418,16 @@ export default function CreateKosPage() {
                                         <label
                                             key={facility}
                                             className={`flex items-center gap-3 p-4 border-2 rounded-lg cursor-pointer transition ${checkedFacilities[facility]
-                                                ? 'border-purple-600 bg-purple-50'
+                                                ? 'border-gray-500 bg-gray-50'
                                                 : 'border-gray-300 hover:border-gray-400'
                                                 }`}>
                                             <input
                                                 type='checkbox'
                                                 checked={!!checkedFacilities[facility]}
                                                 onChange={() => togglePredefinedFacility(facility)}
-                                                className='w-5 h-5 text-purple-600 border-gray-300 rounded focus:ring-purple-500'
+                                                className='w-5 h-5 text-gray-500 border-gray-300 rounded focus:ring-gray-400'
                                             />
-                                            <span className='text-sm font-medium text-gray-900'>{facility}</span>
+                                            <span className='text-sm font-medium text-gray-700'>{facility}</span>
                                         </label>
                                     ))}
                                 </div>
@@ -438,7 +443,7 @@ export default function CreateKosPage() {
                                     value={customFacility}
                                     onChange={(e) => setCustomFacility(e.target.value)}
                                     placeholder='Contoh: WiFi 100 Mbps, Mesin Cuci Pribadi, dll'
-                                    className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition'
+                                    className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-transparent transition'
                                 />
                                 <p className='text-xs text-gray-500 mt-2'>
                                     Tambahkan fasilitas khusus yang tidak ada di daftar di atas
@@ -448,20 +453,20 @@ export default function CreateKosPage() {
                     </div>
 
                     {/* Gambar */}
-                    <div className='bg-white rounded-2xl shadow-lg p-6 mb-6'>
+                    <div className='bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-6'>
                         <div className='flex items-center gap-3 mb-6 pb-4 border-b border-gray-200'>
-                            <div className='p-3 bg-green-100 rounded-lg'>
-                                <FaImage className='text-green-600 text-xl' />
+                            <div className='p-3 bg-gray-100 rounded-lg'>
+                                <FaImage className='text-gray-500 text-xl' />
                             </div>
                             <div>
-                                <h2 className='text-xl font-bold text-gray-900'>Gambar Kos</h2>
-                                <p className='text-sm text-gray-600'>Upload foto kos (min 1, max 10)</p>
+                                <h2 className='text-xl font-bold text-gray-800'>Gambar Kos</h2>
+                                <p className='text-sm text-gray-500'>Upload foto kos (min 1, max 10)</p>
                             </div>
                         </div>
 
                         {/* Upload Area */}
                         <label className='block mb-4'>
-                            <div className='border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-500 transition cursor-pointer'>
+                            <div className='border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-gray-400 transition cursor-pointer'>
                                 <FaImage className='text-5xl text-gray-400 mx-auto mb-4' />
                                 <p className='text-gray-700 font-medium mb-2'>Klik untuk pilih gambar</p>
                                 <p className='text-sm text-gray-500'>JPG, JPEG, PNG (max 5MB per file)</p>
@@ -478,12 +483,12 @@ export default function CreateKosPage() {
                         {/* Preview Images */}
                         {previewUrls.length > 0 && (
                             <div>
-                                <h3 className='font-semibold text-gray-900 mb-3'>Preview ({previewUrls.length}/10)</h3>
+                                <h3 className='font-semibold text-gray-800 mb-3'>Preview ({previewUrls.length}/10)</h3>
                                 <div className='grid grid-cols-2 md:grid-cols-4 gap-3'>
                                     {previewUrls.map((url, index) => (
                                         <div key={index} className='relative aspect-square rounded-lg overflow-hidden border border-gray-200 group'>
                                             <img src={url} alt={`Preview ${index + 1}`} className='w-full h-full object-cover' />
-                                            <div className='absolute top-2 left-2 bg-blue-600 text-white text-xs px-2 py-1 rounded-md font-bold'>
+                                            <div className='absolute top-2 left-2 bg-gray-600 text-white text-xs px-2 py-1 rounded-md font-bold'>
                                                 {index + 1}
                                             </div>
                                             <button
@@ -500,7 +505,7 @@ export default function CreateKosPage() {
                     </div>
 
                     {/* Submit Buttons */}
-                    <div className='bg-white rounded-2xl shadow-lg p-6'>
+                    <div className='bg-white rounded-2xl shadow-sm border border-gray-200 p-6'>
                         <div className='flex gap-3'>
                             <button
                                 type='button'
@@ -512,7 +517,7 @@ export default function CreateKosPage() {
                             <button
                                 type='submit'
                                 disabled={isSubmitting}
-                                className='flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
+                                className='flex-1 px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
                                 {isSubmitting ? (
                                     <>
                                         <div className='animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full'></div>
