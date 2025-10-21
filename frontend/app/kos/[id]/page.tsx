@@ -818,7 +818,7 @@ const KosDetailPage = () => {
 
                     {/* Right Sidebar - Price, Actions & Owner Info */}
                     <div className="lg:col-span-1">
-                        <div className="sticky top-24 space-y-4">
+                        <div className="sticky top-36 space-y-4">
                             {/* Price Card */}
                             <div className="bg-white rounded-2xl p-6 shadow-xl border border-gray-100">
                                 {kosDetail.discountPercent && kosDetail.discountPercent > 0 ? (
