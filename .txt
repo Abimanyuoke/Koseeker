@@ -1,6 +1,79 @@
 Update:
-3. untuk dibawah kos itu bisa ditambahkan untuk fasikitas (diperbaiki).
-6. deploy lewat vercel (frontend) dan supabase (backend)
-7. buat menjadi lebih estetik
+1. deploy lewat vercel (frontend) dan supabase (backend)
+2. untuk yang kampus terdekat yang lainnya bisa seperti mamikos ada link link contoh:
 
-Ich spreche Deutsch nicht so gut aber ich versuche immer Übung machen.
+Kos Dekat Kampus di Indonesia
+
+Jogja
+Kos Dekat UGM Jogja
+Kos Dekat UNY Jogja
+Kos Dekat UMY Jogja
+Kos Dekat UIN Jogja
+Kos Dekat UPN Jogja
+Kos Dekat USD Jogja
+Kos Dekat UAD Jogja
+Kos Dekat UTY Jogja
+Kos Dekat Atmajaya Jogja
+Kos Dekat Stie YKPN Jogja
+Jakarta
+Kos Dekat STAN Jakarta
+Kos Dekat UIN Jakarta
+Kos Dekat UNJ Jakarta
+Kos Dekat BINUS Kemanggisan
+Kos Dekat UI Depok
+Kos Dekat BINUS Alam Sutra
+Kos Dekat Atmajaya Jakarta
+Kos Dekat Trisakti Jakarta
+Kos Dekat UNTAR Jakarta
+Kos Dekat UPH Jakarta
+Kos Dekat Gunadarma Kelapa Dua
+Bandung
+Kos Dekat ITB Bandung
+Kos Dekat UPI Bandung
+Kos Dekat TELKOM Bandung
+Kos Dekat UIN Bandung
+Kos Dekat UNPAR Bandung
+Kos Dekat MARANATHA Bandung
+Kos Dekat UNPAD Jatinangor
+Kos Dekat UNPAD Dipatiukur
+Kos Dekat UNIKOM Bandung
+Kos Dekat UNISBA Bandung
+Kos Dekat UNJANI Bandung
+Kos Dekat ITENAS Bandung
+Kos Dekat WIDYATAMA Bandung
+Semarang
+Kos Dekat UNDIP Semarang
+Kos Dekat UNNES Semarang
+Kos Dekat UDINUS Semarang
+Kos Dekat UNISSULA Semarang
+Malang
+Kos Dekat UB Malang
+Kos Dekat UM Malang
+Kos Dekat UMM Malang
+Kos Dekat UIN Malang
+Surabaya
+Kos Dekat UNAIR Surabaya
+Kos Dekat ITS Surabaya
+Kos Dekat UNESA Surabaya
+Kos Dekat UPN Surabaya
+Kos Dekat UBAYA Surabaya
+Kos Dekat UIN Surabaya
+Kos Dekat UWM Surabaya
+Kos Dekat UK Petra Surabaya
+Kampus Favorit Lainnya
+Kos Dekat UNS Solo
+Kos Dekat UMS Solo
+Kos Dekat USU Medan
+Kos Dekat UNIMED Medan
+Kos Dekat UNSOED Purwokerto
+Kos Dekat IPB Bogor
+Kos Dekat UNP Padang
+Kos Dekat UNHAS Makassar
+Kos Dekat UNEJ Jember
+Kos Dekat UDAYANA Jimbaran Bali
+Kos Dekat ANDALAS Padang
+Kos Dekat Universitas Pertamina Simprung
+Kos Dekat UNTIRTA Banten
+Kos Dekat UMI Makassar
+
+Jika masih belum ada itu akan di arahkan pada component yang menampilkan Masih Update dengan gambar robot rusak atau 404 google yang abu abu di tengah ada gambar robot rusak
