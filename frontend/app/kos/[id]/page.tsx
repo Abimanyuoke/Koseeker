@@ -720,7 +720,7 @@ const KosDetailPage = () => {
                         </div>
 
                         {/* Ketentuan Penyewaan */}
-                        <div className="bg-white rounded-2xl">
+                        <div className="bg-white rounded-2xl py-10">
                             <h2 className="text-2xl font-black text-gray-900 mb-4 flex items-center gap-2">
                                 Ketentuan Penyewaan
                             </h2>
@@ -760,7 +760,7 @@ const KosDetailPage = () => {
                         </div>
 
                         {/* Catatan Tambahan */}
-                        <div className="bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 rounded-2xl p-6 shadow-lg border border-blue-200">
+                        <div className="bg-gradient-to-br from-blue-50 via-green-50 to-blue-50 rounded-2xl p-6 shadow-lg border border-blue-200 mb-20">
                             <h2 className="text-2xl font-black text-gray-900 mb-8 flex items-center gap-2">
                                 Keunggulan KOSEEKER
                             </h2>

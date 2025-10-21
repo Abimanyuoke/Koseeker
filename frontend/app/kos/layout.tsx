@@ -26,7 +26,7 @@ const RootLayout = ({ children }: PropsLayout) => {
 
 
     return (
-        <div className="h-svh">
+        <div className="">
             <Toaster position="top-right" richColors/>
             <Navbar/>
             {/* <NavbarMain/> */}

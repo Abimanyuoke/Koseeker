@@ -258,7 +258,7 @@ const KosPromoPage = () => {
                             return (
                                 <div
                                     key={kos.id}
-                                    className="bg-white rounded-xl transition-all duration-300 overflow-hidden cursor-pointer group transform hover:-translate-y-1"
+                                    className="bg-white rounded-xl transition-all duration-300 overflow-hidden cursor-pointer group transform"
                                     onClick={() => router.push(`/kos/${kos.id}`)}>
                                     <div className="relative h-48 overflow-hidden">
 
@@ -268,10 +268,10 @@ const KosPromoPage = () => {
                                                     src={`${BASE_IMAGE_KOS}/${kos.images[currentImageIndex].file}`}
                                                     alt={kos.name}
                                                     fill
-                                                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                                                    // className="object-cover group-hover:scale-105 transition-transform duration-300"
                                                     unoptimized />
 
-                                                {hasMultipleImages && (
+                                                {/* {hasMultipleImages && (
                                                     <div>
                                                         <button
                                                             onClick={(e) => handlePrevImage(e, kos.id, kos.images.length)}
@@ -298,7 +298,7 @@ const KosPromoPage = () => {
                                                             />
                                                         ))}
                                                     </div>
-                                                )}
+                                                )} */}
                                             </div>
                                         ) : (
                                             <div className="w-full h-full bg-gray-200 flex items-center justify-center">
