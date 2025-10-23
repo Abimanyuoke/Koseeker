@@ -14,9 +14,8 @@ import { HiEyeSlash } from "react-icons/hi2";
 import Image from "next/image";
 import imgSignup from "../../../public/images/kosimage.jpeg"
 import { BsFillTelephoneForwardFill } from "react-icons/bs";
-import { FcGoogle } from "react-icons/fc";
 import { MdEmail } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
+import { FaLock, FaUser } from "react-icons/fa";
 import logo from "../../../public/images/logo.svg";
 
 export default function SignUp() {
@@ -95,7 +94,7 @@ export default function SignUp() {
                                 src={imgSignup}
                                 alt="Signup Koseeker"
                                 fill
-                                className="object-cover"/>
+                                className="object-cover" />
                             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
                             <div className="absolute bottom-0 left-0 right-0 p-8 text-white z-10">
                                 <div className="space-y-4">
@@ -130,7 +129,7 @@ export default function SignUp() {
                                     className="relative object-cover drop-shadow-lg"
                                 />
                             </div>
-                            <h1 className="text-3xl font-bold text-gray-800 mb-2">Create Account</h1>
+                            <h1 className="text-3xl font-black text-gray-800 mb-2">Create Account</h1>
                             <p className="text-gray-500 text-sm">Fill in your details to get started</p>
                         </div>
 
@@ -138,7 +137,7 @@ export default function SignUp() {
                             {/* Name Field */}
                             <div className="relative group">
                                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
-                                    <FaUser className="text-lg" />
+                                    <FaUser className="text-base" />
                                 </div>
                                 <input
                                     id="name"
@@ -154,7 +153,7 @@ export default function SignUp() {
                             {/* Email Field */}
                             <div className="relative group">
                                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
-                                    <MdEmail className="text-xl" />
+                                    <MdEmail className="text-base" />
                                 </div>
                                 <input
                                     id="email"
@@ -170,7 +169,7 @@ export default function SignUp() {
                             {/* Phone Field */}
                             <div className="relative group">
                                 <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
-                                    <BsFillTelephoneForwardFill className="text-lg" />
+                                    <BsFillTelephoneForwardFill className="text-sm" />
                                 </div>
                                 <input
                                     id="phone"
@@ -185,6 +184,9 @@ export default function SignUp() {
 
                             {/* Password Field */}
                             <div className="relative group">
+                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors">
+                                    <FaLock className="text-base" />
+                                </div>
                                 <input
                                     id="password"
                                     type={showPassword ? "text" : "password"}
@@ -192,13 +194,11 @@ export default function SignUp() {
                                     onChange={(e) => setUser({ ...user, password: e.target.value })}
                                     required
                                     placeholder="Password"
-                                    className="w-full pl-4 pr-12 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400"
-                                />
+                                    className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400" />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors"
-                                >
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors">
                                     {showPassword ? (
                                         <IoEyeSharp className="text-xl" />
                                     ) : (
@@ -244,7 +244,7 @@ export default function SignUp() {
                                     <button
                                         type="button"
                                         onClick={() => router.push("/auth/login")}
-                                        className="text-primary font-semibold hover:underline transition-all">
+                                        className="text-primary font-semibold hover:underline transition-all cursor-pointer">
                                         Login here
                                     </button>
                                 </p>
