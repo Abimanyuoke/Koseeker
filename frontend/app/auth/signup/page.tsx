@@ -72,13 +72,13 @@ export default function SignUp() {
         }
     }
     return (
-        <div className="bg-gradient-to-br from-cyan-50 via-blue-50 to-purple-50 min-h-screen w-full relative overflow-hidden font-poppins">
+        <div className="bg-gradient-to-br from-cyan-50 via-blue-50 to-purple-50 min-h-screen w-full relative overflow-hidden font-lato">
             {/* Animated Background Blobs */}
             <div className="absolute inset-0 overflow-hidden">
-                <svg viewBox="0 50 200 200" className="absolute -right-20 top-10 w-[400px] animate-pulse opacity-40" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 50 200 200" className="absolute -right-20 top-0 w-[400px] animate-pulse opacity-40" xmlns="http://www.w3.org/2000/svg">
                     <path fill="#1baa56" d="M44,-72C56.5,-69,65.6,-56.1,65.7,-42.4C65.9,-28.8,56.9,-14.4,49.2,-4.5C41.4,5.4,34.9,10.9,32.5,20.6C30.1,30.3,31.9,44.3,27.1,53.7C22.4,63.2,11.2,68.1,-2.1,71.8C-15.5,75.5,-31,78.1,-42.1,72.3C-53.2,66.5,-59.9,52.5,-64,39.1C-68.2,25.6,-69.8,12.8,-62.8,4C-55.8,-4.7,-40.2,-9.5,-35.4,-21.7C-30.5,-33.9,-36.4,-53.5,-32.3,-61.4C-28.2,-69.2,-14.1,-65.3,0.8,-66.8C15.8,-68.2,31.5,-75.1,44,-72Z" transform="translate(100 100)" />
                 </svg>
-                <svg viewBox="0 0 200 200" className="absolute -left-20 bottom-20 w-[500px] animate-pulse opacity-30" xmlns="http://www.w3.org/2000/svg">
+                <svg viewBox="0 0 200 200" className="absolute -left-20 bottom-0 w-[500px] animate-pulse opacity-30" xmlns="http://www.w3.org/2000/svg">
                     <path fill="#05B6D3" d="M37,-42.5C44.8,-29.1,45.9,-14.6,44.4,-1.5C42.9,11.6,38.8,23.1,30.9,30.5C23.1,37.9,11.6,41.2,-5.4,46.6C-22.4,52,-44.7,59.5,-54.4,52.1C-64.2,44.7,-61.3,22.4,-59,2.3C-56.7,-17.8,-55.1,-35.6,-45.3,-48.9C-35.6,-62.3,-17.8,-71.2,-1.6,-69.6C14.6,-68,29.1,-55.8,37,-42.5Z" transform="translate(100 100)" />
                 </svg>
                 <div className="absolute top-1/4 right-1/4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
@@ -254,7 +254,6 @@ export default function SignUp() {
                 </div>
             </div>
 
-            {/* Custom CSS for animations */}
             <style jsx>{`
                 @keyframes blob {
                     0% { transform: translate(0px, 0px) scale(1); }
