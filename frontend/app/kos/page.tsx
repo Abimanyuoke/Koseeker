@@ -365,19 +365,19 @@ const KosPage = () => {
                                 <button
                                     onClick={() => { setSelectedGender("male"); setShowGenderDropdown(false); }}
                                     className="w-full text-left px-4 py-2.5 hover:bg-blue-50 flex items-center gap-3 transition-colors">
-                                    <MdMale className="text-blue-600 text-lg" />
+                                    <MdMale className="text-gray-600 text-lg" />
                                     <span className="font-medium">Pria</span>
                                 </button>
                                 <button
                                     onClick={() => { setSelectedGender("female"); setShowGenderDropdown(false); }}
                                     className="w-full text-left px-4 py-2.5 hover:bg-blue-50 flex items-center gap-3 transition-colors">
-                                    <MdFemale className="text-pink-600 text-lg" />
+                                    <MdFemale className="text-gray-600 text-lg" />
                                     <span className="font-medium">Wanita</span>
                                 </button>
                                 <button
                                     onClick={() => { setSelectedGender("all"); setShowGenderDropdown(false); }}
                                     className="w-full text-left px-4 py-2.5 hover:bg-blue-50 flex items-center gap-3 transition-colors">
-                                    <MdGroups className="text-green-600 text-lg" />
+                                    <MdGroups className="text-gray-600 text-lg" />
                                     <span className="font-medium">Campur</span>
                                 </button>
                             </div>
@@ -450,8 +450,7 @@ const KosPage = () => {
                                             type="checkbox"
                                             checked={selectedFacilities.includes(facility)}
                                             onChange={() => toggleFacility(facility)}
-                                            className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500"
-                                        />
+                                            className="w-4 h-4 text-blue-600 rounded focus:ring-2 focus:ring-blue-500" />
                                         <span className="font-medium">{facility}</span>
                                     </label>
                                 ))}
@@ -533,6 +532,7 @@ const KosPage = () => {
                 {loading ? (
                     <div className="flex items-center justify-center min-h-[250px]">
                         <div className="flex flex-col items-center gap-4">
+                            {/* Animated spin */}
                             <FiLoader className="animate-spin text-green-600 text-4xl" />
                             <p className="text-gray-600 text-lg">Memuat data kos...</p>
                         </div>
@@ -612,17 +612,6 @@ const KosPage = () => {
 
                                             {/* Content Section */}
                                             <div className="p-4">
-                                                {/* Rating & Gender Badge */}
-                                                <div className="flex items-center gap-2 mb-2">
-                                                    <div className="flex items-center gap-1 bg-green-50 px-2 py-1 rounded">
-                                                        <span className="text-green-600 text-sm">⭐</span>
-                                                        <span className="text-green-700 font-bold text-sm">4.9</span>
-                                                    </div>
-                                                    <span className="text-xs text-gray-500">
-                                                        Sisa 3 kamar
-                                                    </span>
-                                                </div>
-
                                                 {/* Title */}
                                                 <h3 className="font-bold text-base text-gray-900 mb-1 line-clamp-2 leading-tight">
                                                     {kos.name}

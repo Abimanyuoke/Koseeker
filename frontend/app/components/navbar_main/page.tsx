@@ -56,13 +56,11 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    // Hapus cookies
     removeCookie("token");
     removeCookie("id");
     removeCookie("name");
     removeCookie("role");
     removeCookie("profile_picture");
-    // Hapus localStorage menggunakan utility function
     clearAuthData();
 
     router.replace(`/auth/login`);
@@ -133,7 +131,7 @@ const Navbar = () => {
             <PiDeviceMobile className='text-base' />
             Download App
           </button>
-          <button className='flex items-center text-xs gap-2 cursor-pointer'>
+          <button className='flex items-center text-xs gap-2 cursor-pointer' onClick={() => router.push('/kos')}>
             <LuCalendarDays className='text-base' />
             Sewa Kos
           </button>

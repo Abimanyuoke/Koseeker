@@ -308,7 +308,7 @@ const KosPromoPage = () => {
                                     </div>
 
                                     {/* Konten Kos */}
-                                    <div className="p-5">
+                                    <div className="py-5">
                                         {/* Badge Gender */}
                                         <span className={`px-2 py-1 rounded text-[14px] font-bold border border-slate-300  ${getGenderColor(kos.gender)}`}>
                                             {getGenderText(kos.gender)}
