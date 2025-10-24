@@ -178,7 +178,7 @@ export default function SignUp() {
                                     onChange={(e) => setUser({ ...user, phone: e.target.value })}
                                     required
                                     placeholder="+62 812-3456-7890"
-                                    className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400"
+                                    className="w-full pl-12 text-sm pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400"
                                 />
                             </div>
 
