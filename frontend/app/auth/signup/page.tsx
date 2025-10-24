@@ -100,16 +100,16 @@ export default function SignUp() {
                                 <div className="space-y-4">
                                     <h2 className="text-5xl font-bold leading-tight">
                                         Start Your
-                                        <span className="block text-primary">Journey Today</span>
+                                        <span className="block">Journey Today</span>
                                     </h2>
                                     <p className="text-lg text-white/90 leading-relaxed max-w-md">
                                         Join thousands of students finding their perfect kos. Your comfortable home away from home awaits!
                                     </p>
-                                    <div className="flex gap-2 pt-4">
+                                    {/* <div className="flex gap-2 pt-4">
                                         <div className="w-2 h-2 bg-primary rounded-full animate-bounce"></div>
                                         <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0.2s" }}></div>
                                         <div className="w-2 h-2 bg-primary rounded-full animate-bounce" style={{ animationDelay: "0.4s" }}></div>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                         </div>
@@ -254,7 +254,7 @@ export default function SignUp() {
                 </div>
             </div>
 
-            <style jsx>{`
+            {/* <style jsx>{`
                 @keyframes blob {
                     0% { transform: translate(0px, 0px) scale(1); }
                     33% { transform: translate(30px, -50px) scale(1.1); }
@@ -270,7 +270,7 @@ export default function SignUp() {
                 .animation-delay-4000 {
                     animation-delay: 4s;
                 }
-            `}</style>
+            `}</style> */}
         </div>
     )
 }
