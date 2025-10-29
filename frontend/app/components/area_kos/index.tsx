@@ -198,20 +198,20 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
     };
 
     // Tampilkan periode berdasarkan kalender
-    const getPeriodText = (kalender: string) => {
-        switch (kalender) {
-            case "minggu": return "/minggu";
-            case "bulan": return "/bulan";
-            case "tahun": return "/tahun";
-            default: return "/bulan";
-        }
-    };
+    // const getPeriodText = (kalender: string) => {
+    //     switch (kalender) {
+    //         case "minggu": return "/minggu";
+    //         case "bulan": return "/bulan";
+    //         case "tahun": return "/tahun";
+    //         default: return "/bulan";
+    //     }
+    // };
 
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-50 flex items-center justify-center">
                 <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto mb-4"></div>
                     <p className="text-gray-600">Memuat data kos {kota}...</p>
                 </div>
             </div>
@@ -233,7 +233,7 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                     </div>
 
                     {/* Filter Section */}
-                    <div className="mb-8 bg-white p-6 rounded-lg shadow-sm">
+                    <div className="mb-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                             {/* Filter Kalender */}
                             <div>
@@ -332,8 +332,8 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                                         }
                                     };
 
-                                    const getGenderColor = (gender: string) => {
-                                        return 'text-[#404040]';
+                                    const getGenderColor = (_gender: string) => {
+                                        return 'text-[#404040]'
                                     };
 
                                     return (
