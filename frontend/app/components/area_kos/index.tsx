@@ -6,7 +6,6 @@ import { IKos } from "../../types";
 import { get } from "../../../lib/bridge";
 import { BASE_IMAGE_KOS } from "../../../global";
 import Select from "../select";
-import PromoSection from "../promo/PromoSection";
 
 // Enum untuk kalender sesuai dengan Prisma
 const kalenderOptions = [
@@ -221,9 +220,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
 
     return (
         <div className="pb-24">
-            {/* Promo Section - Outside container for full width */}
-            <PromoSection city={kota} />
-
             <div className="min-h-screen bg-gray-50 py-8 mx-[150px]">
                 <div className="container mx-auto px-4">
                     {/* Header */}
@@ -455,14 +451,14 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                                                     )}
 
                                                     {/* Tombol Ajukan Sewa */}
-                                                    <button
+                                                    {/* <button
                                                         onClick={(e) => {
                                                             e.stopPropagation();
                                                             window.location.href = `/kos/${kos.id}`;
                                                         }}
                                                         className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-6 rounded-lg transition-colors duration-200 text-sm shadow-md hover:shadow-lg">
                                                         Ajukan Sewa
-                                                    </button>
+                                                    </button> */}
                                                 </div>
                                             </div>
                                         </div>
