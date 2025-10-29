@@ -8,7 +8,6 @@ import { BASE_API_URL, BASE_IMAGE_KOS } from "../../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
 import { FiLoader } from "react-icons/fi";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { ArrowKos } from "../../components/arrow";
 import Slider from "react-slick";
 import Select from "../../components/select";
@@ -123,21 +122,21 @@ const Kos = () => {
         }
     };
 
-    const handlePrevImage = (e: React.MouseEvent, kosId: number, totalImages: number) => {
-        e.stopPropagation();
-        setImageIndexes(prev => ({
-            ...prev,
-            [kosId]: prev[kosId] > 0 ? prev[kosId] - 1 : totalImages - 1
-        }));
-    };
+    // const handlePrevImage = (e: React.MouseEvent, kosId: number, totalImages: number) => {
+    //     e.stopPropagation();
+    //     setImageIndexes(prev => ({
+    //         ...prev,
+    //         [kosId]: prev[kosId] > 0 ? prev[kosId] - 1 : totalImages - 1
+    //     }));
+    // };
 
-    const handleNextImage = (e: React.MouseEvent, kosId: number, totalImages: number) => {
-        e.stopPropagation();
-        setImageIndexes(prev => ({
-            ...prev,
-            [kosId]: prev[kosId] < totalImages - 1 ? prev[kosId] + 1 : 0
-        }));
-    };
+    // const handleNextImage = (e: React.MouseEvent, kosId: number, totalImages: number) => {
+    //     e.stopPropagation();
+    //     setImageIndexes(prev => ({
+    //         ...prev,
+    //         [kosId]: prev[kosId] < totalImages - 1 ? prev[kosId] + 1 : 0
+    //     }));
+    // };
 
     /** ---------- RENDER ---------- */
     return (
