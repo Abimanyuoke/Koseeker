@@ -69,7 +69,7 @@ export default function KampusArea() {
                         </div>
                     </div>
                 </button>
-                <button className="relative w-[280px] h-[100px] flex justify-center items-center bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `#`}>
+                <button className="relative w-[280px] h-[100px] flex justify-center items-center bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `/area`}>
                     <span className=" flex gap-2 items-center text-black text-lg font-bold hover:underline cursor-pointer">
                         Lihat semua <BsArrowRight />
                     </span>

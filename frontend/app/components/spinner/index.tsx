@@ -14,15 +14,13 @@ export default function Spinner({ className, src = "", height, width }: SpinnerP
             <motion.div
                 animate={{ rotate: 360 }}
                 transition={{ repeat: Infinity, duration: 1.5, ease: "linear" }}
-                className="w-20 h-20"
-            >
+                className="w-20 h-20">
                 <Image
                     src={src}
                     alt="Spinner"
                     width={width}
                     height={height}
-                    className="object-contain"
-                />
+                    className="object-contain"/>
             </motion.div>
         </div>
     );

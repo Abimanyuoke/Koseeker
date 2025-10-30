@@ -55,7 +55,7 @@ export default function KosArea() {
                                 Kos Bandung
                             </span>
                         </button>
-                        <button className="relative w-[280px] h-[230px] shadow-xl flex justify-center items-center rounded-lg" onClick={() => window.location.href = `#`}>
+                        <button className="relative w-[280px] h-[230px] shadow-xl flex justify-center items-center rounded-lg" onClick={() => window.location.href = `/area`}>
                                 <span className=" flex gap-2 items-center text-black text-2xl font-bold hover:underline cursor-pointer">
                                     Lihat semua <BsArrowRight />
                                 </span>
