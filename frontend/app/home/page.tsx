@@ -6,7 +6,7 @@ import Image from "next/image";
 import Search from "./search";
 import { IoSearch } from "react-icons/io5";
 import { CustomArrows } from "../components/arrow";
-import Kos from "../components/kos/page";
+import Kos from "../kos_home/page";
 import bild from "../../public/images/building.svg";
 import Slider from "react-slick";
 import KosPromoPage from "../kos_promo/page";
@@ -54,18 +54,18 @@ export default function Home() {
                 {/* Carousel */}
                 <div className="pt-16 h-[350px] relative">
                     <Slider ref={sliderRef} {...settings}>
-                            <Voucher img="/images/voucher/voucher1.svg" alt="Voucher 10"/>
-                            <Voucher img="/images/voucher/voucher2.svg" alt="Voucher 10"/>
-                            <Voucher img="/images/voucher/voucher3.svg" alt="Voucher 10"/>
-                            <Voucher img="/images/voucher/voucher4.svg" alt="Voucher 10"/>
-                            <Voucher img="/images/voucher/voucher5.svg" alt="Voucher 10"/>
-                            <Voucher img="/images/voucher/voucher6.svg" alt="Voucher 10"/>
-                            <Voucher img="/images/voucher/voucher7.svg" alt="Voucher 10"/>
-                            <Voucher img="/images/voucher/voucher8.svg" alt="Voucher 10"/>
-                            <Voucher img="/images/voucher/voucher9.svg" alt="Voucher 10"/>
-                            <Voucher img="/images/voucher/voucher10.svg" alt="Voucher 10"/>
-                            <Voucher img="/images/voucher/voucher11.svg" alt="Voucher 10"/>
-                            <Voucher img="/images/voucher/voucher12.svg" alt="Voucher 10"/>
+                        <Voucher img="/images/voucher/voucher1.svg" alt="Voucher 10" />
+                        <Voucher img="/images/voucher/voucher2.svg" alt="Voucher 10" />
+                        <Voucher img="/images/voucher/voucher3.svg" alt="Voucher 10" />
+                        <Voucher img="/images/voucher/voucher4.svg" alt="Voucher 10" />
+                        <Voucher img="/images/voucher/voucher5.svg" alt="Voucher 10" />
+                        <Voucher img="/images/voucher/voucher6.svg" alt="Voucher 10" />
+                        <Voucher img="/images/voucher/voucher7.svg" alt="Voucher 10" />
+                        <Voucher img="/images/voucher/voucher8.svg" alt="Voucher 10" />
+                        <Voucher img="/images/voucher/voucher9.svg" alt="Voucher 10" />
+                        <Voucher img="/images/voucher/voucher10.svg" alt="Voucher 10" />
+                        <Voucher img="/images/voucher/voucher11.svg" alt="Voucher 10" />
+                        <Voucher img="/images/voucher/voucher12.svg" alt="Voucher 10" />
                     </Slider>
                     <div>
                         <CustomArrows
@@ -100,11 +100,11 @@ export default function Home() {
             <KosPromoPage />
             {/* Area Kota */}
             <div className="py-20">
-                <KosArea/>
+                <KosArea />
             </div>
             {/* Area Kampus */}
             <div className="py-20">
-                <KampusArea/>
+                <KampusArea />
             </div>
             <Blog />
         </div>

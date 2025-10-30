@@ -138,7 +138,9 @@ const Navbar = () => {
         </div>
         <div className='flex items-center justify-between py-3 relative h-[80px]'>
           <div className='flex items-center gap-2 cursor-pointer'>
-            <Image src={logo} alt="Logo" width={40} height={40} className="w-12 h-12 object-cover" />
+            <button onClick={() => router.push('/home')} className='cursor-pointer'>
+              <Image src={logo} alt="Logo" width={40} height={40} className="w-12 h-12 object-cover" />
+            </button>
             <AnimatePresence mode="wait">
               {!scrolled ? (
                 <motion.span

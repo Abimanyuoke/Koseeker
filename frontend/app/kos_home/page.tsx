@@ -4,13 +4,13 @@ import { useState, useEffect, useRef, SetStateAction } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { IKos } from "@/app/types";
 import { getCookies } from "@/lib/client-cookies";
-import { BASE_API_URL, BASE_IMAGE_KOS } from "../../../global";
+import { BASE_API_URL, BASE_IMAGE_KOS } from "../../global";
 import { get } from "@/lib/bridge";
-import { AlertToko } from "../../components/alert";
+import { AlertToko } from "../components/alert";
 import { FiLoader } from "react-icons/fi";
-import { ArrowKos } from "../../components/arrow";
+import { ArrowKos } from "../components/arrow";
 import Slider from "react-slick";
-import Select from "../../components/select";
+import Select from "../components/select";
 import Image from "next/image";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -336,7 +336,7 @@ const Kos = () => {
                                                             {/* Discount Badge - hanya tampil jika discount > 0 */}
                                                             <div className="flex items-center gap-2">
                                                                 {kos.discountPercent && Number(kos.discountPercent) > 0 && (
-                                                                    <div className="text-red-500 py-1 text-sm font-bold flex items-center gap-1">
+                                                                    <div className="text-red-600 py-1 text-sm font-bold flex items-center gap-1">
                                                                         <BsFillLightningChargeFill />
                                                                         Diskon -{kos.discountPercent}%
                                                                     </div>
@@ -346,7 +346,7 @@ const Kos = () => {
                                                                 </span>
                                                             </div>
                                                             <div className="flex items-center gap-2">
-                                                                <span className="text-base font-bold text-red-500">
+                                                                <span className="text-base font-bold text-red-600">
                                                                     Rp {formatPrice(kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100))}
                                                                 </span>
                                                                 <span className="text-sm text-black">

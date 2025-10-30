@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, SetStateAction, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { IKos } from "@/app/types";
 import { getCookies } from "@/lib/client-cookies";
@@ -12,6 +12,8 @@ import { FiLoader } from "react-icons/fi";
 import Select from "../components/select";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BsFillLightningChargeFill } from "react-icons/bs";
+import { ArrowKos } from "../components/arrow";
+import Slider from "react-slick";
 
 interface CountdownProps {
     endDate: Date;
@@ -79,6 +81,7 @@ const Countdown: React.FC<CountdownProps> = ({ endDate }) => {
 
 const KosPromoPage = () => {
     const router = useRouter();
+    const sliderRef = useRef<Slider | null>(null);
 
     // Daftar kota berdasarkan enum Kota di Prisma
     const kotaOptions = [
@@ -211,21 +214,28 @@ const KosPromoPage = () => {
                         </div>
                     </div>
 
-
-                    <div className="w-full md:w-64">
-                        <Select
-                            id="kota-select"
-                            value={selectedKota}
-                            onChange={(value) => setSelectedKota(value)}
-                            label="Pilih Kota"
-                            className="text-gray-900">
-                            <option value="all">Semua Kota</option>
-                            {kotaOptions.map((kota) => (
-                                <option key={kota} value={kota}>
-                                    {kota}
-                                </option>
-                            ))}
-                        </Select>
+                    <div className="relative flex items-center gap-4 w-full md:w-auto col-span-2">
+                        <div className="w-full md:w-40">
+                            <Select
+                                id="kota-select"
+                                value={selectedKota}
+                                onChange={(value: SetStateAction<string>) => setSelectedKota(value)}
+                                label="Pilih Kota"
+                                className="text-gray-900">
+                                <option value="all">Semua Kota</option>
+                                {kotaOptions.map((kota) => (
+                                    <option key={kota} value={kota}>
+                                        {kota}
+                                    </option>
+                                ))}
+                            </Select>
+                        </div>
+                        <div className="border-l-2 border-slate-300 h-8 mt-4"></div>
+                        <div>
+                            <ArrowKos
+                                next={() => sliderRef.current?.slickNext()}
+                                prev={() => sliderRef.current?.slickPrev()} />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -237,7 +247,7 @@ const KosPromoPage = () => {
                 {loading ? (
                     <div className="flex items-center justify-center min-h-[250px]">
                         <div className="flex flex-col items-center gap-4">
-                            <FiLoader className="animate-spin text-red-500 text-4xl" />
+                            <FiLoader className="animate-spin text-green-500 text-4xl" />
                             <p className="text-gray-600 text-lg">Memuat data kos promo...</p>
                         </div>
                     </div>
@@ -251,7 +261,7 @@ const KosPromoPage = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                         {kosData.map((kos) => {
                             const currentImageIndex = imageIndexes[kos.id] || 0;
-                            const hasMultipleImages = kos.images && kos.images.length > 1;
+                            // const hasMultipleImages = kos.images && kos.images.length > 1;
                             // const originalPrice = kos.pricePerMonth;
                             // const discountedPrice = kos.discountPercent ? originalPrice - (originalPrice * kos.discountPercent / 100) : originalPrice;
 

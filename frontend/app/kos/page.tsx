@@ -250,7 +250,6 @@ const KosPage = () => {
                 <div className="grid grid-cols-7 items-center gap-4">
                     <div className="flex items-center gap-4 col-span-7">
                         <div>
-                            <ButtonBack />
                             <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
                                 Rekomendasi Kos di{" "}
                                 <span className="text-green-600">
@@ -265,7 +264,7 @@ const KosPage = () => {
                 </div>
 
                 {/* Pilih Kota */}
-                <div className="mt-6">
+                <div    >
                     <div className="w-full md:w-64">
                         <Select
                             id="kota-select"
@@ -475,7 +474,7 @@ const KosPage = () => {
                             onClick={resetFilters}
                             className="flex items-center gap-2 px-4 py-2.5 rounded-full bg-gradient-to-r from-gray-100 to-gray-200 text-gray-700 hover:from-gray-200 hover:to-gray-300 whitespace-nowrap transition-all duration-200 shadow-sm hover:shadow-md ">
                             <IoClose className="text-lg font-bold" />
-                            <span className="font-medium">Reset ({getActiveFiltersCount()})</span>
+                            <span className="font-medium">Reset</span>
                         </button>
                     )}
                 </div>
@@ -501,9 +500,9 @@ const KosPage = () => {
                     </div>
                 ) : (
                     <div>
-                        <div className="mb-6 text-gray-600 font-medium">
+                        {/* <div className="mb-6 text-gray-600 font-medium">
                             Menampilkan {filteredKosData.length} dari {kosData.length} kos
-                        </div>
+                        </div> */}
 
                         {/* Grid Layout */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -514,7 +513,7 @@ const KosPage = () => {
                                 return (
                                     <div
                                         key={kos.id}
-                                        className="bg-white rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer group transform hover:-translate-y-1"
+                                        className="bg-white rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer"
                                         onClick={() => router.push(`/kos/${kos.id}`)}>
 
                                         {/* Image Section */}
@@ -525,10 +524,10 @@ const KosPage = () => {
                                                         src={`${BASE_IMAGE_KOS}/${kos.images[currentImageIndex].file}`}
                                                         alt={kos.name}
                                                         fill
-                                                        className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                                        className="object-cover"
                                                         unoptimized />
 
-                                                    {hasMultipleImages && (
+                                                    {/* {hasMultipleImages && (
                                                         <div>
                                                             <button
                                                                 onClick={(e) => handlePrevImage(e, kos.id, kos.images.length)}
@@ -541,16 +540,16 @@ const KosPage = () => {
                                                                 <FaChevronRight className="text-sm" />
                                                             </button>
                                                         </div>
-                                                    )}
+                                                    )} */}
 
-                                                    {/* Top Right - Discount Badge */}
+                                                    {/* Top Right - Discount Badge
                                                     {kos.discountPercent && Number(kos.discountPercent) > 0 && (
                                                         <div className="absolute top-3 right-3 z-20">
                                                             <div className="bg-red-500 text-white px-3 py-1.5 rounded-md text-sm font-bold shadow-lg">
                                                                 Diskon {kos.discountPercent}%
                                                             </div>
                                                         </div>
-                                                    )}
+                                                    )} */}
                                                 </div>
                                             ) : (
                                                 <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
@@ -613,7 +612,7 @@ const KosPage = () => {
                                                         {/* Discount Badge - hanya tampil jika discount > 0 */}
                                                         <div className="flex items-center gap-2">
                                                             {kos.discountPercent && Number(kos.discountPercent) > 0 && (
-                                                                <div className="text-red-500 py-1 text-sm font-bold flex items-center gap-1">
+                                                                <div className="text-red-600 py-1 text-sm font-bold flex items-center gap-1">
                                                                     <BsFillLightningChargeFill />
                                                                     Diskon -{kos.discountPercent}%
                                                                 </div>
@@ -623,7 +622,7 @@ const KosPage = () => {
                                                             </span>
                                                         </div>
                                                         <div className="flex items-center gap-2">
-                                                            <span className="text-base font-bold text-red-500">
+                                                            <span className="text-base font-bold text-red-600">
                                                                 Rp {formatPrice(kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100))}
                                                             </span>
                                                             <span className="text-sm text-black">
