@@ -22,6 +22,8 @@ export interface IKos {
     kampus: string;
     kota: string;
     kalender: string;
+    totalRooms: number;
+    availableRooms: number;
     createdAt: string;
     updatedAt: string;
     images: IKosImage[];

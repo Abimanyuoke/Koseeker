@@ -2,6 +2,7 @@ Update:
 1. deploy lewat vercel (frontend) dan supabase (backend)
 2. tambahkan untuk yang icon fasilitas pada kos booking,
 3. tambahkan sisa kamar dan jika habis akan di ifokan
+4. untuk yang gambar yang ada di kos [id] ada tombol untuk yang lihat semua dan membuat halaman sendiri dengan kategori sendiri.
 Jika masih belum ada itu akan di arahkan pada component yang menampilkan Masih Update dengan gambar robot rusak atau 404 google yang abu abu di tengah ada gambar robot rusak
 
 

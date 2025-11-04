@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { getUserData } from '@/lib/auth'
 import { BASE_API_URL } from '@/global'
 import { toast } from 'sonner'
-import { FaArrowLeft, FaHome, FaMapMarkerAlt, FaMoneyBillWave, FaPercent, FaUsers, FaUniversity, FaCity, FaCalendarAlt, FaImage, FaList, FaCheck, FaTimes, FaMale, FaFemale, FaUserFriends, FaCalendarWeek, FaCalendarDay, FaCalendar } from 'react-icons/fa'
+import { FaArrowLeft, FaHome, FaMapMarkerAlt, FaMoneyBillWave, FaPercent, FaUsers, FaUniversity, FaCity, FaCalendarAlt, FaImage, FaList, FaCheck, FaTimes, FaMale, FaFemale, FaUserFriends, FaCalendarWeek, FaCalendarDay, FaCalendar, FaDoorOpen } from 'react-icons/fa'
 
 export default function CreateKosPage() {
     const router = useRouter()
@@ -20,7 +20,8 @@ export default function CreateKosPage() {
         gender: '',
         kampus: '',
         kota: '',
-        kalender: ''
+        kalender: '',
+        totalRooms: ''
     })
 
     // Predefined facilities dengan checkbox
@@ -128,6 +129,11 @@ export default function CreateKosPage() {
             return
         }
 
+        if (!formData.totalRooms || Number(formData.totalRooms) < 1) {
+            toast.error('Jumlah kamar minimal 1')
+            return
+        }
+
         if (selectedImages.length === 0) {
             toast.error('Minimal 1 gambar diperlukan')
             return
@@ -170,6 +176,8 @@ export default function CreateKosPage() {
 
             submitData.append('kota', formData.kota)
             submitData.append('kalender', formData.kalender)
+            submitData.append('totalRooms', formData.totalRooms)
+            submitData.append('availableRooms', formData.totalRooms) // Initially same as totalRooms
 
             // Add images
             selectedImages.forEach(file => {
@@ -347,6 +355,26 @@ export default function CreateKosPage() {
                                         max='100'
                                     />
                                 </div>
+                            </div>
+
+                            {/* Jumlah Kamar */}
+                            <div>
+                                <label className='flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2'>
+                                    <FaDoorOpen className='text-gray-500' /> Jumlah Kamar Tersedia <span className='text-red-500'>*</span>
+                                </label>
+                                <input
+                                    type='number'
+                                    name='totalRooms'
+                                    value={formData.totalRooms}
+                                    onChange={handleInputChange}
+                                    placeholder='10'
+                                    className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-transparent transition'
+                                    required
+                                    min='1'
+                                />
+                                <p className='text-xs text-gray-500 mt-2'>
+                                    Masukkan total jumlah kamar yang tersedia untuk disewakan
+                                </p>
                             </div>
 
                             {/* Gender */}

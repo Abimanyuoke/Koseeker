@@ -16,6 +16,8 @@ interface Kos {
     gender: string
     kampus: string
     kota: string
+    totalRooms: number
+    availableRooms: number
     images: { file: string }[]
     facilities: { facility: string }[]
 }
@@ -457,6 +459,46 @@ export default function BookKosPage() {
                                 </div>
                             </div>
 
+                            {/* Ketersediaan Kamar */}
+                            <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                                <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
+                                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                                    </svg>
+                                    Ketersediaan Kamar
+                                </h3>
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-sm text-gray-600">Kamar Tersedia</p>
+                                        <p className="text-2xl font-bold text-blue-600">{kos.availableRooms} / {kos.totalRooms}</p>
+                                    </div>
+                                    <div>
+                                        {kos.availableRooms === 0 ? (
+                                            <span className="inline-flex items-center gap-2 bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-semibold">
+                                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                                </svg>
+                                                Kamar Penuh
+                                            </span>
+                                        ) : kos.availableRooms <= 3 ? (
+                                            <span className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold">
+                                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                                                </svg>
+                                                Hampir Penuh
+                                            </span>
+                                        ) : (
+                                            <span className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold">
+                                                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                </svg>
+                                                Tersedia
+                                            </span>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+
                             {kos.facilities && kos.facilities.length > 0 && (
                                 <div>
                                     <h3 className="font-medium text-gray-900 mb-2">Fasilitas:</h3>
@@ -744,13 +786,24 @@ export default function BookKosPage() {
                                 </div>
                             </div>
 
-                            <button
-                                type="submit"
-                                disabled={submitting || !bookingData.startDate || !bookingData.endDate}
-                                className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                            >
-                                {submitting ? 'Memproses...' : 'Buat Booking'}
-                            </button>
+                            {kos && kos.availableRooms === 0 ? (
+                                <div className="w-full bg-red-100 border-2 border-red-300 text-red-800 py-3 px-4 rounded-md text-center font-semibold">
+                                    <div className="flex items-center justify-center gap-2">
+                                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                                        </svg>
+                                        Kamar Sudah Penuh - Tidak Bisa Booking
+                                    </div>
+                                </div>
+                            ) : (
+                                <button
+                                    type="submit"
+                                    disabled={submitting || !bookingData.startDate || !bookingData.endDate || (kos && kos.availableRooms === 0)}
+                                    className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                                >
+                                    {submitting ? 'Memproses...' : 'Buat Booking'}
+                                </button>
+                            )}
 
                             {/* Login reminder if not authenticated */}
                             <div className="text-center text-sm text-gray-500">
