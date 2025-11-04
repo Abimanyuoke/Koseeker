@@ -387,19 +387,19 @@ const KosDetailPage = () => {
                                         {kosDetail.availableRooms !== undefined && kosDetail.totalRooms !== undefined && (
                                             <div className="flex items-center gap-2">
                                                 {kosDetail.availableRooms === 0 ? (
-                                                    <div className="flex items-center gap-2 bg-red-100 border border-red-300 px-4 py-2 rounded-lg">
-                                                        <PiDoorOpen className="text-red-600 text-xl" />
-                                                        <span className="text-red-800 font-semibold">Kamar Penuh</span>
+                                                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg">
+                                                        <PiDoorOpen className="text-slate-700 text-xl" />
+                                                        <span className="text-red-700 font-semibold">Kamar Penuh</span>
                                                     </div>
                                                 ) : kosDetail.availableRooms <= 3 ? (
-                                                    <div className="flex items-center gap-2 bg-yellow-100 border border-yellow-300 px-4 py-2 rounded-lg">
-                                                        <PiDoorOpen className="text-yellow-700 text-xl" />
-                                                        <span className="text-yellow-800 font-semibold">{kosDetail.availableRooms} Kamar Tersisa</span>
+                                                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg">
+                                                        <PiDoorOpen className="text-slate-700 text-xl" />
+                                                        <span className="text-yellow-700 font-semibold">{kosDetail.availableRooms} Kamar Tersisa</span>
                                                     </div>
                                                 ) : (
-                                                    <div className="flex items-center gap-2 bg-green-100 border border-green-300 px-4 py-2 rounded-lg">
-                                                        <PiDoorOpen className="text-green-700 text-xl" />
-                                                        <span className="text-green-800 font-semibold">{kosDetail.availableRooms} Kamar Tersedia</span>
+                                                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg">
+                                                        <PiDoorOpen className="text-slate-700 text-xl" />
+                                                        <span className="text-green-700 font-semibold">{kosDetail.availableRooms} Kamar Tersedia</span>
                                                     </div>
                                                 )}
                                             </div>

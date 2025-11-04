@@ -170,13 +170,19 @@ export default function BookKosPage() {
     const calculateEndDate = () => {
         if (!bookingData.startDate) return
 
-        const start = new Date(bookingData.startDate)
+        // Parse date string parts to avoid timezone issues
+        const [year, month, day] = bookingData.startDate.split('-').map(Number)
+        const start = new Date(year, month - 1, day)
+
         // Tambahkan bulan sesuai durasi
         const end = new Date(start)
         end.setMonth(end.getMonth() + bookingData.durationMonths)
 
-        // Format tanggal ke YYYY-MM-DD
-        const endDateString = end.toISOString().split('T')[0]
+        // Format tanggal ke YYYY-MM-DD manually to avoid timezone issues
+        const endYear = end.getFullYear()
+        const endMonth = String(end.getMonth() + 1).padStart(2, '0')
+        const endDay = String(end.getDate()).padStart(2, '0')
+        const endDateString = `${endYear}-${endMonth}-${endDay}`
 
         setBookingData(prev => ({
             ...prev,
@@ -353,12 +359,16 @@ export default function BookKosPage() {
 
         // Add all days of the month
         for (let day = 1; day <= lastDay.getDate(); day++) {
-            const date = new Date(currentYear, currentMonth, day)
-            const dateString = date.toISOString().split('T')[0]
+            // Create date string directly without timezone conversion
+            const year = currentYear
+            const month = String(currentMonth + 1).padStart(2, '0')
+            const dayStr = String(day).padStart(2, '0')
+            const dateString = `${year}-${month}-${dayStr}`
 
             // Mark as past if date is before today
             const todayStart = new Date(today)
             todayStart.setHours(0, 0, 0, 0)
+            const date = new Date(currentYear, currentMonth, day)
             const isPastDate = date < todayStart
 
             days.push({

@@ -183,6 +183,26 @@ export const createBook = async (request: Request, response: Response) => {
             });
         }
 
+        // Check if kos has available rooms
+        const kos = await prisma.kos.findUnique({
+            where: { id: Number(kosId) },
+            select: { availableRooms: true, totalRooms: true, name: true }
+        });
+
+        if (!kos) {
+            return response.status(404).json({
+                status: false,
+                message: "Kos tidak ditemukan"
+            });
+        }
+
+        if (kos.availableRooms <= 0) {
+            return response.status(400).json({
+                status: false,
+                message: `Maaf, kamar di ${kos.name} sudah penuh. Silakan pilih kos lain atau hubungi pemilik.`
+            });
+        }
+
         // Buat book baru
         // const newBook = await prisma.book.create({
         //     data: {
@@ -312,10 +332,62 @@ export const updateStatusBook = async (request: Request, response: Response) => 
             .status(404)
             .json({ status: false, message: `Book is not found` })
 
+        // Handle room availability changes based on status change
+        const oldStatus = findBook.status;
+        const newStatus = status || findBook.status;
+
+        // Update availableRooms if status changes
+        if (newStatus !== oldStatus) {
+            const currentKos = await prisma.kos.findUnique({
+                where: { id: findBook.kosId },
+                select: { availableRooms: true, totalRooms: true }
+            });
+
+            if (currentKos) {
+                let roomChange = 0;
+
+                // Status berubah dari pending/reject ke accept -> kurangi kamar
+                if (newStatus === 'accept' && oldStatus !== 'accept') {
+                    roomChange = -1;
+                }
+                // Status berubah dari accept ke reject/pending -> tambah kamar kembali
+                else if (oldStatus === 'accept' && newStatus !== 'accept') {
+                    roomChange = 1;
+                }
+
+                if (roomChange !== 0) {
+                    const newAvailableRooms = currentKos.availableRooms + roomChange;
+
+                    // Validasi tidak boleh kurang dari 0 atau lebih dari totalRooms
+                    if (newAvailableRooms < 0) {
+                        return response.status(400).json({
+                            status: false,
+                            message: 'Tidak ada kamar tersedia. Silakan tolak booking ini.'
+                        });
+                    }
+
+                    if (newAvailableRooms > currentKos.totalRooms) {
+                        return response.status(400).json({
+                            status: false,
+                            message: 'Jumlah kamar tersedia tidak boleh melebihi total kamar.'
+                        });
+                    }
+
+                    // Update availableRooms di kos
+                    await prisma.kos.update({
+                        where: { id: findBook.kosId },
+                        data: { availableRooms: newAvailableRooms }
+                    });
+
+                    console.log(`[Room Update] Kos ID: ${findBook.kosId}, Status: ${oldStatus} -> ${newStatus}, Available Rooms: ${currentKos.availableRooms} -> ${newAvailableRooms}`);
+                }
+            }
+        }
+
         /** process to update book's data */
         const updatedBook = await prisma.book.update({
             data: {
-                status: status || findBook.status,
+                status: newStatus,
                 payment: payment || findBook.payment,
                 startDate: startDate ? new Date(startDate) : findBook.startDate,
                 endDate: endDate ? new Date(endDate) : findBook.endDate,
@@ -328,7 +400,9 @@ export const updateStatusBook = async (request: Request, response: Response) => 
                         id: true,
                         name: true,
                         address: true,
-                        pricePerMonth: true
+                        pricePerMonth: true,
+                        availableRooms: true,
+                        totalRooms: true
                     }
                 },
                 user: {
@@ -342,7 +416,7 @@ export const updateStatusBook = async (request: Request, response: Response) => 
         })
 
         // Create notification if status changed
-        if (status && status !== findBook.status) {
+        if (status && status !== oldStatus) {
             try {
                 let notificationTitle = '';
                 let notificationMessage = '';
@@ -379,7 +453,7 @@ export const updateStatusBook = async (request: Request, response: Response) => 
         return response.status(200).json({
             status: true,
             data: updatedBook,
-            message: `Book has been updated`
+            message: `Book has been updated. ${newStatus === 'accept' ? 'Kamar tersedia berkurang 1.' : newStatus === 'reject' && oldStatus === 'accept' ? 'Kamar tersedia bertambah 1.' : ''}`
         })
     } catch (error) {
         return response
@@ -397,10 +471,35 @@ export const deleteBook = async (request: Request, response: Response) => {
         const { id } = request.params
 
         /** make sure that data is exists in database */
-        const findOrder = await prisma.book.findFirst({ where: { id: Number(id) } })
-        if (!findOrder) return response
-            .status(200)
-            .json({ status: false, message: `Order is not found` })
+        const findBook = await prisma.book.findFirst({
+            where: { id: Number(id) },
+            include: { kos: true }
+        })
+        if (!findBook) return response
+            .status(404)
+            .json({ status: false, message: `Book is not found` })
+
+        // If booking was accepted, return the room to available rooms
+        if (findBook.status === 'accept') {
+            const currentKos = await prisma.kos.findUnique({
+                where: { id: findBook.kosId },
+                select: { availableRooms: true, totalRooms: true }
+            });
+
+            if (currentKos) {
+                const newAvailableRooms = currentKos.availableRooms + 1;
+
+                // Make sure not to exceed totalRooms
+                if (newAvailableRooms <= currentKos.totalRooms) {
+                    await prisma.kos.update({
+                        where: { id: findBook.kosId },
+                        data: { availableRooms: newAvailableRooms }
+                    });
+
+                    console.log(`[Room Restored] Booking deleted, Kos ID: ${findBook.kosId}, Available Rooms: ${currentKos.availableRooms} -> ${newAvailableRooms}`);
+                }
+            }
+        }
 
         /** process to delete the book */
         let deleteBook = await prisma.book.delete({ where: { id: Number(id) } })
@@ -408,7 +507,7 @@ export const deleteBook = async (request: Request, response: Response) => {
         return response.json({
             status: true,
             data: deleteBook,
-            message: `Book has been deleted`
+            message: `Book has been deleted${findBook.status === 'accept' ? ' and room has been restored to available rooms' : ''}`
         }).status(200)
     } catch (error) {
         return response
