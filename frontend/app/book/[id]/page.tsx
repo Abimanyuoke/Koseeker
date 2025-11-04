@@ -64,6 +64,44 @@ export default function BookKosPage() {
         fetchBookedDates()
     }, [kosId])
 
+    // Real-time polling untuk update availableRooms setiap 10 detik
+    useEffect(() => {
+        if (!kosId) return;
+
+        const intervalId = setInterval(() => {
+            const fetchLatestData = async () => {
+                try {
+                    const response = await fetch(`http://localhost:5000/kos/${kosId}`)
+                    if (response.ok) {
+                        const result = await response.json()
+                        const latestKos = result.data
+
+                        // Update hanya jika availableRooms berubah
+                        setKos(prevKos => {
+                            if (prevKos && prevKos.availableRooms !== latestKos.availableRooms) {
+                                console.log(`[Real-time Update] Available Rooms: ${prevKos.availableRooms} → ${latestKos.availableRooms}`)
+
+                                // Jika kamar habis, tampilkan pesan
+                                if (latestKos.availableRooms === 0 && prevKos.availableRooms > 0) {
+                                    setError('Kamar sudah penuh! Semua kamar telah dibooking.')
+                                }
+
+                                return latestKos
+                            }
+                            return prevKos
+                        })
+                    }
+                } catch (err) {
+                    console.error('Error polling kos data:', err)
+                }
+            }
+
+            fetchLatestData()
+        }, 10000) // Polling setiap 10 detik
+
+        return () => clearInterval(intervalId)
+    }, [kosId])
+
     useEffect(() => {
         // Cek autentikasi saat komponen dimuat
         const checkAuth = () => {

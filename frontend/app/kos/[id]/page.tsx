@@ -37,6 +37,7 @@ const KosDetailPage = () => {
     const [loading, setLoading] = useState(true);
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [showAllRules, setShowAllRules] = useState(false);
+    const [isUpdating, setIsUpdating] = useState(false); // Indicator untuk real-time update
 
     /** ---------- FETCH KOS DETAIL ---------- */
     const getKosDetail = async () => {
@@ -60,6 +61,47 @@ const KosDetailPage = () => {
         if (id) {
             getKosDetail();
         }
+    }, [id]);
+
+    // Real-time polling untuk update availableRooms setiap 10 detik
+    useEffect(() => {
+        if (!id) return;
+
+        // Set interval untuk polling
+        const intervalId = setInterval(() => {
+            // Fetch ulang data kos untuk update availableRooms
+            const fetchLatestData = async () => {
+                try {
+                    setIsUpdating(true);
+                    const TOKEN = getCookies("token") || "";
+                    const url = `${BASE_API_URL}/kos/${id}`;
+                    const { data } = await get(url, TOKEN);
+                    
+                    if ((data as { status: boolean; data: IKos }).status) {
+                        const latestKos = (data as { status: boolean; data: IKos }).data;
+                        
+                        // Update hanya jika availableRooms berubah
+                        setKosDetail(prevKos => {
+                            if (prevKos && prevKos.availableRooms !== latestKos.availableRooms) {
+                                console.log(`[Real-time Update] Available Rooms: ${prevKos.availableRooms} → ${latestKos.availableRooms}`);
+                                // Show notification/toast bahwa data telah diupdate (optional)
+                                return latestKos;
+                            }
+                            return prevKos;
+                        });
+                    }
+                } catch (error) {
+                    console.error("Error polling kos data:", error);
+                } finally {
+                    setIsUpdating(false);
+                }
+            };
+
+            fetchLatestData();
+        }, 10000); // Polling setiap 10 detik
+
+        // Cleanup interval saat component unmount
+        return () => clearInterval(intervalId);
     }, [id]);
 
     /** ---------- HELPER FUNCTIONS ---------- */
@@ -383,23 +425,32 @@ const KosDetailPage = () => {
                                         </div>
                                     </div>
                                     <div className="flex justify-between items-center ">
-                                        {/* Room Availability Badge */}
+                                        {/* Room Availability Badge with Real-time Update */}
                                         {kosDetail.availableRooms !== undefined && kosDetail.totalRooms !== undefined && (
                                             <div className="flex items-center gap-2">
                                                 {kosDetail.availableRooms === 0 ? (
-                                                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg">
+                                                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300">
                                                         <PiDoorOpen className="text-slate-700 text-xl" />
                                                         <span className="text-red-700 font-semibold">Kamar Penuh</span>
+                                                        {isUpdating && (
+                                                            <FiLoader className="text-red-700 text-sm animate-spin" />
+                                                        )}
                                                     </div>
                                                 ) : kosDetail.availableRooms <= 3 ? (
-                                                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg">
+                                                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300">
                                                         <PiDoorOpen className="text-slate-700 text-xl" />
                                                         <span className="text-yellow-700 font-semibold">{kosDetail.availableRooms} Kamar Tersisa</span>
+                                                        {isUpdating && (
+                                                            <FiLoader className="text-yellow-700 text-sm animate-spin" />
+                                                        )}
                                                     </div>
                                                 ) : (
-                                                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg">
+                                                    <div className="flex items-center gap-2 px-4 py-2 rounded-lg transition-all duration-300">
                                                         <PiDoorOpen className="text-slate-700 text-xl" />
                                                         <span className="text-green-700 font-semibold">{kosDetail.availableRooms} Kamar Tersedia</span>
+                                                        {isUpdating && (
+                                                            <FiLoader className="text-green-700 text-sm animate-spin" />
+                                                        )}
                                                     </div>
                                                 )}
                                             </div>
