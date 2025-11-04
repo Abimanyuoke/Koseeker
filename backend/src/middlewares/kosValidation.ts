@@ -23,13 +23,21 @@ const addKosSchema = Joi.object({
     kampus: Joi.string().valid(
         "UGM", "UNDIP", "UNPAD", "STAN", "UNAIR", "UB", "UI", "ITS", "ITB",
         "UNS", "TELKOM", "UNESA", "BINUS", "UMM"
-    ).required(),
+    ).optional(), // Changed from required to optional
     kota: Joi.string().valid(
         "Jakarta", "Bandung", "Surabaya", "Medan", "Semarang", "Makassar",
         "Palembang", "Batam", "Malang", "Bogor", "Depok", "Tangerang",
         "Solo", "Makasar", "Yogyakarta", "Bekasi"
     ).required(),
     kalender: Joi.string().valid("minggu", "bulan", "tahun").required(),
+    totalRooms: Joi.alternatives().try(
+        Joi.number().integer().min(1),
+        Joi.string().pattern(/^\d+$/)
+    ).optional(), // Add totalRooms validation
+    availableRooms: Joi.alternatives().try(
+        Joi.number().integer().min(0),
+        Joi.string().pattern(/^\d+$/)
+    ).optional(), // Add availableRooms validation
     images: Joi.array().items(
         Joi.object({
             file: Joi.string().required()
@@ -67,6 +75,14 @@ const editKosSchema = Joi.object({
         "Solo", "Makasar", "Yogyakarta", "Bekasi"
     ).optional(),
     kalender: Joi.string().valid("minggu", "bulan", "tahun").optional(),
+    totalRooms: Joi.alternatives().try(
+        Joi.number().integer().min(1),
+        Joi.string().pattern(/^\d+$/)
+    ).optional(), // Add totalRooms validation
+    availableRooms: Joi.alternatives().try(
+        Joi.number().integer().min(0),
+        Joi.string().pattern(/^\d+$/)
+    ).optional(), // Add availableRooms validation
     images: Joi.object({
         create: Joi.array().items(kosImageSchema).min(1).max(10)
     }).optional(),

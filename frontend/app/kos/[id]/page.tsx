@@ -383,10 +383,27 @@ const KosDetailPage = () => {
                                         </div>
                                     </div>
                                     <div className="flex justify-between items-center ">
-                                        <div className="flex items-center gap-2">
-                                            <PiDoorOpen className="flex-shrink-0 text-lg text-gray-700" />
-                                            <span className="text-[#383746] text-base font-normal">Banyak pilihan kamar untukmu</span>
-                                        </div>
+                                        {/* Room Availability Badge */}
+                                        {kosDetail.availableRooms !== undefined && kosDetail.totalRooms !== undefined && (
+                                            <div className="flex items-center gap-2">
+                                                {kosDetail.availableRooms === 0 ? (
+                                                    <div className="flex items-center gap-2 bg-red-100 border border-red-300 px-4 py-2 rounded-lg">
+                                                        <PiDoorOpen className="text-red-600 text-xl" />
+                                                        <span className="text-red-800 font-semibold">Kamar Penuh</span>
+                                                    </div>
+                                                ) : kosDetail.availableRooms <= 3 ? (
+                                                    <div className="flex items-center gap-2 bg-yellow-100 border border-yellow-300 px-4 py-2 rounded-lg">
+                                                        <PiDoorOpen className="text-yellow-700 text-xl" />
+                                                        <span className="text-yellow-800 font-semibold">{kosDetail.availableRooms} Kamar Tersisa</span>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex items-center gap-2 bg-green-100 border border-green-300 px-4 py-2 rounded-lg">
+                                                        <PiDoorOpen className="text-green-700 text-xl" />
+                                                        <span className="text-green-800 font-semibold">{kosDetail.availableRooms} Kamar Tersedia</span>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
 
                                         {/* Like and Share buttons overlay */}
                                         <div className="flex gap-4 z-10">

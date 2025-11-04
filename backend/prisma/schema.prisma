@@ -34,7 +34,7 @@ model Kos {
   pricePerMonth   Float
   discountPercent Float?            @db.Float
   gender          Gender
-  kampus          Kampus
+  kampus          Kampus?
   kota            Kota
   kalender        Kalender
   totalRooms      Int               @default(1)

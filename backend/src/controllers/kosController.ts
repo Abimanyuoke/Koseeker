@@ -241,7 +241,17 @@ export const getKosById = async (request: Request, response: Response) => {
 
 export const createKos = async (req: Request, res: Response) => {
     try {
-        const { userId, name, address, pricePerMonth, discountPercent, gender, kampus, kota, kalender, facilities } = req.body;
+        const { userId, name, address, pricePerMonth, discountPercent, gender, kampus, kota, kalender, facilities, totalRooms, availableRooms } = req.body;
+
+        // Debug log
+        console.log('========== CREATE KOS DEBUG ==========');
+        console.log('totalRooms:', totalRooms, 'Type:', typeof totalRooms);
+        console.log('availableRooms:', availableRooms, 'Type:', typeof availableRooms);
+        console.log('Number(totalRooms):', Number(totalRooms));
+        console.log('kampus:', kampus);
+        console.log('kota:', kota);
+        console.log('Full Body:', req.body);
+        console.log('======================================');
 
         // Robust validation for discountPercent
         let validDiscountPercent = null;
@@ -288,9 +298,11 @@ export const createKos = async (req: Request, res: Response) => {
                 pricePerMonth: Number(pricePerMonth),
                 discountPercent: validDiscountPercent,
                 gender,
-                kampus,
+                kampus: kampus && kampus.trim() !== '' ? kampus : null,
                 kota,
                 kalender,
+                totalRooms: totalRooms ? Number(totalRooms) : 1,
+                availableRooms: availableRooms ? Number(availableRooms) : (totalRooms ? Number(totalRooms) : 1),
                 images: {
                     create: imagesData
                 },
@@ -320,7 +332,7 @@ export const createKos = async (req: Request, res: Response) => {
 export const updateKos = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
-        const { name, pricePerMonth, discountPercent, gender, address, kampus, kota, kalender } = request.body;
+        const { name, pricePerMonth, discountPercent, gender, address, kampus, kota, kalender, totalRooms, availableRooms } = request.body;
 
         console.log('Update Kos - Request body:', request.body);
 
@@ -343,6 +355,8 @@ export const updateKos = async (request: Request, response: Response) => {
         if (kampus !== undefined) updateData.kampus = kampus;
         if (kota !== undefined) updateData.kota = kota;
         if (kalender !== undefined) updateData.kalender = kalender;
+        if (totalRooms !== undefined) updateData.totalRooms = Number(totalRooms);
+        if (availableRooms !== undefined) updateData.availableRooms = Number(availableRooms);
 
         // Handle discountPercent
         if (discountPercent !== undefined) {

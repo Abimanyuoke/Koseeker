@@ -186,6 +186,13 @@ export default function CreateKosPage() {
             submitData.append('totalRooms', formData.totalRooms)
             submitData.append('availableRooms', formData.totalRooms) // Initially same as totalRooms
 
+            // Debug log
+            console.log('Form Data Debug:', {
+                totalRooms: formData.totalRooms,
+                availableRooms: formData.totalRooms,
+                kampus: formData.kampus
+            })
+
             // Add images
             selectedImages.forEach(file => {
                 submitData.append('picture', file)
@@ -303,6 +310,7 @@ export default function CreateKosPage() {
                                         onChange={handleInputChange}
                                         className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-transparent transition'
                                         required>
+                                        <option value=''>Pilih Kota</option>
                                         {kotaOptions.map(kota => (
                                             <option key={kota} value={kota}>{kota}</option>
                                         ))}
