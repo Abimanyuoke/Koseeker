@@ -28,13 +28,14 @@ interface KosItem {
 }
 
 export default function ManagerKosListPage() {
-    const router = useRouter()
     const user = getUserData()
 
     const [loading, setLoading] = useState(true)
     const [kosList, setKosList] = useState<KosItem[]>([])
     const [searchQuery, setSearchQuery] = useState('')
     const [filterGender, setFilterGender] = useState<string>('all')
+    const [deleteModal, setDeleteModal] = useState<{ show: boolean; kos: KosItem | null }>({ show: false, kos: null })
+    const [isDeleting, setIsDeleting] = useState(false)
 
     useEffect(() => {
         if (user?.role === 'owner') {
@@ -99,6 +100,35 @@ export default function ManagerKosListPage() {
         const matchGender = filterGender === 'all' || kos.gender === filterGender
         return matchSearch && matchGender
     })
+
+    const handleDeleteClick = (kos: KosItem) => {
+        setDeleteModal({ show: true, kos })
+    }
+
+    const handleDeleteConfirm = async () => {
+        if (!deleteModal.kos) return
+
+        try {
+            setIsDeleting(true)
+            const response = await fetch(`${BASE_API_URL}/kos/${deleteModal.kos.id}`, {
+                method: 'DELETE'
+            })
+
+            if (!response.ok) throw new Error('Gagal menghapus kos')
+
+            toast.success('Kos berhasil dihapus!')
+            setDeleteModal({ show: false, kos: null })
+            fetchKosList() // Refresh list
+        } catch (error: any) {
+            toast.error(error.message || 'Gagal menghapus kos')
+        } finally {
+            setIsDeleting(false)
+        }
+    }
+
+    const handleDeleteCancel = () => {
+        setDeleteModal({ show: false, kos: null })
+    }
 
     if (user?.role !== 'owner') {
         return (
@@ -252,7 +282,7 @@ export default function ManagerKosListPage() {
                                         <img
                                             src={imgUrl}
                                             alt={kos.name}
-                                            className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300'/>
+                                            className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300' />
                                         {kos.discountPercent && kos.discountPercent > 0 && (
                                             <span className='absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg'>
                                                 -{kos.discountPercent}%
@@ -324,7 +354,7 @@ export default function ManagerKosListPage() {
                                                 <FaEdit /> Edit
                                             </Link>
                                             <button
-                                                onClick={() => toast.warning('Fitur hapus segera hadir!')}
+                                                onClick={() => handleDeleteClick(kos)}
                                                 className='flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition text-sm font-medium'>
                                                 <FaTrash /> Hapus
                                             </button>
@@ -335,7 +365,116 @@ export default function ManagerKosListPage() {
                         })}
                     </div>
                 )}
+
+                {/* Delete Confirmation Modal */}
+                {deleteModal.show && deleteModal.kos && (
+                    <div className='fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4 animate-fadeIn'>
+                        <div className='bg-white rounded-2xl max-w-md w-full shadow-2xl transform animate-scaleIn'>
+                            {/* Header */}
+                            <div className='bg-gradient-to-r from-red-500 to-red-600 text-white p-6 rounded-t-2xl'>
+                                <div className='flex items-center gap-3'>
+                                    <div className='p-3 bg-white/20 rounded-full'>
+                                        <FaTrash className='text-2xl' />
+                                    </div>
+                                    <div>
+                                        <h2 className='text-2xl font-bold'>Konfirmasi Hapus</h2>
+                                        <p className='text-red-100 text-sm'>Tindakan ini tidak dapat dibatalkan</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Content */}
+                            <div className='p-6'>
+                                <div className='mb-6'>
+                                    <p className='text-gray-700 mb-4'>
+                                        Apakah Anda yakin ingin menghapus kos ini?
+                                    </p>
+                                    <div className='bg-red-50 border border-red-200 rounded-lg p-4'>
+                                        <p className='font-semibold text-gray-900 mb-1'>{deleteModal.kos.name}</p>
+                                        <p className='text-sm text-gray-600 flex items-start gap-2'>
+                                            <FaMapMarkerAlt className='text-red-500 mt-1 flex-shrink-0' />
+                                            {deleteModal.kos.address}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div className='bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6'>
+                                    <div className='flex gap-3'>
+                                        <svg className='w-6 h-6 text-yellow-600 flex-shrink-0' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
+                                            <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z' />
+                                        </svg>
+                                        <div>
+                                            <p className='font-semibold text-yellow-900 mb-1'>Peringatan!</p>
+                                            <ul className='text-sm text-yellow-800 space-y-1'>
+                                                <li>• Semua gambar kos akan dihapus</li>
+                                                <li>• Semua fasilitas akan dihapus</li>
+                                                <li>• Semua review akan dihapus</li>
+                                                <li>• Semua booking akan dihapus</li>
+                                                <li>• Data tidak dapat dikembalikan</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Action Buttons */}
+                                <div className='flex gap-3'>
+                                    <button
+                                        onClick={handleDeleteCancel}
+                                        disabled={isDeleting}
+                                        className='flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed'>
+                                        Batal
+                                    </button>
+                                    <button
+                                        onClick={handleDeleteConfirm}
+                                        disabled={isDeleting}
+                                        className='flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-700 hover:to-red-800 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg'>
+                                        {isDeleting ? (
+                                            <>
+                                                <div className='animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full'></div>
+                                                Menghapus...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <FaTrash /> Ya, Hapus
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
+
+            <style jsx>{`
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                    }
+                    to {
+                        opacity: 1;
+                    }
+                }
+
+                @keyframes scaleIn {
+                    from {
+                        transform: scale(0.9);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: scale(1);
+                        opacity: 1;
+                    }
+                }
+
+                .animate-fadeIn {
+                    animation: fadeIn 0.2s ease-out;
+                }
+
+                .animate-scaleIn {
+                    animation: scaleIn 0.3s ease-out;
+                }
+            `}</style>
         </div>
     )
 }

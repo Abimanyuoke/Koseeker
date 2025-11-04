@@ -143,8 +143,15 @@ export default function CreateKosPage() {
         const selectedPredefined = Object.keys(checkedFacilities).filter(k => checkedFacilities[k])
         const customFacilityTrimmed = customFacility.trim()
         const allFacilities = [...selectedPredefined]
+
+        // Parse custom facilities - split by comma and trim each item
         if (customFacilityTrimmed) {
-            allFacilities.push(customFacilityTrimmed)
+            const customFacilitiesArray = customFacilityTrimmed
+                .split(',')
+                .map(item => item.trim())
+                .filter(item => item.length > 0) // Remove empty strings
+
+            allFacilities.push(...customFacilitiesArray)
         }
 
         if (allFacilities.length === 0) {
@@ -470,11 +477,11 @@ export default function CreateKosPage() {
                                     type='text'
                                     value={customFacility}
                                     onChange={(e) => setCustomFacility(e.target.value)}
-                                    placeholder='Contoh: WiFi 100 Mbps, Mesin Cuci Pribadi, dll'
+                                    placeholder='Contoh: Tempat Parkir, Mesin Cuci, Kulkas, Dispenser'
                                     className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-400 focus:border-transparent transition'
                                 />
                                 <p className='text-xs text-gray-500 mt-2'>
-                                    Tambahkan fasilitas khusus yang tidak ada di daftar di atas
+                                    💡 Pisahkan dengan <span className='font-semibold'>koma (,)</span> untuk menambahkan beberapa fasilitas sekaligus. Contoh: Tempat Parkir, Mesin Cuci, Kulkas
                                 </p>
                             </div>
                         </div>
