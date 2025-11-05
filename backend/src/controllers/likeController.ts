@@ -59,7 +59,15 @@ export const getLikesByUser = async (request: Request, response: Response) => {
                         name: true,
                         address: true,
                         pricePerMonth: true,
-                        gender: true
+                        discountPercent: true,
+                        gender: true,
+                        kampus: true,
+                        kota: true,
+                        images: {
+                            select: {
+                                file: true
+                            }
+                        }
                     }
                 }
             },

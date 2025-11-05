@@ -55,6 +55,7 @@ export default function FavoritPage() {
             }
 
             console.log('Fetching favorites for userId:', userId)
+            console.log('BASE_IMAGE_KOS:', BASE_IMAGE_KOS)
 
             const response = await fetch(`${BASE_API_URL}/like/user/${userId}`, {
                 headers: {
@@ -67,9 +68,20 @@ export default function FavoritPage() {
             if (response.ok) {
                 const data = await response.json()
                 console.log('Response data:', data)
+                console.log('Number of favorites:', data.data?.length)
 
                 if (data.status) {
                     setFavorites(data.data)
+
+                    // Debug: Log images for each kos
+                    data.data.forEach((fav: FavoriteItem) => {
+                        console.log('Kos:', fav.kos.name)
+                        console.log('Images:', fav.kos.images)
+                        if (fav.kos.images && fav.kos.images.length > 0) {
+                            console.log('First image file:', fav.kos.images[0].file)
+                            console.log('Full image URL:', `${BASE_IMAGE_KOS}/${fav.kos.images[0].file}`)
+                        }
+                    })
                 } else {
                     console.error('API returned status false:', data.message)
                 }
@@ -177,7 +189,7 @@ export default function FavoritPage() {
                 {favorites.length === 0 ? (
                     <div className="bg-white rounded-2xl shadow-sm p-12 text-center">
                         <div className="max-w-md mx-auto">
-                            <div className="text-6xl mb-4">💔</div>
+                            <Image src="/images/logo_terpukau.png" alt="Belum Ada Favorit" width={200} height={200} className="mx-auto" />
                             <h3 className="text-2xl font-bold text-gray-900 mb-2">
                                 Belum Ada Favorit
                             </h3>
@@ -210,22 +222,33 @@ export default function FavoritPage() {
                                     : '/images/default-kos.jpg'
                                 const discountedPrice = getDiscountedPrice(kos.pricePerMonth, kos.discountPercent)
 
+                                console.log('Kos:', kos.name, 'Images:', kos.images, 'Main Image URL:', mainImage)
+
                                 return (
                                     <div
                                         key={favorite.id}
-                                        className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer"
-                                    >
+                                        className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group cursor-pointer">
                                         {/* Image Container */}
                                         <div
-                                            className="relative h-56 overflow-hidden"
-                                            onClick={() => handleKosClick(kos.id)}
-                                        >
-                                            <Image
-                                                src={mainImage}
-                                                alt={kos.name}
-                                                fill
-                                                className="object-cover group-hover:scale-110 transition-transform duration-300"
-                                            />
+                                            className="relative h-56 overflow-hidden bg-gray-200"
+                                            onClick={() => handleKosClick(kos.id)}>
+                                            {kos.images && kos.images.length > 0 ? (
+                                                <Image
+                                                    src={mainImage}
+                                                    alt={kos.name}
+                                                    fill
+                                                    className="object-cover group-hover:scale-110 transition-transform duration-300"
+                                                    unoptimized
+                                                    onError={(e) => {
+                                                        console.error('Image load error for:', mainImage)
+                                                        e.currentTarget.style.display = 'none'
+                                                    }}
+                                                />
+                                            ) : (
+                                                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
+                                                    <span className="text-gray-400 text-sm">No Image</span>
+                                                </div>
+                                            )}
 
                                             {/* Discount Badge */}
                                             {kos.discountPercent && kos.discountPercent > 0 && (
@@ -241,8 +264,7 @@ export default function FavoritPage() {
                                                     handleRemoveFavorite(kos.id)
                                                 }}
                                                 disabled={removingId === kos.id}
-                                                className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm p-2.5 rounded-full hover:bg-white transition-all duration-200 shadow-lg"
-                                            >
+                                                className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm p-2.5 rounded-full hover:bg-white transition-all duration-200 shadow-lg">
                                                 {removingId === kos.id ? (
                                                     <FiLoader className="animate-spin text-red-500 w-5 h-5" />
                                                 ) : (
@@ -262,8 +284,7 @@ export default function FavoritPage() {
                                         {/* Content */}
                                         <div
                                             className="p-5"
-                                            onClick={() => handleKosClick(kos.id)}
-                                        >
+                                            onClick={() => handleKosClick(kos.id)}>
                                             {/* Name */}
                                             <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-1 group-hover:text-blue-600 transition">
                                                 {kos.name}
