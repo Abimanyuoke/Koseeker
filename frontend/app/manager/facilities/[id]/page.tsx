@@ -2,9 +2,10 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { getAuthToken, getUserData } from '@/lib/auth'
+import { getUserData } from '@/lib/auth'
 import { BASE_API_URL, BASE_IMAGE_KOS } from '@/global'
 import { toast } from 'sonner'
+import Image from 'next/image'
 import { FaPlus, FaEdit, FaTrash, FaArrowLeft, FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaCheck, FaTimes } from 'react-icons/fa'
 import { MdLocalLaundryService, MdSecurity } from 'react-icons/md'
 import { GiCook } from 'react-icons/gi'
@@ -212,7 +213,7 @@ export default function FacilitiesDetailPage() {
         if (facilityLower.includes('laundry') || facilityLower.includes('cuci')) return <MdLocalLaundryService className="text-gray-500" />
         if (facilityLower.includes('dapur') || facilityLower.includes('kitchen')) return <GiCook className="text-gray-500" />
         if (facilityLower.includes('security') || facilityLower.includes('keamanan')) return <MdSecurity className="text-gray-500" />
-        return <div className="w-5 h-5 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full"></div>
+        return <div className="w-5 h-5 bg-gradient-to-br from-green-400 to-purple-500 rounded-full"></div>
     }
 
     const openEditModal = (facility: Facility) => {
@@ -230,7 +231,7 @@ export default function FacilitiesDetailPage() {
         return (
             <div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center'>
                 <div className='text-center'>
-                    <div className='animate-spin h-12 w-12 border-4 border-blue-600 border-t-transparent rounded-full mx-auto mb-4'></div>
+                    <div className='animate-spin h-12 w-12 border-4 border-green-600 border-t-transparent rounded-full mx-auto mb-4'></div>
                     <p className='text-gray-600'>Memuat data...</p>
                 </div>
             </div>
@@ -244,7 +245,7 @@ export default function FacilitiesDetailPage() {
                     <h2 className='text-2xl font-bold text-gray-800 mb-2'>Kos tidak ditemukan</h2>
                     <button
                         onClick={() => router.push('/manager/facilities')}
-                        className='mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700'>
+                        className='mt-4 px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700'>
                         Kembali
                     </button>
                 </div>
@@ -290,14 +291,14 @@ export default function FacilitiesDetailPage() {
                                 <h1 className='text-3xl font-bold text-gray-900 mb-2'>{kos.name}</h1>
                                 <p className='text-gray-600 mb-4'>{kos.address}</p>
                                 <div className='flex items-baseline gap-2 mb-4'>
-                                    <span className='text-3xl font-bold text-blue-600'>
+                                    <span className='text-3xl font-bold text-green-600'>
                                         Rp {new Intl.NumberFormat('id-ID').format(kos.pricePerMonth)}
                                     </span>
                                     <span className='text-gray-500'>/bulan</span>
                                 </div>
-                                <div className='bg-blue-50 border-l-4 border-blue-500 p-4 rounded'>
+                                <div className='bg-green-50 border-l-4 border-green-500 p-4 rounded'>
                                     <p className='text-sm text-gray-700'>
-                                        <span className='font-semibold text-blue-700'>Total Fasilitas:</span> {facilities.length} fasilitas
+                                        <span className='font-semibold text-green-700'>Total Fasilitas:</span> {facilities.length} fasilitas
                                     </p>
                                 </div>
                             </div>
@@ -311,21 +312,21 @@ export default function FacilitiesDetailPage() {
                         <h2 className='text-2xl font-bold text-gray-900'>Daftar Fasilitas</h2>
                         <button
                             onClick={() => setIsAddModalOpen(true)}
-                            className='flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition shadow-lg hover:shadow-xl'>
+                            className='flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 transition shadow-lg hover:shadow-xl'>
                             <FaPlus /> Tambah Fasilitas
                         </button>
                     </div>
 
                     {facilities.length === 0 ? (
                         <div className='text-center py-16 border-2 border-dashed border-gray-300 rounded-xl'>
-                            <div className='text-6xl mb-4'>🏠</div>
+                            <Image src="/images/logo_sad.svg" width={120} height={100} alt="Belum ada fasilitas" className="mx-auto" />
                             <h3 className='text-xl font-semibold text-gray-800 mb-2'>Belum ada fasilitas</h3>
                             <p className='text-gray-600 mb-6'>Mulai tambahkan fasilitas untuk kos Anda</p>
-                            <button
+                            {/* <button
                                 onClick={() => setIsAddModalOpen(true)}
-                                className='px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition'>
+                                className='px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 transition'>
                                 Tambah Fasilitas Pertama
-                            </button>
+                            </button> */}
                         </div>
                     ) : (
                         <div className='grid gap-4 sm:grid-cols-2 lg:grid-cols-3'>
@@ -352,7 +353,7 @@ export default function FacilitiesDetailPage() {
                                         <div className='flex gap-2 ml-2'>
                                             <button
                                                 onClick={() => openEditModal(facility)}
-                                                className='p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition'
+                                                className='p-2 text-green-600 hover:bg-green-50 rounded-lg transition'
                                                 title='Edit'>
                                                 <FaEdit className='text-lg' />
                                             </button>
@@ -388,7 +389,7 @@ export default function FacilitiesDetailPage() {
                                             type='checkbox'
                                             checked={!!checkedFacilities[f]}
                                             onChange={() => setCheckedFacilities(prev => ({ ...prev, [f]: !prev[f] }))}
-                                            className='form-checkbox h-4 w-4 text-blue-600'
+                                            className='form-checkbox h-4 w-4 text-green-600'
                                         />
                                         <span className='text-sm'>{f}</span>
                                     </label>
@@ -402,7 +403,7 @@ export default function FacilitiesDetailPage() {
                                 onChange={(e) => setNewFacility(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && handleAddFacility()}
                                 placeholder='Contoh: WiFi 24 jam, Mesin Cuci, dll'
-                                className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition'
+                                className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition'
                                 autoFocus
                             />
                         </div>
@@ -420,12 +421,12 @@ export default function FacilitiesDetailPage() {
                             <button
                                 onClick={handleAddFacility}
                                 disabled={isSubmitting}
-                                className='flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
+                                className='flex-1 px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
                                 {isSubmitting ? (
-                                    <>
+                                    <div>
                                         <div className='animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full'></div>
                                         Menyimpan...
-                                    </>
+                                    </div>
                                 ) : (
                                     <>
                                         <FaCheck /> Tambah
@@ -455,7 +456,7 @@ export default function FacilitiesDetailPage() {
                                 onChange={(e) => setEditFacilityName(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && handleEditFacility()}
                                 placeholder='Contoh: WiFi, AC, Kasur, dll'
-                                className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition'
+                                className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition'
                                 autoFocus
                             />
                         </div>
@@ -473,7 +474,7 @@ export default function FacilitiesDetailPage() {
                             <button
                                 onClick={handleEditFacility}
                                 disabled={isSubmitting || !editFacilityName.trim()}
-                                className='flex-1 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
+                                className='flex-1 px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
                                 {isSubmitting ? (
                                     <>
                                         <div className='animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full'></div>

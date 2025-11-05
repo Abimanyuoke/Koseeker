@@ -53,7 +53,7 @@ export default function Login() {
 
                     let role = data.data.role
                     if (role === `owner`) {
-                        setTimeout(() => router.replace(`/manager/kos`), 1000)
+                        setTimeout(() => router.replace(`/manager`), 1000)
                     } else if (role === `society`) {
                         setTimeout(() => router.replace(`/home`), 1000)
                     }
