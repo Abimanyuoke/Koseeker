@@ -229,7 +229,7 @@ export default function PenyewaPage() {
             <div className='max-w-7xl mx-auto px-4 py-8'>
                 {/* Header */}
                 <div className='mb-8'>
-                    <div className='bg-gradient-to-r from-purple-600 to-purple-700 rounded-2xl shadow-lg p-6 text-white'>
+                    <div className='bg-gradient-to-r from-green-600 to-green-700 rounded-2xl shadow-lg p-6 text-white'>
                         <div className='flex items-center justify-between'>
                             <div className='flex items-center gap-3'>
                                 <FaUsers className='text-3xl' />
@@ -490,8 +490,7 @@ export default function PenyewaPage() {
                                                             <img
                                                                 src={`${BASE_IMAGE_PROFILE}/${booking.user.profile_picture}`}
                                                                 alt={booking.user.name}
-                                                                className='w-full h-full object-cover'
-                                                            />
+                                                                className='w-full h-full object-cover'/>
                                                         ) : (
                                                             <FaUsers className='text-white text-lg' />
                                                         )}
@@ -516,7 +515,7 @@ export default function PenyewaPage() {
                                                     Rp {booking.kos.pricePerMonth.toLocaleString('id-ID')}/bulan
                                                 </div>
                                             </td>
-                                            <td className='px-6 py-4'>
+                                            <td className='px-6 py-4 w-[150px]'>
                                                 <div className='text-sm text-gray-900'>
                                                     {new Date(booking.startDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
                                                 </div>
@@ -525,7 +524,7 @@ export default function PenyewaPage() {
                                                     {new Date(booking.endDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })}
                                                 </div>
                                             </td>
-                                            <td className='px-6 py-4'>
+                                            <td className='px-2 py-4'>
                                                 <span className='px-3 py-1 text-sm font-semibold text-purple-700 bg-purple-100 rounded-full'>
                                                     {booking.durationMonths} Bulan
                                                 </span>

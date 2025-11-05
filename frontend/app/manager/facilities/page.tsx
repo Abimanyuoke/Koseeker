@@ -100,7 +100,7 @@ export default function FacilitiesKosListPage() {
                             const firstImage = kos.images?.[0]?.file
                             const imgUrl = firstImage ? `${BASE_IMAGE_KOS}/${firstImage}` : 'https://via.placeholder.com/400x250?text=No+Image'
                             return (
-                                <Link key={kos.id} href={`/manager/facilities/${kos.id}`} className='group block border rounded-xl overflow-hidden shadow-sm hover:shadow-md transition bg-white'>
+                                <Link key={kos.id} href={`/manager/facilities/${kos.id}`} className='group block rounded-xl overflow-hidden drop-shadow-lg hover:shadow-md transition bg-white'>
                                     <div className='relative h-44 w-full overflow-hidden'>
                                         <img src={imgUrl} alt={kos.name} className='h-full w-full object-cover group-hover:scale-105 transition duration-300' />
                                         {kos.discountPercent && kos.discountPercent > 0 && (

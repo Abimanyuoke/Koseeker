@@ -236,7 +236,7 @@ export default function CreateKosPage() {
     }
 
     return (
-        <div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100'>
+        <div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 font-lato'>
             <div className='max-w-4xl mx-auto px-4 py-8'>
                 {/* Header */}
                 <div className='mb-8'>
@@ -404,7 +404,7 @@ export default function CreateKosPage() {
                                             type='button'
                                             onClick={() => setFormData(prev => ({ ...prev, gender: option.value }))}
                                             className={`p-4 border-2 rounded-lg transition ${formData.gender === option.value
-                                                ? 'bg-gray-700 text-white'
+                                                ? 'bg-gray-700 -translate-y-1 shadow-lg text-white'
                                                 : 'border-gray-300 hover:border-gray-400'
                                                 }`}>
                                             <option.Icon className={`text-2xl mb-2 mx-auto ${formData.gender === option.value ? 'text-white' : 'text-gray-500'}`} />
@@ -554,22 +554,22 @@ export default function CreateKosPage() {
                                 type='button'
                                 onClick={() => router.push('/manager/kos')}
                                 disabled={isSubmitting}
-                                className='flex-1 px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium disabled:opacity-50'>
+                                className='flex-1 px-6 py-3 border hover:cursor-pointer border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition font-medium disabled:opacity-50'>
                                 Batal
                             </button>
                             <button
                                 type='submit'
                                 disabled={isSubmitting}
-                                className='flex-1 px-6 py-3 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
+                                className='flex-1 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 hover:-translate-y-1 hover:cursor-pointer transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
                                 {isSubmitting ? (
-                                    <>
+                                    <div>
                                         <div className='animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full'></div>
                                         Menyimpan...
-                                    </>
+                                    </div>
                                 ) : (
-                                    <>
+                                    <div className='flex items-center gap-2'>
                                         <FaCheck /> Simpan Kos
-                                    </>
+                                    </div>
                                 )}
                             </button>
                         </div>
