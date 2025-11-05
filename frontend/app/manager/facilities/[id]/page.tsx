@@ -340,7 +340,7 @@ export default function FacilitiesDetailPage() {
                                                 {getFacilityIcon(facility.facility)}
                                             </div>
                                             <div className='flex-1'>
-                                                <h3 className='font-semibold text-gray-900 text-lg'>{facility.facility}</h3>
+                                                <h3 className='font-semibold text-gray-900 text-base'>{facility.facility}</h3>
                                                 <p className='text-xs text-gray-500 mt-1'>
                                                     {new Date(facility.createdAt).toLocaleDateString('id-ID', {
                                                         day: 'numeric',
@@ -353,15 +353,15 @@ export default function FacilitiesDetailPage() {
                                         <div className='flex gap-2 ml-2'>
                                             <button
                                                 onClick={() => openEditModal(facility)}
-                                                className='p-2 text-green-600 hover:bg-green-50 rounded-lg transition'
+                                                className='p-2 bg-blue-200 text-blue-600 hover:bg-green-50 rounded-lg transition'
                                                 title='Edit'>
-                                                <FaEdit className='text-lg' />
+                                                <FaEdit className='text-base' />
                                             </button>
                                             <button
                                                 onClick={() => openDeleteModal(facility)}
-                                                className='p-2 text-red-600 hover:bg-red-50 rounded-lg transition'
+                                                className='p-2 bg-red-200 text-red-600 hover:bg-red-50 rounded-lg transition'
                                                 title='Hapus'>
-                                                <FaTrash className='text-lg' />
+                                                <FaTrash className='text-base' />
                                             </button>
                                         </div>
                                     </div>
@@ -522,14 +522,14 @@ export default function FacilitiesDetailPage() {
                                 disabled={isSubmitting}
                                 className='flex-1 px-4 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-700 hover:to-red-800 transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
                                 {isSubmitting ? (
-                                    <>
+                                    <div>
                                         <div className='animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full'></div>
                                         Menghapus...
-                                    </>
+                                    </div>
                                 ) : (
-                                    <>
+                                    <div className='flex items-center gap-2 hover:cursor-pointer'>
                                         <FaTrash /> Hapus
-                                    </>
+                                    </div>
                                 )}
                             </button>
                         </div>
