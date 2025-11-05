@@ -5,6 +5,7 @@ Update:
 4. untuk yang gambar yang ada di kos [id] ada tombol untuk yang lihat semua dan membuat halaman sendiri dengan kategori sendiri.
 5. ubah tampilan ketika berhasil booking
 6. ubah tampilan edit kos dan hapus kos di manajer
+7. fix error untuk yang favorit images
 Jika masih belum ada itu akan di arahkan pada component yang menampilkan Masih Update dengan gambar robot rusak atau 404 google yang abu abu di tengah ada gambar robot rusak
 
 

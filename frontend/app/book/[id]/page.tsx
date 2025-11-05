@@ -869,15 +869,15 @@ export default function BookKosPage() {
                     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
                         <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
                             {/* Header */}
-                            <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 rounded-t-2xl">
+                            <div className="text-black p-6 rounded-t-2xl">
                                 <div className="flex items-center justify-between">
                                     <div>
-                                        <h2 className="text-2xl font-bold mb-1">🎉 Booking Berhasil!</h2>
-                                        <p className="text-blue-100 text-sm">Struk pemesanan Anda</p>
+                                        <h2 className="text-2xl font-bold mb-1">Booking Berhasil!</h2>
+                                        <p className="text-blue-400 text-sm">Struk pemesanan Anda</p>
                                     </div>
                                     <div className="text-right">
-                                        <div className="bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg">
-                                            <p className="text-xs text-blue-100">Booking ID</p>
+                                        <div className="bg-black/40 backdrop-blur-sm px-4 py-2 rounded-lg">
+                                            <p className="text-xs text-black/25">Booking ID</p>
                                             <p className="font-bold text-lg">{bookingResult.uuid}</p>
                                         </div>
                                     </div>
