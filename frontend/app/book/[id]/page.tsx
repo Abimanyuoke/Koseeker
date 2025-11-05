@@ -446,13 +446,6 @@ export default function BookKosPage() {
     return (
         <div className="min-h-screen bg-gray-50 py-8">
             <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div className="mb-8">
-                    <Link href={`/kos/${kosId}`} className="text-blue-600 hover:text-blue-800 mb-4 inline-block">
-                        ← Kembali ke detail kos
-                    </Link>
-                    <h1 className="text-3xl font-bold text-gray-900">Booking Kos</h1>
-                </div>
-
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* Kos Detail */}
                     <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -876,7 +869,7 @@ export default function BookKosPage() {
                                         <p className="text-blue-400 text-sm">Struk pemesanan Anda</p>
                                     </div>
                                     <div className="text-right">
-                                        <div className="bg-black/40 backdrop-blur-sm px-4 py-2 rounded-lg">
+                                        <div className="backdrop-blur-sm px-4 py-2 rounded-lg">
                                             <p className="text-xs text-black/25">Booking ID</p>
                                             <p className="font-bold text-lg">{bookingResult.uuid}</p>
                                         </div>
@@ -912,7 +905,7 @@ export default function BookKosPage() {
                                             <p className="font-semibold text-gray-900 text-lg">{kos?.name}</p>
                                         </div>
                                         <div>
-                                            <p className="text-sm text-gray-600 mb-1">Alamat</p>
+                                            <p className="text-xs text-gray-600 mb-1">Alamat</p>
                                             <p className="text-gray-900">{kos?.address}</p>
                                         </div>
                                         <div className="grid grid-cols-2 gap-4">
