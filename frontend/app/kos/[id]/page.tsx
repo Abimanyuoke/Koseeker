@@ -24,6 +24,7 @@ import { AiFillThunderbolt, AiOutlineFileProtect } from "react-icons/ai";
 import { BsFillLightningChargeFill, BsLightningFill, BsPersonFillCheck } from "react-icons/bs";
 import { FaChildren } from "react-icons/fa6";
 import { HiOutlineClipboardDocumentCheck, HiOutlineClipboardDocumentList, HiOutlineDocumentText } from "react-icons/hi2";
+import { CheckCircle } from "lucide-react";
 
 const KosDetailPage = () => {
     const params = useParams();
@@ -894,7 +895,7 @@ const KosDetailPage = () => {
                                     {/* Profile Picture */}
                                     <div className="relative flex-shrink-0">
                                         {kosDetail.owner.profile_picture && kosDetail.owner.profile_picture !== '' ? (
-                                            <div className="relative w-20 h-20 rounded-full overflow-hidden border-4 border-blue-100 shadow-lg">
+                                            <div className="relative w-20 h-20 rounded-full overflow-hidden border-4 border-green-100 shadow-lg">
                                                 <Image
                                                     src={`http://localhost:5000/profile_picture/${kosDetail.owner.profile_picture}`}
                                                     alt={kosDetail.owner.name}
@@ -909,7 +910,7 @@ const KosDetailPage = () => {
                                             </div>
                                         )}
                                         {/* Verified Badge */}
-                                        <div className="absolute -bottom-1 -right-1 bg-blue-600 rounded-full p-1 shadow-md">
+                                        <div className="absolute -bottom-1 -right-1 bg-green-600 rounded-full p-1 shadow-md">
                                             <IoIosCheckmarkCircle className="text-white text-xl" />
                                         </div>
                                     </div>
@@ -920,7 +921,7 @@ const KosDetailPage = () => {
                                             <h3 className="text-xl font-bold text-gray-900 mb-1">
                                                 {kosDetail.owner.name}
                                             </h3>
-                                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                                            <div className="flex items-center gap-1">
                                                 <IoCalendarOutline className="text-gray-500" />
                                                 <span>
                                                     Bergabung sejak {kosDetail.owner.createdAt
@@ -936,7 +937,7 @@ const KosDetailPage = () => {
 
                                         {/* Stats */}
                                         {/* <div className="grid grid-cols-2 gap-3 mb-4"> */}
-                                            {/* <div className="bg-blue-50 rounded-lg p-3">
+                                        {/* <div className="bg-blue-50 rounded-lg p-3">
                                                 <div className="flex items-center gap-2">
                                                     <IoHome className="text-blue-600 text-xl" />
                                                     <div>
@@ -947,7 +948,7 @@ const KosDetailPage = () => {
                                                     </div>
                                                 </div>
                                             </div> */}
-                                            {/* <div className="bg-green-50 rounded-lg p-3">
+                                        {/* <div className="bg-green-50 rounded-lg p-3">
                                                 <div className="flex items-center gap-2">
                                                     <FiCheckCircle className="text-green-600 text-xl" />
                                                     <div>
@@ -996,8 +997,8 @@ const KosDetailPage = () => {
                                 {/* Additional Info */}
                                 <div className="mt-6 pt-6 border-t border-gray-200">
                                     <div className="flex items-start gap-3">
-                                        <div className="p-2 bg-blue-100 rounded-lg">
-                                            <BsPersonFillCheck className="text-blue-600 text-xl" />
+                                        <div className="p-2 bg-green-100 rounded-lg">
+                                            <BsPersonFillCheck className="text-green-600 text-xl" />
                                         </div>
                                         <div>
                                             <h4 className="font-semibold text-gray-900 mb-1">Pemilik Terpercaya</h4>

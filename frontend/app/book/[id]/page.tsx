@@ -501,17 +501,14 @@ export default function BookKosPage() {
                             </div>
 
                             {/* Ketersediaan Kamar */}
-                            <div className="mb-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                            <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
                                 <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
-                                    <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-                                    </svg>
                                     Ketersediaan Kamar
                                 </h3>
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <p className="text-sm text-gray-600">Kamar Tersedia</p>
-                                        <p className="text-2xl font-bold text-blue-600">{kos.availableRooms} / {kos.totalRooms}</p>
+                                        <p className="text-2xl font-bold text-green-600">{kos.availableRooms} / {kos.totalRooms}</p>
                                     </div>
                                     <div>
                                         {kos.availableRooms === 0 ? (
@@ -808,7 +805,7 @@ export default function BookKosPage() {
                                                 <span>Harga diskon per bulan ({kos.discountPercent}% off):</span>
                                                 <span className="font-medium">Rp {formatPrice(getDiscountedPrice())}</span>
                                             </div>
-                                            <div className="flex justify-between text-green-600">
+                                            <div className="flex justify-between text-black">
                                                 <span>Hemat total:</span>
                                                 <span className="font-medium">Rp {formatPrice(getSavings())}</span>
                                             </div>
@@ -822,7 +819,7 @@ export default function BookKosPage() {
 
                                     <div className="flex justify-between border-t pt-2">
                                         <span className="font-medium">Total Pembayaran:</span>
-                                        <span className="font-bold text-blue-600">Rp {formatPrice(getTotalPrice())}</span>
+                                        <span className="font-bold text-black-600">Rp {formatPrice(getTotalPrice())}</span>
                                     </div>
                                 </div>
                             </div>
@@ -840,8 +837,7 @@ export default function BookKosPage() {
                                 <button
                                     type="submit"
                                     disabled={submitting || !bookingData.startDate || !bookingData.endDate || (kos && kos.availableRooms === 0)}
-                                    className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-                                >
+                                    className="w-full bg-gradient-to-r from-green-500 to-green-700 text-white py-3 px-4 rounded-md hover:cursor-pointer hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
                                     {submitting ? 'Memproses...' : 'Buat Booking'}
                                 </button>
                             )}
@@ -849,7 +845,7 @@ export default function BookKosPage() {
                             {/* Login reminder if not authenticated */}
                             <div className="text-center text-sm text-gray-500">
                                 Pastikan Anda sudah login untuk melakukan booking.{' '}
-                                <Link href="/auth/login" className="text-blue-600 hover:text-blue-800">
+                                <Link href="/auth/login" className="text-green-600 hover:text-green-800">
                                     Login di sini
                                 </Link>
                             </div>
