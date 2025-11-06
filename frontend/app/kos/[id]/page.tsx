@@ -8,7 +8,7 @@ import { BASE_API_URL, BASE_IMAGE_KOS } from "../../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
 import { FiLoader, FiShare2, FiCheckCircle } from "react-icons/fi";
-import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaMapMarkerAlt, FaRulerCombined, FaToilet, FaDoorOpen, FaWhatsapp, FaRegHeart, FaMotorcycle } from "react-icons/fa";
+import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaRulerCombined, FaToilet, FaDoorOpen, FaWhatsapp, FaRegHeart, FaMotorcycle, FaPhone, FaEnvelope } from "react-icons/fa";
 import { MdFamilyRestroom, MdLocalLaundryService, MdOutlineCleaningServices, MdOutlinePets, MdSecurity } from "react-icons/md";
 import { GiCook, GiNightSleep } from "react-icons/gi";
 import { IoCalendarOutline, IoCloudyNight, IoHome, IoTimeOutline } from "react-icons/io5";
@@ -76,10 +76,10 @@ const KosDetailPage = () => {
                     const TOKEN = getCookies("token") || "";
                     const url = `${BASE_API_URL}/kos/${id}`;
                     const { data } = await get(url, TOKEN);
-                    
+
                     if ((data as { status: boolean; data: IKos }).status) {
                         const latestKos = (data as { status: boolean; data: IKos }).data;
-                        
+
                         // Update hanya jika availableRooms berubah
                         setKosDetail(prevKos => {
                             if (prevKos && prevKos.availableRooms !== latestKos.availableRooms) {
@@ -882,6 +882,133 @@ const KosDetailPage = () => {
                                 userId={user?.id ? parseInt(user.id) : undefined}
                             />
                         </div>
+
+                        {/* Owner Info Section */}
+                        {kosDetail.owner && (
+                            <div className="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
+                                <h2 className="text-2xl font-bold text-gray-900 mb-6">
+                                    Tentang Pemilik
+                                </h2>
+
+                                <div className="flex items-start gap-4">
+                                    {/* Profile Picture */}
+                                    <div className="relative flex-shrink-0">
+                                        {kosDetail.owner.profile_picture && kosDetail.owner.profile_picture !== '' ? (
+                                            <div className="relative w-20 h-20 rounded-full overflow-hidden border-4 border-blue-100 shadow-lg">
+                                                <Image
+                                                    src={`http://localhost:5000/profile_picture/${kosDetail.owner.profile_picture}`}
+                                                    alt={kosDetail.owner.name}
+                                                    fill
+                                                    className="object-cover"
+                                                    unoptimized
+                                                />
+                                            </div>
+                                        ) : (
+                                            <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-green-500 rounded-full flex items-center justify-center text-white font-bold text-3xl shadow-lg border-4 border-blue-100">
+                                                {kosDetail.owner.name.charAt(0).toUpperCase()}
+                                            </div>
+                                        )}
+                                        {/* Verified Badge */}
+                                        <div className="absolute -bottom-1 -right-1 bg-blue-600 rounded-full p-1 shadow-md">
+                                            <IoIosCheckmarkCircle className="text-white text-xl" />
+                                        </div>
+                                    </div>
+
+                                    {/* Owner Details */}
+                                    <div className="flex-1">
+                                        <div className="mb-3">
+                                            <h3 className="text-xl font-bold text-gray-900 mb-1">
+                                                {kosDetail.owner.name}
+                                            </h3>
+                                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                                                <IoCalendarOutline className="text-gray-500" />
+                                                <span>
+                                                    Bergabung sejak {kosDetail.owner.createdAt
+                                                        ? new Date(kosDetail.owner.createdAt).toLocaleDateString('id-ID', {
+                                                            month: 'long',
+                                                            year: 'numeric'
+                                                        })
+                                                        : 'Tidak diketahui'
+                                                    }
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        {/* Stats */}
+                                        {/* <div className="grid grid-cols-2 gap-3 mb-4"> */}
+                                            {/* <div className="bg-blue-50 rounded-lg p-3">
+                                                <div className="flex items-center gap-2">
+                                                    <IoHome className="text-blue-600 text-xl" />
+                                                    <div>
+                                                        <p className="text-xs text-gray-600">Total Kos</p>
+                                                        <p className="text-lg font-bold text-gray-900">
+                                                            {kosDetail.owner.kos?.length || 0}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </div> */}
+                                            {/* <div className="bg-green-50 rounded-lg p-3">
+                                                <div className="flex items-center gap-2">
+                                                    <FiCheckCircle className="text-green-600 text-xl" />
+                                                    <div>
+                                                        <p className="text-xs text-gray-600">Pemilik Terverifikasi</p>
+                                                        <p className="text-sm font-semibold text-green-700">Aktif</p>
+                                                    </div>
+                                                </div>
+                                            </div> */}
+                                        {/* </div> */}
+
+                                        {/* Contact Info */}
+                                        {/* <div className="space-y-2">
+                                            {kosDetail.owner.phone && kosDetail.owner.phone !== '' && kosDetail.owner.phone !== 'Tidak tersedia' && (
+                                                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg group hover:bg-green-50 transition-colors">
+                                                    <div className="p-2 bg-white rounded-lg shadow-sm group-hover:shadow-md transition-shadow">
+                                                        <FaPhone className="text-green-600 text-sm" />
+                                                    </div>
+                                                    <div className="flex-1">
+                                                        <p className="text-xs text-gray-500">Nomor Telepon</p>
+                                                        <p className="text-sm font-semibold text-gray-900">{kosDetail.owner.phone}</p>
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg group hover:bg-blue-50 transition-colors">
+                                                <div className="p-2 bg-white rounded-lg shadow-sm group-hover:shadow-md transition-shadow">
+                                                    <FaEnvelope className="text-blue-600 text-sm" />
+                                                </div>
+                                                <div className="flex-1 min-w-0">
+                                                    <p className="text-xs text-gray-500">Email</p>
+                                                    <p className="text-sm font-semibold text-gray-900 truncate">{kosDetail.owner.email}</p>
+                                                </div>
+                                            </div>
+                                        </div> */}
+
+                                        {/* Quick Contact Button */}
+                                        {/* <button
+                                            onClick={handleWhatsAppChat}
+                                            className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg transition-all font-semibold shadow-md hover:shadow-lg">
+                                            <FaWhatsapp className="text-xl" />
+                                            <span>Hubungi Pemilik via WhatsApp</span>
+                                        </button> */}
+                                    </div>
+                                </div>
+
+                                {/* Additional Info */}
+                                <div className="mt-6 pt-6 border-t border-gray-200">
+                                    <div className="flex items-start gap-3">
+                                        <div className="p-2 bg-blue-100 rounded-lg">
+                                            <BsPersonFillCheck className="text-blue-600 text-xl" />
+                                        </div>
+                                        <div>
+                                            <h4 className="font-semibold text-gray-900 mb-1">Pemilik Terpercaya</h4>
+                                            <p className="text-sm text-gray-600">
+                                                Pemilik kos ini telah terverifikasi oleh Koseeker dan siap membantu Anda menemukan hunian yang nyaman.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Right Sidebar - Price, Actions & Owner Info */}

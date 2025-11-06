@@ -6,6 +6,7 @@ import { IKos } from "../../types";
 import { get } from "../../../lib/bridge";
 import { BASE_IMAGE_KOS } from "../../../global";
 import Select from "../select";
+import Image from "next/image";
 
 // Enum untuk kalender sesuai dengan Prisma
 const kalenderOptions = [
@@ -469,7 +470,7 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                     ) : (
                         !loading && (
                             <div className="text-center py-12">
-                                <div className="text-gray-400 text-6xl mb-4">🏠</div>
+                                <Image src="/images/logo_sad.svg" className="mx-auto" alt="Tidak ada kos ditemukan" width={200} height={200} />
                                 <h3 className="text-xl font-semibold text-gray-600 mb-2">
                                     Tidak ada kos ditemukan
                                 </h3>

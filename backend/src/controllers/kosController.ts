@@ -211,7 +211,13 @@ export const getKosById = async (request: Request, response: Response) => {
                         name: true,
                         email: true,
                         phone: true,
-                        profile_picture: true
+                        profile_picture: true,
+                        createdAt: true,
+                        kos: {
+                            select: {
+                                id: true
+                            }
+                        }
                     }
                 }
             }

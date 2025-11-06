@@ -37,6 +37,8 @@ export interface IKos {
         email: string;
         phone?: string;
         profile_picture?: string;
+        createdAt?: string;
+        kos?: Array<{ id: number }>;
     };
 }
 
