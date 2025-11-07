@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { BASE_IMAGE_KOS } from '@/global'
 import { isAuthenticated, getAuthToken } from '@/lib/auth'
 import { generateReceiptHTML } from '../../components/ReceiptTemplate'
+import { FaPiggyBank } from 'react-icons/fa'
+import { LuBanknote } from 'react-icons/lu'
 
 interface Kos {
     id: number
@@ -501,7 +503,7 @@ export default function BookKosPage() {
                             </div>
 
                             {/* Ketersediaan Kamar */}
-                            <div className="mb-4 p-4 bg-green-50 border border-green-200 rounded-lg">
+                            <div className="mb-4 p-2 bg-green-50 border border-green-200 rounded-lg">
                                 <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
                                     Ketersediaan Kamar
                                 </h3>
@@ -512,21 +514,21 @@ export default function BookKosPage() {
                                     </div>
                                     <div>
                                         {kos.availableRooms === 0 ? (
-                                            <span className="inline-flex items-center gap-2 bg-red-100 text-red-800 px-4 py-2 rounded-full text-sm font-semibold">
+                                            <span className="inline-flex items-center gap-2 bg-red-100 text-red-800 px-4 py-2 rounded-full text-xs font-semibold">
                                                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                                                 </svg>
                                                 Kamar Penuh
                                             </span>
                                         ) : kos.availableRooms <= 3 ? (
-                                            <span className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-sm font-semibold">
+                                            <span className="inline-flex items-center gap-2 bg-yellow-100 text-yellow-800 px-4 py-2 rounded-full text-xs font-semibold">
                                                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
                                                 </svg>
                                                 Hampir Penuh
                                             </span>
                                         ) : (
-                                            <span className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-sm font-semibold">
+                                            <span className="inline-flex items-center gap-2 bg-green-100 text-green-800 px-4 py-2 rounded-full text-xs font-semibold">
                                                 <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                                                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                                                 </svg>
@@ -862,35 +864,35 @@ export default function BookKosPage() {
                                 <div className="flex items-center justify-between">
                                     <div>
                                         <h2 className="text-2xl font-bold mb-1">Booking Berhasil!</h2>
-                                        <p className="text-blue-400 text-sm">Struk pemesanan Anda</p>
+                                        <p className="text-blue-500 text-sm">Struk pemesanan Anda</p>
                                     </div>
                                     <div className="text-right">
                                         <div className="backdrop-blur-sm px-4 py-2 rounded-lg">
-                                            <p className="text-xs text-black/25">Booking ID</p>
-                                            <p className="font-bold text-lg">{bookingResult.uuid}</p>
+                                            <p className="text-xs text-black mb-2">Booking ID</p>
+                                            <p className="font-bold px-4 py-2 bg-blue-50 rounded-full text-sm">{bookingResult.uuid}</p>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             {/* Content */}
-                            <div className="p-6 space-y-6">
-                                {/* Status Badge */}
-                                <div className="flex items-center justify-center">
-                                    <div className="bg-yellow-50 border-2 border-yellow-200 text-yellow-800 px-6 py-3 rounded-full">
-                                        <div className="flex items-center gap-2">
-                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg>
-                                            <span className="font-semibold">Menunggu Konfirmasi Owner</span>
+                            <div className="p-6 space-y-4">
+                                    {/* Status Badge */}
+                                    <div className="flex items-center justify-center">
+                                        <div className="bg-yellow-50 border-2 border-yellow-200 text-yellow-800 px-6 py-3 rounded-full">
+                                            <div className="flex items-center gap-2">
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                </svg>
+                                                <span className="font-semibold">Menunggu Konfirmasi Owner</span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
 
                                 {/* Detail Kos */}
-                                <div className="bg-gray-50 rounded-xl p-5">
+                                <div className="bg-gray-50 rounded-xl px-5 py-2">
                                     <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                        <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                                         </svg>
                                         Detail Kos
@@ -957,7 +959,7 @@ export default function BookKosPage() {
                                 {/* Rincian Pembayaran */}
                                 <div className="bg-gray-50 rounded-xl p-5">
                                     <h3 className="font-bold text-gray-900 mb-4 flex items-center gap-2">
-                                        <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg>
                                         Rincian Pembayaran
@@ -968,25 +970,33 @@ export default function BookKosPage() {
                                             <span className="font-semibold text-gray-900">Rp {formatPrice(getDiscountedPrice())}</span>
                                         </div>
                                         {kos?.discountPercent && kos.discountPercent > 0 && (
-                                            <div className="flex justify-between items-center text-green-600">
+                                            <div className="flex justify-between items-center text-red-600">
                                                 <span>Hemat ({kos.discountPercent}% Diskon)</span>
                                                 <span className="font-semibold">- Rp {formatPrice(getSavings())}</span>
                                             </div>
                                         )}
                                         <div className="flex justify-between items-center">
                                             <span className="text-gray-600">Durasi</span>
-                                            <span className="font-semibold text-gray-900">x {bookingData.durationMonths}</span>
+                                            <span className="font-semibold text-gray-900">x {bookingData.durationMonths} (Bulan)</span>
                                         </div>
                                         <div className="border-t-2 border-gray-300 pt-3 mt-3">
                                             <div className="flex justify-between items-center">
                                                 <span className="text-lg font-bold text-gray-900">Total Pembayaran</span>
-                                                <span className="text-xl font-bold text-blue-600">Rp {formatPrice(getTotalPrice())}</span>
+                                                <span className="text-lg font-bold text-black">Rp {formatPrice(getTotalPrice())}</span>
                                             </div>
                                         </div>
                                         <div className="flex justify-between items-center text-sm">
                                             <span className="text-gray-600">Metode Pembayaran</span>
                                             <span className="font-medium text-gray-900">
-                                                {bookingData.payment === 'cash' ? '💵 Tunai' : '🏦 Transfer Bank'}
+                                                {bookingData.payment === 'cash' ? (
+                                                    <div className='flex items-center gap-2'>
+                                                        <FaPiggyBank /> Tunai
+                                                    </div>
+                                                ) : (
+                                                    <div className='flex items-center gap-2'>
+                                                        <LuBanknote /> Transfer Bank
+                                                    </div>
+                                                )}
                                             </span>
                                         </div>
                                     </div>
