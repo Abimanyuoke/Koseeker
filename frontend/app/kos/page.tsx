@@ -250,7 +250,6 @@ const KosPage = () => {
                 <div className="grid grid-cols-7 items-center gap-4">
                     <div className="flex items-center gap-4 col-span-7">
                         <div>
-                            <ButtonBack />
                             <h1 className="text-2xl md:text-3xl font-bold flex items-center gap-2">
                                 Rekomendasi Kos di{" "}
                                 <span className="text-green-600">
@@ -561,7 +560,7 @@ const KosPage = () => {
 
                                         <div className="py-5">
                                             {/* Badge Gender */}
-                                            <span className={`px-2 py-1 rounded text-[14px] font-bold border border-slate-300  ${getGenderColor(kos.gender)}`}>
+                                            <span className={`px-2 py-1 rounded text-[12px] font-bold border border-slate-300  ${getGenderColor(kos.gender)}`}>
                                                 {getGenderText(kos.gender)}
                                             </span>
                                             <div className="mt-4">

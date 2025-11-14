@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { getUserData } from '@/lib/auth'
 import { BASE_API_URL, BASE_IMAGE_KOS } from '@/global'
 import { toast } from 'sonner'
@@ -134,7 +135,7 @@ export default function ManagerKosListPage() {
         return (
             <div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center'>
                 <div className='text-center bg-white rounded-2xl shadow-lg p-8 max-w-md'>
-                    <div className='text-6xl mb-4'>🔒</div>
+                    <Image src="/images/logo.svg" className='text-6xl mb-4' alt={'logo'}/>
                     <h1 className='text-2xl font-bold mb-2'>Akses Ditolak</h1>
                     <p className='text-gray-600'>Halaman ini hanya untuk pemilik kos (owner).</p>
                 </div>

@@ -150,12 +150,12 @@ export default function FavoritPage() {
 
     const getGenderColor = (gender: string) => {
         switch (gender) {
-            case 'male': return 'bg-blue-100 text-blue-800'
-            case 'female': return 'bg-pink-100 text-pink-800'
-            case 'all': return 'bg-green-100 text-green-800'
-            default: return 'bg-gray-100 text-gray-800'
+            case 'male': return 'text-[404040]';
+            case 'female': return 'text-[404040]';
+            case 'all': return 'text-[404040]';
+            default: return 'bg-gray-100 text-gray-800';
         }
-    }
+    };
 
     const handleKosClick = (kosId: number) => {
         router.push(`/kos/${kosId}`)
@@ -165,12 +165,13 @@ export default function FavoritPage() {
         return (
             <div className="min-h-screen flex items-center justify-center bg-gray-50">
                 <div className="text-center">
-                    <FiLoader className="animate-spin text-5xl text-blue-600 mx-auto mb-4" />
+                    <FiLoader className="animate-spin text-5xl text-green-500 mx-auto mb-4" />
                     <p className="text-gray-600">Memuat favorit...</p>
                 </div>
             </div>
         )
     }
+
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
@@ -189,7 +190,7 @@ export default function FavoritPage() {
                 {favorites.length === 0 ? (
                     <div className="bg-white rounded-2xl shadow-sm p-12 text-center">
                         <div className="max-w-md mx-auto">
-                            <Image src="/images/logo_terpukau.png" alt="Belum Ada Favorit" width={200} height={200} className="mx-auto" />
+                            <Image src="/images/logo_terpukau.svg" alt="Belum Ada Favorit" width={200} height={200} className="mx-auto" />
                             <h3 className="text-2xl font-bold text-gray-900 mb-2">
                                 Belum Ada Favorit
                             </h3>
@@ -197,9 +198,8 @@ export default function FavoritPage() {
                                 Anda belum menandai kos apapun sebagai favorit. Mulai jelajahi dan tandai kos yang Anda sukai!
                             </p>
                             <button
-                                onClick={() => router.push('/home')}
-                                className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold"
-                            >
+                                onClick={() => router.push('/kos')}
+                                className="px-6 py-3 bg-gradient-to-r from-primary/80 hover:cursor-pointer to-green-800 text-white rounded-lg hover:scale-105 transition font-semibold">
                                 Jelajahi Kos
                             </button>
                         </div>
@@ -242,8 +242,7 @@ export default function FavoritPage() {
                                                     onError={(e) => {
                                                         console.error('Image load error for:', mainImage)
                                                         e.currentTarget.style.display = 'none'
-                                                    }}
-                                                />
+                                                    }} />
                                             ) : (
                                                 <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200">
                                                     <span className="text-gray-400 text-sm">No Image</span>
@@ -253,7 +252,7 @@ export default function FavoritPage() {
                                             {/* Discount Badge */}
                                             {kos.discountPercent && kos.discountPercent > 0 && (
                                                 <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
-                                                    🔥 {kos.discountPercent}% OFF
+                                                    {kos.discountPercent}% OFF
                                                 </div>
                                             )}
 
@@ -271,41 +270,32 @@ export default function FavoritPage() {
                                                     <FaHeart className="text-red-500 w-5 h-5" />
                                                 )}
                                             </button>
-
-                                            {/* Gender Badge */}
-                                            <div className="absolute bottom-3 left-3">
-                                                <span className={`${getGenderColor(kos.gender)} px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 shadow-lg`}>
-                                                    <FaUserAlt className="w-3 h-3" />
-                                                    {getGenderText(kos.gender)}
-                                                </span>
-                                            </div>
                                         </div>
 
                                         {/* Content */}
-                                        <div
-                                            className="p-5"
-                                            onClick={() => handleKosClick(kos.id)}>
-                                            {/* Name */}
-                                            <h3 className="text-lg font-bold text-gray-900 mb-2 line-clamp-1 group-hover:text-blue-600 transition">
-                                                {kos.name}
-                                            </h3>
-
-                                            {/* Address */}
-                                            <div className="flex items-start gap-2 text-sm text-gray-600 mb-3">
-                                                <FaMapMarkerAlt className="w-4 h-4 mt-0.5 flex-shrink-0 text-gray-400" />
-                                                <p className="line-clamp-2">{kos.address}</p>
+                                        <div className="p-5" onClick={() => handleKosClick(kos.id)}>
+                                            {/* Gender Badge */}
+                                            <div className="w-[60px]">
+                                                <span className={`px-2 py-1 rounded text-[12px] font-bold border border-slate-300  ${getGenderColor(kos.gender)}`}>
+                                                    {getGenderText(kos.gender)}
+                                                </span>
                                             </div>
-
-                                            {/* Location Info */}
-                                            <div className="flex items-center gap-3 mb-4 text-xs text-gray-500">
-                                                <div className="flex items-center gap-1">
-                                                    <FaSchool className="w-3 h-3" />
-                                                    <span>{kos.kampus}</span>
-                                                </div>
-                                                <div className="w-1 h-1 bg-gray-300 rounded-full"></div>
-                                                <div className="flex items-center gap-1">
-                                                    <FaCity className="w-3 h-3" />
-                                                    <span>{kos.kota}</span>
+                                            {/* Name */}
+                                            <div className="mt-4">
+                                                <h3 className="text-sm text-gray-900 line-clamp-1">
+                                                    {kos.name}
+                                                </h3>
+                                                <p className="text-sm font-semibold text-gray-600 line-clamp-2">
+                                                    {kos.address}
+                                                </p>
+                                                <div className='flex items-center gap-3'>
+                                                    <p className="text-xs text-gray-500 mt-1">
+                                                        {kos.kota}
+                                                    </p>
+                                                    <span className="w-1 h-1 mt-1.5 rounded-full bg-gray-400"></span>
+                                                    <p className="text-xs text-gray-500 mt-1">
+                                                        <span>{kos.kampus}</span>
+                                                    </p>
                                                 </div>
                                             </div>
 
@@ -317,11 +307,11 @@ export default function FavoritPage() {
                                                             Rp {formatPrice(kos.pricePerMonth)}
                                                         </p>
                                                         <div className="flex items-center justify-between">
-                                                            <div>
-                                                                <p className="text-2xl font-bold text-blue-600">
+                                                            <div className='flex items-center gap-2'>
+                                                                <p className="text-xl font-bold text-black">
                                                                     Rp {formatPrice(discountedPrice)}
                                                                 </p>
-                                                                <p className="text-xs text-gray-500">per bulan</p>
+                                                                <p className="text-xs text-gray-500">( per bulan )</p>
                                                             </div>
                                                             <div className="text-right">
                                                                 <p className="text-xs text-green-600 font-semibold">
@@ -331,11 +321,11 @@ export default function FavoritPage() {
                                                         </div>
                                                     </div>
                                                 ) : (
-                                                    <div>
-                                                        <p className="text-2xl font-bold text-blue-600">
+                                                    <div className='flex items-center gap-2'>
+                                                        <p className="text-xl font-bold text-black">
                                                             Rp {formatPrice(kos.pricePerMonth)}
                                                         </p>
-                                                        <p className="text-xs text-gray-500">per bulan</p>
+                                                        <p className="text-xs text-gray-500">( per bulan )</p>
                                                     </div>
                                                 )}
                                             </div>
