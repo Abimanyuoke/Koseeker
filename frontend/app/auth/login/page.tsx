@@ -123,7 +123,7 @@ export default function Login() {
                                     }
                                 </div>
                             </div>
-                            <button type="submit" disabled={isLoading} className="mt-3 uppercase text-sm font-semibold bg-primary shadow-lg p-[10px] hover:text-white duration-200 transition-all hover:scale-105 text-white py-2 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                            <button type="submit" disabled={isLoading} className="mt-3 uppercase text-sm font-semibold bg-gradient-to-r from-primary/80 to-green-800 shadow-lg p-[10px] hover:text-white duration-200 transition-all hover:scale-105 text-white py-2 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                                 {isLoading ? "Logging in..." : "login"}
                             </button>
                             <div className="flex flex-col justify-center text-center">

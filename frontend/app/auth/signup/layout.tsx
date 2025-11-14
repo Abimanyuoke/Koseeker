@@ -14,7 +14,7 @@ type PropsLayout = {
 
 const RootLayout = ({ children }: PropsLayout) => {
     return (
-        <div className="overflow-x-hidden">
+        <div className="overflow-x-hidden overflow-y-hidden">
             <Toaster position="top-right" richColors/>
             {children}
         </div>  

@@ -71,7 +71,7 @@ export default function SignUp() {
         }
     }
     return (
-        <div className="bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 min-h-screen w-full relative overflow-hidden font-lato">
+        <div className="bg-gradient-to-br from-green-50 min-h-screen w-full relative overflow-hidden font-lato ">
             {/* Animated Background Blobs */}
             {/* <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute top-1/4 right-1/4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
@@ -80,7 +80,7 @@ export default function SignUp() {
             </div> */}
 
             <div className="w-full min-h-screen flex justify-center items-center relative py-8 px-4">
-                <div className="relative flex max-w-6xl w-full shadow-2xl rounded-2xl overflow-hidden backdrop-blur-sm bg-white/80">
+                <div className="relative flex max-w-5xl w-full shadow-2xl rounded-2xl overflow-hidden backdrop-blur-sm bg-white/80">
                     {/* Left Side - Image with Overlay */}
                     <div className="hidden lg:block lg:w-1/2 relative">
                         <div className="relative h-full">
@@ -110,10 +110,10 @@ export default function SignUp() {
                     </div>
 
                     {/* Right Side - Signup Form */}
-                    <div className="w-full lg:w-1/2 p-8 lg:p-12 bg-white relative overflow-y-auto max-h-[90vh]">
+                    <div className="w-full lg:w-1/2 p-8 lg:px-12 bg-white relative overflow-y-hidden max-h-[95vh]">
                         {/* Logo and Header */}
-                        <div className="flex flex-col items-center mb-8">
-                            <div className="relative mb-4">
+                        <div className="flex flex-col items-center mb-4 ">
+                            <div className="relative mb-1">
                                 <div className="absolute inset-0 bg-primary/20 rounded-full blur-xl animate-pulse"></div>
                                 <Image
                                     src={logo}
@@ -217,7 +217,7 @@ export default function SignUp() {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full bg-gradient-to-r from-primary to-green-600 text-white font-semibold py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 uppercase tracking-wide mt-6">
+                                className="w-full mt-3 uppercase text-sm font-semibold bg-gradient-to-r from-primary/80 to-green-800 shadow-lg p-[10px] hover:text-white duration-200 transition-all hover:scale-105 text-white py-2 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                                 {isLoading ? (
                                     <span className="flex items-center justify-center gap-2">
                                         <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
