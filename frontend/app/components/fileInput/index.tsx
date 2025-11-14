@@ -50,7 +50,7 @@ const FileInput = (props: Props) => {
                     <div className="my-2">
                         {message}
                     </div>
-                    : <></>
+                    : <div></div>
             }
         </div>
     )

@@ -15,7 +15,7 @@ import Image from "next/image";
 import imgSignup from "../../../public/images/kosimage.jpeg"
 import { BsFillTelephoneForwardFill } from "react-icons/bs";
 import { MdEmail } from "react-icons/md";
-import { FaLock, FaUser } from "react-icons/fa";
+import { FaImage, FaLock, FaUser } from "react-icons/fa";
 import logo from "../../../public/images/logo.svg";
 
 export default function SignUp() {
@@ -71,19 +71,13 @@ export default function SignUp() {
         }
     }
     return (
-        <div className="bg-gradient-to-br from-cyan-50 via-blue-50 to-purple-50 min-h-screen w-full relative overflow-hidden font-lato">
+        <div className="bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 min-h-screen w-full relative overflow-hidden font-lato">
             {/* Animated Background Blobs */}
-            <div className="absolute inset-0 overflow-hidden">
-                <svg viewBox="0 50 200 200" className="absolute -right-20 top-0 w-[400px] animate-pulse opacity-40" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="#1baa56" d="M44,-72C56.5,-69,65.6,-56.1,65.7,-42.4C65.9,-28.8,56.9,-14.4,49.2,-4.5C41.4,5.4,34.9,10.9,32.5,20.6C30.1,30.3,31.9,44.3,27.1,53.7C22.4,63.2,11.2,68.1,-2.1,71.8C-15.5,75.5,-31,78.1,-42.1,72.3C-53.2,66.5,-59.9,52.5,-64,39.1C-68.2,25.6,-69.8,12.8,-62.8,4C-55.8,-4.7,-40.2,-9.5,-35.4,-21.7C-30.5,-33.9,-36.4,-53.5,-32.3,-61.4C-28.2,-69.2,-14.1,-65.3,0.8,-66.8C15.8,-68.2,31.5,-75.1,44,-72Z" transform="translate(100 100)" />
-                </svg>
-                <svg viewBox="0 0 200 200" className="absolute -left-20 bottom-0 w-[500px] animate-pulse opacity-30" xmlns="http://www.w3.org/2000/svg">
-                    <path fill="#05B6D3" d="M37,-42.5C44.8,-29.1,45.9,-14.6,44.4,-1.5C42.9,11.6,38.8,23.1,30.9,30.5C23.1,37.9,11.6,41.2,-5.4,46.6C-22.4,52,-44.7,59.5,-54.4,52.1C-64.2,44.7,-61.3,22.4,-59,2.3C-56.7,-17.8,-55.1,-35.6,-45.3,-48.9C-35.6,-62.3,-17.8,-71.2,-1.6,-69.6C14.6,-68,29.1,-55.8,37,-42.5Z" transform="translate(100 100)" />
-                </svg>
+            {/* <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute top-1/4 right-1/4 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
                 <div className="absolute top-1/3 left-1/4 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
                 <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
-            </div>
+            </div> */}
 
             <div className="w-full min-h-screen flex justify-center items-center relative py-8 px-4">
                 <div className="relative flex max-w-6xl w-full shadow-2xl rounded-2xl overflow-hidden backdrop-blur-sm bg-white/80">
@@ -146,7 +140,7 @@ export default function SignUp() {
                                     onChange={(e) => setUser({ ...user, name: e.target.value })}
                                     required
                                     placeholder="Full Name"
-                                    className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400"
+                                    className="w-full pl-12 pr-4 py-2.5 border-2 border-gray-400 rounded-md focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400 placeholder:text-sm"
                                 />
                             </div>
 
@@ -162,7 +156,7 @@ export default function SignUp() {
                                     onChange={(e) => setUser({ ...user, email: e.target.value })}
                                     required
                                     placeholder="Email Address"
-                                    className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400"
+                                    className="w-full pl-12 pr-4 py-2.5 border-2 border-gray-400 rounded-md focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400 placeholder:text-sm"
                                 />
                             </div>
 
@@ -178,7 +172,7 @@ export default function SignUp() {
                                     onChange={(e) => setUser({ ...user, phone: e.target.value })}
                                     required
                                     placeholder="+62 812-3456-7890"
-                                    className="w-full pl-12 text-sm pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400"
+                                    className="w-full pl-12 pr-4 py-2.5 border-2 border-gray-400 rounded-md focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400 placeholder:text-sm"
                                 />
                             </div>
 
@@ -194,7 +188,7 @@ export default function SignUp() {
                                     onChange={(e) => setUser({ ...user, password: e.target.value })}
                                     required
                                     placeholder="Password"
-                                    className="w-full pl-12 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400" />
+                                    className="w-full pl-12 pr-4 py-2.5 border-2 border-gray-400 rounded-md focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400 placeholder:text-sm" />
                                 <button
                                     type="button"
                                     onClick={() => setShowPassword(!showPassword)}
@@ -208,14 +202,15 @@ export default function SignUp() {
                             </div>
 
                             {/* File Upload */}
-                            <div className="pt-2">
-                                <FileInput
-                                    acceptTypes={["image/png", "image/jpeg", "image/jpg"]}
-                                    id="profile_picture"
-                                    label="Profile Picture (Optional)"
-                                    onChange={(f) => setFile(f)}
-                                    required={false}
-                                />
+                            <div className="relative">
+                                <FaImage className="absolute left-3 top-1/2 translate-y-0.5 transform  text-gray-400 text-lg"/>
+                                    <FileInput
+                                        acceptTypes={["image/png", "image/jpeg", "image/jpg"]}
+                                        id="profile_picture"
+                                        className="w-full pl-12 pr-4 py-2.5 border-2 border-gray-400 rounded-md focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400"
+                                        label="Profile Picture (Optional)"
+                                        onChange={(f) => setFile(f)}
+                                        required={false}/>
                             </div>
 
                             {/* Submit Button */}
