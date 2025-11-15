@@ -195,7 +195,7 @@ export default function BookingsPage() {
 
                                     <div className="mt-4 pt-4 border-t border-gray-200">
                                         <div className="flex justify-between items-center mb-3">
-                                            <span className="text-lg font-bold text-blue-600">
+                                            <span className="text-lg font-bold text-black">
                                                 Total: Rp {(booking.kos.pricePerMonth * booking.durationMonths).toLocaleString()}
                                             </span>
                                         </div>
@@ -204,8 +204,7 @@ export default function BookingsPage() {
                                         </p>
                                         <button
                                             onClick={() => handlePrintReceipt(booking)}
-                                            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-medium text-sm shadow-md"
-                                        >
+                                            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/80 to-green-800 text-white rounded-lg hover:from-green-800 hover:to-primary/80 hover:cursor-pointer transition font-medium text-sm shadow-md">
                                             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                                             </svg>

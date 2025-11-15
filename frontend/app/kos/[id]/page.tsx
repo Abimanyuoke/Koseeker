@@ -8,7 +8,7 @@ import { BASE_API_URL, BASE_IMAGE_KOS } from "../../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
 import { FiLoader, FiShare2, FiCheckCircle } from "react-icons/fi";
-import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaRulerCombined, FaToilet, FaDoorOpen, FaWhatsapp, FaRegHeart, FaMotorcycle, FaPhone, FaEnvelope } from "react-icons/fa";
+import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaRulerCombined, FaToilet, FaDoorOpen, FaWhatsapp, FaRegHeart, FaMotorcycle, FaPhone, FaEnvelope, FaParking } from "react-icons/fa";
 import { MdFamilyRestroom, MdLocalLaundryService, MdOutlineCleaningServices, MdOutlinePets, MdSecurity } from "react-icons/md";
 import { GiCook, GiNightSleep } from "react-icons/gi";
 import { IoCalendarOutline, IoCloudyNight, IoHome, IoTimeOutline } from "react-icons/io5";
@@ -151,7 +151,7 @@ const KosDetailPage = () => {
         if (facilityLower.includes('kasur') || facilityLower.includes('bed')) return <FaBed className="text-gray-500" />;
         if (facilityLower.includes('motor') || facilityLower.includes('motorcycle')) return <FaMotorcycle className="text-gray-500" />;
         if (facilityLower.includes('mobil') || facilityLower.includes('car')) return <FaCar className="text-gray-500" />;
-        if (facilityLower.includes('parkir') || facilityLower.includes('parking') || facilityLower.includes('garase')) return <FaCar className="text-gray-500" />;
+        if (facilityLower.includes('parkir') || facilityLower.includes('parking') || facilityLower.includes('garase')) return <FaParking className = "text-gray-500" />;
         if (facilityLower.includes('tv') || facilityLower.includes('television')) return <FaTv className="text-gray-500" />;
         if (facilityLower.includes('ac') || facilityLower.includes('air conditioning')) return <FaSnowflake className="text-gray-500" />;
         if (facilityLower.includes('kamar mandi') || facilityLower.includes('bathroom')) return <FaShower className="text-gray-500" />;
@@ -649,7 +649,7 @@ const KosDetailPage = () => {
 
                             return parkingFacilities.length > 0 && (
                                 <div className="bg-white py-6">
-                                    <h2 className="text-2xl font-bold text-gray-900 mb-4 flex items-center gap-2">
+                                    <h2 className="text-2xl font-black text-gray-900 mb-4 flex items-center gap-2">
                                         Fasilitas Parkir
                                     </h2>
                                     <div className="grid grid-cols-2 gap-3">

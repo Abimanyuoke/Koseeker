@@ -219,7 +219,7 @@ const Navbar = () => {
                   <IoMdArrowDropdown className={`text-lg transition-transform ${activeDown === 'lainnya' ? 'rotate-180' : ''}`} />
                 </button>
                 {activeDown === 'lainnya' && (
-                  <div className="absolute top-full right-0 mt-5 w-48 bg-white shadow-lg rounded-xl border border-gray-200 z-50">
+                  <div className="absolute top-full mt-5 w-48 bg-white shadow-lg rounded-xl border border-gray-200 z-50">
                     <ul className="flex flex-col">
                       <li>
                         <Link

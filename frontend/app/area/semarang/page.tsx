@@ -1,6 +1,6 @@
 import AreaKosPage from "../../components/area_kos/index";
 import React from "react";
-import Errorpage from "../../components/error/index"
+import Errorpage from "../../error/page"
 
 const SemarangKosPage = () => {
     return (
