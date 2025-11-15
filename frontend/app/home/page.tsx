@@ -75,13 +75,13 @@ export default function Home() {
                 </div>
                 {/* blog */}
                 <div className="py-24 text-[#404040] space-y-5">
-                    <div className="bg-white shadow-lg rounded-lg p-7 gap-3 relative w-3/4">
+                    <div className="bg-white shadow-lg rounded-lg p-7 gap-3 relative w-full">
                         <div className="font-lato flex flex-col space-y-1">
                             <h1 className="text-2xl font-black ">Coba cara baru bayar kos!</h1>
                             <p className="text-base font-normal">Biar bayar kos lebih gampang dan aman, coba sistem pembayaran khusus buat anak kos.</p>
                             <button className="underline text-start cursor-pointer text-[12px] mt-2 font-bold">Mau coba dong</button>
                         </div>
-                        <Image src="./images/dots.svg" alt="Abstract 1" width={250} height={300} className=" h-auto object-cover absolute bottom-0 right-0" />
+                        <Image src="/images/landing-owner-entry.webp" alt="Abstract 1" width={200} height={300} className="h-auto object-cover absolute bottom-0 right-0 max-w-full max-h-full" />
                     </div>
                     <div className="flex justify-between items-center bg-white shadow-lg rounded-lg p-7 gap-3">
                         <div className="flex flex-col space-y-2">

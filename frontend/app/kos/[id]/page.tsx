@@ -9,7 +9,7 @@ import { get } from "@/lib/bridge";
 import { AlertToko } from "../../components/alert";
 import { FiLoader, FiShare2, FiCheckCircle } from "react-icons/fi";
 import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaRulerCombined, FaToilet, FaDoorOpen, FaWhatsapp, FaRegHeart, FaMotorcycle, FaPhone, FaEnvelope, FaParking } from "react-icons/fa";
-import { MdFamilyRestroom, MdLocalLaundryService, MdOutlineCleaningServices, MdOutlinePets, MdSecurity } from "react-icons/md";
+import { MdBalcony, MdFamilyRestroom, MdLocalLaundryService, MdOutlineCleaningServices, MdOutlinePets, MdSecurity } from "react-icons/md";
 import { GiCook, GiNightSleep } from "react-icons/gi";
 import { IoCalendarOutline, IoCloudyNight, IoHome, IoTimeOutline } from "react-icons/io5";
 import { ButtonPrimary2 } from "../../components/button";
@@ -24,7 +24,6 @@ import { AiFillThunderbolt, AiOutlineFileProtect } from "react-icons/ai";
 import { BsFillLightningChargeFill, BsLightningFill, BsPersonFillCheck } from "react-icons/bs";
 import { FaChildren } from "react-icons/fa6";
 import { HiOutlineClipboardDocumentCheck, HiOutlineClipboardDocumentList, HiOutlineDocumentText } from "react-icons/hi2";
-import { CheckCircle } from "lucide-react";
 
 const KosDetailPage = () => {
     const params = useParams();
@@ -160,7 +159,7 @@ const KosDetailPage = () => {
         if (facilityLower.includes('laundry') || facilityLower.includes('cuci')) return <MdLocalLaundryService className="text-gray-500" />;
         if (facilityLower.includes('dapur') || facilityLower.includes('kitchen')) return <GiCook className="text-gray-500" />;
         if (facilityLower.includes('security') || facilityLower.includes('keamanan') || facilityLower.includes('cctv')) return <MdSecurity className="text-gray-500" />;
-        if (facilityLower.includes('balkon')) return <PiDoorOpen className="text-gray-500" />;
+        if (facilityLower.includes('balkon')) return <MdBalcony className="text-gray-500" />;
         if (facilityLower.includes('kulkas')) return <LuRefrigerator className="text-gray-500" />;
         return <div className="w-4 h-4 bg-gray-400 rounded-full"></div>;
     };
