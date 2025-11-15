@@ -503,7 +503,7 @@ export default function BookKosPage() {
                             </div>
 
                             {/* Ketersediaan Kamar */}
-                            <div className="mb-4 p-2 bg-green-50 border border-green-200 rounded-lg">
+                            <div className="mb-4 rounded-lg">
                                 <h3 className="font-semibold text-gray-900 mb-2 flex items-center gap-2">
                                     Ketersediaan Kamar
                                 </h3>
@@ -1026,8 +1026,7 @@ export default function BookKosPage() {
                                 <div className="flex gap-3">
                                     <button
                                         onClick={handlePrintReceipt}
-                                        className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-semibold shadow-lg"
-                                    >
+                                        className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-primary/80 to-green-800 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-semibold shadow-lg">
                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                                         </svg>

@@ -18,7 +18,7 @@ import ReviewContainer from "@/app/components/review/ReviewContainer";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import { IoIosArrowForward, IoIosCheckmarkCircle } from "react-icons/io";
-import { LuDot, LuMapPin } from "react-icons/lu";
+import { LuDot, LuMapPin, LuRefrigerator } from "react-icons/lu";
 import { PiCigaretteSlashFill, PiDoorOpen } from "react-icons/pi";
 import { AiFillThunderbolt, AiOutlineFileProtect } from "react-icons/ai";
 import { BsFillLightningChargeFill, BsLightningFill, BsPersonFillCheck } from "react-icons/bs";
@@ -160,6 +160,8 @@ const KosDetailPage = () => {
         if (facilityLower.includes('laundry') || facilityLower.includes('cuci')) return <MdLocalLaundryService className="text-gray-500" />;
         if (facilityLower.includes('dapur') || facilityLower.includes('kitchen')) return <GiCook className="text-gray-500" />;
         if (facilityLower.includes('security') || facilityLower.includes('keamanan') || facilityLower.includes('cctv')) return <MdSecurity className="text-gray-500" />;
+        if (facilityLower.includes('balkon')) return <PiDoorOpen className="text-gray-500" />;
+        if (facilityLower.includes('kulkas')) return <LuRefrigerator className="text-gray-500" />;
         return <div className="w-4 h-4 bg-gray-400 rounded-full"></div>;
     };
 
@@ -527,6 +529,7 @@ const KosDetailPage = () => {
                                 return !facilityLower.includes('kamar mandi') &&
                                     !facilityLower.includes('k.mandi') &&
                                     !facilityLower.includes('bathroom') &&
+                                    !facilityLower.includes('parkir') &&
                                     !facilityLower.includes('shower') &&
                                     !facilityLower.includes('toilet') &&
                                     !facilityLower.includes('air panas') &&
