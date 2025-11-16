@@ -75,18 +75,19 @@ export default function Home() {
                 </div>
                 {/* blog */}
                 <div className="py-24 text-[#404040] space-y-5">
-                    <div className="bg-white shadow-lg rounded-lg p-7 gap-3 relative w-full">
+                    <div className="bg-white shadow-lg rounded-lg p-7 gap-3 relative w-full overflow-hidden">
                         <div className="font-lato flex flex-col space-y-1">
                             <h1 className="text-2xl font-black ">Coba cara baru bayar kos!</h1>
                             <p className="text-base font-normal">Biar bayar kos lebih gampang dan aman, coba sistem pembayaran khusus buat anak kos.</p>
                             <button className="underline text-start cursor-pointer text-[12px] mt-2 font-bold">Mau coba dong</button>
                         </div>
-                        <Image src="/images/landing-owner-entry.webp" alt="Abstract 1" width={200} height={300} className="h-auto object-cover absolute bottom-0 right-0 max-w-full max-h-full" />
+                        <Image src="/images/landing-owner-entry.webp" alt="Abstract 1" width={200} height={300} className="h-auto object-cover absolute bottom-0 right-0 max-w-full max-h-full z-20" />
+                        {/* <Image src="/images/siluet.svg" alt="Background" width={500} height={300} className="absolute max-w-full right-0 -bottom-20 "/> */}
                     </div>
                     <div className="flex justify-between items-center bg-white shadow-lg rounded-lg p-7 gap-3">
                         <div className="flex flex-col space-y-2">
                             <h1 className="font-black text-2xl">Kos Dikelola Koseeker, Terjamin Nyaman</h1>
-                            <p className="text-base font-normal">Disurvey langsung oleh Mamikos. Lokasi terverifikasi, bangunan kos lolos seleksi.</p>
+                            <p className="text-base font-normal">Disurvey langsung oleh Koseeker. Lokasi terverifikasi, bangunan kos lolos seleksi.</p>
                         </div>
                         <div className="flex items-center gap-8">
                             <Image src="./images/logosinggasini.svg" alt="Mamikos" width={100} height={100} className=" h-auto object-cover" />

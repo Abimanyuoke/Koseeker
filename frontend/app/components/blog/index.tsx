@@ -23,7 +23,7 @@ export default function Blog() {
                             onClick={() => handleToggle()}
                             className="flex items-center justify-center w-full p-4 duration-200 gap-3">
                             <span className="text-xl font-semibold text-gray-900 hover:text-gray-600 cursor-pointer">
-                                Fitur yang dapat dimanfaatkan di Mamikos
+                                Fitur yang dapat dimanfaatkan di Koseeker
                             </span>
                             {open ? (
                                 <svg className="w-5 h-5 text-gray-600 transform rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -61,16 +61,16 @@ export default function Blog() {
                                     <div className="ml-3">
                                         <h3 className="font-semibold text-gray-900 mb-2">Chat dengan Penyewa</h3>
                                         <p className="text-gray-700 leading-relaxed">
-                                            Terhubung langsung dengan pemilik kos dan bisa bertanya lebih lanjut mengenai info kos melalui fitur chat di Mamikos.
+                                            Terhubung langsung dengan pemilik kos dan bisa bertanya lebih lanjut mengenai info kos melalui fitur chat di Koseeker.
                                         </p>
                                     </div>
                                 </li>
 
                                 <li className="text-gray-700">
                                     <div className="ml-3">
-                                        <h3 className="font-semibold text-gray-900 mb-2">Sewa Langsung via Mamikos</h3>
+                                        <h3 className="font-semibold text-gray-900 mb-2">Sewa Langsung via Koseeker</h3>
                                         <p className="text-gray-700 leading-relaxed">
-                                            Bisa langsung mengajukan sewa kos di aplikasi atau website Mamikos. Bahkan, kamu bisa mulai sewa kos dari 3 bulan sebelum masuk kosan. Transaksi lebih aman, tanpa takut kamarnya penuh kedatangan orang lain.
+                                            Bisa langsung mengajukan sewa kos di aplikasi atau website Koseeker. Bahkan, kamu bisa mulai sewa kos dari 3 bulan sebelum masuk kosan. Transaksi lebih aman, tanpa takut kamarnya penuh kedatangan orang lain.
                                         </p>
                                     </div>
                                 </li>
@@ -79,14 +79,14 @@ export default function Blog() {
                                     <div className="ml-3">
                                         <h3 className="font-semibold text-gray-900 mb-2">Virtual Tour</h3>
                                         <p className="text-gray-700 leading-relaxed">
-                                            Virtual Tour Mamikos adalah media foto lingkungan kos dalam 360° yang diperuntukkan untuk kamu, para pencari kos, agar dapat mengetahui kondisi lingkungan kos secara detail tanpa harus survei langsung. Fitur ini cocok jadi andalanmu yang butuh kosan tapi tidak punya waktu untuk survei langsung, karena fitur ini menampilkan keadaan kos secara lengkap dari berbagai sudut.
+                                            Virtual Tour Koseeker adalah media foto lingkungan kos dalam 360° yang diperuntukkan untuk kamu, para pencari kos, agar dapat mengetahui kondisi lingkungan kos secara detail tanpa harus survei langsung. Fitur ini cocok jadi andalanmu yang butuh kosan tapi tidak punya waktu untuk survei langsung, karena fitur ini menampilkan keadaan kos secara lengkap dari berbagai sudut.
                                         </p>
                                     </div>
                                 </li>
 
                                 <li className="text-gray-700">
                                     <div className="ml-3">
-                                        <h3 className="font-semibold text-gray-900 mb-2">Pembayaran via Mamikos</h3>
+                                        <h3 className="font-semibold text-gray-900 mb-2">Pembayaran via Koseeker</h3>
                                         <p className="text-gray-700 leading-relaxed">
                                             Fitur pembayaran yang memudahkan transaksi sewa kos secara online dengan aman dan terpercaya.
                                         </p>

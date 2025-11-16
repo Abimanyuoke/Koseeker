@@ -264,7 +264,7 @@ export default function PengaturanPage() {
             <div className='max-w-5xl mx-auto px-4 py-8'>
                 {/* Header */}
                 <div className='mb-8'>
-                    <div className='bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl shadow-lg p-6 text-white'>
+                    <div className='bg-gradient-to-r from-primary/80 to-green-800 rounded-2xl shadow-lg p-6 text-white'>
                         <div className='flex items-center gap-3'>
                             <FaUser className='text-3xl' />
                             <div>
