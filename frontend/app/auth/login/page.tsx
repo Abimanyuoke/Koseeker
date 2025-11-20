@@ -83,13 +83,11 @@ export default function Login() {
     }
 
     return (
-        <div className="bg-green-50 h-screen w-full relative overflow-hidden font-poppins">
+        <div className="h-screen bg-green-50 w-full relative overflow-hidden font-poppins">
             <div className="w-full h-full flex justify-center items-center relative">
-                <div className="absolute flex">
+                <div className="flex">
                     <div className="relative">
-                        <div className="relative">
-                            <Image src={imgLogin} alt="Image Login" width={680} height={600} className="h-[605px] rounded-l-lg" />
-                        </div>
+                        <Image src={imgLogin} alt="Image Login" width={680} height={600} className="h-[605px] rounded-l-lg" />
                         <div className="absolute w-full">
                             <span className="absolute bottom-0 w-full h-[300px] bg-gradient-to-t opacity-30 from-black via-black to-transparent">{""}</span>
                             <div className="absolute bottom-0 text-white space-y-2 p-4">
@@ -133,8 +131,8 @@ export default function Login() {
                             <button
                                 type="button"
                                 onClick={handleGoogleSignIn}
-                                disabled={isLoading}
-                                className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 py-2 px-4 rounded-full font-medium transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed">
+                                disabled={isLoading || !email || !password}
+                                className={`w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 py-2 px-4 rounded-full font-medium transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed ${email && password ? 'cursor-pointer' : 'cursor-not-allowed'}`}>
                                 <FcGoogle className="text-lg" />
                                 {isLoading ? "Signing in..." : "Continue with Google"}
                             </button>
