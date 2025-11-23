@@ -1,14 +1,13 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import Image from 'next/image'
 import { getUserData } from '@/lib/auth'
 import { BASE_API_URL, BASE_IMAGE_KOS } from '@/global'
-import { toast } from 'sonner'
-import Link from 'next/link'
 import { FaImage, FaList, FaEdit, FaTrash, FaPlus, FaMapMarkerAlt, FaHome } from 'react-icons/fa'
 import { MdFavorite } from 'react-icons/md'
+import { toast } from 'sonner'
+import Image from 'next/image'
+import Link from 'next/link'
 
 interface KosItem {
     id: number
@@ -79,12 +78,12 @@ export default function ManagerKosListPage() {
 
     const getGenderColor = (gender: string) => {
         switch (gender) {
-            case 'male': return 'bg-blue-100 text-blue-800'
-            case 'female': return 'bg-pink-100 text-pink-800'
-            case 'all': return 'bg-green-100 text-green-800'
-            default: return 'bg-gray-100 text-gray-800'
+            case 'male': return 'text-[404040]';
+            case 'female': return 'text-[404040]';
+            case 'all': return 'text-[404040]';
+            default: return 'bg-gray-100 text-gray-800';
         }
-    }
+    };
 
     const getPendingBookings = (books: any[]) => {
         return books.filter(b => b.status === 'pending').length
@@ -135,7 +134,7 @@ export default function ManagerKosListPage() {
         return (
             <div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center'>
                 <div className='text-center bg-white rounded-2xl shadow-lg p-8 max-w-md'>
-                    <Image src="/images/logo.svg" className='text-6xl mb-4' alt={'logo'}/>
+                    <Image src="/images/logo.svg" className='text-6xl mb-4' alt={'logo'} />
                     <h1 className='text-2xl font-bold mb-2'>Akses Ditolak</h1>
                     <p className='text-gray-600'>Halaman ini hanya untuk pemilik kos (owner).</p>
                 </div>
@@ -289,11 +288,6 @@ export default function ManagerKosListPage() {
                                                 -{kos.discountPercent}%
                                             </span>
                                         )}
-                                        <div className='absolute top-3 left-3'>
-                                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getGenderColor(kos.gender)}`}>
-                                                {getGenderText(kos.gender)}
-                                            </span>
-                                        </div>
                                         {kos.images.length > 0 && (
                                             <div className='absolute bottom-3 right-3 bg-black/70 text-white px-2 py-1 rounded-md text-xs flex items-center gap-1'>
                                                 <FaImage /> {kos.images.length}
@@ -302,17 +296,20 @@ export default function ManagerKosListPage() {
                                     </div>
 
                                     {/* Content Section */}
-                                    <div className='p-5'>
-                                        <h3 className='font-bold text-lg text-gray-900 mb-2 line-clamp-1'>
+                                    <div className='p-3'>
+                                        <span className={`px-2 py-1 rounded text-[12px] font-bold border border-slate-300  ${getGenderColor(kos.gender)}`}>
+                                            {getGenderText(kos.gender)}
+                                        </span>
+                                        <h3 className='font-bold text-lg mb-1 text-gray-900 mt-3 line-clamp-1'>
                                             {kos.name}
                                         </h3>
-                                        <div className='flex items-start gap-2 text-sm text-gray-600 mb-3'>
+                                        <div className='flex items-start gap-2 text-sm text-gray-600 mb-2'>
                                             <FaMapMarkerAlt className='text-red-500 mt-1 flex-shrink-0' />
                                             <p className='line-clamp-2'>{kos.address}</p>
                                         </div>
 
                                         <div className='flex items-center gap-2 mb-4'>
-                                            <span className='text-xl font-bold text-green-600'>
+                                            <span className='text-lg font-bold text-green-600'>
                                                 Rp {formatPrice(kos.pricePerMonth)}
                                             </span>
                                             <span className='text-sm text-gray-500'>/ bulan</span>
@@ -338,12 +335,12 @@ export default function ManagerKosListPage() {
                                         <div className='flex gap-2'>
                                             <Link
                                                 href={`/manager/kos/${kos.id}`}
-                                                className='flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-purple-600 to-purple-700 text-white rounded-lg hover:from-purple-700 hover:to-purple-800 transition text-sm font-medium'>
+                                                className='flex-1 flex items-center justify-center gap-2 px-3 py-2  text-black rounded-lg border border-gray-300 text-sm font-medium'>
                                                 <FaImage /> Gambar
                                             </Link>
                                             <Link
                                                 href={`/manager/facilities/${kos.id}`}
-                                                className='flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition text-sm font-medium'>
+                                                className='flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r border border-gray-300 text-black rounded-lg text-sm font-medium'>
                                                 <FaList /> Fasilitas
                                             </Link>
                                         </div>
@@ -351,7 +348,7 @@ export default function ManagerKosListPage() {
                                         <div className='flex gap-2 mt-2'>
                                             <Link
                                                 href={`/manager/kos/edit/${kos.id}`}
-                                                className='flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition text-sm font-medium'>
+                                                className='flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-blue-300 text-blue-600 rounded-lg hover:bg-blue-50 transition text-sm font-medium'>
                                                 <FaEdit /> Edit
                                             </Link>
                                             <button
