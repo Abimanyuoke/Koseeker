@@ -80,7 +80,7 @@ export default function FacilitiesKosListPage() {
                     <button
                         onClick={fetchKos}
                         disabled={loading}
-                        className='px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50'>
+                        className='px-4 py-2 text-sm font-medium bg-gradient-to-r from-primary/80 to-green-800 text-white rounded-md disabled:opacity-50'>
                         {loading ? 'Memuat...' : 'Refresh'}
                     </button>
                 </div>

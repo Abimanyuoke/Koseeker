@@ -16,7 +16,6 @@ import { IoClose } from "react-icons/io5";
 import { RiDiscountPercentFill } from "react-icons/ri";
 import Select from "../components/select";
 import Image from "next/image";
-import ButtonBack from "../components/button_back/page";
 import { BsFillLightningChargeFill } from "react-icons/bs";
 
 const KosPage = () => {
