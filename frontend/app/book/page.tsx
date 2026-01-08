@@ -32,6 +32,7 @@ export default function BookingsPage() {
 
     useEffect(() => {
         fetchBookings()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const fetchBookings = async () => {
@@ -54,6 +55,7 @@ export default function BookingsPage() {
             } else {
                 setError('Gagal memuat data booking')
             }
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
         } catch (err) {
             setError('Terjadi kesalahan saat memuat data')
         } finally {
@@ -118,7 +120,7 @@ export default function BookingsPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto px-4">
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold text-gray-900">Riwayat Booking</h1>
                     <p className="mt-2 text-gray-600">Kelola semua booking kos Anda</p>
@@ -148,9 +150,10 @@ export default function BookingsPage() {
                 ) : (
                     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
                         {bookings.map((booking) => (
-                            <div key={booking.id} className="bg-white rounded-lg shadow-md overflow-hidden">
+                            <div key={booking.id} className="bg-white rounded-lg shadow-md overflow-hidden flex flex-col">
                                 <div className="relative h-48">
                                     {booking.kos.images && booking.kos.images.length > 0 ? (
+                                        // eslint-disable-next-line @next/next/no-img-element
                                         <img
                                             src={`${BASE_IMAGE_KOS}/${booking.kos.images[0].file}`}
                                             alt={booking.kos.name}
@@ -166,7 +169,7 @@ export default function BookingsPage() {
                                     </div>
                                 </div>
 
-                                <div className="p-6">
+                                <div className="p-6 flex flex-col flex-grow">
                                     <h3 className="text-lg font-semibold text-gray-900 mb-2">{booking.kos.name}</h3>
                                     <p className="text-gray-600 text-sm mb-4">{booking.kos.address}</p>
 
@@ -193,24 +196,30 @@ export default function BookingsPage() {
                                         </div>
                                     </div>
 
-                                    <div className="mt-4 pt-4 border-t border-gray-200">
+                                    <div className="mt-4 pt-4 border-t border-gray-200 flex flex-col">
                                         <div className="flex justify-between items-center mb-3">
                                             <span className="text-lg font-bold text-black">
                                                 Total: Rp {(booking.kos.pricePerMonth * booking.durationMonths).toLocaleString()}
                                             </span>
                                         </div>
-                                        <p className="text-xs text-gray-500 mb-3">
+                                        <p className="text-xs text-gray-500 mb-4">
                                             Dibuat: {new Date(booking.createdAt).toLocaleDateString('id-ID')}
                                         </p>
-                                        <button
-                                            onClick={() => handlePrintReceipt(booking)}
-                                            className="w-full flex items-center justify-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/80 to-green-800 text-white rounded-lg hover:from-green-800 hover:to-primary/80 hover:cursor-pointer transition font-medium text-sm shadow-md">
-                                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-                                            </svg>
-                                            Cetak Struk
-                                        </button>
                                     </div>
+
+                                    <button
+                                        onClick={() => handlePrintReceipt(booking)}
+                                        className="mt-auto w-full flex items-center justify-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:translate-y-0.5 hover:cursor-pointer transition font-medium text-sm shadow-md mb-6">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+                                            />
+                                        </svg>
+                                        Cetak Struk
+                                    </button>
                                 </div>
                             </div>
                         ))}

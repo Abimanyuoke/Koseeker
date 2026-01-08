@@ -6,7 +6,7 @@ import Image from 'next/image'
 import { BASE_API_URL, BASE_IMAGE_KOS } from '@/global'
 import { getAuthToken } from '@/lib/auth'
 import { FiLoader } from 'react-icons/fi'
-import { FaHeart, FaMapMarkerAlt, FaUserAlt, FaSchool, FaCity } from 'react-icons/fa'
+import { FaHeart } from 'react-icons/fa'
 
 interface KosImage {
     file: string
@@ -40,6 +40,7 @@ export default function FavoritPage() {
 
     useEffect(() => {
         fetchFavorites()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const fetchFavorites = async () => {
@@ -175,7 +176,7 @@ export default function FavoritPage() {
 
     return (
         <div className="min-h-screen bg-gray-50 py-8">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto px-4">
                 {/* Header */}
                 <div className="mb-8">
                     <h1 className="text-3xl font-bold text-gray-900 mb-2">

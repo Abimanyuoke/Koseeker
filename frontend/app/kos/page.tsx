@@ -59,11 +59,12 @@ const KosPage = () => {
     const facilityOptions = ["WiFi", "AC", "Kasur", "Lemari", "Meja", "Kursi", "Kamar Mandi Dalam", "Dapur", "Laundry", "Parkir"];
 
     /** ---------- FETCH KOS DATA ---------- */
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const getKosData = async (kota?: string) => {
         try {
             setLoading(true);
             const TOKEN = getCookies("token") || "";
-            let url = `${BASE_API_URL}/kos?search=${search}`;
+            const url = `${BASE_API_URL}/kos?search=${search}`;
 
             const { data } = await get(url, TOKEN);
             if ((data as { status: boolean; data: IKos[] }).status) {
@@ -85,7 +86,7 @@ const KosPage = () => {
 
     useEffect(() => {
         getKosData(selectedKota);
-    }, [search, selectedKota]);
+    }, [getKosData, search, selectedKota]);
 
     // Close dropdowns when clicking outside
     useEffect(() => {
@@ -111,9 +112,10 @@ const KosPage = () => {
     // Apply filters whenever filter states change
     useEffect(() => {
         applyFilters();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [kosData, selectedGender, priceRange, selectedFacilities, sortBy, showPromo, showRecommended]);
 
-    /** ---------- APPLY FILTERS ---------- */
+    /** ---------- APPLY FILTERS ---------- */ 
     const applyFilters = () => {
         let filtered = [...kosData];
 

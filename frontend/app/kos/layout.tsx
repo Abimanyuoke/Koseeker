@@ -2,7 +2,6 @@
 
 import React from "react"
 import AOS from "aos";
-import "aos/dist/aos.css"
 import { Toaster } from "sonner";
 import Footer from "../components/footer/page";
 import Navbar from "../components/navbar_main/page";
