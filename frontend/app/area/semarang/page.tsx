@@ -1,12 +1,12 @@
 import AreaKosPage from "../../components/area_kos/index";
-import React from "react";
-import Errorpage from "../../error/page"
 
 const SemarangKosPage = () => {
     return (
-        <div>
-            <Errorpage />
-        </div>
+        <AreaKosPage
+            kota="Semarang"
+            title="Kos di Semarang"
+            description="Temukan kos terbaik di area Semarang sesuai kebutuhan Anda"
+        />
     );
 };
 
