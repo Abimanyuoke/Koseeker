@@ -1,7 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useEffect, useState } from 'react'
-import { getAuthToken, getUserData } from '@/lib/auth'
+import { getUserData } from '@/lib/auth'
 import { BASE_API_URL, BASE_IMAGE_KOS } from '@/global'
 import Link from 'next/link'
 import { toast } from 'sonner'
@@ -80,7 +81,7 @@ export default function FacilitiesKosListPage() {
                     <button
                         onClick={fetchKos}
                         disabled={loading}
-                        className='px-4 py-2 text-sm font-medium bg-gradient-to-r from-primary/80 to-green-800 text-white rounded-md disabled:opacity-50'>
+                        className='px-4 py-2 text-sm font-medium bg-primary text-white rounded-md disabled:opacity-50'>
                         {loading ? 'Memuat...' : 'Refresh'}
                     </button>
                 </div>

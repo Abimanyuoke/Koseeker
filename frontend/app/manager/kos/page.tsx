@@ -1,3 +1,5 @@
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -43,6 +45,7 @@ export default function ManagerKosListPage() {
         } else {
             setLoading(false)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const fetchKosList = async () => {
@@ -161,7 +164,7 @@ export default function ManagerKosListPage() {
                             </button>
                             <Link
                                 href='/manager/kos/create'
-                                className='flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-primary/80 to-green-800 text-white rounded-lg hover:from-green-800 hover:to-primary/80 transition shadow-lg'>
+                                className='flex items-center gap-2 px-4 py-2] bg-primary text-white rounded-lg hover:from-green-800 hover:to-primary/80 transition shadow-lg'>
                                 <FaPlus /> Tambah Kos
                             </Link>
                         </div>

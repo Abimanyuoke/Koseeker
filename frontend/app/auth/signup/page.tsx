@@ -7,7 +7,6 @@ import { BASE_API_URL } from "../../../global";
 import { getCookies } from "../../../lib/client-cookies";
 import { IUser } from "../../../app/types";
 import { post } from "../../../lib/bridge";
-import { InputGroupComponent } from "../../components/InputComponent"
 import FileInput from "../../components/fileInput"
 import { IoEyeSharp } from "react-icons/io5";
 import { HiEyeSlash } from "react-icons/hi2";
@@ -96,7 +95,7 @@ export default function SignUp() {
                                         Start Your
                                         <span className="block">Journey Today</span>
                                     </h2>
-                                    <p className="text-lg text-white/90 leading-relaxed max-w-md">
+                                    <p className="text-[15px] text-white/90 leading-relaxed max-w-md">
                                         Join thousands of students finding their perfect kos. Your comfortable home away from home awaits!
                                     </p>
                                     {/* <div className="flex gap-2 pt-4">
@@ -217,7 +216,7 @@ export default function SignUp() {
                             <button
                                 type="submit"
                                 disabled={isLoading}
-                                className="w-full mt-3 uppercase text-sm font-semibold bg-gradient-to-r from-primary/80 to-green-800 shadow-lg p-[10px] hover:text-white duration-200 transition-all hover:scale-105 text-white py-2 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
+                                className="w-full mt-3 uppercase text-sm font-semibold bg-primary shadow-lg p-[10px] hover:text-white duration-200 transition-all hover:scale-105 text-white py-2 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed">
                                 {isLoading ? (
                                     <span className="flex items-center justify-center gap-2">
                                         <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

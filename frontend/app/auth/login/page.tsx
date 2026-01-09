@@ -51,7 +51,7 @@ export default function Login() {
                     storeCookie("role", data.data.role)
                     storeCookie("profile_picture", data.data.profile_picture || "")
 
-                    let role = data.data.role
+                    const role = data.data.role
                     if (role === `owner`) {
                         setTimeout(() => router.replace(`/manager`), 1000)
                     } else if (role === `society`) {
@@ -87,9 +87,9 @@ export default function Login() {
             <div className="w-full h-full flex justify-center items-center relative">
                 <div className="flex">
                     <div className="relative">
-                        <Image src={imgLogin} alt="Image Login" width={680} height={600} className="h-[605px] rounded-l-lg" />
-                        <div className="absolute w-full">
-                            <span className="absolute bottom-0 w-full h-[300px] bg-gradient-to-t opacity-30 from-black via-black to-transparent">{""}</span>
+                        <div className="w-full">
+                        <Image src={imgLogin} alt="Image Login" width={680} height={600} className="h-[605px] rounded-l-lg w-full" />
+                            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
                             <div className="absolute bottom-0 text-white space-y-2 p-4">
                                 <h4 className="text-5xl font-semibold leading-[58px]">
                                     Capture Your <br /> Journeys
@@ -121,7 +121,7 @@ export default function Login() {
                                     }
                                 </div>
                             </div>
-                            <button type="submit" disabled={isLoading || !email || !password} className={`mt-3 uppercase text-sm font-semibold bg-gradient-to-r from-primary/80 to-green-800 shadow-lg p-[10px] hover:text-white duration-200 transition-all hover:scale-105 text-white py-2 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${email && password ? 'cursor-pointer' : 'cursor-not-allowed'}`}>
+                            <button type="submit" disabled={isLoading || !email || !password} className={`mt-3 uppercase text-sm font-semibold bg-primary shadow-lg p-[10px] hover:text-white duration-200 transition-all hover:scale-105 text-white py-2 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${email && password ? 'cursor-pointer' : 'cursor-not-allowed'}`}>
                                 {isLoading ? "Logging in..." : "login"}
                             </button>
                             <div className="flex flex-col justify-center text-center">

@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -264,7 +267,7 @@ export default function PengaturanPage() {
             <div className='max-w-5xl mx-auto px-4 py-8'>
                 {/* Header */}
                 <div className='mb-8'>
-                    <div className='bg-gradient-to-r from-primary/80 to-green-800 rounded-2xl shadow-lg p-6 text-white'>
+                    <div className='bg-primary rounded-2xl shadow-lg p-6 text-white'>
                         <div className='flex items-center gap-3'>
                             <FaUser className='text-3xl' />
                             <div>
@@ -574,7 +577,7 @@ export default function PengaturanPage() {
                         <div className='bg-white rounded-2xl shadow-lg p-6 border-2 border-red-200'>
                             <div className='mb-4'>
                                 <h2 className='text-xl font-bold text-red-600 mb-2'>Zona Berbahaya</h2>
-                                <p className='text-sm text-gray-600'>Tindakan di bawah ini tidak dapat dibatalkan</p>
+                                <p className='text-sm text-gray-600'>Menghapus akun secara permanen</p>
                             </div>
 
                             <button

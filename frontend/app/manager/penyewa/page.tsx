@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -193,7 +195,7 @@ export default function PenyewaPage() {
 
     const trend = getTrendPercentage()
 
-    const COLORS = ['#10b981', '#f59e0b', '#ef4444', '#6366f1']
+    // const COLORS = ['#10b981', '#f59e0b', '#ef4444', '#6366f1']
 
     const pieData = [
         { name: 'Diterima', value: stats.accepted, color: '#10b981' },
@@ -229,7 +231,7 @@ export default function PenyewaPage() {
             <div className='max-w-7xl mx-auto px-4 py-8'>
                 {/* Header */}
                 <div className='mb-8'>
-                    <div className='bg-gradient-to-r from-green-600 to-green-700 rounded-2xl shadow-lg p-6 text-white'>
+                    <div className='bg-primary rounded-2xl shadow-lg p-6 text-white'>
                         <div className='flex items-center justify-between'>
                             <div className='flex items-center gap-3'>
                                 <FaUsers className='text-3xl' />

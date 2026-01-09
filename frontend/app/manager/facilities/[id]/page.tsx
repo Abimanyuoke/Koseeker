@@ -1,3 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -33,7 +36,6 @@ export default function FacilitiesDetailPage() {
     const params = useParams()
     const router = useRouter()
     const kosId = params.id as string
-    const user = getUserData()
 
     const [loading, setLoading] = useState(true)
     const [kos, setKos] = useState<KosDetail | null>(null)
@@ -503,7 +505,7 @@ export default function FacilitiesDetailPage() {
                             <div className='bg-red-50 border border-red-200 rounded-lg p-4 mb-4'>
                                 <p className='text-gray-700'>
                                     Apakah Anda yakin ingin menghapus fasilitas{' '}
-                                    <span className='font-bold text-red-600'>"{deletingFacility.facility}"</span>?
+                                    <span className='font-bold text-red-600'>{deletingFacility.facility}</span>?
                                 </p>
                             </div>
                         </div>

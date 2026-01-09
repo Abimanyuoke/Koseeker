@@ -1,14 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @next/next/no-img-element */
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { toast } from 'sonner'
-import { getUserData, getAuthToken, clearAuthData } from '../../lib/auth'
+import { getUserData, getAuthToken } from '../../lib/auth'
 import NotificationBell from '../components/notification/NotificationBell'
-import { getCookies, removeCookie } from '@/lib/client-cookies'
+import { getCookies } from '@/lib/client-cookies'
 import { useRouter } from 'next/navigation'
 import { BASE_IMAGE_PROFILE } from '@/global'
-
-
 
 interface User {
     id: number
@@ -42,7 +42,6 @@ interface Booking {
 }
 
 export default function ManagerPage() {
-    const router = useRouter()
     const [bookings, setBookings] = useState<Booking[]>([])
     const [loading, setLoading] = useState(true)
     const [profile, setProfile] = useState<string>("");
@@ -55,8 +54,8 @@ export default function ManagerPage() {
     const [processingAction, setProcessingAction] = useState(false)
     const [filter, setFilter] = useState<'all' | 'pending' | 'accept' | 'reject'>('all')
     const [userData, setUserData] = useState<any>(null)
-    const [popup, setPopup] = useState(false);
-    const sidebarRef = useRef<HTMLDivElement>(null)
+    // const [popup, setPopup] = useState(false);
+    // const sidebarRef = useRef<HTMLDivElement>(null)
 
 
     const getProfileImageUrl = (profilePicture: string) => {
@@ -245,19 +244,6 @@ export default function ManagerPage() {
         }).format(price)
     }
 
-    const handleLogout = () => {
-        // Hapus cookies
-        removeCookie("token");
-        removeCookie("id");
-        removeCookie("name");
-        removeCookie("role");
-        removeCookie("profile_picture");
-        // Hapus localStorage menggunakan utility function
-        clearAuthData();
-
-        router.replace(`/auth/login`);
-    };
-
     if (userData?.role !== 'owner') {
         return (
             <div className="min-h-screen bg-white">
@@ -390,7 +376,7 @@ export default function ManagerPage() {
                                 key={status}
                                 onClick={() => setFilter(status)}
                                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${filter === status
-                                    ? 'bg-gradient-to-r from-primary/80 to-green-800 text-white'
+                                    ? 'bg-primary text-white'
                                     : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                     }`}>
                                 {status === 'all' ? 'Semua' : getStatusText(status)}
