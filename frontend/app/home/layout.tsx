@@ -1,5 +1,5 @@
 import Footer from "../components/footer/page"
-import Navbar from "../components/navbar_main/page"
+import Navbar from "../components/navbar-main/page"
 
 export const metadata = {
     title: 'Home Page',
@@ -13,9 +13,9 @@ type PropsLayout = {
 const RootLayout = ({ children }: PropsLayout) => {
     return (
         <div>
-            <Navbar/>
+            <Navbar />
             {children}
-            <Footer/>
+            <Footer />
         </div>
     )
 }

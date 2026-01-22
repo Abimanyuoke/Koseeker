@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { ButtonSuccess } from '../button';
+import { ButtonSuccess } from '../button-type';
 
 interface ReviewFormProps {
     kosId: number;
@@ -11,8 +11,6 @@ interface ReviewFormProps {
 }
 
 const ReviewForm: React.FC<ReviewFormProps> = ({
-    kosId,
-    userId,
     onSubmit,
     onCancel
 }) => {
@@ -61,7 +59,7 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                         rows={4}
                         maxLength={500}
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent resize-none bg-white text-gray-900 placeholder-gray-500"
-                        disabled={isSubmitting}/>
+                        disabled={isSubmitting} />
                     <p className="text-xs text-gray-400 mt-1">
                         {comment.length}/500 karakter (minimal 10 karakter)
                     </p>

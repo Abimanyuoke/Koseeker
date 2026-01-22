@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Lato } from "next/font/google";
-import Navbar from "../components/navbar_main/page";
+import Navbar from "../components/navbar-main/page";
 import Footer from "../components/footer/page";
 
 const lato = Lato({
@@ -20,11 +20,11 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-            <html lang="en">
+        <html lang="en">
             <body className={`${lato.variable}`}>
-                <Navbar/>
+                <Navbar />
                 {children}
-                <Footer/>
+                <Footer />
             </body>
         </html>
     );

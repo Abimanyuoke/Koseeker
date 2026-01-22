@@ -5,17 +5,17 @@ import { useRef } from "react";
 import Image from "next/image";
 import Search from "./search";
 import { IoSearch } from "react-icons/io5";
-import { CustomArrows } from "../components/arrow";
+import { CustomArrows } from "../components/arrow-promo";
 import Kos from "../kos_home/page";
 import bild from "../../public/images/building.svg";
 import Slider from "react-slick";
 import KosPromoPage from "../kos_promo/page";
 import Blog from "../components/blog";
 import KosArea from "../components/kos_area";
-import KampusArea from "../components/kampus";
+import KampusArea from "../components/kampus-area";
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import Voucher from "../components/voucher";
+import Voucher from "../components/voucher-function";
 
 
 export default function Home() {

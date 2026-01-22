@@ -6,7 +6,7 @@ import { IKos } from "../../types";
 import { get } from "../../../lib/bridge";
 import { BASE_IMAGE_KOS } from "../../../global";
 import Select from "../../components/select";
-import Navbar from "../../components/navbar_main/page";
+import Navbar from "../../components/navbar-main/page";
 import PriceDisplay from "../../components/price/PriceDisplay";
 
 // Enum untuk kalender sesuai dengan Prisma

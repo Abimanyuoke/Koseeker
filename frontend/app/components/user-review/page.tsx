@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { IReview } from '../../types';
 import { BASE_IMAGE_PROFILE } from '../../../global';
-import { ButtonSuccess } from '../button';
+import { ButtonSuccess } from '../button-type';
 import { useReviews } from './useReviews';
 
 

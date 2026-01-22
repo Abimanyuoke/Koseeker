@@ -18,7 +18,7 @@ const FileInput = (props: Props) => {
     const acceptTypes = props.acceptTypes.join()
     const handleFileInput = (event: React.ChangeEvent, callback: (data: File | null) => void): void => {
         const target = event.target as HTMLInputElement
-        let currentFile: File = (target.files as FileList)[0]
+        const currentFile: File = (target.files as FileList)[0]
         setMessage("")
         if (!props.acceptTypes.includes(currentFile.type)) {
             target.value = ""

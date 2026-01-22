@@ -34,7 +34,7 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "middleware.ts",
-    "app/components/review/ReviewContainer.tsx"
+    "app/components/user-review/ReviewContainer.tsx"
   ],
   "exclude": [
     "node_modules"

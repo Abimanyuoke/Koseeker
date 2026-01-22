@@ -4,7 +4,7 @@ import React from "react"
 import AOS from "aos";
 import { Toaster } from "sonner";
 import Footer from "../components/footer/page";
-import Navbar from "../components/navbar_main/page";
+import Navbar from "../components/navbar-main/page";
 
 
 type PropsLayout = {
@@ -26,11 +26,11 @@ const RootLayout = ({ children }: PropsLayout) => {
 
     return (
         <div className="">
-            <Toaster position="top-right" richColors/>
-            <Navbar/>
+            <Toaster position="top-right" richColors />
+            <Navbar />
             {/* <NavbarMain/> */}
             {children}
-            <Footer/>
+            <Footer />
         </div>
     )
 }

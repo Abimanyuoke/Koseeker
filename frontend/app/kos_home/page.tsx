@@ -8,7 +8,7 @@ import { BASE_API_URL, BASE_IMAGE_KOS } from "../../global";
 import { get } from "@/lib/bridge";
 import { AlertToko } from "../components/alert";
 import { FiLoader } from "react-icons/fi";
-import { ArrowKos } from "../components/arrow";
+import { ArrowKos } from "../components/arrow-promo";
 import Slider from "react-slick";
 import Select from "../components/select";
 import Image from "next/image";

@@ -12,7 +12,7 @@ import { FiLoader } from "react-icons/fi";
 import Select from "../components/select";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BsFillLightningChargeFill } from "react-icons/bs";
-import { ArrowKos } from "../components/arrow";
+import { ArrowKos } from "../components/arrow-promo";
 import Slider from "react-slick";
 
 interface CountdownProps {

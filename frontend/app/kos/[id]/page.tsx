@@ -12,9 +12,9 @@ import { FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaRulerCombined, FaT
 import { MdBalcony, MdFamilyRestroom, MdLocalLaundryService, MdOutlineCleaningServices, MdOutlinePets, MdSecurity } from "react-icons/md";
 import { GiCook, GiNightSleep } from "react-icons/gi";
 import { IoCalendarOutline, IoCloudyNight, IoHome, IoTimeOutline } from "react-icons/io5";
-import { ButtonPrimary2 } from "../../components/button";
-import LikeButton from "@/app/components/likeButton";
-import ReviewContainer from "@/app/components/review/ReviewContainer";
+import { ButtonPrimary2 } from "../../components/button-type";
+import LikeButton from "@/app/components/like-button";
+import ReviewContainer from "@/app/components/user-review/ReviewContainer";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import { IoIosArrowForward, IoIosCheckmarkCircle } from "react-icons/io";
@@ -150,7 +150,7 @@ const KosDetailPage = () => {
         if (facilityLower.includes('kasur') || facilityLower.includes('bed')) return <FaBed className="text-gray-500" />;
         if (facilityLower.includes('motor') || facilityLower.includes('motorcycle')) return <FaMotorcycle className="text-gray-500" />;
         if (facilityLower.includes('mobil') || facilityLower.includes('car')) return <FaCar className="text-gray-500" />;
-        if (facilityLower.includes('parkir') || facilityLower.includes('parking') || facilityLower.includes('garase')) return <FaParking className = "text-gray-500" />;
+        if (facilityLower.includes('parkir') || facilityLower.includes('parking') || facilityLower.includes('garase')) return <FaParking className="text-gray-500" />;
         if (facilityLower.includes('tv') || facilityLower.includes('television')) return <FaTv className="text-gray-500" />;
         if (facilityLower.includes('ac') || facilityLower.includes('air conditioning')) return <FaSnowflake className="text-gray-500" />;
         if (facilityLower.includes('kamar mandi') || facilityLower.includes('bathroom')) return <FaShower className="text-gray-500" />;

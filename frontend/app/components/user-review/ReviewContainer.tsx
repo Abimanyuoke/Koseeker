@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import ReviewComponent from './page';
 import ReviewForm from './ReviewForm';
 import { useReviews } from './useReviews';
-// import { ButtonPrimary } from '../button';
 
 interface ReviewContainerProps {
     kosId: number;
@@ -22,7 +21,6 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
         reviews,
         loading,
         error,
-        userHasReviewed,
         createReview,
         setError
     } = useReviews({ kosId, userId });
