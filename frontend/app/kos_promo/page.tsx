@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import { useState, useEffect, SetStateAction, useRef } from "react";
@@ -10,7 +11,6 @@ import { AlertToko } from "../components/alert";
 import Image from "next/image";
 import { FiLoader } from "react-icons/fi";
 import Select from "../components/select";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { BsFillLightningChargeFill } from "react-icons/bs";
 import { ArrowKos } from "../components/arrow-promo";
 import Slider from "react-slick";
@@ -101,7 +101,7 @@ const KosPromoPage = () => {
         try {
             setLoading(true);
             const TOKEN = getCookies("token") || "";
-            let url = `${BASE_API_URL}/kos`;
+            const url = `${BASE_API_URL}/kos`;
 
             const { data } = await get(url, TOKEN);
             if ((data as { status: boolean; data: IKos[] }).status) {
@@ -162,21 +162,21 @@ const KosPromoPage = () => {
     //     return <div className="w-4 h-4 bg-gray-400 rounded-full"></div>;
     // };
 
-    const handlePrevImage = (e: React.MouseEvent, kosId: number, totalImages: number) => {
-        e.stopPropagation();
-        setImageIndexes(prev => ({
-            ...prev,
-            [kosId]: prev[kosId] > 0 ? prev[kosId] - 1 : totalImages - 1
-        }));
-    };
+    // const handlePrevImage = (e: React.MouseEvent, kosId: number, totalImages: number) => {
+    //     e.stopPropagation();
+    //     setImageIndexes(prev => ({
+    //         ...prev,
+    //         [kosId]: prev[kosId] > 0 ? prev[kosId] - 1 : totalImages - 1
+    //     }));
+    // };
 
-    const handleNextImage = (e: React.MouseEvent, kosId: number, totalImages: number) => {
-        e.stopPropagation();
-        setImageIndexes(prev => ({
-            ...prev,
-            [kosId]: prev[kosId] < totalImages - 1 ? prev[kosId] + 1 : 0
-        }));
-    };
+    // const handleNextImage = (e: React.MouseEvent, kosId: number, totalImages: number) => {
+    //     e.stopPropagation();
+    //     setImageIndexes(prev => ({
+    //         ...prev,
+    //         [kosId]: prev[kosId] < totalImages - 1 ? prev[kosId] + 1 : 0
+    //     }));
+    // };
 
     // Set promo end date (example: 7 days from now)
     const promoEndDate = new Date();

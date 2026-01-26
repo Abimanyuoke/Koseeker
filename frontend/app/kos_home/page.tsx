@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
 import { useState, useEffect, useRef, SetStateAction } from "react";
@@ -76,7 +78,7 @@ const Kos = () => {
         try {
             setLoading(true);
             const TOKEN = getCookies("token") || "";
-            let url = `${BASE_API_URL}/kos?search=${search}`;
+            const url = `${BASE_API_URL}/kos?search=${search}`;
 
             const { data } = await get(url, TOKEN);
             if ((data as { status: boolean; data: IKos[] }).status) {

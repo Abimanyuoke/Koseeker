@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import React, { useState } from 'react';
@@ -208,7 +209,6 @@ interface QuickCommentFormProps {
 }
 
 const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
-    kosId,
     userId,
     onSubmit,
     userHasReviewed
