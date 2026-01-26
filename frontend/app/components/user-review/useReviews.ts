@@ -238,7 +238,6 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
                 checkCanReview(kosId, userId);
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [kosId, userId]);
 
     return {
