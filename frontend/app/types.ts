@@ -80,12 +80,15 @@ export interface IReview {
     kosId: number;
     userId: number;
     comment: string;
+    replyComment?: string | null;
+    replyAt?: string | null;
     createdAt: string;
     updatedAt: string;
     user?: {
         id: number;
         name: string;
         profile_picture?: string;
+        role?: string;
     };
 }
 
@@ -112,7 +115,7 @@ export interface IUser {
 }
 
 export interface IOrder {
-    orderLists: any;
+    orderLists: IOrderList[];
     id: number;
     uuid: string;
     customer: string;

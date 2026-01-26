@@ -5,7 +5,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { BASE_API_URL } from "../../../global";
 import { getCookies } from "../../../lib/client-cookies";
-import { IUser } from "../../../app/types";
+import { IUser } from "../../types";
 import { post } from "../../../lib/bridge";
 import FileInput from "../../components/file-input"
 import { IoEyeSharp } from "react-icons/io5";

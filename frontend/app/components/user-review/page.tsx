@@ -42,9 +42,27 @@ const ReviewStats: React.FC<ReviewStatsProps> = ({ reviews }) => {
 interface ReviewCommentProps {
     review: IReview;
     showOwnerReply?: boolean;
+    onReply?: (reviewId: number, replyComment: string) => Promise<void>;
+    userRole?: string;
+    currentUserId?: number;
+    kosOwnerId?: number;
 }
 
-const ReviewComment: React.FC<ReviewCommentProps> = ({ review, showOwnerReply = false }) => {
+const ReviewComment: React.FC<ReviewCommentProps> = ({
+    review,
+    showOwnerReply = true,
+    onReply,
+    userRole,
+    currentUserId,
+    kosOwnerId
+}) => {
+    const [showReplyForm, setShowReplyForm] = useState(false);
+    const [replyText, setReplyText] = useState('');
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    const canReply = (userRole === 'owner' && currentUserId === kosOwnerId) || userRole === 'superadmin';
+    const hasReply = review.replyComment && review.replyAt;
+
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
         const now = new Date();
@@ -60,6 +78,23 @@ const ReviewComment: React.FC<ReviewCommentProps> = ({ review, showOwnerReply = 
 
     const getInitials = (name: string) => {
         return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    };
+
+    const handleSubmitReply = async () => {
+        if (!replyText.trim() || !onReply) return;
+
+        setIsSubmitting(true);
+        try {
+            await onReply(review.id, replyText.trim());
+            setReplyText('');
+            setShowReplyForm(false);
+            alert('Balasan berhasil ditambahkan!');
+        } catch (error) {
+            console.error('Error submitting reply:', error);
+            alert('Gagal menambahkan balasan. Silakan coba lagi.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -102,20 +137,61 @@ const ReviewComment: React.FC<ReviewCommentProps> = ({ review, showOwnerReply = 
                         {review.comment}
                     </p>
 
+                    {/* Reply Button for Admin/Owner */}
+                    {canReply && !hasReply && !showReplyForm && (
+                        <button
+                            onClick={() => setShowReplyForm(true)}
+                            className="text-sm text-green-600 hover:text-green-700 font-medium mb-4">
+                            Balas Review
+                        </button>
+                    )}
+
+                    {/* Reply Form */}
+                    {showReplyForm && canReply && (
+                        <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                            <h5 className="text-sm font-medium text-gray-900 mb-2">Balas sebagai Pemilik Kos</h5>
+                            <textarea
+                                value={replyText}
+                                onChange={(e) => setReplyText(e.target.value)}
+                                placeholder="Tulis balasan Anda..."
+                                rows={3}
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 text-sm"
+                                disabled={isSubmitting} />
+                            <div className="flex gap-2 mt-3">
+                                <ButtonSuccess
+                                    type="button"
+                                    onClick={handleSubmitReply}
+                                    disabled={isSubmitting || !replyText.trim()}
+                                    className="text-sm px-4 py-2">
+                                    {isSubmitting ? 'Mengirim...' : 'Kirim Balasan'}
+                                </ButtonSuccess>
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setShowReplyForm(false);
+                                        setReplyText('');
+                                    }}
+                                    disabled={isSubmitting}
+                                    className="text-sm px-4 py-2 text-gray-600 hover:text-gray-800">
+                                    Batal
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
                     {/* Owner Reply */}
-                    {showOwnerReply && (
+                    {showOwnerReply && hasReply && (
                         <div className="bg-gray-50 rounded-lg p-4">
                             <div className="flex items-center gap-2 mb-2">
                                 <span className="text-sm font-medium text-green-600">
-                                    Balasan dari Pemilik kos
+                                    Balasan dari Pemilik Kos
                                 </span>
                                 <span className="text-xs text-gray-500">
-                                    {formatDate(review.updatedAt)}
+                                    {formatDate(review.replyAt!)}
                                 </span>
                             </div>
                             <p className="text-sm text-gray-700">
-                                Halo, Kakak. Terima kasih atas review dan ratingnya. Kami sangat senang mendengar Anda
-                                nyaman selama bersama kami.
+                                {review.replyComment}
                             </p>
                         </div>
                     )}
@@ -129,16 +205,25 @@ const ReviewComment: React.FC<ReviewCommentProps> = ({ review, showOwnerReply = 
 interface ReviewComponentProps {
     kosId: number;
     userId?: number;
+    userRole?: string;
+    kosOwnerId?: number;
 }
 
-const ReviewComponent: React.FC<ReviewComponentProps> = ({ kosId, userId }) => {
-    const { reviews, loading, error, userHasReviewed, createReview } = useReviews({ kosId, userId });
+const ReviewComponent: React.FC<ReviewComponentProps> = ({ kosId, userId, userRole, kosOwnerId }) => {
+    const { reviews, loading, error, userHasReviewed, canReview, createReview, replyToReview } = useReviews({ kosId, userId, userRole });
 
     const handleAddReview = async (comment: string) => {
         if (!userId) {
             throw new Error('User not authenticated');
         }
         await createReview({ kosId, userId, comment });
+    };
+
+    const handleReplyToReview = async (reviewId: number, replyComment: string) => {
+        if (!userId) {
+            throw new Error('User not authenticated');
+        }
+        await replyToReview(reviewId, replyComment, userId);
     };
 
     if (loading) {
@@ -172,7 +257,8 @@ const ReviewComponent: React.FC<ReviewComponentProps> = ({ kosId, userId }) => {
                 kosId={kosId}
                 userId={userId}
                 onSubmit={handleAddReview}
-                userHasReviewed={userHasReviewed} />
+                userHasReviewed={userHasReviewed}
+                canReview={canReview} />
 
             {/* Review List */}
             <div className="space-y-4">
@@ -192,7 +278,14 @@ const ReviewComponent: React.FC<ReviewComponentProps> = ({ kosId, userId }) => {
                     </div>
                 ) : (
                     reviews.map((review: IReview) => (
-                        <ReviewComment key={review.id} review={review} />
+                        <ReviewComment
+                            key={review.id}
+                            review={review}
+                            showOwnerReply={true}
+                            onReply={handleReplyToReview}
+                            userRole={userRole}
+                            currentUserId={userId}
+                            kosOwnerId={kosOwnerId} />
                     ))
                 )}
             </div>
@@ -206,12 +299,14 @@ interface QuickCommentFormProps {
     userId?: number;
     onSubmit: (comment: string) => Promise<void>;
     userHasReviewed: boolean;
+    canReview: boolean;
 }
 
 const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
     userId,
     onSubmit,
-    userHasReviewed
+    userHasReviewed,
+    canReview
 }) => {
     const [comment, setComment] = useState('');
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -221,6 +316,11 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
 
         if (!userId) {
             alert('Silakan login terlebih dahulu untuk memberikan review');
+            return;
+        }
+
+        if (!canReview) {
+            alert('Anda harus memiliki booking yang diterima untuk memberikan review');
             return;
         }
 
@@ -239,9 +339,11 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
             await onSubmit(comment.trim());
             setComment('');
             alert('Review berhasil ditambahkan!');
-        } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
             console.error('Error submitting review:', error);
-            alert('Gagal menambahkan review. Silakan coba lagi.');
+            const errorMsg = error?.message || 'Gagal menambahkan review. Silakan coba lagi.';
+            alert(errorMsg);
         } finally {
             setIsSubmitting(false);
         }
@@ -259,6 +361,28 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
                     <div className="ml-3">
                         <p className="text-sm text-yellow-700">
                             Login terlebih dahulu untuk memberikan review.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    if (!canReview) {
+        return (
+            <div className="bg-orange-50 rounded-lg p-4 mb-6">
+                <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-orange-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                        </svg>
+                    </div>
+                    <div className="ml-3">
+                        <p className="text-sm text-orange-700 font-medium">
+                            Anda belum dapat memberikan review
+                        </p>
+                        <p className="text-xs text-orange-600 mt-1">
+                            Silakan booking kos ini terlebih dahulu dan tunggu hingga booking Anda diterima oleh pemilik kos untuk dapat memberikan review.
                         </p>
                     </div>
                 </div>

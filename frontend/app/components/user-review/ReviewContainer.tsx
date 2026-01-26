@@ -40,9 +40,12 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
 
             setShowReviewForm(false);
             alert('Review berhasil ditambahkan!');
-        } catch (error) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        } catch (error: any) {
             console.error('Error creating review:', error);
-            alert('Gagal menambahkan review. Silakan coba lagi.');
+            // Error message already set by useReviews hook
+            const errorMsg = error?.message || 'Gagal menambahkan review. Silakan coba lagi.';
+            alert(errorMsg);
         }
     };
 

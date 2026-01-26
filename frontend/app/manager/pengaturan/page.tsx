@@ -14,7 +14,6 @@ export default function PengaturanPage() {
     const router = useRouter()
     const user = getUserData()
 
-    // Form states
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -120,7 +119,7 @@ export default function PengaturanPage() {
                 submitData.append('profile_picture', profilePicture)
             }
 
-            const response = await fetch(`${BASE_API_URL}/users/${user?.id}`, {
+            const response = await fetch(`${BASE_API_URL}/user/${user?.id}`, {
                 method: 'PUT',
                 body: submitData
             })
@@ -181,7 +180,7 @@ export default function PengaturanPage() {
         try {
             setIsSubmitting(true)
 
-            const response = await fetch(`${BASE_API_URL}/users/${user?.id}/password`, {
+            const response = await fetch(`${BASE_API_URL}/user/${user?.id}/password`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

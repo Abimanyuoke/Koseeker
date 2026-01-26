@@ -59,34 +59,33 @@ const KosPage = () => {
     const facilityOptions = ["WiFi", "AC", "Kasur", "Lemari", "Meja", "Kursi", "Kamar Mandi Dalam", "Dapur", "Laundry", "Parkir"];
 
     /** ---------- FETCH KOS DATA ---------- */
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    const getKosData = async (kota?: string) => {
-        try {
-            setLoading(true);
-            const TOKEN = getCookies("token") || "";
-            const url = `${BASE_API_URL}/kos?search=${search}`;
-
-            const { data } = await get(url, TOKEN);
-            if ((data as { status: boolean; data: IKos[] }).status) {
-                let allKos = (data as { status: boolean; data: IKos[] }).data;
-
-                // Filter kota
-                if (kota && kota !== "all") {
-                    allKos = allKos.filter(kos => kos.kota.toLowerCase() === kota.toLowerCase());
-                }
-
-                setKosData(allKos);
-            }
-        } catch (error) {
-            console.error("Error getting kos data:", error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
     useEffect(() => {
-        getKosData(selectedKota);
-    }, [getKosData, search, selectedKota]);
+        const getKosData = async () => {
+            try {
+                setLoading(true);
+                const TOKEN = getCookies("token") || "";
+                const url = `${BASE_API_URL}/kos?search=${search}`;
+
+                const { data } = await get(url, TOKEN);
+                if ((data as { status: boolean; data: IKos[] }).status) {
+                    let allKos = (data as { status: boolean; data: IKos[] }).data;
+
+                    // Filter kota
+                    if (selectedKota && selectedKota !== "all") {
+                        allKos = allKos.filter(kos => kos.kota.toLowerCase() === selectedKota.toLowerCase());
+                    }
+
+                    setKosData(allKos);
+                }
+            } catch (error) {
+                console.error("Error getting kos data:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        getKosData();
+    }, [search, selectedKota]);
 
     // Close dropdowns when clicking outside
     useEffect(() => {
@@ -111,12 +110,6 @@ const KosPage = () => {
 
     // Apply filters whenever filter states change
     useEffect(() => {
-        applyFilters();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [kosData, selectedGender, priceRange, selectedFacilities, sortBy, showPromo, showRecommended]);
-
-    /** ---------- APPLY FILTERS ---------- */ 
-    const applyFilters = () => {
         let filtered = [...kosData];
 
         // Filter by gender
@@ -163,7 +156,9 @@ const KosPage = () => {
         }
 
         setFilteredKosData(filtered);
-    };
+    }, [kosData, selectedGender, priceRange, selectedFacilities, sortBy, showPromo, showRecommended]);
+
+    /** ---------- APPLY FILTERS ---------- */
 
     const resetFilters = () => {
         setSelectedGender("all");
@@ -213,20 +208,6 @@ const KosPage = () => {
             default: return 'bg-gray-100 text-gray-800';
         }
     };
-
-    // const getFacilityIcon = (facility: string) => {
-    //     const facilityLower = facility.toLowerCase();
-    //     if (facilityLower.includes('wifi') || facilityLower.includes('internet')) return <FaWifi className="text-blue-500" />;
-    //     if (facilityLower.includes('kasur') || facilityLower.includes('bed')) return <FaBed className="text-green-500" />;
-    //     if (facilityLower.includes('parkir') || facilityLower.includes('parking')) return <FaCar className="text-gray-500" />;
-    //     if (facilityLower.includes('tv') || facilityLower.includes('television')) return <FaTv className="text-purple-500" />;
-    //     if (facilityLower.includes('ac') || facilityLower.includes('air conditioning')) return <FaSnowflake className="text-cyan-500" />;
-    //     if (facilityLower.includes('kamar mandi') || facilityLower.includes('bathroom')) return <FaShower className="text-blue-400" />;
-    //     if (facilityLower.includes('laundry') || facilityLower.includes('cuci')) return <MdLocalLaundryService className="text-indigo-500" />;
-    //     if (facilityLower.includes('dapur') || facilityLower.includes('kitchen')) return <GiCook className="text-orange-500" />;
-    //     if (facilityLower.includes('security') || facilityLower.includes('keamanan')) return <MdSecurity className="text-red-500" />;
-    //     return <div className="w-4 h-4 bg-gray-400 rounded-full"></div>;
-    // };
 
     const handlePrevImage = (e: React.MouseEvent, kosId: number, totalImages: number) => {
         e.stopPropagation();

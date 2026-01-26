@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, BookStatus } from "@prisma/client";
 
 const prisma = new PrismaClient({ errorFormat: "pretty" })
 
@@ -187,6 +187,41 @@ export const createReview = async (request: Request, response: Response) => {
             return response.status(400).json({
                 status: false,
                 message: `Review comment cannot be empty`
+            });
+        }
+
+        // Check if user exists and has role society
+        const user = await prisma.user.findUnique({
+            where: { id: Number(userId) }
+        });
+
+        if (!user) {
+            return response.status(404).json({
+                status: false,
+                message: `User not found`
+            });
+        }
+
+        if (user.role !== 'society') {
+            return response.status(403).json({
+                status: false,
+                message: `Only users with role 'society' can create reviews`
+            });
+        }
+
+        // Check if user has an accepted booking for this kos
+        const acceptedBooking = await prisma.book.findFirst({
+            where: {
+                kosId: Number(kosId),
+                userId: Number(userId),
+                status: 'accept'
+            }
+        });
+
+        if (!acceptedBooking) {
+            return response.status(403).json({
+                status: false,
+                message: `You can only review a kos after your booking has been accepted`
             });
         }
 
@@ -409,6 +444,191 @@ export const checkUserReview = async (request: Request, response: Response) => {
                 review: review || null
             },
             message: `Review status retrieved successfully`
+        });
+    } catch (error) {
+        return response.status(400).json({
+            status: false,
+            message: `There is an error: ${error}`
+        });
+    }
+};
+
+// Admin reply to review
+export const replyToReview = async (request: Request, response: Response) => {
+    try {
+        const { id } = request.params;
+        const { replyComment, adminId } = request.body;
+
+        // Validation
+        if (!replyComment) {
+            return response.status(400).json({
+                status: false,
+                message: `Reply comment is required`
+            });
+        }
+
+        if (replyComment.trim().length === 0) {
+            return response.status(400).json({
+                status: false,
+                message: `Reply comment cannot be empty`
+            });
+        }
+
+        // Check if admin exists and has role owner or superadmin
+        const admin = await prisma.user.findUnique({
+            where: { id: Number(adminId) }
+        });
+
+        if (!admin) {
+            return response.status(404).json({
+                status: false,
+                message: `Admin user not found`
+            });
+        }
+
+        if (admin.role !== 'owner' && admin.role !== 'superadmin') {
+            return response.status(403).json({
+                status: false,
+                message: `Only users with role 'owner' or 'superadmin' can reply to reviews`
+            });
+        }
+
+        // Check if review exists
+        const review = await prisma.review.findUnique({
+            where: { id: Number(id) },
+            include: {
+                kos: true
+            }
+        });
+
+        if (!review) {
+            return response.status(404).json({
+                status: false,
+                message: `Review not found`
+            });
+        }
+
+        // If admin is owner, check if they own the kos
+        if (admin.role === 'owner' && review.kos.userId !== admin.id) {
+            return response.status(403).json({
+                status: false,
+                message: `You can only reply to reviews for your own kos`
+            });
+        }
+
+        const updatedReview = await prisma.review.update({
+            where: { id: Number(id) },
+            data: {
+                replyComment: replyComment.trim(),
+                replyAt: new Date()
+            },
+            include: {
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true,
+                        profile_picture: true
+                    }
+                },
+                kos: {
+                    select: {
+                        id: true,
+                        name: true,
+                        address: true,
+                        pricePerMonth: true
+                    }
+                }
+            }
+        });
+
+        return response.status(200).json({
+            status: true,
+            data: updatedReview,
+            message: `Reply added successfully`
+        });
+    } catch (error) {
+        return response.status(500).json({
+            status: false,
+            message: `There is an error: ${error}`
+        });
+    }
+};
+
+// Check if user can review (has accepted booking)
+export const checkCanReview = async (request: Request, response: Response) => {
+    try {
+        const { kosId, userId } = request.params;
+
+        // Check if user exists and has role society
+        const user = await prisma.user.findUnique({
+            where: { id: Number(userId) }
+        });
+
+        if (!user) {
+            return response.status(404).json({
+                status: false,
+                message: `User not found`
+            });
+        }
+
+        if (user.role !== 'society') {
+            return response.status(200).json({
+                status: true,
+                data: {
+                    canReview: false,
+                    reason: 'Only users with role society can review'
+                },
+                message: `User cannot review`
+            });
+        }
+
+        // Check if user has an accepted booking
+        const acceptedBooking = await prisma.book.findFirst({
+            where: {
+                kosId: Number(kosId),
+                userId: Number(userId),
+                status: 'accept'
+            }
+        });
+
+        if (!acceptedBooking) {
+            return response.status(200).json({
+                status: true,
+                data: {
+                    canReview: false,
+                    reason: 'You need an accepted booking to review this kos'
+                },
+                message: `User cannot review`
+            });
+        }
+
+        // Check if user already reviewed
+        const existingReview = await prisma.review.findFirst({
+            where: {
+                kosId: Number(kosId),
+                userId: Number(userId)
+            }
+        });
+
+        if (existingReview) {
+            return response.status(200).json({
+                status: true,
+                data: {
+                    canReview: false,
+                    reason: 'You have already reviewed this kos'
+                },
+                message: `User cannot review`
+            });
+        }
+
+        return response.status(200).json({
+            status: true,
+            data: {
+                canReview: true,
+                reason: null
+            },
+            message: `User can review`
         });
     } catch (error) {
         return response.status(400).json({
