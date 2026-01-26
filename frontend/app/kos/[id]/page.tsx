@@ -887,6 +887,8 @@ const KosDetailPage = () => {
                             <ReviewContainer
                                 kosId={kosDetail.id}
                                 userId={user?.id ? parseInt(user.id) : undefined}
+                                userRole={user?.role}
+                                kosOwnerId={kosDetail.owner?.id}
                             />
                         </div>
 

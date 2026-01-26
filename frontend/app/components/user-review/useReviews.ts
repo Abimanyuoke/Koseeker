@@ -10,7 +10,7 @@ interface UseReviewsProps {
     userRole?: string;
 }
 
-export const useReviews = ({ kosId, userId, userRole }: UseReviewsProps = {}) => {
+export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
     const [reviews, setReviews] = useState<IReview[]>([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -254,6 +254,6 @@ export const useReviews = ({ kosId, userId, userRole }: UseReviewsProps = {}) =>
         updateReview,
         deleteReview,
         replyToReview,
-        setError, // Allow manual error clearing
+        setError, 
     };
 };

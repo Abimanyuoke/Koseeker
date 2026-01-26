@@ -4,16 +4,21 @@ import React, { useState } from 'react';
 import ReviewComponent from './page';
 import ReviewForm from './ReviewForm';
 import { useReviews } from './useReviews';
+import { toast } from 'sonner';
 
 interface ReviewContainerProps {
     kosId: number;
     userId?: number;
+    userRole?: string;
+    kosOwnerId?: number;
     showForm?: boolean;
 }
 
 const ReviewContainer: React.FC<ReviewContainerProps> = ({
     kosId,
     userId,
+    userRole,
+    kosOwnerId,
     showForm = false
 }) => {
     const [showReviewForm, setShowReviewForm] = useState(showForm);
@@ -39,13 +44,13 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
             });
 
             setShowReviewForm(false);
-            alert('Review berhasil ditambahkan!');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            toast.success('Review berhasil ditambahkan!');
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error('Error creating review:', error);
             // Error message already set by useReviews hook
             const errorMsg = error?.message || 'Gagal menambahkan review. Silakan coba lagi.';
-            alert(errorMsg);
+            toast.error(errorMsg);
         }
     };
 
@@ -167,7 +172,12 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
             )}
 
             {/* Reviews Display */}
-            <ReviewComponent kosId={kosId} userId={userId} />
+            <ReviewComponent
+                kosId={kosId}
+                userId={userId}
+                userRole={userRole}
+                kosOwnerId={kosOwnerId}
+            />
         </div>
     );
 };
