@@ -7,26 +7,12 @@ export const middleware = async (request: NextRequest) => {
     // Redirect jika mengakses root /
     if (request.nextUrl.pathname === "/") {
         const redirectUrl = request.nextUrl.clone();
-
-        // Jika sudah login, redirect sesuai role
-        if (token && role) {
-            if (role === "owner") {
-                redirectUrl.pathname = "/manager";
-            } else if (role === "society") {
-                redirectUrl.pathname = "/home";
-            } else {
-                redirectUrl.pathname = "/home";
-            }
-        } else {
-            // Jika belum login, redirect ke login
-            redirectUrl.pathname = "/auth/login";
-        }
-
+        redirectUrl.pathname = "/landing-page";
         return NextResponse.redirect(redirectUrl);
     }
 
     // Proteksi untuk /main (hanya boleh diakses jika sudah login)
-    if (request.nextUrl.pathname.startsWith("/main")) {
+    if (request.nextUrl.pathname.startsWith("/home")) {
         if (!token) {
             const redirectUrl = request.nextUrl.clone();
             redirectUrl.pathname = "/auth/login";
@@ -37,7 +23,7 @@ export const middleware = async (request: NextRequest) => {
     }
 
     // Proteksi untuk halaman /home (hanya boleh diakses jika sudah login)
-    if (request.nextUrl.pathname.startsWith("/auth/login")) {
+    if (request.nextUrl.pathname.startsWith("/home")) {
         if (!token) {
             const redirectUrl = request.nextUrl.clone();
             redirectUrl.pathname = "/auth/login";
@@ -89,3 +75,17 @@ export const config = {
         "/" // root
     ],
 };
+
+
+// if (token && role) {
+//             if (role === "owner") {
+//                 redirectUrl.pathname = "/manager";
+//             } else if (role === "society") {
+//                 redirectUrl.pathname = "/home";
+//             } else {
+//                 redirectUrl.pathname = "/landing-page";
+//             }
+//         } else {
+//             // Jika belum login, redirect ke login
+//             redirectUrl.pathname = "/landing-page";
+//         }

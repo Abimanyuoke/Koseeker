@@ -3,12 +3,12 @@
 import React, { useRef, useState } from 'react'
 import { useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import NotificationBell from '../notification/NotificationBell';
 import Image from 'next/image';
 import Link from 'next/link';
 import logo from "../../../public/images/logo.svg";
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { motion } from 'framer-motion';
+import { Loader2 } from 'lucide-react';
 
 export default function NavbarLandingPage() {
     const router = useRouter();
@@ -16,14 +16,22 @@ export default function NavbarLandingPage() {
     const [activeDown, setActiveDown] = useState<string | null>(null);
     const cariDropdownRef = useRef<HTMLDivElement>(null)
     const lainnyaDropdownRef = useRef<HTMLDivElement>(null)
+    const [loadingButton, setLoadingButton] = useState<string | null>(null);
 
     const toggleDown = (down: string) => {
         setActiveDown((prev) => (prev === down ? null : down));
     };
 
+    const handleNavigation = async (path: string, buttonId: string) => {
+        setLoadingButton(buttonId);
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        router.push(path);
+    };
+
     useEffect(() => {
         const handleScroll = () => {
-            setScrolled(window.scrollY > 200);
+            setScrolled(window.scrollY > 10);
         };
 
         window.addEventListener("scroll", handleScroll);
@@ -31,24 +39,8 @@ export default function NavbarLandingPage() {
     }, []);
 
     return (
-        <motion.div
-            initial={false}
-            animate={{
-                boxShadow: scrolled ? "0px 10px 30px rgba(0,0,0,0.08)" : "0px 0px 0px rgba(0,0,0,0)",
-                paddingTop: scrolled ? "10px" : "20px",
-                paddingBottom: scrolled ? "10px" : "20px",
-            }}
-            transition={{ duration: 0.3 }}
-            className={`bg-white sticky top-0 z-50 p-5 font-lato w-full`}>
-            <motion.div
-                initial={false}
-                animate={{
-                    maxWidth: scrolled ? "100%" : "1200px",
-                    paddingLeft: scrolled ? "40px" : "0px",
-                    paddingRight: scrolled ? "40px" : "0px",
-                }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-                className={`mx-auto`}>
+        <div className={`bg-white fixed top-0 z-50 p-2 font-lato w-full ${scrolled ? ('shadow-md') : ('shadow-none')}`}>
+            <div className={`mx-auto ${scrolled ? ('max-w-7xl') : ('max-w-6xl')} transition-all`}>
                 <div className='flex items-center justify-between py-3 relative h-[80px]'>
                     <div className='flex items-center gap-2 cursor-pointer'>
                         <button onClick={() => router.push('/home')} className='cursor-pointer'>
@@ -56,6 +48,7 @@ export default function NavbarLandingPage() {
                         </button>
                         <div className='font-lato text-primary text-2xl font-extrabold'>koseeker</div>
                     </div>
+                    {/* Menu Navbar */}
                     <div className='flex items-center gap-4'>
                         <div className='flex items-center gap-4 font-semibold text-[14px] text-[#303030]'>
                             <div ref={cariDropdownRef} className='relative'>
@@ -139,12 +132,16 @@ export default function NavbarLandingPage() {
                                     </div>
                                 )}
                             </div>
-                            <NotificationBell className='mr-3' />
                         </div>
                     </div>
+
+                    <div className='flex items-center justify-center gap-2'>
+                        <button onClick={() => handleNavigation('/auth/signup', 'signup')} disabled={loadingButton !== null} className={`px-4 py-2 text-primary bg-white rounded-md border-[1px] border-primary hover:text-primary/85 font-semibold hover:cursor-pointer`}>{loadingButton === 'signup' ? <Loader2 className='animate-spin' /> : 'Daftar'}</button>
+                        <button onClick={() => handleNavigation('/auth/login', 'login')} disabled={loadingButton !== null} className={`px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/85 font-semibold hover:cursor-pointer`}>{loadingButton === 'login' ? <Loader2 className='animate-spin' /> : 'Masuk'}</button>
+                    </div>
                 </div>
-            </motion.div>
-        </motion.div>
+            </div>
+        </div>
     )
 }
 
