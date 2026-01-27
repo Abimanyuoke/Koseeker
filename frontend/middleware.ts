@@ -37,7 +37,7 @@ export const middleware = async (request: NextRequest) => {
     }
 
     // Proteksi untuk halaman /home (hanya boleh diakses jika sudah login)
-    if (request.nextUrl.pathname.startsWith("/home")) {
+    if (request.nextUrl.pathname.startsWith("/auth/login")) {
         if (!token) {
             const redirectUrl = request.nextUrl.clone();
             redirectUrl.pathname = "/auth/login";
