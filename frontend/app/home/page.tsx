@@ -44,7 +44,7 @@ export default function Home() {
                         <div className="flex items-center mt-5 gap-1 shadow-md border-[1px] border-[#48484819] p-2 rounded-lg">
                             <IoSearch className="text-4xl" />
                             <Search url={"/"} search={""} />
-                            <button className="text-[16px] text-white cursor-pointer bg-primary font-bold px-8 py-2 rounded-sm">Cari</button>
+                            <button className="text-[16px] text-white cursor-pointer bg-primary font-bold px-8 py-2 rounded-sm" suppressHydrationWarning>Cari</button>
                         </div>
                     </div>
                     <div>
@@ -68,7 +68,7 @@ export default function Home() {
                         <Voucher img="/images/voucher/voucher12.svg" alt="Voucher 10" />
                     </Slider>
                     <div>
-                        <CustomArrows
+                        <CustomArrows 
                             next={() => sliderRef.current?.slickNext()}
                             prev={() => sliderRef.current?.slickPrev()} />
                     </div>

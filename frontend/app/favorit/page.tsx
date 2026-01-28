@@ -200,7 +200,7 @@ export default function FavoritPage() {
                             </p>
                             <button
                                 onClick={() => router.push('/kos')}
-                                className="px-6 py-3 bg-gradient-to-r from-primary/80 hover:cursor-pointer to-green-800 text-white rounded-lg hover:scale-105 transition font-semibold">
+                                className="px-6 py-3 bg-primary text-white rounded-lg hover:scale-105 transition font-semibold">
                                 Jelajahi Kos
                             </button>
                         </div>

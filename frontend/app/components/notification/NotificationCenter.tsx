@@ -170,10 +170,9 @@ export default function NotificationCenter({ isOpen, onClose }: NotificationCent
                     <h2 className="text-lg font-semibold text-gray-900">Notifikasi</h2>
                     <div className="flex items-center gap-2">
                         {notifications.some(n => !n.isRead) && (
-                            <button
+                            <button suppressHydrationWarning
                                 onClick={markAllAsRead}
-                                className="text-sm text-blue-600 hover:text-blue-800"
-                            >
+                                className="text-sm text-blue-600 hover:text-blue-800">
                                 Tandai semua dibaca
                             </button>
                         )}

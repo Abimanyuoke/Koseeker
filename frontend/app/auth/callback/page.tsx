@@ -41,7 +41,7 @@ export default function AuthCallback() {
 
             // Redirect to home page
             setTimeout(() => {
-                router.replace("/")
+                router.replace("/home")
             }, 1000)
         } else {
             // Session exists but no backend token, something went wrong

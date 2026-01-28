@@ -11,28 +11,27 @@ export const middleware = async (request: NextRequest) => {
         return NextResponse.redirect(redirectUrl);
     }
 
-    // Proteksi untuk /main (hanya boleh diakses jika sudah login)
-    if (request.nextUrl.pathname.startsWith("/home")) {
-        if (!token) {
-            const redirectUrl = request.nextUrl.clone();
-            redirectUrl.pathname = "/auth/login";
-            return NextResponse.redirect(redirectUrl);
-        }
+    // Halaman yang boleh diakses tanpa login
+    const publicPaths = [
+        "/landing-page",
+        "/auth/login",
+        "/auth/signup",
+        "/auth/callback"
+    ];
 
-        return NextResponse.next(); // izinkan jika sudah login
+    // Cek apakah path saat ini adalah public path
+    const isPublicPath = publicPaths.some(path =>
+        request.nextUrl.pathname.startsWith(path)
+    );
+
+    // Jika bukan public path dan tidak ada token, redirect ke login
+    if (!isPublicPath && !token) {
+        const redirectUrl = request.nextUrl.clone();
+        redirectUrl.pathname = "/auth/login";
+        return NextResponse.redirect(redirectUrl);
     }
 
-    // Proteksi untuk halaman /home (hanya boleh diakses jika sudah login)
-    if (request.nextUrl.pathname.startsWith("/home")) {
-        if (!token) {
-            const redirectUrl = request.nextUrl.clone();
-            redirectUrl.pathname = "/auth/login";
-            return NextResponse.redirect(redirectUrl);
-        }
-        return NextResponse.next();
-    }
-
-    // Proteksi untuk halaman /manager
+    // Proteksi untuk halaman /manager (hanya untuk owner)
     if (request.nextUrl.pathname.startsWith("/manager")) {
         if (!token || role !== "owner") {
             const redirectUrl = request.nextUrl.clone();
@@ -42,7 +41,7 @@ export const middleware = async (request: NextRequest) => {
         return NextResponse.next();
     }
 
-    // Proteksi untuk halaman /user
+    // Proteksi untuk halaman /user (hanya untuk society)
     if (request.nextUrl.pathname.startsWith("/user")) {
         if (!token || role !== "society") {
             const redirectUrl = request.nextUrl.clone();
@@ -52,27 +51,22 @@ export const middleware = async (request: NextRequest) => {
         return NextResponse.next();
     }
 
-    // Proteksi untuk halaman booking
-    if (request.nextUrl.pathname.startsWith("/book")) {
-        if (!token) {
-            const redirectUrl = request.nextUrl.clone();
-            redirectUrl.pathname = "/auth/login";
-            return NextResponse.redirect(redirectUrl);
-        }
-        return NextResponse.next();
-    }
-
-    return NextResponse.next(); // default: izinkan akses
+    return NextResponse.next(); // default: izinkan akses jika sudah login
 };
 
 export const config = {
     matcher: [
+        "/",
         "/manager/:path*",
         "/user/:path*",
-        "/main/:path*", // Tambahkan ini agar /main diproteksi
-        "/home/:path*", // Proteksi untuk halaman home
-        "/book/:path*", // Proteksi untuk halaman booking
-        "/" // root
+        "/home/:path*",
+        "/book/:path*",
+        "/kos/:path*",
+        "/area-kos/:path*",
+        "/kampus/:path*",
+        "/favorit/:path*",
+        "/kos_home/:path*",
+        "/kos_promo/:path*"
     ],
 };
 

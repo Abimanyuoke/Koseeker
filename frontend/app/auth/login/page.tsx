@@ -108,11 +108,11 @@ export default function Login() {
                         <form className="flex flex-col pt-5 gap-3" onSubmit={handleSubmit}>
                             <div className="flex w-full items-center rounded relative">
                                 <input type="email" placeholder="Email" className="w-full pl-4 pr-4 py-2.5 border-2 border-gray-400 rounded-md focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400" value={email}
-                                    onChange={e => setEmail(e.target.value)} id={`email`} />
+                                    onChange={e => setEmail(e.target.value)} id={`email`} suppressHydrationWarning />
                             </div>
 
                             <div className="flex w-full items-center rounded relative">
-                                <input type={showPassword ? `text` : `password`} className="w-full pl-4 pr-4 py-2.5 border-2 border-gray-400 rounded-md focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400" value={password}
+                                <input type={showPassword ? `text` : `password`} className="w-full pl-4 pr-4 py-2.5 border-2 border-gray-400 rounded-md focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400" value={password} suppressHydrationWarning
                                     onChange={e => setPassword(e.target.value)} placeholder="Password" id={`password`} />
                                 <div className="cursor-pointer rounded-r-md p-3 absolute right-0" onClick={() => setShowPassword(!showPassword)}>
                                     {showPassword ?
@@ -125,14 +125,14 @@ export default function Login() {
                                 {isLoading ? "Logging in..." : "login"}
                             </button>
                             <div className="flex flex-col justify-center text-center">
-                                <button type="button" onClick={() => { router.push("/auth/signup") }} className="uppercase text-sm text-primary border border-primary hover:scale-105 rounded-full py-2 cursor-pointer font-semibold duration-300 transition-all">create account</button>
+                                <button type="button" onClick={() => { router.push("/auth/signup") }} className="uppercase text-sm text-primary border border-primary hover:scale-105 rounded-full py-2 cursor-pointer font-semibold duration-300 transition-all" suppressHydrationWarning>create account</button>
                             </div>
                             <p className="text-xs text-center text-slate-500 my-2">Or</p>
                             <button
                                 type="button"
                                 onClick={handleGoogleSignIn}
                                 disabled={isLoading}
-                                className={`w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 py-2 px-4 rounded-full font-medium transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed`}>
+                                className={`w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:border-gray-400 text-gray-700 py-2 px-4 rounded-full font-medium transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed`} suppressHydrationWarning>
                                 <FcGoogle className="text-lg" />
                                 {isLoading ? "Signing in..." : "Continue with Google"}
                             </button>

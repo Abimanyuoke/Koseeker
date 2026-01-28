@@ -13,7 +13,7 @@ type PropsLayout = {
 const RootLayout = ({ children }: PropsLayout) => {
     return (
         <div>
-            <Navbar />
+            <Navbar/>
             {children}
             <Footer />
         </div>

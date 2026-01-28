@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Lato } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
-import { HomeIcon } from "lucide-react";
 
 const lato = Lato({
   variable: "--font-lato",
@@ -21,8 +20,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
+    <html lang="en" suppressHydrationWarning>
+      <body suppressHydrationWarning
         className={`${lato.variable}`}>
         <Providers>
           {children}

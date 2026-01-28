@@ -15,7 +15,7 @@ const Search = ({ url, search }: Props) => {
     const handleSearch = (e: KeyboardEvent<HTMLInputElement>) => {
         if (e.key !== 'Enter') return;
         e.preventDefault()
-        router.push(`${url}?search=${keyword}`)
+        router.push(`${url}?search=${keyword}`, { scroll: false })
     }
 
     return (

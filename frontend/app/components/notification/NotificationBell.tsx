@@ -54,7 +54,7 @@ export default function NotificationBell({ className = '' }: NotificationBellPro
             <button
                 onClick={handleClick}
                 className={`relative p-2 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg ${className}`}
-                title="Notifikasi">
+                title="Notifikasi" suppressHydrationWarning>
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                         strokeLinecap="round"

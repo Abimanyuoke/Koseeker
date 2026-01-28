@@ -128,18 +128,18 @@ const Navbar = () => {
     <div className='bg-white sticky top-0 z-50 border-b-[1px] border-gray-200 font-lato'>
       <div className='max-w-6xl mx-auto'>
         <div className='flex items-center gap-4 font-semibold text-xs text-gray-500'>
-          <button className='flex items-center text-xs gap-2 py-4 cursor-pointer'>
+          <div className='flex items-center text-xs gap-2 py-4 cursor-pointer'>
             <PiDeviceMobile className='text-base' />
             Download App
-          </button>
-          <button className='flex items-center text-xs gap-2 cursor-pointer' onClick={() => router.push('/kos')}>
+          </div>
+          <div className='flex items-center text-xs gap-2 cursor-pointer' onClick={() => router.push('/kos')}>
             <LuCalendarDays className='text-base' />
             Sewa Kos
-          </button>
+          </div>
         </div>
         <div className='flex items-center justify-between py-3 relative h-[80px]'>
           <div className='flex items-center gap-2 cursor-pointer'>
-            <button onClick={() => router.push('/home')} className='cursor-pointer'>
+            <button onClick={() => router.push('/home')} className='cursor-pointer' suppressHydrationWarning>
               <Image src={logo} alt="Logo" width={40} height={40} className="w-12 h-12 object-cover" />
             </button>
             <AnimatePresence mode="wait">
@@ -163,8 +163,8 @@ const Navbar = () => {
                   className="flex-1">
                   <div className="flex items-center gap-1 shadow-md border-[1px] border-[#48484819] p-2 rounded-lg">
                     <IoSearch className="text-2xl" />
-                    <Search url={"/"} search={""} />
-                    <button className="text-[16px] text-white cursor-pointer bg-primary font-bold px-8 py-2 rounded-sm">Cari</button>
+                    <Search url={"/home"} search={""} />
+                    <button className="text-[16px] text-white cursor-pointer bg-primary font-bold px-8 py-2 rounded-sm" suppressHydrationWarning>Cari</button>
                   </div>
                 </motion.div>
               )}
@@ -173,7 +173,7 @@ const Navbar = () => {
           <div className='flex items-center gap-4'>
             <div className='flex items-center gap-4 font-semibold text-[14px] text-[#303030]'>
               <div ref={cariDropdownRef} className='relative'>
-                <button onClick={() => toggleDown('cari')} className='flex items-center relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
+                <button onClick={() => toggleDown('cari')} className='flex items-center relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full' suppressHydrationWarning>
                   Cari Apa?
                   <IoMdArrowDropdown className={`text-lg transition-transform mt-1 ${activeDown === 'cari' ? 'rotate-180' : ''}`} />
                 </button>
@@ -215,7 +215,7 @@ const Navbar = () => {
                 Booking
               </Link>
               <div ref={lainnyaDropdownRef} className='relative'>
-                <button onClick={() => toggleDown('lainnya')} className='flex items-center relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full'>
+                <button onClick={() => toggleDown('lainnya')} className='flex items-center relative px-3 py-2 after:content-[""] after:absolute after:left-0 after:bottom-[-18px] after:w-0 after:h-[3px] after:rounded-t-2xl after:bg-primary after:transition-all hover:after:w-full' suppressHydrationWarning>
                   Lainnya
                   <IoMdArrowDropdown className={`text-lg transition-transform ${activeDown === 'lainnya' ? 'rotate-180' : ''}`} />
                 </button>
@@ -253,7 +253,7 @@ const Navbar = () => {
               <NotificationBell className='mr-3' />
             </div>
 
-            <button className='cursor-pointer' onClick={() => handlePopup()}>
+            <button className='cursor-pointer' onClick={() => handlePopup()} suppressHydrationWarning>
               <Image
                 src={getProfileImageUrl(profile)}
                 alt="profile image"
@@ -304,7 +304,7 @@ const Navbar = () => {
                   <div className="border-t pt-3 mt-3">
                     <button
                       onClick={handleLogout}
-                      className="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-100 dark:text-red-400 rounded-md transition cursor-pointer">
+                      className="w-full flex items-center gap-2 px-4 py-2 text-red-600 hover:bg-red-100 dark:text-red-400 rounded-md transition cursor-pointer" suppressHydrationWarning>
                       <FiLogOut className="text-lg" />
                       <span>Logout</span>
                     </button>

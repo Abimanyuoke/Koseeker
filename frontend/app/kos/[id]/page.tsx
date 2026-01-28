@@ -1132,5 +1132,3 @@ const KosDetailPage = () => {
 };
 
 export default KosDetailPage;
-
-

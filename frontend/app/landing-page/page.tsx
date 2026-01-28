@@ -1,8 +1,11 @@
+/* eslint-disable @next/next/no-img-element */
 "use client"
 
 import Link from "next/link";
 import NavbarLanding from "../components/navbar-landing/page";
 import { FaArrowRightLong } from "react-icons/fa6";
+import { BsCheckCircleFill, BsPersonFillCheck } from "react-icons/bs";
+import { AiFillInsurance } from "react-icons/ai";
 
 export default function LandingPage() {
     return (
@@ -35,8 +38,8 @@ export default function LandingPage() {
                     </div>
                 </div>
             </section>
-            <section className="flex items-center justify-center min-h-screen flex-col relative overflow-hidden mx-auto max-w-6xl">
-                <div className="container rounded-3xl bg-primary bg-cover bg-center p-8 text-white lg:p-16">
+            <section className="flex items-center justify-center min-h-screen flex-col relative overflow-hidden mx-auto px-4">
+                <div className="container rounded-3xl bg-secondary bg-cover bg-center p-8 text-white lg:p-16">
                     <div>
                         <h1 className="mb-4 text-center text-2xl font-extrabold lg:text-4xl">Kenapa Harus Booking Di Koseeker?</h1>
                         <p className="mx-auto w-full text-center text-white/65 lg:w-2/3 lg:text-lg">Temukan pengalaman booking terbaik dengan admin berpengalaman dan website yang dirancang khusus untukmu sesuai standar Internasional.</p>
@@ -46,32 +49,35 @@ export default function LandingPage() {
                             <div className="flex items-center gap-6 border-b border-white/30 pb-8">
                                 <div className="w-fit rounded-full border-2 border-white p-4">
                                     {/* Icon 1 */}
+                                    <BsCheckCircleFill className="text-white text-2xl" />
                                 </div>
                                 <div>
-                                    <h1 className="text-lg font-semibold lg:text-2xl"></h1>
-                                    <p className="text-sm text-white/65 lg:text-base"></p>
+                                    <h1 className="text-lg font-semibold lg:text-2xl">Dikelola Koseeker: Dijamin Akurat</h1>
+                                    <p className="text-sm text-white/65 lg:text-base">Fasilitas tidak sesuai dengan iklan yang kamu lihat, kami garansi refund.</p>
                                 </div>
                             </div>
                             <div className="flex items-center gap-6 border-b border-white/30 pb-8">
-                                <div className="w-fit rounded-full border-2 border-white p-4">
+                                <div className="w-fit rounded-full border-2 border-white p-3">
                                     {/* Icon 1 */}
+                                    <AiFillInsurance className="text-white text-3xl" />
                                 </div>
                                 <div>
-                                    <h1 className="text-lg font-semibold lg:text-2xl"></h1>
-                                    <p className="text-sm text-white/65 lg:text-base"></p>
+                                    <h1 className="text-lg font-semibold lg:text-2xl">Asuransi Khusus Penyewa</h1>
+                                    <p className="text-sm text-white/65 lg:text-base">Perlindungan atas kompensasi kehilangan barang & fasilitas pada unit kamar. Disediakan oleh Penyedia Jasa Asuransi yang terdaftar OJK. S&K berlaku.</p>
                                 </div></div>
                             <div className="flex items-center gap-6">
-                                <div className="w-fit rounded-full border-2 border-white p-4">
+                                <div className="w-fit rounded-full border-2 border-white p-3">
                                     {/* Icon 1 */}
+                                    <BsPersonFillCheck className="text-white text-3xl" />
                                 </div>
                                 <div>
-                                    <h1 className="text-lg font-semibold lg:text-2xl"></h1>
-                                    <p className="text-sm text-white/65 lg:text-base"></p>
+                                    <h1 className="text-lg font-semibold lg:text-2xl">Penanganan Profesional</h1>
+                                    <p className="text-sm text-white/65 lg:text-base">Tim Koseeker selalu siap membantumu. Mulai dari survei kos, pengajuan sewa, hingga selama kamu ngekos.</p>
                                 </div>
                             </div>
                         </div>
                         <div className="w-full lg:w-1/2">
-
+                            <img src="/images/landing-page.jpg" alt="Kos" className="w-full object-cover rounded-lg" />
                         </div>
                     </div>
                 </div>
