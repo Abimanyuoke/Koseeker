@@ -35,7 +35,6 @@ export default function Home() {
 
     return (
         <div className="bg-white font-lato">
-            {/* Section Hero */}
             <div className="max-w-6xl mx-auto">
                 <div className="flex justify-between items-center">
                     <div className="flex flex-col text-[#484848]">
@@ -43,15 +42,13 @@ export default function Home() {
                         <p className="text-xl font-normal">Dapatkan infonya dan langsung sewa di Koseeker.</p>
                         <div className="flex items-center mt-5 gap-1 shadow-md border-[1px] border-[#48484819] p-2 rounded-lg">
                             <IoSearch className="text-4xl" />
-                            <Search url={"/"} search={""} />
-                            <button className="text-[16px] text-white cursor-pointer bg-primary font-bold px-8 py-2 rounded-sm" suppressHydrationWarning>Cari</button>
+                            <Search url={"/home"} search={""} />
                         </div>
                     </div>
                     <div>
                         <Image src={bild} alt="Hero Image" width={400} height={300} className="w-[600px] h-auto object-cover" />
                     </div>
                 </div>
-                {/* Carousel */}
                 <div className="pt-16 h-[350px] relative">
                     <Slider ref={sliderRef} {...settings}>
                         <Voucher img="/images/voucher/voucher1.svg" alt="Voucher 10" />
@@ -68,12 +65,11 @@ export default function Home() {
                         <Voucher img="/images/voucher/voucher12.svg" alt="Voucher 10" />
                     </Slider>
                     <div>
-                        <CustomArrows 
+                        <CustomArrows
                             next={() => sliderRef.current?.slickNext()}
                             prev={() => sliderRef.current?.slickPrev()} />
                     </div>
                 </div>
-                {/* blog */}
                 <div className="py-24 text-[#404040] space-y-5">
                     <div className="bg-white shadow-lg rounded-lg p-7 gap-3 relative w-full overflow-hidden">
                         <div className="font-lato flex flex-col space-y-1">

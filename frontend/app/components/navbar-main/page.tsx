@@ -164,7 +164,6 @@ const Navbar = () => {
                   <div className="flex items-center gap-1 shadow-md border-[1px] border-[#48484819] p-2 rounded-lg">
                     <IoSearch className="text-2xl" />
                     <Search url={"/home"} search={""} />
-                    <button className="text-[16px] text-white cursor-pointer bg-primary font-bold px-8 py-2 rounded-sm" suppressHydrationWarning>Cari</button>
                   </div>
                 </motion.div>
               )}
@@ -263,7 +262,6 @@ const Navbar = () => {
                 onError={(e) => {
                   console.error("Error loading profile image:", e);
                   console.log("Failed to load image:", getProfileImageUrl(profile));
-                  // Set fallback to default avatar
                   e.currentTarget.src = "data:image/svg+xml,%3csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3clinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3e%3cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3e%3cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3e%3c/linearGradient%3e%3c/defs%3e%3crect width='100' height='100' fill='url(%23grad)' /%3e%3ctext x='50' y='50' font-family='Arial, sans-serif' font-size='36' fill='white' text-anchor='middle' dominant-baseline='middle'%3e👤%3c/text%3e%3c/svg%3e";
                 }}
                 onLoad={() => {
