@@ -5,24 +5,24 @@ import { MdEmail } from "react-icons/md"
 import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa"
 import { BsTwitter } from "react-icons/bs"
 
-export default function Footer() {
+export default function FooterLandingPage() {
     return (
-        <div className="bg-white font-lato py-14">
-            <div className="mx-auto max-w-6xl">
+        <div className="bg-[#262626] text-white font-lato py-14 ">
+            <div className="mx-auto px-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 ">
                     <div className="flex flex-col gap-5 col-span-3">
                         <div className='flex items-center gap-1 cursor-pointer'>
                             <Image src="/images/logo.svg" alt="Logo" width={40} height={40} className="w-16 h-16" />
                             <span className="className='font-lato text-primary text-3xl font-extrabold">koseeker</span>
                         </div>
-                        <p className="font-normal text-base text-[#383746] mt-2.5 pr-4">Dapatkan info kost murah  murah, nyaman, dan strategis hanya di Koseeker App. Cocok untuk mahasiswa, pekerja, atau perantau. Fitur pencarian cepat, info lengkap, sewa kost jadi praktis dan hemat.</p>
+                        <p className="font-normal text-base text-white mt-2.5 pr-4">Dapatkan info kost murah  murah, nyaman, dan strategis hanya di Koseeker App. Cocok untuk mahasiswa, pekerja, atau perantau. Fitur pencarian cepat, info lengkap, sewa kost jadi praktis dan hemat.</p>
                         <div className="flex gap-3">
                             <Image src="/images/playstore.svg" alt={"playstore"} width={130} height={50} />
                             <Image src="/images/appstore.svg" alt={"logo appstore"} width={120} height={50} />
                         </div>
                     </div>
                     <div>
-                        <h1 className="font-bold text-[#383746] text-base">KOSEEKER</h1>
+                        <h1 className="font-bold text-white text-base">KOSEEKER</h1>
                         <div className="mt-10 font-normal text-sm flex flex-col gap-4">
                             <Link href={"/"} className="hover:text-[#757575]" >Tentang Kami</Link>
                             <Link href={"/"} className="hover:text-[#757575]">Job Koseeker</Link>
@@ -32,14 +32,14 @@ export default function Footer() {
                         </div>
                     </div>
                     <div>
-                        <h1 className="font-bold text-[#383746] text-base">KEBIJAKAN</h1>
+                        <h1 className="font-bold text-white text-base">KEBIJAKAN</h1>
                         <div className="mt-10 font-normal text-sm flex flex-col gap-4">
                             <Link href={"/"} className="hover:text-[#757575]">Kebijakan Privasi</Link>
                             <Link href={"/"} className="hover:text-[#757575]">Syarat dan Ketentuan Umum</Link>
                         </div>
                     </div>
                     <div>
-                        <h1 className="font-bold text-[#383746] text-base">HUBUNGI KAMI</h1>
+                        <h1 className="font-bold text-white text-base">HUBUNGI KAMI</h1>
                         <div className="mt-10 font-normal text-sm flex flex-col gap-4">
                             <button className="flex items-center gap-2 hover:text-[#757575]">
                                 <MdEmail />
