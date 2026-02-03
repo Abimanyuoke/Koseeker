@@ -85,9 +85,7 @@ export default function LandingPage() {
 
             <section className="flex container items-center justify-center flex-col relative overflow-hidden mx-auto px-4 py-24">
                 <div className="container rounded-3xl bg-secondary bg-cover bg-center p-8 text-white lg:p-16 relative overflow-hidden">
-                    {/* Decorative background elements */}
                     <div className="absolute inset-0 -z-0 overflow-hidden pointer-events-none">
-                        {/* Geometric shapes */}
                         <div className="absolute top-20 left-20 w-20 h-20 border-2 border-white/10 rounded-lg rotate-12"></div>
                         <div className="absolute bottom-3 left-1/3 w-20 h-20 border-2 border-white/10 rounded-full"></div>
                         <div className="absolute -top-3 right-0 w-20 h-20 border-2 border-white/10 rounded-lg -rotate-12"></div>
@@ -136,7 +134,7 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            <section className="flex items-center justify-center flex-col relative overflow-hidden mx-auto px-4 py-24">
+            <section className="flex container items-center justify-center flex-col relative overflow-hidden mx-auto px-4 py-24">
                 <div className="max-auto">
                     <h1 className="text-3xl md:text-5xl font-bold text-center mb-8 md:mb-12 text-primary">
                         Frequently Asked Questions
@@ -163,9 +161,9 @@ export default function LandingPage() {
                                 </button>
 
                                 <div className={`transition-all duration-300 ease-in-out ${openFaqIndex === index
-                                            ? 'max-h-96 opacity-100'
-                                            : 'max-h-0 opacity-0'
-                                        } overflow-hidden`}>
+                                    ? 'max-h-96 opacity-100'
+                                    : 'max-h-0 opacity-0'
+                                    } overflow-hidden`}>
                                     <div className="px-6 pb-6">
                                         <p className="text-gray-600 leading-relaxed">
                                             {faq.answer}
@@ -178,7 +176,7 @@ export default function LandingPage() {
                 </div>
             </section>
 
-            <FooterLandingPage/>
+            <FooterLandingPage />
         </main>
     )
 }

@@ -7,8 +7,7 @@ import { BsTwitter } from "react-icons/bs"
 
 export default function FooterLandingPage() {
     return (
-        <div className="bg-[#262626] text-white font-lato py-14 ">
-            <div className="mx-auto px-4">
+        <div className="bg-[#262626] text-white font-lato py-14 container mx-auto px-10 ">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10 ">
                     <div className="flex flex-col gap-5 col-span-3">
                         <div className='flex items-center gap-1 cursor-pointer'>
@@ -69,7 +68,6 @@ export default function FooterLandingPage() {
                         © 2025 Koseeker.com. All rights reserved
                     </span>
                 </div>
-            </div>
         </div>
     )
 }

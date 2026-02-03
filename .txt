@@ -1,12 +1,6 @@
 Update:
 1. deploy lewat vercel (frontend) dan supabase (backend)
-2. tambahkan untuk yang icon fasilitas pada kos booking,
-3. tambahkan sisa kamar dan jika habis akan di ifokan
-4. untuk yang gambar yang ada di kos [id] ada tombol untuk yang lihat semua dan membuat halaman sendiri dengan kategori sendiri.
-5. ubah tampilan ketika berhasil booking
-6. ubah tampilan edit kos dan hapus kos di manajer
-7. fix error untuk yang favorit images
-Jika masih belum ada itu akan di arahkan pada component yang menampilkan Masih Update dengan gambar robot rusak atau 404 google yang abu abu di tengah ada gambar robot rusak
+2. Bisa ditambahkan ditur pada admin bagian sidebar seperti di real-restaurant 
 
 
 
