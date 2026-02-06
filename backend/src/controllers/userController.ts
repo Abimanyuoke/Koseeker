@@ -34,39 +34,36 @@ export const getAllUsers = async (request: Request, response: Response) => {
     }
 }
 
-export const getUserById = async (request: Request, response: Response) => {
-    try {
-        /** get requested data (data has been sent from request) */
-        const { id } = request.body.user
+    export const getUserById = async (request: Request, response: Response) => {
+        try {
+            const id = request.params.id;
+            const userId = Number(id);
 
-        if (!id) {
+            const user = await prisma.user.findUnique({
+                where: { id: userId }
+            });
+
+            if (!user) {
+                return response.status(404).json({
+                    status: false,
+                    message: `User not found`
+                });
+            }
+
+            return response.json({
+                status: true,
+                data: user,
+                message: `User has been retrieved`
+            }).status(200); 
+        } catch (error) {
             return response
                 .json({
                     status: false,
-                    message: `User Not Found`
+                    message: `There is an error. ${error}`
                 })
-                .status(400)
+                .status(400);
         }
-
-        /** process to get user, contains means search name of user based on sent keyword */
-        const allUser = await prisma.user.findFirst({
-            where: { id: Number(id) }
-        })
-
-        return response.json({
-            status: true,
-            data: allUser,
-            message: `user has retrieved`
-        }).status(200)
-    } catch (error) {
-        return response
-            .json({
-                status: false,
-                message: `There is an error. ${error}`
-            })
-            .status(400)
     }
-}
 
 export const createUser = async (request: Request, response: Response) => {
     try {
