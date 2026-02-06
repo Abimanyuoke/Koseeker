@@ -90,7 +90,6 @@ const RootLayout = ({ children }: PropsLayout) => {
                 </div>
             </aside>
 
-            {/* Mobile drawer (overlay) */}
             <AnimatePresence>
                 {mobileSidebarOpen && (
                     <div>
@@ -110,7 +109,7 @@ const RootLayout = ({ children }: PropsLayout) => {
                                 <button onClick={() => setMobileSidebarOpen(false)} className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><FiHome className="w-5 h-5 text-gray-600" /><span>Dashboard</span></button>
                                 <button onClick={() => setMobileSidebarOpen(false)} className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><FiLayers className="w-5 h-5 text-gray-600" /><span>Kelola Kos</span></button>
                                 <button onClick={() => setMobileSidebarOpen(false)} className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><FiCalendar className="w-5 h-5 text-gray-600" /><span>Booking</span></button>
-                                <button onClick={() => setMobileSidebarOpen(false)} className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><FiUsers className="w-5 h-5 text-gray-600" /><span>Penyewa</span></button>
+                                <button onClick={() => setMobileSidebarOpen(false)} className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><FiUsers className="w-5 h-5 text-gray-600" /><span>Data Penghasilan</span></button>
                                 <button onClick={() => setMobileSidebarOpen(false)} className="w-full text-left flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100"><FiSettings className="w-5 h-5 text-gray-600" /><span>Pengaturan</span></button>
                             </nav>
 
@@ -122,7 +121,6 @@ const RootLayout = ({ children }: PropsLayout) => {
                 )}
             </AnimatePresence>
 
-            {/* Page content - shift right on large screens */}
             <div className="lg:ml-[260px]">
                 {children}
             </div>

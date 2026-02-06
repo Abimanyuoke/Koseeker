@@ -75,7 +75,7 @@ export default function LandingPage() {
                         </div>
                     </div>
                     <div className="flex flex-col items-center justify-center leading-tight md:gap-2">
-                        <h1 className="inline-block bg-gradient-to-r from-blue-500 via-green-500 to-[#008080] bg-clip-text text-center text-3xl font-bold    text-transparent md:py-2 md:text-6xl">Cari Hunian Nyamanmu</h1>
+                        <h1 className="inline-block bg-gradient-to-r from-blue-500 via-green-500 to-[#008080] bg-clip-text text-center text-3xl font-bold text-transparent md:py-2 md:text-6xl">Cari Hunian Nyamanmu</h1>
                         <h1 className="text-center text-3xl font-bold text-gray-700 md:text-6xl">Sewa Kamar Kos Paling Nyaman</h1>
                         <p className="mx-auto mt-4 text-center text-xl font-[400] text-gray-800  md:w-2/3">Layanan sewa kamar kos terbaik dengan fasilitas lengkap terpercaya serta harga terjangkau</p>
                         <Link className="mx-auto w-fit rounded-xl border bg-primary px-4 py-3 text-center font-semibold text-white md:mt-3" href={""}>Booking Sekarang</Link>

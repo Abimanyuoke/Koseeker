@@ -843,7 +843,7 @@ export default function BookKosPage() {
                                 <button
                                     type="submit"
                                     disabled={submitting || !bookingData.startDate || !bookingData.endDate || (kos && kos.availableRooms === 0)}
-                                    className="w-full bg-gradient-to-r from-green-500 to-green-700 text-white py-3 px-4 rounded-md hover:cursor-pointer hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
+                                    className="w-full bg-primary text-white py-3 px-4 rounded-md hover:cursor-pointer hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all">
                                     {submitting ? 'Memproses...' : 'Buat Booking'}
                                 </button>
                             )}
@@ -1030,7 +1030,7 @@ export default function BookKosPage() {
                                 <div className="flex gap-3">
                                     <button
                                         onClick={handlePrintReceipt}
-                                        className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-gradient-to-r from-primary/80 to-green-800 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition font-semibold shadow-lg">
+                                        className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-primary text-white rounded-lg transition font-semibold shadow-lg">
                                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
                                         </svg>

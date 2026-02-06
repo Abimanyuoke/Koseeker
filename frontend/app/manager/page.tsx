@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 'use client'
@@ -7,7 +8,6 @@ import { toast } from 'sonner'
 import { getUserData, getAuthToken } from '../../lib/auth'
 import NotificationBell from '../components/notification/NotificationBell'
 import { getCookies } from '@/lib/client-cookies'
-import { useRouter } from 'next/navigation'
 import { BASE_IMAGE_PROFILE } from '@/global'
 
 interface User {
@@ -54,28 +54,27 @@ export default function ManagerPage() {
     const [processingAction, setProcessingAction] = useState(false)
     const [filter, setFilter] = useState<'all' | 'pending' | 'accept' | 'reject'>('all')
     const [userData, setUserData] = useState<any>(null)
-    // const [popup, setPopup] = useState(false);
-    // const sidebarRef = useRef<HTMLDivElement>(null)
 
 
-    const getProfileImageUrl = (profilePicture: string) => {
-        if (!profilePicture) {
-            console.log("No profile picture, returning default avatar");
-            // Return default avatar if no profile picture
-            return "data:image/svg+xml,%3csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3clinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3e%3cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3e%3cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3e%3c/linearGradient%3e%3c/defs%3e%3crect width='100' height='100' fill='url(%23grad)' /%3e%3ctext x='50' y='50' font-family='Arial, sans-serif' font-size='36' fill='white' text-anchor='middle' dominant-baseline='middle'%3e👤%3c/text%3e%3c/svg%3e";
-        }
 
-        // Check if it's a Google profile picture URL (starts with https://)
-        if (profilePicture.startsWith('https://')) {
-            console.log("Google profile picture detected, returning:", profilePicture);
-            return profilePicture;
-        }
+    // const getProfileImageUrl = (profilePicture: string) => {
+    //     if (!profilePicture) {
+    //         console.log("No profile picture, returning default avatar");
+    //         // Return default avatar if no profile picture
+    //         return "data:image/svg+xml,%3csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3clinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3e%3cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3e%3cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3e%3c/linearGradient%3e%3c/defs%3e%3crect width='100' height='100' fill='url(%23grad)' /%3e%3ctext x='50' y='50' font-family='Arial, sans-serif' font-size='36' fill='white' text-anchor='middle' dominant-baseline='middle'%3e👤%3c/text%3e%3c/svg%3e";
+    //     }
 
-        // If it's a local file, use the BASE_IMAGE_PROFILE path
-        const localPath = `${BASE_IMAGE_PROFILE}/${profilePicture}`;
-        console.log("Local file detected, returning:", localPath);
-        return localPath;
-    };
+    //     // Check if it's a Google profile picture URL (starts with https://)
+    //     if (profilePicture.startsWith('https://')) {
+    //         console.log("Google profile picture detected, returning:", profilePicture);
+    //         return profilePicture;
+    //     }
+
+    //     // If it's a local file, use the BASE_IMAGE_PROFILE path
+    //     const localPath = `${BASE_IMAGE_PROFILE}/${profilePicture}`;
+    //     console.log("Local file detected, returning:", localPath);
+    //     return localPath;
+    // };
 
     useEffect(() => {
         const profilePicture = getCookies("profile_picture") || "";
@@ -260,19 +259,13 @@ export default function ManagerPage() {
     return (
         <div className="min-h-screen bg-white">
             <div className="max-w-7xl mx-auto px-4 py-8 relative">
-                {/* Sidebar is provided by manager layout (app/manager/layout.tsx) */}
-
-                {/* Main content */}
                 <main>
-                    {/* Mobile drawer handled in layout */}
-                    {/* Header */}
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8">
                         <div>
                             <h1 className="text-3xl font-bold text-gray-900 mb-2">Manager Dashboard</h1>
                             <p className="text-gray-600">Kelola booking kos Anda</p>
                         </div>
                         <div className="flex items-center gap-4 mt-4 sm:mt-0">
-                            {/* Mobile hamburger is in layout */}
                             <button
                                 onClick={fetchOwnerBookings}
                                 disabled={loading}
@@ -303,7 +296,6 @@ export default function ManagerPage() {
                         </div>
                     </div>
 
-                    {/* Stats Cards */}
                     <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                         <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm">
                             <div className="flex items-center">

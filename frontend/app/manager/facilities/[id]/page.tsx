@@ -5,11 +5,10 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { getUserData } from '@/lib/auth'
 import { BASE_API_URL, BASE_IMAGE_KOS } from '@/global'
 import { toast } from 'sonner'
 import Image from 'next/image'
-import { FaPlus, FaEdit, FaTrash, FaArrowLeft, FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaCheck, FaTimes } from 'react-icons/fa'
+import { FaPlus, FaEdit, FaTrash, FaArrowLeft, FaWifi, FaBed, FaCar, FaTv, FaSnowflake, FaShower, FaCheck } from 'react-icons/fa'
 import { MdLocalLaundryService, MdSecurity } from 'react-icons/md'
 import { GiCook } from 'react-icons/gi'
 
@@ -88,9 +87,13 @@ export default function FacilitiesDetailPage() {
     const handleAddFacility = async () => {
         // collect checked facilities and custom input
         const selected = Object.keys(checkedFacilities).filter(k => checkedFacilities[k])
-        const custom = newFacility.trim()
         const toAdd = [...selected]
-        if (custom) toAdd.push(custom)
+        const custom = newFacility.trim()
+        if (custom) {
+            // Split by comma and trim each item
+            const customFacilities = custom.split(',').map(f => f.trim()).filter(f => f.length > 0)
+            toAdd.push(...customFacilities)
+        }
 
         if (toAdd.length === 0) {
             toast.error('Pilih setidaknya satu fasilitas atau ketik fasilitas baru')
@@ -314,7 +317,7 @@ export default function FacilitiesDetailPage() {
                         <h2 className='text-2xl font-bold text-gray-900'>Daftar Fasilitas</h2>
                         <button
                             onClick={() => setIsAddModalOpen(true)}
-                            className='flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 transition shadow-lg hover:shadow-xl'>
+                            className='flex items-center gap-2 px-4 py-2 bg-primary text-white rounded-lg hover:bg-secondary transition shadow-lg hover:shadow-xl'>
                             <FaPlus /> Tambah Fasilitas
                         </button>
                     </div>
@@ -404,10 +407,11 @@ export default function FacilitiesDetailPage() {
                                 value={newFacility}
                                 onChange={(e) => setNewFacility(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && handleAddFacility()}
-                                placeholder='Contoh: WiFi 24 jam, Mesin Cuci, dll'
+                                placeholder='Contoh: WiFi 24 jam, Mesin Cuci, Kulkas (pisahkan dengan koma)'
                                 className='w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition'
                                 autoFocus
                             />
+                            <p className='text-xs text-gray-500 mt-2'>💡 Tips: Pisahkan dengan koma untuk menambahkan beberapa fasilitas sekaligus</p>
                         </div>
                         <div className='p-6 bg-gray-50 rounded-b-2xl flex gap-3'>
                             <button
@@ -423,16 +427,16 @@ export default function FacilitiesDetailPage() {
                             <button
                                 onClick={handleAddFacility}
                                 disabled={isSubmitting}
-                                className='flex-1 px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
+                                className='flex-1 px-4 py-3 bg-primary text-white rounded-lg hover:bg-secondary transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
                                 {isSubmitting ? (
                                     <div>
                                         <div className='animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full'></div>
                                         Menyimpan...
                                     </div>
                                 ) : (
-                                    <>
+                                    <div>
                                         <FaCheck /> Tambah
-                                    </>
+                                    </div>
                                 )}
                             </button>
                         </div>
@@ -476,7 +480,7 @@ export default function FacilitiesDetailPage() {
                             <button
                                 onClick={handleEditFacility}
                                 disabled={isSubmitting || !editFacilityName.trim()}
-                                className='flex-1 px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
+                                className='flex-1 px-4 py-3 bg-primary text-white rounded-lg hover:bg-secondary transition font-medium disabled:opacity-50 flex items-center justify-center gap-2'>
                                 {isSubmitting ? (
                                     <>
                                         <div className='animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full'></div>

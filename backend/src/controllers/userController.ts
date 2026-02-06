@@ -36,7 +36,15 @@ export const getAllUsers = async (request: Request, response: Response) => {
 
     export const getUserById = async (request: Request, response: Response) => {
         try {
-            const id = request.params.id;
+            const { id } = request.params;
+
+            if (!id) {
+                return response.status(400).json({
+                    status: false,
+                    message: 'User ID is required'
+                });
+            }
+
             const userId = Number(id);
 
             const user = await prisma.user.findUnique({
@@ -99,30 +107,22 @@ export const createUser = async (request: Request, response: Response) => {
 
 export const updateUser = async (request: Request, response: Response) => {
     try {
-        /** get id of user's id that sent in parameter of URL */
         const { id } = request.params
-        /** get requested data (data has been sent from request) */
         const { name, email, password, role, phone } = request.body
 
-        /** make sure that data is exists in database */
         const findUser = await prisma.user.findFirst({ where: { id: Number(id) } })
         if (!findUser) return response
-            .status(200)
+            .status(404)
             .json({ status: false, message: `user is not found` })
 
-        /** default value filename of saved data */
         let filename = findUser.profile_picture
         if (request.file) {
-            /** update filename by new uploaded picture */
             filename = request.file.filename
-            /** check the old picture in the folder */
             let path = `${BASE_URL}/../public/profile_picture/${findUser.profile_picture}`
             let exists = fs.existsSync(path)
-            /** delete the old exists picture if reupload new file */
             if (exists && findUser.profile_picture !== ``) fs.unlinkSync(path)
         }
 
-        /** process to update user's data */
         const updatedUser = await prisma.user.update({
             data: {
                 name: name || findUser.name,

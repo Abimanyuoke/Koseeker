@@ -49,6 +49,13 @@ interface Stats {
     pending: number
 }
 
+interface FinancialStats {
+    totalRevenue: number
+    potentialRevenue: number
+    lostRevenue: number
+    averageBookingValue: number
+}
+
 export default function PenyewaPage() {
     const user = getUserData()
 
@@ -56,6 +63,12 @@ export default function PenyewaPage() {
     const [filteredBookings, setFilteredBookings] = useState<Booking[]>([])
     const [monthlyData, setMonthlyData] = useState<MonthlyData[]>([])
     const [stats, setStats] = useState<Stats>({ total: 0, accepted: 0, rejected: 0, pending: 0 })
+    const [financialStats, setFinancialStats] = useState<FinancialStats>({
+        totalRevenue: 0,
+        potentialRevenue: 0,
+        lostRevenue: 0,
+        averageBookingValue: 0
+    })
     const [loading, setLoading] = useState(true)
     const [searchTerm, setSearchTerm] = useState('')
     const [statusFilter, setStatusFilter] = useState<string>('all')
@@ -94,12 +107,12 @@ export default function PenyewaPage() {
             const result = await response.json()
 
             if (result.status) {
-                // Backend mengirim dengan key 'books' bukan 'data'
                 const ownerBookings = (result.books || []).filter((booking: Booking) =>
                     booking.kos && booking.user
                 )
                 setBookings(ownerBookings)
                 calculateStats(ownerBookings)
+                calculateFinancialStats(ownerBookings)
                 generateMonthlyData(ownerBookings)
             } else {
                 toast.error(result.message || 'Gagal memuat data penyewa')
@@ -120,6 +133,31 @@ export default function PenyewaPage() {
             pending: bookingsData.filter(b => b.status === 'pending').length
         }
         setStats(stats)
+    }
+
+    const calculateFinancialStats = (bookingsData: Booking[]) => {
+        const totalRevenue = bookingsData
+            .filter(b => b.status === 'accept')
+            .reduce((sum, b) => sum + (b.kos.pricePerMonth * b.durationMonths), 0)
+
+        const potentialRevenue = bookingsData
+            .filter(b => b.status === 'pending')
+            .reduce((sum, b) => sum + (b.kos.pricePerMonth * b.durationMonths), 0)
+
+        const lostRevenue = bookingsData
+            .filter(b => b.status === 'reject')
+            .reduce((sum, b) => sum + (b.kos.pricePerMonth * b.durationMonths), 0)
+
+        const averageBookingValue = bookingsData.length > 0
+            ? bookingsData.reduce((sum, b) => sum + (b.kos.pricePerMonth * b.durationMonths), 0) / bookingsData.length
+            : 0
+
+        setFinancialStats({
+            totalRevenue,
+            potentialRevenue,
+            lostRevenue,
+            averageBookingValue
+        })
     }
 
     const generateMonthlyData = (bookingsData: Booking[]) => {
@@ -249,77 +287,70 @@ export default function PenyewaPage() {
                     </div>
                 </div>
 
-                {/* Statistics Cards */}
-                <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
-                    {/* Total Penyewa */}
-                    <div className='bg-white rounded-2xl shadow-lg p-6 border-l-4 border-purple-600'>
-                        <div className='flex items-center justify-between'>
-                            <div>
-                                <p className='text-gray-600 text-sm font-medium'>Total Penyewa</p>
-                                <p className='text-3xl font-bold text-gray-900 mt-2'>{stats.total}</p>
-                                <div className={`flex items-center gap-1 mt-2 text-sm font-medium ${trend.isUp ? 'text-green-600' : 'text-red-600'}`}>
-                                    {trend.isUp ? <FaArrowUp /> : <FaArrowDown />}
-                                    <span>{trend.value}% dari bulan lalu</span>
+                    <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8'>
+                        <div className='bg-white rounded-2xl shadow-lg p-6 border-l-4 border-purple-600'>
+                            <div className='flex items-center justify-between'>
+                                <div>
+                                    <p className='text-gray-600 text-sm font-medium'>Total Penyewa</p>
+                                    <p className='text-3xl font-bold text-gray-900 mt-2'>{stats.total}</p>
+                                    <div className={`flex items-center gap-1 mt-2 text-sm font-medium ${trend.isUp ? 'text-green-600' : 'text-red-600'}`}>
+                                        {trend.isUp ? <FaArrowUp /> : <FaArrowDown />}
+                                        <span>{trend.value}% dari bulan lalu</span>
+                                    </div>
+                                </div>
+                                <div className='p-4 bg-purple-100 rounded-full'>
+                                    <FaUsers className='text-3xl text-purple-600' />
                                 </div>
                             </div>
-                            <div className='p-4 bg-purple-100 rounded-full'>
-                                <FaUsers className='text-3xl text-purple-600' />
+                        </div>
+
+                        <div className='bg-white rounded-2xl shadow-lg p-6 border-l-4 border-green-600'>
+                            <div className='flex items-center justify-between'>
+                                <div>
+                                    <p className='text-gray-600 text-sm font-medium'>Diterima</p>
+                                    <p className='text-3xl font-bold text-gray-900 mt-2'>{stats.accepted}</p>
+                                    <p className='text-green-600 text-sm font-medium mt-2'>
+                                        {stats.total > 0 ? Math.round((stats.accepted / stats.total) * 100) : 0}% dari total
+                                    </p>
+                                </div>
+                                <div className='p-4 bg-green-100 rounded-full'>
+                                    <FaCheckCircle className='text-3xl text-green-600' />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='bg-white rounded-2xl shadow-lg p-6 border-l-4 border-yellow-600'>
+                            <div className='flex items-center justify-between'>
+                                <div>
+                                    <p className='text-gray-600 text-sm font-medium'>Menunggu</p>
+                                    <p className='text-3xl font-bold text-gray-900 mt-2'>{stats.pending}</p>
+                                    <p className='text-yellow-600 text-sm font-medium mt-2'>
+                                        {stats.total > 0 ? Math.round((stats.pending / stats.total) * 100) : 0}% dari total
+                                    </p>
+                                </div>
+                                <div className='p-4 bg-yellow-100 rounded-full'>
+                                    <FaClock className='text-3xl text-yellow-600' />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='bg-white rounded-2xl shadow-lg p-6 border-l-4 border-red-600'>
+                            <div className='flex items-center justify-between'>
+                                <div>
+                                    <p className='text-gray-600 text-sm font-medium'>Ditolak</p>
+                                    <p className='text-3xl font-bold text-gray-900 mt-2'>{stats.rejected}</p>
+                                    <p className='text-red-600 text-sm font-medium mt-2'>
+                                        {stats.total > 0 ? Math.round((stats.rejected / stats.total) * 100) : 0}% dari total
+                                    </p>
+                                </div>
+                                <div className='p-4 bg-red-100 rounded-full'>
+                                    <FaTimesCircle className='text-3xl text-red-600' />
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Diterima */}
-                    <div className='bg-white rounded-2xl shadow-lg p-6 border-l-4 border-green-600'>
-                        <div className='flex items-center justify-between'>
-                            <div>
-                                <p className='text-gray-600 text-sm font-medium'>Diterima</p>
-                                <p className='text-3xl font-bold text-gray-900 mt-2'>{stats.accepted}</p>
-                                <p className='text-green-600 text-sm font-medium mt-2'>
-                                    {stats.total > 0 ? Math.round((stats.accepted / stats.total) * 100) : 0}% dari total
-                                </p>
-                            </div>
-                            <div className='p-4 bg-green-100 rounded-full'>
-                                <FaCheckCircle className='text-3xl text-green-600' />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Pending */}
-                    <div className='bg-white rounded-2xl shadow-lg p-6 border-l-4 border-yellow-600'>
-                        <div className='flex items-center justify-between'>
-                            <div>
-                                <p className='text-gray-600 text-sm font-medium'>Menunggu</p>
-                                <p className='text-3xl font-bold text-gray-900 mt-2'>{stats.pending}</p>
-                                <p className='text-yellow-600 text-sm font-medium mt-2'>
-                                    {stats.total > 0 ? Math.round((stats.pending / stats.total) * 100) : 0}% dari total
-                                </p>
-                            </div>
-                            <div className='p-4 bg-yellow-100 rounded-full'>
-                                <FaClock className='text-3xl text-yellow-600' />
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Ditolak */}
-                    <div className='bg-white rounded-2xl shadow-lg p-6 border-l-4 border-red-600'>
-                        <div className='flex items-center justify-between'>
-                            <div>
-                                <p className='text-gray-600 text-sm font-medium'>Ditolak</p>
-                                <p className='text-3xl font-bold text-gray-900 mt-2'>{stats.rejected}</p>
-                                <p className='text-red-600 text-sm font-medium mt-2'>
-                                    {stats.total > 0 ? Math.round((stats.rejected / stats.total) * 100) : 0}% dari total
-                                </p>
-                            </div>
-                            <div className='p-4 bg-red-100 rounded-full'>
-                                <FaTimesCircle className='text-3xl text-red-600' />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Charts Section */}
                 <div className='grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8'>
-                    {/* Line Chart - Trend 6 Bulan */}
                     <div className='lg:col-span-2 bg-white rounded-2xl shadow-lg p-6'>
                         <div className='mb-4'>
                             <h2 className='text-xl font-bold text-gray-900 mb-2'>Trend Penyewa (6 Bulan Terakhir)</h2>
@@ -408,50 +439,122 @@ export default function PenyewaPage() {
                     </ResponsiveContainer>
                 </div>
 
-                {/* Filters */}
-                <div className='bg-white rounded-2xl shadow-lg p-6 mb-6'>
-                    <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
-                        {/* Search */}
-                        <div className='relative'>
-                            <FaSearch className='absolute left-4 top-1/2 -translate-y-1/2 text-gray-400' />
-                            <input
-                                type='text'
-                                placeholder='Cari nama, email, atau kos...'
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                className='w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition'
-                            />
-                        </div>
-
-                        {/* Status Filter */}
-                        <div className='relative'>
-                            <FaFilter className='absolute left-4 top-1/2 -translate-y-1/2 text-gray-400' />
-                            <select
-                                value={statusFilter}
-                                onChange={(e) => setStatusFilter(e.target.value)}
-                                className='w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition appearance-none bg-white'>
-                                <option value='all'>Semua Status</option>
-                                <option value='accept'>Diterima</option>
-                                <option value='pending'>Pending</option>
-                                <option value='reject'>Ditolak</option>
-                            </select>
-                        </div>
-
-                        {/* Month Filter */}
-                        <div className='relative'>
-                            <FaCalendar className='absolute left-4 top-1/2 -translate-y-1/2 text-gray-400' />
-                            <select
-                                value={selectedMonth}
-                                onChange={(e) => setSelectedMonth(e.target.value)}
-                                className='w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition appearance-none bg-white'>
-                                <option value='all'>Semua Bulan</option>
-                                {monthlyData.map(month => (
-                                    <option key={month.month} value={month.month}>{month.month}</option>
-                                ))}
-                            </select>
-                        </div>
+                {/* Financial Table */}
+                <div className='bg-white rounded-2xl shadow-lg overflow-hidden mb-8'>
+                    <div className='p-6 border-b border-gray-200'>
+                        <h2 className='text-xl font-bold text-gray-900'>Data Keuangan</h2>
+                        <p className='text-sm text-gray-600'>Ringkasan penghasilan dan potensi kerugian</p>
+                    </div>
+                    <div className='overflow-x-auto'>
+                        <table className='w-full'>
+                            <thead className='bg-gray-50'>
+                                <tr>
+                                    <th className='px-6 py-4 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider border-b'>Kategori</th>
+                                    <th className='px-6 py-4 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider border-b'>Jumlah</th>
+                                    <th className='px-6 py-4 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider border-b'>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr className='hover:bg-gray-50 transition border-b border-gray-300'>
+                                    <td className='px-6 py-4'>
+                                        <span className='font-medium text-gray-900'>Total Penghasilan</span>
+                                    </td>
+                                    <td className='px-6 py-4 text-right'>
+                                        <span className='font-semibold text-gray-900'>
+                                            Rp {financialStats.totalRevenue.toLocaleString('id-ID')}
+                                        </span>
+                                    </td>
+                                    <td className='px-6 py-4 text-right'>
+                                        <span className='text-sm text-gray-600'>{stats.accepted} booking diterima</span>
+                                    </td>
+                                </tr>
+                                <tr className='hover:bg-gray-50 transition border-b border-gray-300'>
+                                    <td className='px-6 py-4'>
+                                        <span className='font-medium text-gray-900'>Potensi Penghasilan</span>
+                                    </td>
+                                    <td className='px-6 py-4 text-right'>
+                                        <span className='font-semibold text-gray-900'>
+                                            Rp {financialStats.potentialRevenue.toLocaleString('id-ID')}
+                                        </span>
+                                    </td>
+                                    <td className='px-6 py-4 text-right'>
+                                        <span className='text-sm text-gray-600'>{stats.pending} booking pending</span>
+                                    </td>
+                                </tr>
+                                <tr className='hover:bg-gray-50 transition border-b border-gray-300'>
+                                    <td className='px-6 py-4'>
+                                        <span className='font-medium text-gray-900'>Potensi Kerugian</span>
+                                    </td>
+                                    <td className='px-6 py-4 text-right'>
+                                        <span className='font-semibold text-gray-900'>
+                                            Rp {financialStats.lostRevenue.toLocaleString('id-ID')}
+                                        </span>
+                                    </td>
+                                    <td className='px-6 py-4 text-right'>
+                                        <span className='text-sm text-gray-600'>{stats.rejected} booking ditolak</span>
+                                    </td>
+                                </tr>
+                                <tr className='hover:bg-gray-50 transition'>
+                                    <td className='px-6 py-4'>
+                                        <span className='font-medium text-gray-900'>Rata-rata per Booking</span>
+                                    </td>
+                                    <td className='px-6 py-4 text-right '>
+                                        <span className='font-semibold text-gray-900'>
+                                            Rp {Math.round(financialStats.averageBookingValue).toLocaleString('id-ID')}
+                                        </span>
+                                    </td>
+                                    <td className='px-6 py-4 text-right'>
+                                        <span className='text-sm text-gray-600'>Nilai rata-rata transaksi</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
+
+                    <div className='bg-white rounded-2xl shadow-lg p-6 mb-6'>
+                        <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
+                            {/* Search */}
+                            <div className='relative'>
+                                <FaSearch className='absolute left-4 top-1/2 -translate-y-1/2 text-gray-400' />
+                                <input
+                                    type='text'
+                                    placeholder='Cari nama, email, atau kos...'
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                    className='w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition'
+                                />
+                            </div>
+
+                            {/* Status Filter */}
+                            <div className='relative'>
+                                <FaFilter className='absolute left-4 top-1/2 -translate-y-1/2 text-gray-400' />
+                                <select
+                                    value={statusFilter}
+                                    onChange={(e) => setStatusFilter(e.target.value)}
+                                    className='w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition appearance-none bg-white'>
+                                    <option value='all'>Semua Status</option>
+                                    <option value='accept'>Diterima</option>
+                                    <option value='pending'>Pending</option>
+                                    <option value='reject'>Ditolak</option>
+                                </select>
+                            </div>
+
+                            {/* Month Filter */}
+                            <div className='relative'>
+                                <FaCalendar className='absolute left-4 top-1/2 -translate-y-1/2 text-gray-400' />
+                                <select
+                                    value={selectedMonth}
+                                    onChange={(e) => setSelectedMonth(e.target.value)}
+                                    className='w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition appearance-none bg-white'>
+                                    <option value='all'>Semua Bulan</option>
+                                    {monthlyData.map(month => (
+                                        <option key={month.month} value={month.month}>{month.month}</option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                 {/* Data Table */}
                 <div className='bg-white rounded-2xl shadow-lg overflow-hidden'>
@@ -493,7 +596,7 @@ export default function PenyewaPage() {
                                                             <img
                                                                 src={`${BASE_IMAGE_PROFILE}/${booking.user.profile_picture}`}
                                                                 alt={booking.user.name}
-                                                                className='w-full h-full object-cover'/>
+                                                                className='w-full h-full object-cover' />
                                                         ) : (
                                                             <FaUsers className='text-white text-lg' />
                                                         )}
