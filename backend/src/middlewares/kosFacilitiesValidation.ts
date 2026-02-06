@@ -46,7 +46,6 @@ const addMultipleFacilitiesSchema = Joi.object({
 //         })
 // });
 
-// Schema for updating a facility
 const updateFacilitySchema = Joi.object({
     facility: Joi.string().min(2).max(100).required().messages({
         'string.empty': 'Facility name is required',
@@ -55,7 +54,6 @@ const updateFacilitySchema = Joi.object({
     })
 });
 
-// Schema for deleting multiple facilities
 const deleteMultipleFacilitiesSchema = Joi.object({
     facilityIds: Joi.array()
         .items(Joi.number().integer().positive())
@@ -67,7 +65,6 @@ const deleteMultipleFacilitiesSchema = Joi.object({
         })
 });
 
-// Middleware for validating single facility addition
 export const verifyAddFacility = (req: Request, res: Response, next: NextFunction) => {
     const { error } = addFacilitySchema.validate(req.body, { abortEarly: false, allowUnknown: true });
 
@@ -78,12 +75,10 @@ export const verifyAddFacility = (req: Request, res: Response, next: NextFunctio
         });
     }
 
-    // Trim facility name
     req.body.facility = req.body.facility.trim();
     next();
 };
 
-// Middleware for validating multiple facilities addition
 
 export const verifyAddMultipleFacilities = (req: Request, res: Response, next: NextFunction) => {
     const { error } = addMultipleFacilitiesSchema.validate(req.body, { abortEarly: false, allowUnknown: true });

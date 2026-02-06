@@ -10,7 +10,6 @@ export const getPromoKos = async (request: Request, response: Response) => {
     try {
         const { kota } = request.query
 
-        /** build where condition for promo kos */
         let whereCondition: any = {
             AND: [
                 { discountPercent: { not: null } },
@@ -18,12 +17,10 @@ export const getPromoKos = async (request: Request, response: Response) => {
             ]
         }
 
-        // Add city filter if provided
         if (kota && kota !== 'all') {
             whereCondition.kota = kota.toString()
         }
 
-        /** process to get promo kos with images and facilities */
         const promoKos = await prisma.kos.findMany({
             where: whereCondition,
             include: {
@@ -48,7 +45,7 @@ export const getPromoKos = async (request: Request, response: Response) => {
                 }
             },
             orderBy: {
-                discountPercent: 'desc' // Sort by highest discount first
+                discountPercent: 'desc'
             }
         })
 
@@ -69,38 +66,30 @@ export const getPromoKos = async (request: Request, response: Response) => {
 
 export const getAllKos = async (request: Request, response: Response) => {
     try {
-        /** get requested data (data has been sent from request) */
         const { search, kota, kalender, gender, kampus, minPrice, maxPrice, hasDiscount } = request.query
 
-        /** build where condition */
         let whereCondition: any = {}
 
-        // Add search filter for name if provided
         if (search) {
             whereCondition.name = { contains: search.toString() }
         }
 
-        // Add city filter if provided
         if (kota && kota !== 'all') {
             whereCondition.kota = kota.toString()
         }
 
-        // Add kalender filter if provided
         if (kalender && kalender !== 'all') {
             whereCondition.kalender = kalender.toString()
         }
 
-        // Add gender filter if provided
         if (gender && gender !== 'all') {
             whereCondition.gender = gender.toString()
         }
 
-        // Add kampus filter if provided
         if (kampus && kampus !== 'all') {
             whereCondition.kampus = kampus.toString()
         }
 
-        // Add price range filter if provided
         if (minPrice || maxPrice) {
             whereCondition.pricePerMonth = {}
             if (minPrice) {
@@ -249,17 +238,13 @@ export const createKos = async (req: Request, res: Response) => {
     try {
         const { userId, name, address, pricePerMonth, discountPercent, gender, kampus, kota, kalender, facilities, totalRooms, availableRooms } = req.body;
 
-        // Debug log
-        console.log('========== CREATE KOS DEBUG ==========');
         console.log('totalRooms:', totalRooms, 'Type:', typeof totalRooms);
         console.log('availableRooms:', availableRooms, 'Type:', typeof availableRooms);
         console.log('Number(totalRooms):', Number(totalRooms));
         console.log('kampus:', kampus);
         console.log('kota:', kota);
         console.log('Full Body:', req.body);
-        console.log('======================================');
 
-        // Robust validation for discountPercent
         let validDiscountPercent = null;
         if (discountPercent !== undefined && discountPercent !== null && discountPercent !== '') {
             const numDiscount = Number(discountPercent);
@@ -268,15 +253,12 @@ export const createKos = async (req: Request, res: Response) => {
             }
         }
 
-        // Parse facilities - it should already be parsed by parseFacilities middleware
         let facilitiesData: Array<{ facility: string }> = [];
 
         if (facilities) {
-            // If it's already an array (parsed by middleware)
             if (Array.isArray(facilities)) {
                 facilitiesData = facilities;
             }
-            // If it's still a string (middleware didn't run or failed)
             else if (typeof facilities === 'string') {
                 try {
                     facilitiesData = JSON.parse(facilities);
@@ -287,11 +269,9 @@ export const createKos = async (req: Request, res: Response) => {
             }
         }
 
-        // Get uploaded images from multer
         const uploadedFiles = req.files as Express.Multer.File[];
         const imagesData = uploadedFiles?.map(file => ({ file: file.filename })) || [];
 
-        // Prepare facilities for Prisma create
         const facilitiesForCreate = facilitiesData.map(fac => ({
             facility: fac.facility
         }));
@@ -313,7 +293,7 @@ export const createKos = async (req: Request, res: Response) => {
                     create: imagesData
                 },
                 facilities: {
-                    create: facilitiesForCreate
+                    create: facilitiesForCreate,
                 }
             },
             include: {
@@ -335,6 +315,7 @@ export const createKos = async (req: Request, res: Response) => {
         });
     }
 };
+
 export const updateKos = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;

@@ -46,7 +46,6 @@ export const getKosFacilities = async (request: Request, response: Response) => 
     }
 };
 
-// Get specific facility by ID
 export const getFacilityById = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
@@ -85,12 +84,10 @@ export const getFacilityById = async (request: Request, response: Response) => {
     }
 };
 
-// Add a new facility to a kos
 export const addKosFacility = async (request: Request, response: Response) => {
     try {
         const { kosId, facility } = request.body;
 
-        // Check if kos exists
         const kos = await prisma.kos.findUnique({
             where: { id: Number(kosId) }
         });
@@ -102,7 +99,6 @@ export const addKosFacility = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if facility already exists for this kos
         const existingFacility = await prisma.kosFacility.findFirst({
             where: {
                 kosId: Number(kosId),
@@ -147,7 +143,6 @@ export const addKosFacility = async (request: Request, response: Response) => {
     }
 };
 
-// Add multiple facilities to a kos
 export const addMultipleFacilities = async (req: Request, res: Response) => {
     try {
         const { kosId, facilities } = req.body;
@@ -163,7 +158,6 @@ export const addMultipleFacilities = async (req: Request, res: Response) => {
             });
         }
 
-        // mapping facilities ke prisma
         const facilitiesData = facilities.map((fac: { facility: string }) => ({
             kosId: Number(kosId),
             facility: fac.facility.trim()

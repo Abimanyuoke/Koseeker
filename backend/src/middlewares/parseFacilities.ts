@@ -11,5 +11,29 @@ export const parseFacilities = (request: Request, response: Response, next: Next
             });
         }
     }
+    else {
+        const facilitiesArray: Array<{ facility: string }> = [];
+        const keys = Object.keys(request.body);
+
+        keys.forEach(key => {
+            const match = key.match(/^facilities\[(\d+)\]\.facility$/);
+            if (match) {
+                const index = parseInt(match[1]);
+                facilitiesArray[index] = { facility: request.body[key] };
+                delete request.body[key];
+            }
+        });
+
+        if (facilitiesArray.length > 0) {
+            request.body.facilities = facilitiesArray.filter(Boolean);
+        }
+    }
+
+    if (request.files && Array.isArray(request.files)) {
+        request.body.images = request.files.map((file: Express.Multer.File) => ({
+            file: file.filename
+        }));
+    }
+
     next();
 };

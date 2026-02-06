@@ -23,7 +23,7 @@ const addKosSchema = Joi.object({
     kampus: Joi.string().valid(
         "UGM", "UNDIP", "UNPAD", "STAN", "UNAIR", "UB", "UI", "ITS", "ITB",
         "UNS", "TELKOM", "UNESA", "BINUS", "UMM"
-    ).optional(), // Changed from required to optional
+    ).optional(),
     kota: Joi.string().valid(
         "Jakarta", "Bandung", "Surabaya", "Medan", "Semarang", "Makassar",
         "Palembang", "Batam", "Malang", "Bogor", "Depok", "Tangerang",
@@ -33,25 +33,25 @@ const addKosSchema = Joi.object({
     totalRooms: Joi.alternatives().try(
         Joi.number().integer().min(1),
         Joi.string().pattern(/^\d+$/)
-    ).optional(), // Add totalRooms validation
+    ).optional(),
     availableRooms: Joi.alternatives().try(
         Joi.number().integer().min(0),
         Joi.string().pattern(/^\d+$/)
-    ).optional(), // Add availableRooms validation
+    ).optional(),
     images: Joi.array().items(
         Joi.object({
             file: Joi.string().required()
         })
     ).optional(),
     facilities: Joi.alternatives().try(
-        Joi.string(), // Allow JSON string
+        Joi.string(),
         Joi.array().items(
             Joi.object({
                 facility: Joi.string().required()
             })
         )
     ).optional()
-});
+}).unknown(true);
 
 
 const editKosSchema = Joi.object({
@@ -78,11 +78,11 @@ const editKosSchema = Joi.object({
     totalRooms: Joi.alternatives().try(
         Joi.number().integer().min(1),
         Joi.string().pattern(/^\d+$/)
-    ).optional(), // Add totalRooms validation
+    ).optional(),
     availableRooms: Joi.alternatives().try(
         Joi.number().integer().min(0),
         Joi.string().pattern(/^\d+$/)
-    ).optional(), // Add availableRooms validation
+    ).optional(),
     images: Joi.object({
         create: Joi.array().items(kosImageSchema).min(1).max(10)
     }).optional(),
@@ -93,11 +93,6 @@ const editKosSchema = Joi.object({
 })
 
 export const verifyAddKos = (req: Request, res: Response, next: NextFunction) => {
-    // Ambil file dari multer
-    if (req.files && Array.isArray(req.files)) {
-        req.body.images = req.files.map(file => ({ file: file.filename }));
-    }
-
     const { error } = addKosSchema.validate(req.body, { abortEarly: false, allowUnknown: true });
 
     if (error) {
