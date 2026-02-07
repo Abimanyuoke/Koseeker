@@ -28,7 +28,6 @@ const RootLayout = ({ children }: PropsLayout) => {
         <div className="">
             <Toaster position="top-right" richColors />
             <Navbar />
-            {/* <NavbarMain/> */}
             {children}
             <Footer />
         </div>

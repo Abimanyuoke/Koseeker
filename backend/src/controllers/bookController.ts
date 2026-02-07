@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import { createBookingCalendarEntries } from "./bookingCalendarController";
+import { v4 as uuidv4 } from 'uuid';
 
 const prisma = new PrismaClient({ errorFormat: "pretty" })
 
@@ -190,37 +191,6 @@ export const createBook = async (request: Request, response: Response) => {
             });
         }
 
-        // Buat book baru
-        // const newBook = await prisma.book.create({
-        //     data: {
-        //         uuid: uuidv4(),
-        //         kosId: Number(kosId),
-        //         userId: Number(userId),
-        //         payment,
-        //         status: status || "pending",
-        //         startDate: new Date(startDate),
-        //         endDate: new Date(endDate),
-        //         durationMonths: durationMonths || 1,
-        //     },
-        //     include: {
-        //         kos: {
-        //             select: {
-        //                 id: true,
-        //                 name: true,
-        //                 address: true,
-        //                 pricePerMonth: true
-        //             }
-        //         },
-        //         user: {
-        //             select: {
-        //                 id: true,
-        //                 name: true,
-        //                 email: true
-        //             }
-        //         }
-        //     }
-        // });
-
         const newBook = await prisma.book.create({
             data: {
                 uuid: uuidv4(),
@@ -295,10 +265,68 @@ export const createBook = async (request: Request, response: Response) => {
 };
 
 
+export const updateBook = async (request: Request, response: Response) => {
+    try {
+        const { id } = request.params;
+        const { payment, startDate, endDate, durationMonths, status } = request.body;
+
+        const findBook = await prisma.book.findFirst({
+            where: { id: Number(id) }
+        });
+
+        if (!findBook) {
+            return response.status(404).json({
+                status: false,
+                message: 'Booking tidak ditemukan'
+            });
+        }
+
+        const updateData: any = {};
+        if (payment) updateData.payment = payment;
+        if (startDate) updateData.startDate = new Date(startDate);
+        if (endDate) updateData.endDate = new Date(endDate);
+        if (durationMonths) updateData.durationMonths = durationMonths;
+        if (status) updateData.status = status;
+
+        const updatedBook = await prisma.book.update({
+            where: { id: Number(id) },
+            data: updateData,
+            include: {
+                kos: {
+                    select: {
+                        id: true,
+                        name: true,
+                        address: true,
+                        pricePerMonth: true
+                    }
+                },
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true
+                    }
+                }
+            }
+        });
+
+        return response.status(200).json({
+            status: true,
+            data: updatedBook,
+            message: 'Book has been updated'
+        });
+    } catch (error) {
+        return response.status(400).json({
+            status: false,
+            message: `There is an error. ${error}`
+        });
+    }
+};
+
 export const updateBookingStatus = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
-        const { status } = request.body; // 'accept', 'reject', 'pending'
+        const { status } = request.body;
 
         if (!['accept', 'reject', 'pending'].includes(status)) {
             return response.status(400).json({
@@ -515,8 +543,5 @@ export const deleteBook = async (request: Request, response: Response) => {
             })
             .status(400)
     }
-}
-function uuidv4(): any {
-    throw new Error("Function not implemented.");
 }
 

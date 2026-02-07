@@ -3,6 +3,7 @@ import {
     getAllBooks,
     getBookByUUID,
     createBook,
+    updateBook,
     updateBookingStatus,
     deleteBook,
     getOwnerBookings
@@ -21,7 +22,7 @@ router.get("/owner", verifyToken, getOwnerBookings);
 router.get("/:uuid", getBookByUUID);
 router.post("/", verifyToken, verifyAddBook, createBook);
 router.put("/status/:id", verifyUpdateBookStatus, updateBookingStatus);
-router.put("/:id", verifyEditBook, updateBookingStatus);
+router.put("/:id", verifyEditBook, updateBook);
 router.delete("/:id", deleteBook);
 
 export default router;
