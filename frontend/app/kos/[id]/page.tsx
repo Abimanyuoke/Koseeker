@@ -942,63 +942,6 @@ const KosDetailPage = () => {
                                                 </span>
                                             </div>
                                         </div>
-
-                                        {/* Stats */}
-                                        {/* <div className="grid grid-cols-2 gap-3 mb-4"> */}
-                                        {/* <div className="bg-blue-50 rounded-lg p-3">
-                                                <div className="flex items-center gap-2">
-                                                    <IoHome className="text-blue-600 text-xl" />
-                                                    <div>
-                                                        <p className="text-xs text-gray-600">Total Kos</p>
-                                                        <p className="text-lg font-bold text-gray-900">
-                                                            {kosDetail.owner.kos?.length || 0}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            </div> */}
-                                        {/* <div className="bg-green-50 rounded-lg p-3">
-                                                <div className="flex items-center gap-2">
-                                                    <FiCheckCircle className="text-green-600 text-xl" />
-                                                    <div>
-                                                        <p className="text-xs text-gray-600">Pemilik Terverifikasi</p>
-                                                        <p className="text-sm font-semibold text-green-700">Aktif</p>
-                                                    </div>
-                                                </div>
-                                            </div> */}
-                                        {/* </div> */}
-
-                                        {/* Contact Info */}
-                                        {/* <div className="space-y-2">
-                                            {kosDetail.owner.phone && kosDetail.owner.phone !== '' && kosDetail.owner.phone !== 'Tidak tersedia' && (
-                                                <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg group hover:bg-green-50 transition-colors">
-                                                    <div className="p-2 bg-white rounded-lg shadow-sm group-hover:shadow-md transition-shadow">
-                                                        <FaPhone className="text-green-600 text-sm" />
-                                                    </div>
-                                                    <div className="flex-1">
-                                                        <p className="text-xs text-gray-500">Nomor Telepon</p>
-                                                        <p className="text-sm font-semibold text-gray-900">{kosDetail.owner.phone}</p>
-                                                    </div>
-                                                </div>
-                                            )}
-
-                                            <div className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg group hover:bg-blue-50 transition-colors">
-                                                <div className="p-2 bg-white rounded-lg shadow-sm group-hover:shadow-md transition-shadow">
-                                                    <FaEnvelope className="text-blue-600 text-sm" />
-                                                </div>
-                                                <div className="flex-1 min-w-0">
-                                                    <p className="text-xs text-gray-500">Email</p>
-                                                    <p className="text-sm font-semibold text-gray-900 truncate">{kosDetail.owner.email}</p>
-                                                </div>
-                                            </div>
-                                        </div> */}
-
-                                        {/* Quick Contact Button */}
-                                        {/* <button
-                                            onClick={handleWhatsAppChat}
-                                            className="w-full mt-4 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-lg transition-all font-semibold shadow-md hover:shadow-lg">
-                                            <FaWhatsapp className="text-xl" />
-                                            <span>Hubungi Pemilik via WhatsApp</span>
-                                        </button> */}
                                     </div>
                                 </div>
 

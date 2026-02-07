@@ -17,7 +17,6 @@ const editBookSchema = Joi.object({
     durationMonths: Joi.number().integer().min(1).max(12).optional(),
     status: Joi.string().valid("pending", "accept", "reject").optional()
 }).custom((value, helpers) => {
-    // If both startDate and endDate are provided, validate that endDate is after startDate
     if (value.startDate && value.endDate) {
         if (new Date(value.endDate) <= new Date(value.startDate)) {
             return helpers.error('custom.endDateAfterStartDate');

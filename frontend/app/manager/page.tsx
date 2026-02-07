@@ -55,26 +55,17 @@ export default function ManagerPage() {
     const [filter, setFilter] = useState<'all' | 'pending' | 'accept' | 'reject'>('all')
     const [userData, setUserData] = useState<any>(null)
 
+    const getProfileImageUrl = (profilePicture: string) => {
+        if (!profilePicture) return null;
 
+        // Check if it's a Google profile picture URL or any external URL
+        if (profilePicture.startsWith('https://') || profilePicture.startsWith('http://')) {
+            return profilePicture;
+        }
 
-    // const getProfileImageUrl = (profilePicture: string) => {
-    //     if (!profilePicture) {
-    //         console.log("No profile picture, returning default avatar");
-    //         // Return default avatar if no profile picture
-    //         return "data:image/svg+xml,%3csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3e%3cdefs%3e%3clinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3e%3cstop offset='0%25' style='stop-color:%23667eea;stop-opacity:1' /%3e%3cstop offset='100%25' style='stop-color:%23764ba2;stop-opacity:1' /%3e%3c/linearGradient%3e%3c/defs%3e%3crect width='100' height='100' fill='url(%23grad)' /%3e%3ctext x='50' y='50' font-family='Arial, sans-serif' font-size='36' fill='white' text-anchor='middle' dominant-baseline='middle'%3e👤%3c/text%3e%3c/svg%3e";
-    //     }
-
-    //     // Check if it's a Google profile picture URL (starts with https://)
-    //     if (profilePicture.startsWith('https://')) {
-    //         console.log("Google profile picture detected, returning:", profilePicture);
-    //         return profilePicture;
-    //     }
-
-    //     // If it's a local file, use the BASE_IMAGE_PROFILE path
-    //     const localPath = `${BASE_IMAGE_PROFILE}/${profilePicture}`;
-    //     console.log("Local file detected, returning:", localPath);
-    //     return localPath;
-    // };
+        // If it's a local file, use the BASE_IMAGE_PROFILE path
+        return `${BASE_IMAGE_PROFILE}/${profilePicture}`;
+    };
 
     useEffect(() => {
         const profilePicture = getCookies("profile_picture") || "";
@@ -280,7 +271,7 @@ export default function ManagerPage() {
                                 <div className="w-8 h-8 bg-gray-300 rounded-full overflow-hidden">
                                     {userData?.profile_picture ? (
                                         <img
-                                            src={`http://localhost:5000/profile_picture/${userData.profile_picture}`}
+                                            src={getProfileImageUrl(userData.profile_picture) || ''}
                                             alt="Profile"
                                             className="w-full h-full object-cover" />
                                     ) : (
@@ -427,7 +418,7 @@ export default function ManagerPage() {
                                                         <div className="w-10 h-10 bg-gray-300 rounded-full overflow-hidden">
                                                             {booking.user.profile_picture ? (
                                                                 <img
-                                                                    src={`http://localhost:5000/profile_picture/${booking.user.profile_picture}`}
+                                                                    src={getProfileImageUrl(booking.user.profile_picture) || ''}
                                                                     alt={booking.user.name}
                                                                     className="w-full h-full object-cover"
                                                                 />
@@ -535,7 +526,6 @@ export default function ManagerPage() {
                                     </div>
 
                                     <div className="space-y-6">
-                                        {/* Kos Info */}
                                         <div className="flex gap-4">
                                             {selectedBooking.kos.images.length > 0 && (
                                                 <div className="w-24 h-24 bg-gray-300 rounded-lg overflow-hidden flex-shrink-0">
@@ -562,7 +552,7 @@ export default function ManagerPage() {
                                                 <div className="w-12 h-12 bg-gray-300 rounded-full overflow-hidden">
                                                     {selectedBooking.user.profile_picture ? (
                                                         <img
-                                                            src={`http://localhost:5000/profile_picture/${selectedBooking.user.profile_picture}`}
+                                                            src={getProfileImageUrl(selectedBooking.user.profile_picture) || ''}
                                                             alt={selectedBooking.user.name}
                                                             className="w-full h-full object-cover"
                                                         />
@@ -582,7 +572,6 @@ export default function ManagerPage() {
                                             </div>
                                         </div>
 
-                                        {/* Booking Details */}
                                         <div className="border-t pt-4">
                                             <h5 className="font-medium text-gray-900 mb-3">Detail Booking</h5>
                                             <div className="grid grid-cols-2 gap-4">
@@ -617,7 +606,6 @@ export default function ManagerPage() {
                                             </div>
                                         </div>
 
-                                        {/* Actions */}
                                         {selectedBooking.status === 'pending' && (
                                             <div className="border-t pt-4">
                                                 <div className="flex gap-3">

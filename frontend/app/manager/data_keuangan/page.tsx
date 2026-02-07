@@ -56,7 +56,7 @@ interface FinancialStats {
     averageBookingValue: number
 }
 
-export default function PenyewaPage() {
+export default function KeuanaganPage() {
     const user = getUserData()
 
     const [bookings, setBookings] = useState<Booking[]>([])

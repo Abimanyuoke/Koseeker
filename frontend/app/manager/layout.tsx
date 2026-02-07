@@ -80,7 +80,7 @@ const RootLayout = ({ children }: PropsLayout) => {
                         <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 w-full cursor-pointer" onClick={() => router.replace('/manager')}><FiHome className="w-5 h-5 text-gray-600" /><span className="text-sm">Dashboard</span></button>
                         <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 w-full cursor-pointer" onClick={() => router.replace('/manager/kos')}><FiLayers className="w-5 h-5 text-gray-600" /><span className="text-sm">Kelola Kos</span></button>
                         <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 w-full cursor-pointer" onClick={() => router.replace('/manager/facilities')}><FiCalendar className="w-5 h-5 text-gray-600" /><span className="text-sm">Fasilitas</span></button>
-                        <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 w-full cursor-pointer" onClick={() => router.replace('/manager/penyewa')}><FiUsers className="w-5 h-5 text-gray-600" /><span className="text-sm">Penyewa</span></button>
+                        <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 w-full cursor-pointer" onClick={() => router.replace('/manager/data_keuangan')}><FiUsers className="w-5 h-5 text-gray-600" /><span className="text-sm">Data Penghasilan</span></button>
                         <button className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 w-full cursor-pointer" onClick={() => router.replace('/manager/pengaturan')}><FiSettings className="w-5 h-5 text-gray-600" /><span className="text-sm">Pengaturan</span></button>
                     </div>
                 </nav>

@@ -20,12 +20,12 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
-            <body className={`${lato.variable}`}>
+        <section>
+            <div className={`${lato.variable}`}>
                 <Navbar />
                 {children}
                 <Footer />
-            </body>
-        </html>
+            </div>
+        </section>
     );
 }

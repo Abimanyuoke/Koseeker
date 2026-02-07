@@ -3,7 +3,7 @@ import {
     getAllBooks,
     getBookByUUID,
     createBook,
-    updateStatusBook,
+    updateBookingStatus,
     deleteBook,
     getOwnerBookings
 } from "../controllers/bookController";
@@ -16,19 +16,12 @@ import { verifyToken } from "../middlewares/authorization";
 
 const router = Router();
 
-// GET Routes
 router.get("/", verifyToken, getAllBooks);
 router.get("/owner", verifyToken, getOwnerBookings);
 router.get("/:uuid", getBookByUUID);
-
-// POST Routes
 router.post("/", verifyToken, verifyAddBook, createBook);
-
-// PUT Routes
-router.put("/status/:id", verifyUpdateBookStatus, updateStatusBook);
-router.put("/:id", verifyEditBook, updateStatusBook);
-
-// DELETE Routes
+router.put("/status/:id", verifyUpdateBookStatus, updateBookingStatus);
+router.put("/:id", verifyEditBook, updateBookingStatus);
 router.delete("/:id", deleteBook);
 
 export default router;
