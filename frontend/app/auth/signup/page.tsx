@@ -60,7 +60,7 @@ export default function SignUp() {
                     router.replace(`/auth/login`)
                 }, 2000)
             } else {
-                toast.warning("Your password or email is wrong", { duration: 2000 })
+                toast.warning("Has been failed", { duration: 2000 })
             }
         } catch (error) {
             console.error(error)

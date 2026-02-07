@@ -14,8 +14,8 @@ export default function NotificationBell({ className = '' }: NotificationBellPro
     useEffect(() => {
         fetchUnreadCount()
 
-        // Poll for new notifications every 30 seconds
-        const interval = setInterval(fetchUnreadCount, 30000)
+        // Poll for new notifications every 5 seconds
+        const interval = setInterval(fetchUnreadCount, 5000)
 
         return () => clearInterval(interval)
     }, [])

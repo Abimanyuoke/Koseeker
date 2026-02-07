@@ -381,6 +381,22 @@ export const updateBookingStatus = async (request: Request, response: Response) 
                 })
             ]);
 
+            // Create notification for user
+            try {
+                await prisma.notification.create({
+                    data: {
+                        uuid: uuidv4(),
+                        userId: booking.userId,
+                        title: 'Booking Disetujui',
+                        message: `Booking Anda untuk ${booking.kos.name} telah disetujui oleh pemilik kos. Silakan lakukan pembayaran.`,
+                        type: 'BOOKING_ACCEPTED',
+                        relatedId: booking.id
+                    }
+                });
+            } catch (notifError) {
+                console.error('Failed to create notification:', notifError);
+            }
+
             return response.status(200).json({
                 status: true,
                 message: `Booking diterima. Sisa kamar: ${booking.kos.availableRooms - 1}`,
@@ -408,6 +424,24 @@ export const updateBookingStatus = async (request: Request, response: Response) 
                 })
             ]);
 
+            // Create notification for user if rejected
+            if (status === 'reject') {
+                try {
+                    await prisma.notification.create({
+                        data: {
+                            uuid: uuidv4(),
+                            userId: booking.userId,
+                            title: 'Booking Ditolak',
+                            message: `Booking Anda untuk ${booking.kos.name} telah ditolak oleh pemilik kos.`,
+                            type: 'BOOKING_REJECTED',
+                            relatedId: booking.id
+                        }
+                    });
+                } catch (notifError) {
+                    console.error('Failed to create notification:', notifError);
+                }
+            }
+
             return response.status(200).json({
                 status: true,
                 message: `Booking ${status === 'reject' ? 'ditolak' : 'dikembalikan ke pending'}. Kamar dikembalikan ke pool.`,
@@ -423,6 +457,24 @@ export const updateBookingStatus = async (request: Request, response: Response) 
             where: { id: Number(id) },
             data: { status }
         });
+
+        // Create notification for reject from pending
+        if (status === 'reject' && previousStatus === 'pending') {
+            try {
+                await prisma.notification.create({
+                    data: {
+                        uuid: uuidv4(),
+                        userId: booking.userId,
+                        title: 'Booking Ditolak',
+                        message: `Booking Anda untuk ${booking.kos.name} telah ditolak oleh pemilik kos.`,
+                        type: 'BOOKING_REJECTED',
+                        relatedId: booking.id
+                    }
+                });
+            } catch (notifError) {
+                console.error('Failed to create notification:', notifError);
+            }
+        }
 
         return response.status(200).json({
             status: true,
