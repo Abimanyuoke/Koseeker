@@ -84,7 +84,6 @@ const Kos = () => {
             if ((data as { status: boolean; data: IKos[] }).status) {
                 let allKos = (data as { status: boolean; data: IKos[] }).data;
 
-                // Filter kota
                 if (kota && kota !== "all") {
                     allKos = allKos.filter(kos => kos.kota.toLowerCase() === kota.toLowerCase());
                 }
@@ -123,22 +122,6 @@ const Kos = () => {
             default: return 'bg-gray-100 text-gray-800';
         }
     };
-
-    // const handlePrevImage = (e: React.MouseEvent, kosId: number, totalImages: number) => {
-    //     e.stopPropagation();
-    //     setImageIndexes(prev => ({
-    //         ...prev,
-    //         [kosId]: prev[kosId] > 0 ? prev[kosId] - 1 : totalImages - 1
-    //     }));
-    // };
-
-    // const handleNextImage = (e: React.MouseEvent, kosId: number, totalImages: number) => {
-    //     e.stopPropagation();
-    //     setImageIndexes(prev => ({
-    //         ...prev,
-    //         [kosId]: prev[kosId] < totalImages - 1 ? prev[kosId] + 1 : 0
-    //     }));
-    // };
 
     /** ---------- RENDER ---------- */
     return (
@@ -207,7 +190,6 @@ const Kos = () => {
                         <Slider ref={sliderRef} {...settings} >
                             {kosData.map((kos) => {
                                 const currentImageIndex = imageIndexes[kos.id] || 0;
-                                // const hasMultipleImages = kos.images && kos.images.length > 1;
 
                                 return (
                                     <div key={kos.id} className="px-3">

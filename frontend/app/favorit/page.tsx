@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -40,7 +41,6 @@ export default function FavoritPage() {
 
     useEffect(() => {
         fetchFavorites()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const fetchFavorites = async () => {
@@ -74,7 +74,6 @@ export default function FavoritPage() {
                 if (data.status) {
                     setFavorites(data.data)
 
-                    // Debug: Log images for each kos
                     data.data.forEach((fav: FavoriteItem) => {
                         console.log('Kos:', fav.kos.name)
                         console.log('Images:', fav.kos.images)
@@ -207,14 +206,12 @@ export default function FavoritPage() {
                     </div>
                 ) : (
                     <div>
-                        {/* Count Badge */}
                         <div className="mb-6">
                             <span className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-800 rounded-full text-sm font-semibold">
                                 {favorites.length} Kos Favorit
                             </span>
                         </div>
 
-                        {/* Grid Layout */}
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                             {favorites.map((favorite) => {
                                 const kos = favorite.kos
@@ -250,7 +247,6 @@ export default function FavoritPage() {
                                                 </div>
                                             )}
 
-                                            {/* Discount Badge */}
                                             {kos.discountPercent && kos.discountPercent > 0 && (
                                                 <div className="absolute top-3 left-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg">
                                                     {kos.discountPercent}% OFF

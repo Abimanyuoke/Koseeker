@@ -108,7 +108,6 @@ const KosPage = () => {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    // Apply filters whenever filter states change
     useEffect(() => {
         let filtered = [...kosData];
 

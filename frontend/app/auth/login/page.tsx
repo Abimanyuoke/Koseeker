@@ -36,9 +36,7 @@ export default function Login() {
             }>(url, payload, { headers: { "Content-Type": "application/json" } })
             if (data.status == true) {
                 toast.success("Login success", { duration: 2000 })
-                // Simpan di localStorage untuk client-side access
                 localStorage.setItem("token", data.token)
-                // Simpan di cookies untuk server-side middleware
                 storeCookie("token", data.token)
                 if (data.data) {
                     localStorage.setItem("id", data.data.id)
@@ -71,7 +69,6 @@ export default function Login() {
     const handleGoogleSignIn = async () => {
         try {
             setIsLoading(true)
-            // Use callbackUrl to redirect after successful login
             await signIn("google", {
                 callbackUrl: "/auth/callback"
             })

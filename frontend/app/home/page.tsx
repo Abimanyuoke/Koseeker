@@ -78,7 +78,6 @@ export default function Home() {
                             <button className="underline text-start cursor-pointer text-[12px] mt-2 font-bold">Mau coba dong</button>
                         </div>
                         <Image src="/images/landing-owner-entry.webp" alt="Abstract 1" width={200} height={300} className="h-auto object-cover absolute bottom-0 right-0 max-w-full max-h-full z-20" />
-                        {/* <Image src="/images/siluet.svg" alt="Background" width={500} height={300} className="absolute max-w-full right-0 -bottom-20 "/> */}
                     </div>
                     <div className="flex justify-between items-center bg-white shadow-lg rounded-lg p-7 gap-3">
                         <div className="flex flex-col space-y-2">
