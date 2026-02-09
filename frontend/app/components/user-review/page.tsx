@@ -316,22 +316,22 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
         e.preventDefault();
 
         if (!userId) {
-            alert('Silakan login terlebih dahulu untuk memberikan review');
+            toast.warning('Silakan login terlebih dahulu untuk memberikan review');
             return;
         }
 
         if (!canReview) {
-            alert('Anda harus memiliki booking yang diterima untuk memberikan review');
+            toast.warning('Anda harus memiliki booking yang diterima untuk memberikan review');
             return;
         }
 
         if (userHasReviewed) {
-            alert('Anda sudah memberikan review untuk kos ini');
+            toast.warning('Anda sudah memberikan review untuk kos ini');
             return;
         }
 
         if (comment.trim().length < 10) {
-            alert('Komentar minimal 10 karakter');
+            toast.warning('Komentar minimal 10 karakter');
             return;
         }
 
@@ -339,12 +339,12 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
         try {
             await onSubmit(comment.trim());
             setComment('');
-            alert('Review berhasil ditambahkan!');
+            toast.success('Review berhasil ditambahkan!');
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error('Error submitting review:', error);
             const errorMsg = error?.message || 'Gagal menambahkan review. Silakan coba lagi.';
-            alert(errorMsg);
+            toast.error(errorMsg);
         } finally {
             setIsSubmitting(false);
         }

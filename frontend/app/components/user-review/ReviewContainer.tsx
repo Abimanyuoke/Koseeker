@@ -32,7 +32,7 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
 
     const handleSubmitReview = async (reviewData: { comment: string }) => {
         if (!userId) {
-            alert('Anda harus login terlebih dahulu untuk memberikan review');
+            toast.warning('Anda harus login terlebih dahulu untuk memberikan review');
             return;
         }
 
@@ -48,7 +48,6 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error('Error creating review:', error);
-            // Error message already set by useReviews hook
             const errorMsg = error?.message || 'Gagal menambahkan review. Silakan coba lagi.';
             toast.error(errorMsg);
         }
@@ -87,7 +86,6 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
 
     return (
         <div className="w-full">
-            {/* Error Message */}
             {error && (
                 <div className="bg-red-50/20 border border-red-200 rounded-lg p-4 mb-6">
                     <div className="flex items-center">
@@ -113,19 +111,6 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
                 </div>
             )}
 
-            {/* Add Review Button */}
-            {/* {userId && !userHasReviewed && !showReviewForm && (
-                <div className="mb-6">
-                    <ButtonPrimary
-                        type="button"
-                        onClick={() => setShowReviewForm(true)}
-                        className="w-full sm:w-auto">
-                        Tulis Review
-                    </ButtonPrimary>
-                </div>
-            )} */}
-
-            {/* Review Form */}
             {showReviewForm && userId && (
                 <ReviewForm
                     kosId={kosId}
@@ -135,25 +120,6 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
                 />
             )}
 
-            {/* Already Reviewed Notice */}
-            {/* {userId && userHasReviewed && !showReviewForm && (
-                <div className="bg-blue-50/20 border border-blue-200 rounded-lg p-4 mb-6">
-                    <div className="flex items-center">
-                        <div className="flex-shrink-0">
-                            <svg className="h-5 w-5 text-blue-400" viewBox="0 0 20 20" fill="currentColor">
-                                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                            </svg>
-                        </div>
-                        <div className="ml-3">
-                            <p className="text-sm text-blue-700">
-                                Anda sudah memberikan review untuk kos ini.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            )} */}
-
-            {/* Login Notice */}
             {!userId && (
                 <div className="bg-yellow-50/20 border border-yellow-200 rounded-lg p-4 mb-6">
                     <div className="flex items-center">
@@ -171,7 +137,6 @@ const ReviewContainer: React.FC<ReviewContainerProps> = ({
                 </div>
             )}
 
-            {/* Reviews Display */}
             <ReviewComponent
                 kosId={kosId}
                 userId={userId}

@@ -33,7 +33,6 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
         setIsSubmitting(true);
         try {
             await onSubmit({ comment: comment.trim() });
-            // Reset form after successful submission
             setComment('');
         } catch (error) {
             console.error('Error submitting review:', error);
@@ -47,7 +46,6 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
             <h3 className="text-lg font-bold mb-4 text-gray-900">Tulis Review</h3>
 
             <form onSubmit={handleSubmit}>
-                {/* Comment Section */}
                 <div className="mb-6">
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                         Tulis Komentar *
@@ -65,7 +63,6 @@ const ReviewForm: React.FC<ReviewFormProps> = ({
                     </p>
                 </div>
 
-                {/* Action Buttons */}
                 <div className="flex gap-3">
                     <ButtonSuccess
                         type="submit"

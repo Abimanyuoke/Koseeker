@@ -39,7 +39,6 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
         }
     };
 
-    // Check if user has already reviewed a kos
     const checkUserReview = async (kosId: number, userId: number) => {
         try {
             const response = await fetch(`${BASE_API_URL}/review/check/${kosId}/${userId}`);
@@ -55,7 +54,6 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
         return false;
     };
 
-    // Check if user can review (has accepted booking)
     const checkCanReview = async (kosId: number, userId: number) => {
         try {
             const response = await fetch(`${BASE_API_URL}/review/can-review/${kosId}/${userId}`);
@@ -71,7 +69,6 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
         return { canReview: false, reason: 'Network error' };
     };
 
-    // Create a new review
     const createReview = async (reviewData: {
         kosId: number;
         userId: number;
@@ -96,13 +93,11 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
             const data = await response.json();
 
             if (data.status) {
-                // Add the new review to the list
                 setReviews(prev => [data.data, ...prev]);
                 setUserHasReviewed(true);
                 setCanReview(false);
                 return data.data;
             } else {
-                // Handle specific error messages
                 let userFriendlyMessage = data.message || 'Failed to create review';
 
                 if (data.message?.includes('accepted booking')) {
@@ -125,7 +120,6 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
         }
     };
 
-    // Update an existing review
     const updateReview = async (reviewId: number, comment: string) => {
         setLoading(true);
         setError(null);
@@ -142,7 +136,6 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
             const data = await response.json();
 
             if (data.status) {
-                // Update the review in the list
                 setReviews(prev => prev.map(review =>
                     review.id === reviewId ? data.data : review
                 ));
@@ -160,7 +153,6 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
         }
     };
 
-    // Delete a review
     const deleteReview = async (reviewId: number) => {
         setLoading(true);
         setError(null);
@@ -173,7 +165,6 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
             const data = await response.json();
 
             if (data.status) {
-                // Remove the review from the list
                 setReviews(prev => prev.filter(review => review.id !== reviewId));
                 setUserHasReviewed(false);
                 return true;
@@ -190,7 +181,6 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
         }
     };
 
-    // Reply to a review (admin only)
     const replyToReview = async (reviewId: number, replyComment: string, adminId: number) => {
         setLoading(true);
         setError(null);
@@ -210,7 +200,6 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
             const data = await response.json();
 
             if (data.status) {
-                // Update the review in the list
                 setReviews(prev => prev.map(review =>
                     review.id === reviewId ? data.data : review
                 ));
@@ -228,7 +217,6 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
         }
     };
 
-    // Load reviews on component mount if kosId is provided
     useEffect(() => {
         if (kosId) {
             fetchReviewsByKos(kosId);
