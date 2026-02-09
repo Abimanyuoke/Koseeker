@@ -3,7 +3,6 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient();
 
-// Get all notifications for a user
 export const getNotifications = async (req: Request, res: Response) => {
     try {
         const userId = (req as any).body.user?.id;
@@ -38,7 +37,6 @@ export const getNotifications = async (req: Request, res: Response) => {
     }
 };
 
-// Mark notification as read
 export const markAsRead = async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
@@ -75,7 +73,6 @@ export const markAsRead = async (req: Request, res: Response) => {
     }
 };
 
-// Mark all notifications as read
 export const markAllAsRead = async (req: Request, res: Response) => {
     try {
         const userId = (req as any).body.user?.id;
@@ -110,7 +107,6 @@ export const markAllAsRead = async (req: Request, res: Response) => {
     }
 };
 
-// Get unread notification count
 export const getUnreadCount = async (req: Request, res: Response) => {
     try {
         const userId = (req as any).body.user?.id;
@@ -143,7 +139,6 @@ export const getUnreadCount = async (req: Request, res: Response) => {
     }
 };
 
-// Create notification via API
 export const createNotificationAPI = async (req: Request, res: Response) => {
     try {
         const { userId, title, message, type, relatedId } = req.body;
@@ -180,7 +175,6 @@ export const createNotificationAPI = async (req: Request, res: Response) => {
     }
 };
 
-// Create notification (utility function for internal use)
 export const createNotification = async (
     userId: number,
     title: string,

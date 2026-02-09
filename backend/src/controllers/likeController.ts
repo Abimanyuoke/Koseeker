@@ -3,7 +3,6 @@ import { PrismaClient } from "@prisma/client";
 
 const prisma = new PrismaClient({ errorFormat: "pretty" })
 
-// Get all likes for a specific kos
 export const getLikesByKos = async (request: Request, response: Response) => {
     try {
         const { kosId } = request.params;
@@ -45,7 +44,6 @@ export const getLikesByKos = async (request: Request, response: Response) => {
     }
 };
 
-// Get all likes by a specific user
 export const getLikesByUser = async (request: Request, response: Response) => {
     try {
         const { userId } = request.params;
@@ -89,12 +87,10 @@ export const getLikesByUser = async (request: Request, response: Response) => {
     }
 };
 
-// Create a new like (like a kos)
 export const createLike = async (request: Request, response: Response) => {
     try {
         const { kosId, userId } = request.body;
 
-        // Check if user already liked this kos
         const existingLike = await prisma.like.findUnique({
             where: {
                 kosId_userId: {
@@ -111,7 +107,6 @@ export const createLike = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if kos exists
         const kosExists = await prisma.kos.findUnique({
             where: { id: Number(kosId) }
         });
@@ -123,7 +118,6 @@ export const createLike = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if user exists
         const userExists = await prisma.user.findUnique({
             where: { id: Number(userId) }
         });
@@ -171,12 +165,10 @@ export const createLike = async (request: Request, response: Response) => {
     }
 };
 
-// Remove a like (unlike a kos)
 export const deleteLike = async (request: Request, response: Response) => {
     try {
         const { kosId, userId } = request.body;
 
-        // Find the like
         const existingLike = await prisma.like.findUnique({
             where: {
                 kosId_userId: {
@@ -215,12 +207,10 @@ export const deleteLike = async (request: Request, response: Response) => {
     }
 };
 
-// Toggle like (like if not liked, unlike if already liked)
 export const toggleLike = async (request: Request, response: Response) => {
     try {
         const { kosId, userId } = request.body;
 
-        // Check if like exists
         const existingLike = await prisma.like.findUnique({
             where: {
                 kosId_userId: {
@@ -231,7 +221,6 @@ export const toggleLike = async (request: Request, response: Response) => {
         });
 
         if (existingLike) {
-            // Unlike - delete the like
             await prisma.like.delete({
                 where: {
                     kosId_userId: {
@@ -241,7 +230,6 @@ export const toggleLike = async (request: Request, response: Response) => {
                 }
             });
 
-            // Get updated like count
             const likeCount = await prisma.like.count({
                 where: { kosId: Number(kosId) }
             });
@@ -252,8 +240,6 @@ export const toggleLike = async (request: Request, response: Response) => {
                 message: `Kos unliked successfully`
             });
         } else {
-            // Like - create new like
-            // Check if kos and user exist
             const [kosExists, userExists] = await Promise.all([
                 prisma.kos.findUnique({ where: { id: Number(kosId) } }),
                 prisma.user.findUnique({ where: { id: Number(userId) } })
@@ -280,7 +266,6 @@ export const toggleLike = async (request: Request, response: Response) => {
                 }
             });
 
-            // Get updated like count
             const likeCount = await prisma.like.count({
                 where: { kosId: Number(kosId) }
             });
@@ -299,7 +284,6 @@ export const toggleLike = async (request: Request, response: Response) => {
     }
 };
 
-// Check if user has liked a specific kos
 export const checkUserLike = async (request: Request, response: Response) => {
     try {
         const { kosId, userId } = request.params;

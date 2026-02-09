@@ -14,17 +14,11 @@ import {
 } from "../middlewares/likeValidaiton";
 
 const router = Router();
-
-// GET Routes
-router.get("/kos/:kosId", getLikesByKos);           // Get all likes for a specific kos
-router.get("/user/:userId", getLikesByUser);        // Get all likes by a specific user
-router.get("/check/:kosId/:userId", checkUserLike); // Check if user has liked a kos
-
-// POST Routes
-router.post("/", verifyAddLike, createLike);        // Create a new like
-router.post("/toggle", verifyToggleLike, toggleLike); // Toggle like/unlike
-
-// DELETE Routes
-router.delete("/", verifyDeleteLike, deleteLike);   // Remove a like
+router.get("/kos/:kosId", getLikesByKos);           
+router.get("/user/:userId", getLikesByUser);
+router.get("/check/:kosId/:userId", checkUserLike);  
+router.post("/", verifyAddLike, createLike);
+router.post("/toggle", verifyToggleLike, toggleLike); 
+router.delete("/", verifyDeleteLike, deleteLike);
 
 export default router;

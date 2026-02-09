@@ -61,6 +61,7 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
 
             if (data.status) {
                 setCanReview(data.data.canReview);
+                // Uncomment for debugging: console.log('Can review:', data.data.canReview, 'Reason:', data.data.reason);
                 return data.data;
             }
         } catch (err) {
@@ -241,6 +242,6 @@ export const useReviews = ({ kosId, userId }: UseReviewsProps = {}) => {
         updateReview,
         deleteReview,
         replyToReview,
-        setError, 
+        setError,
     };
 };

@@ -6,7 +6,6 @@ import { BASE_URL } from "../global";
 
 const prisma = new PrismaClient({ errorFormat: "pretty" });
 
-// Get all images for a specific kos
 export const getKosImages = async (request: Request, response: Response) => {
     try {
         const { kosId } = request.params;
@@ -41,7 +40,6 @@ export const getKosImages = async (request: Request, response: Response) => {
     }
 };
 
-// Get specific image by ID
 export const getImageById = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
@@ -80,7 +78,6 @@ export const getImageById = async (request: Request, response: Response) => {
     }
 };
 
-// Upload single image to a kos
 export const uploadKosImage = async (request: Request, response: Response) => {
     try {
         const { kosId } = request.body;
@@ -93,13 +90,11 @@ export const uploadKosImage = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if kos exists
         const kos = await prisma.kos.findUnique({
             where: { id: Number(kosId) }
         });
 
         if (!kos) {
-            // Delete uploaded file if kos not found
             const filePath = path.join(BASE_URL, "../public/kos_picture", file.filename);
             if (fs.existsSync(filePath)) {
                 fs.unlinkSync(filePath);
@@ -111,7 +106,6 @@ export const uploadKosImage = async (request: Request, response: Response) => {
             });
         }
 
-        // Save image to database
         const newImage = await prisma.kosImage.create({
             data: {
                 kosId: Number(kosId),
@@ -135,7 +129,6 @@ export const uploadKosImage = async (request: Request, response: Response) => {
         });
 
     } catch (error) {
-        // Clean up uploaded file if error occurs
         if (request.file) {
             const filePath = path.join(BASE_URL, "../public/kos_picture", request.file.filename);
             if (fs.existsSync(filePath)) {
@@ -150,7 +143,6 @@ export const uploadKosImage = async (request: Request, response: Response) => {
     }
 };
 
-// Upload multiple images to a kos
 export const uploadMultipleKosImages = async (request: Request, response: Response) => {
     try {
         const { kosId } = request.body;
@@ -163,13 +155,11 @@ export const uploadMultipleKosImages = async (request: Request, response: Respon
             });
         }
 
-        // Check if kos exists
         const kos = await prisma.kos.findUnique({
             where: { id: Number(kosId) }
         });
 
         if (!kos) {
-            // Delete all uploaded files if kos not found
             files.forEach(file => {
                 const filePath = path.join(BASE_URL, "../public/kos_picture", file.filename);
                 if (fs.existsSync(filePath)) {
@@ -183,7 +173,6 @@ export const uploadMultipleKosImages = async (request: Request, response: Respon
             });
         }
 
-        // Save all images to database
         const imageData = files.map(file => ({
             kosId: Number(kosId),
             file: file.filename
@@ -193,7 +182,6 @@ export const uploadMultipleKosImages = async (request: Request, response: Respon
             data: imageData
         });
 
-        // Get created images with kos info
         const createdImages = await prisma.kosImage.findMany({
             where: {
                 kosId: Number(kosId),
@@ -218,7 +206,6 @@ export const uploadMultipleKosImages = async (request: Request, response: Respon
         });
 
     } catch (error) {
-        // Clean up uploaded files if error occurs
         if (request.files) {
             const files = request.files as Express.Multer.File[];
             files.forEach(file => {
@@ -236,7 +223,6 @@ export const uploadMultipleKosImages = async (request: Request, response: Respon
     }
 };
 
-// Delete a single image
 export const deleteKosImage = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
@@ -252,13 +238,11 @@ export const deleteKosImage = async (request: Request, response: Response) => {
             });
         }
 
-        // Delete file from storage
         const filePath = path.join(BASE_URL, "../public/kos_picture", image.file);
         if (fs.existsSync(filePath)) {
             fs.unlinkSync(filePath);
         }
 
-        // Delete from database
         const deletedImage = await prisma.kosImage.delete({
             where: { id: Number(id) }
         });
@@ -277,7 +261,6 @@ export const deleteKosImage = async (request: Request, response: Response) => {
     }
 };
 
-// Delete multiple images for a kos
 export const deleteMultipleKosImages = async (request: Request, response: Response) => {
     try {
         const { kosId } = request.params;
@@ -290,7 +273,6 @@ export const deleteMultipleKosImages = async (request: Request, response: Respon
             });
         }
 
-        // Check if kos exists
         const kos = await prisma.kos.findUnique({
             where: { id: Number(kosId) }
         });
@@ -302,7 +284,6 @@ export const deleteMultipleKosImages = async (request: Request, response: Respon
             });
         }
 
-        // Verify all images belong to the specified kos
         const images = await prisma.kosImage.findMany({
             where: {
                 id: { in: imageIds.map(id => Number(id)) },
@@ -317,7 +298,6 @@ export const deleteMultipleKosImages = async (request: Request, response: Respon
             });
         }
 
-        // Delete files from storage
         images.forEach(image => {
             const filePath = path.join(BASE_URL, "../public/kos_picture", image.file);
             if (fs.existsSync(filePath)) {
@@ -325,7 +305,6 @@ export const deleteMultipleKosImages = async (request: Request, response: Respon
             }
         });
 
-        // Delete from database
         const deletedImages = await prisma.kosImage.deleteMany({
             where: {
                 id: { in: imageIds.map(id => Number(id)) },

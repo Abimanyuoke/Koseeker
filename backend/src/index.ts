@@ -38,16 +38,16 @@ const swaggerOptions = {
         ],
         components: {
             securitySchemes: {
-                bearerAuth: { // Nama skema keamanan
+                bearerAuth: {
                     type: 'http',
                     scheme: 'bearer',
-                    bearerFormat: 'JWT', // Format token
+                    bearerFormat: 'JWT', 
                 },
             },
         },
         security: [{ bearerAuth: [] }],
     },
-    apis: ['./src/routers/*.ts'], // Path to the API docs
+    apis: ['./src/routers/*.ts'], 
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions)

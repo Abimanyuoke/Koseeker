@@ -326,7 +326,7 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
         }
 
         if (userHasReviewed) {
-            toast.warning('Anda sudah memberikan review untuk kos ini');
+            toast.success('Anda sudah memberikan review untuk kos ini');
             return;
         }
 
@@ -340,7 +340,7 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
             await onSubmit(comment.trim());
             setComment('');
             toast.success('Review berhasil ditambahkan!');
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error('Error submitting review:', error);
             const errorMsg = error?.message || 'Gagal menambahkan review. Silakan coba lagi.';
@@ -369,6 +369,25 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
         );
     }
 
+    if (userHasReviewed) {
+        return (
+            <div className="bg-blue-50  rounded-lg p-4 mb-6">
+                <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                        <svg className="h-5 w-5 text-blue-400 dark:text-blue-300" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                        </svg>
+                    </div>
+                    <div className="ml-3">
+                        <p className="text-sm text-blue-700 dark:text-blue-300">
+                            Anda sudah memberikan review untuk kos ini.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
     if (!canReview) {
         return (
             <div className="bg-orange-50 rounded-lg p-4 mb-6">
@@ -384,25 +403,6 @@ const QuickCommentForm: React.FC<QuickCommentFormProps> = ({
                         </p>
                         <p className="text-xs text-orange-600 mt-1">
                             Silakan booking kos ini terlebih dahulu dan tunggu hingga booking Anda diterima oleh pemilik kos untuk dapat memberikan review.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        );
-    }
-
-    if (userHasReviewed) {
-        return (
-            <div className="bg-blue-50  rounded-lg p-4 mb-6">
-                <div className="flex items-center">
-                    <div className="flex-shrink-0">
-                        <svg className="h-5 w-5 text-blue-400 dark:text-blue-300" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-                        </svg>
-                    </div>
-                    <div className="ml-3">
-                        <p className="text-sm text-blue-700 dark:text-blue-300">
-                            Anda sudah memberikan review untuk kos ini.
                         </p>
                     </div>
                 </div>

@@ -7,7 +7,6 @@ interface AuthenticatedRequest extends Request {
     userId?: number
 }
 
-// Get booking calendar for a specific kos
 export const getBookingCalendar = async (req: Request, res: Response) => {
     try {
         const { kosId } = req.params
@@ -20,7 +19,6 @@ export const getBookingCalendar = async (req: Request, res: Response) => {
         const currentYear = year ? parseInt(year as string) : new Date().getFullYear()
         const currentMonth = month ? parseInt(month as string) : new Date().getMonth() + 1
 
-        // Get first and last day of the month
         const firstDay = new Date(currentYear, currentMonth - 1, 1)
         const lastDay = new Date(currentYear, currentMonth, 0)
 
@@ -57,7 +55,6 @@ export const getBookingCalendar = async (req: Request, res: Response) => {
     }
 }
 
-// Create booking calendar entries for a date range
 export const createBookingCalendarEntries = async (
     kosId: number,
     startDate: Date,
@@ -79,7 +76,6 @@ export const createBookingCalendarEntries = async (
             currentDate.setDate(currentDate.getDate() + 1)
         }
 
-        // Use upsert to avoid conflicts
         for (const entry of entries) {
             await prisma.bookingCalendar.upsert({
                 where: {
@@ -104,7 +100,6 @@ export const createBookingCalendarEntries = async (
     }
 }
 
-// Remove booking calendar entries for a date range
 export const removeBookingCalendarEntries = async (
     kosId: number,
     startDate: Date,
@@ -128,7 +123,6 @@ export const removeBookingCalendarEntries = async (
     }
 }
 
-// Initialize calendar for a kos (create available entries for next 12 months)
 export const initializeKosCalendar = async (req: AuthenticatedRequest, res: Response) => {
     try {
         const { kosId } = req.params
@@ -137,7 +131,6 @@ export const initializeKosCalendar = async (req: AuthenticatedRequest, res: Resp
             return res.status(400).json({ message: 'Kos ID is required' })
         }
 
-        // Check if user owns this kos
         const kos = await prisma.kos.findFirst({
             where: {
                 id: parseInt(kosId),
@@ -152,11 +145,10 @@ export const initializeKosCalendar = async (req: AuthenticatedRequest, res: Resp
         const entries = []
         const today = new Date()
         const endDate = new Date()
-        endDate.setMonth(endDate.getMonth() + 12) // Next 12 months
+        endDate.setMonth(endDate.getMonth() + 12) 
 
         const currentDate = new Date(today)
         while (currentDate <= endDate) {
-            // Skip if entry already exists
             const existing = await prisma.bookingCalendar.findUnique({
                 where: {
                     kosId_date: {

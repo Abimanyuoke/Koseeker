@@ -3,7 +3,6 @@ import { PrismaClient, BookStatus } from "@prisma/client";
 
 const prisma = new PrismaClient({ errorFormat: "pretty" })
 
-// Get all reviews
 export const getAllReviews = async (request: Request, response: Response) => {
     try {
         const reviews = await prisma.review.findMany({
@@ -44,7 +43,6 @@ export const getAllReviews = async (request: Request, response: Response) => {
     }
 };
 
-// Get reviews by kos ID
 export const getReviewsByKos = async (request: Request, response: Response) => {
     try {
         const { kosId } = request.params;
@@ -86,7 +84,6 @@ export const getReviewsByKos = async (request: Request, response: Response) => {
     }
 };
 
-// Get reviews by user ID
 export const getReviewsByUser = async (request: Request, response: Response) => {
     try {
         const { userId } = request.params;
@@ -122,7 +119,6 @@ export const getReviewsByUser = async (request: Request, response: Response) => 
     }
 };
 
-// Get single review by ID
 export const getReviewById = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
@@ -170,12 +166,10 @@ export const getReviewById = async (request: Request, response: Response) => {
     }
 };
 
-// Create a new review
 export const createReview = async (request: Request, response: Response) => {
     try {
         const { kosId, userId, comment } = request.body;
 
-        // Validation
         if (!kosId || !userId || !comment) {
             return response.status(400).json({
                 status: false,
@@ -190,7 +184,6 @@ export const createReview = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if user exists and has role society
         const user = await prisma.user.findUnique({
             where: { id: Number(userId) }
         });
@@ -209,7 +202,6 @@ export const createReview = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if user has an accepted booking for this kos
         const acceptedBooking = await prisma.book.findFirst({
             where: {
                 kosId: Number(kosId),
@@ -225,7 +217,6 @@ export const createReview = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if user already reviewed this kos
         const existingReview = await prisma.review.findFirst({
             where: {
                 kosId: Number(kosId),
@@ -240,7 +231,6 @@ export const createReview = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if kos exists
         const kosExists = await prisma.kos.findUnique({
             where: { id: Number(kosId) }
         });
@@ -252,7 +242,6 @@ export const createReview = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if user exists
         const userExists = await prisma.user.findUnique({
             where: { id: Number(userId) }
         });
@@ -303,13 +292,12 @@ export const createReview = async (request: Request, response: Response) => {
     }
 };
 
-// Update a review
+
 export const updateReview = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
         const { comment } = request.body;
 
-        // Validation
         if (!comment) {
             return response.status(400).json({
                 status: false,
@@ -324,7 +312,6 @@ export const updateReview = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if review exists
         const existingReview = await prisma.review.findUnique({
             where: { id: Number(id) }
         });
@@ -374,12 +361,10 @@ export const updateReview = async (request: Request, response: Response) => {
     }
 };
 
-// Delete a review
 export const deleteReview = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
 
-        // Check if review exists
         const existingReview = await prisma.review.findUnique({
             where: { id: Number(id) }
         });
@@ -408,7 +393,6 @@ export const deleteReview = async (request: Request, response: Response) => {
     }
 };
 
-// Check if user has reviewed a specific kos
 export const checkUserReview = async (request: Request, response: Response) => {
     try {
         const { kosId, userId } = request.params;
@@ -453,13 +437,11 @@ export const checkUserReview = async (request: Request, response: Response) => {
     }
 };
 
-// Admin reply to review
 export const replyToReview = async (request: Request, response: Response) => {
     try {
         const { id } = request.params;
         const { replyComment, adminId } = request.body;
 
-        // Validation
         if (!replyComment) {
             return response.status(400).json({
                 status: false,
@@ -474,7 +456,6 @@ export const replyToReview = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if admin exists and has role owner or superadmin
         const admin = await prisma.user.findUnique({
             where: { id: Number(adminId) }
         });
@@ -493,7 +474,6 @@ export const replyToReview = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if review exists
         const review = await prisma.review.findUnique({
             where: { id: Number(id) },
             include: {
@@ -508,7 +488,6 @@ export const replyToReview = async (request: Request, response: Response) => {
             });
         }
 
-        // If admin is owner, check if they own the kos
         if (admin.role === 'owner' && review.kos.userId !== admin.id) {
             return response.status(403).json({
                 status: false,
@@ -555,12 +534,10 @@ export const replyToReview = async (request: Request, response: Response) => {
     }
 };
 
-// Check if user can review (has accepted booking)
 export const checkCanReview = async (request: Request, response: Response) => {
     try {
         const { kosId, userId } = request.params;
 
-        // Check if user exists and has role society
         const user = await prisma.user.findUnique({
             where: { id: Number(userId) }
         });
@@ -583,7 +560,6 @@ export const checkCanReview = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if user has an accepted booking
         const acceptedBooking = await prisma.book.findFirst({
             where: {
                 kosId: Number(kosId),
@@ -603,7 +579,6 @@ export const checkCanReview = async (request: Request, response: Response) => {
             });
         }
 
-        // Check if user already reviewed
         const existingReview = await prisma.review.findFirst({
             where: {
                 kosId: Number(kosId),

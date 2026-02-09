@@ -152,25 +152,20 @@ export const updateUser = async (request: Request, response: Response) => {
 
 export const changePassword = async (request: Request, response: Response) => {
     try {
-        /** get id of user's id that sent in parameter of URL */
         const { id } = request.params
-        /** get requested data (data has been sent from request) */
         const { currentPassword, newPassword } = request.body
 
-        /** make sure that data is exists in database */
         const findUser = await prisma.user.findFirst({ where: { id: Number(id) } })
         if (!findUser) return response
             .status(404)
             .json({ status: false, message: `User is not found` })
 
-        /** verify current password */
         if (md5(currentPassword) !== findUser.password) {
             return response
                 .status(400)
                 .json({ status: false, message: `Password lama tidak sesuai` })
         }
 
-        /** process to update password */
         const updatedUser = await prisma.user.update({
             data: {
                 password: md5(newPassword)
@@ -195,28 +190,21 @@ export const changePassword = async (request: Request, response: Response) => {
 
 export const changePicture = async (request: Request, response: Response) => {
     try {
-        /** get id of menu's id that sent in parameter of URL */
         const { id } = request.params
 
-        /** make sure that data is exists in database */
         const findUser = await prisma.user.findFirst({ where: { id: Number(id) } })
         if (!findUser) return response
             .status(200)
             .json({ status: false, message: `User is not found` })
 
-        /** default value filename of saved data */
         let filename = findUser.profile_picture
         if (request.file) {
-            /** update filename by new uploaded picture */
             filename = request.file.filename
-            /** check the old picture in the folder */
             let path = `${BASE_URL}/../public/profile_picture/${findUser.profile_picture}`
             let exists = fs.existsSync(path)
-            /** delete the old exists picture if reupload new file */
             if (exists && findUser.profile_picture !== ``) fs.unlinkSync(path)
         }
 
-        /** process to update picture in database */
         const updatePicture = await prisma.user.update({
             data: { profile_picture: filename },
             where: { id: Number(id) }
@@ -237,20 +225,17 @@ export const changePicture = async (request: Request, response: Response) => {
 
 export const deleteUser = async (request: Request, response: Response) => {
     try {
-        /** get id of user's id that sent in parameter of URL */
         const { id } = request.params
-        /** make sure that data is exists in database */
         const findUser = await prisma.user.findFirst({ where: { id: Number(id) } })
         if (!findUser) return response
             .status(200)
             .json({ status: false, message: `user is not found` })
 
-        /** prepare to delete file of deleted user's data */
-        let path = `${BASE_URL}/public/profile_picture/${findUser.profile_picture}` /** define path (address) of file location */
+        let path = `${BASE_URL}/public/profile_picture/${findUser.profile_picture}`
         let exists = fs.existsSync(path)
-        if (exists && findUser.profile_picture !== ``) fs.unlinkSync(path) /** if file exist, then will be delete */
+        if (exists && findUser.profile_picture !== ``) fs.unlinkSync(path)
 
-        /** process to delete user's data */
+
         const deleteduser = await prisma.user.delete({
             where: { id: Number(id) }
         })
@@ -271,14 +256,12 @@ export const deleteUser = async (request: Request, response: Response) => {
 
 export const authentication = async (request: Request, response: Response) => {
     try {
-        const { email, password } = request.body /** get requested data (data has been sent from request) */
+        const { email, password } = request.body
 
-        /** find a valid admin based on username and password */
         const findUser = await prisma.user.findFirst({
             where: { email, password: md5(password) }
         })
 
-        /** check is admin exists */
         if (!findUser) return response
             .status(200)
             .json({ status: false, logged: false, message: `Email or password is invalid` })
@@ -291,10 +274,8 @@ export const authentication = async (request: Request, response: Response) => {
             profile_picture: findUser.profile_picture,
         }
 
-        /** define payload to generate token */
         let payload = JSON.stringify(data)
 
-        /** generate token */
         let token = sign(payload, SECRET || "joss")
 
         return response
@@ -312,16 +293,14 @@ export const authentication = async (request: Request, response: Response) => {
 
 export const googleAuthentication = async (request: Request, response: Response) => {
     try {
-        const { email, name, googleId, picture } = request.body /** get requested data from Google OAuth */
+        const { email, name, googleId, picture } = request.body
 
         console.log('Google Auth - Received data:', { email, name, googleId, picture })
 
-        /** check if user exists with this email */
         let findUser = await prisma.user.findFirst({
             where: { email }
         })
 
-        /** if user doesn't exist, create new user */
         if (!findUser) {
             const uuid = uuidv4()
             findUser = await prisma.user.create({
@@ -329,14 +308,13 @@ export const googleAuthentication = async (request: Request, response: Response)
                     uuid,
                     name: name || '',
                     email: email || '',
-                    password: md5(googleId), // use googleId as password hash
-                    role: 'society', // default role for Google sign-in users
+                    password: md5(googleId), 
+                    role: 'society', 
                     profile_picture: picture || '',
                     phone: ''
                 }
             })
         } else {
-            /** if user exists, update profile picture if it's from Google */
             if (picture && picture.startsWith('https://')) {
                 findUser = await prisma.user.update({
                     where: { id: findUser.id },
@@ -357,10 +335,8 @@ export const googleAuthentication = async (request: Request, response: Response)
 
         console.log('Google Auth - Returning user data:', data)
 
-        /** define payload to generate token */
         let payload = JSON.stringify(data)
 
-        /** generate token */
         let token = sign(payload, SECRET || "joss")
 
         return response

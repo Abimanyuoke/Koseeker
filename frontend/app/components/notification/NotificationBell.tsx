@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import NotificationCenter from '../notification/NotificationCenter'
+import { BASE_API_URL } from '@/global'
 
 interface NotificationBellProps {
     className?: string
@@ -14,7 +15,6 @@ export default function NotificationBell({ className = '' }: NotificationBellPro
     useEffect(() => {
         fetchUnreadCount()
 
-        // Poll for new notifications every 5 seconds
         const interval = setInterval(fetchUnreadCount, 5000)
 
         return () => clearInterval(interval)
@@ -23,20 +23,40 @@ export default function NotificationBell({ className = '' }: NotificationBellPro
     const fetchUnreadCount = async () => {
         try {
             const token = localStorage.getItem('token')
-            if (!token) return
+            if (!token) {
+                console.log('No token found, skipping notification fetch')
+                return
+            }
 
-            const response = await fetch('http://localhost:5000/notifications/unread-count', {
+            const response = await fetch(`${BASE_API_URL}/notifications/unread-count`, {
                 headers: {
                     'Authorization': `Bearer ${token}`
                 }
             })
 
+            const data = await response.json()
+
             if (response.ok) {
-                const data = await response.json()
-                setUnreadCount(data.count || 0)
+                if (data.status === true && typeof data.count === 'number') {
+                    setUnreadCount(data.count)
+                } else {
+                    console.warn('Unexpected response structure:', data)
+                    setUnreadCount(0)
+                }
+            } else {
+                // Handle error responses from the server
+                console.error('Server error fetching unread count:', {
+                    status: response.status,
+                    message: data.message || 'Unknown error'
+                })
+                if (response.status === 401 || response.status === 403) {
+                    // Token might be invalid, clear it
+                    localStorage.removeItem('token')
+                }
             }
         } catch (err) {
             console.error('Failed to fetch unread count:', err)
+            // Network error or parsing error - don't update count
         }
     }
 
