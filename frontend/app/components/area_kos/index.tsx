@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
@@ -10,7 +11,6 @@ import { BASE_IMAGE_KOS } from "../../../global";
 import Select from "../select";
 import Image from "next/image";
 
-// Enum untuk kalender sesuai dengan Prisma
 const kalenderOptions = [
     { value: "all", label: "Semua Periode" },
     { value: "minggu", label: "Mingguan" },
@@ -18,7 +18,6 @@ const kalenderOptions = [
     { value: "tahun", label: "Tahunan" }
 ];
 
-// Options untuk filter gender
 const genderOptions = [
     { value: "all", label: "Semua Gender" },
     { value: "male", label: "Putra" },
@@ -26,7 +25,6 @@ const genderOptions = [
     { value: "mixed", label: "Campur" }
 ];
 
-// Options untuk filter harga
 const priceOptions = [
     { value: "all", label: "Semua Harga" },
     { value: "0-500000", label: "Di bawah Rp 500.000" },
@@ -57,7 +55,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
         { value: "all", label: "Semua Kampus" }
     ]);
 
-    // Fetch kos data berdasarkan kota dengan semua filter
     const fetchKosByArea = async (filters: {
         kalender?: string;
         gender?: string;
@@ -69,22 +66,18 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
         try {
             let url = `/kos?kota=${encodeURIComponent(kota)}`;
 
-            // Tambahkan filter search jika ada
             if (filters.search && filters.search.trim() !== "") {
                 url += `&search=${encodeURIComponent(filters.search)}`;
             }
 
-            // Tambahkan filter kalender jika dipilih
             if (filters.kalender && filters.kalender !== "all") {
                 url += `&kalender=${filters.kalender}`;
             }
 
-            // Tambahkan filter gender jika dipilih
             if (filters.gender && filters.gender !== "all") {
                 url += `&gender=${filters.gender}`;
             }
 
-            // Tambahkan filter kampus jika dipilih
             if (filters.kampus && filters.kampus !== "all") {
                 url += `&kampus=${encodeURIComponent(filters.kampus)}`;
             }
@@ -94,7 +87,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
             if (response.status) {
                 let filteredData = response.data.data || [];
 
-                // Filter berdasarkan harga di frontend
                 if (filters.price && filters.price !== "all") {
                     const [minPrice, maxPrice] = filters.price.split("-").map(Number);
                     filteredData = filteredData.filter((kos: IKos) =>
@@ -102,7 +94,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                     );
                 }
 
-                // Filter berdasarkan search query di frontend jika backend tidak mendukung
                 if (filters.search && filters.search.trim() !== "") {
                     const searchLower = filters.search.toLowerCase();
                     filteredData = filteredData.filter((kos: IKos) =>
@@ -114,7 +105,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
 
                 setKosList(filteredData);
 
-                // Update kampus options based on available data
                 const uniqueKampus = Array.from(new Set(filteredData.map((kos: IKos) => kos.kampus)))
                     .filter((kampus): kampus is string => typeof kampus === 'string' && kampus.trim() !== "")
                     .sort();
@@ -134,7 +124,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
         }
     };
 
-    // Load data pertama kali dan ketika search query berubah
     useEffect(() => {
         fetchKosByArea({
             kalender: selectedKalender,
@@ -145,7 +134,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
         });
     }, [kota, searchQuery]);
 
-    // Handle perubahan filter kalender
     const handleKalenderChange = (value: string) => {
         setSelectedKalender(value);
         fetchKosByArea({
@@ -157,7 +145,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
         });
     };
 
-    // Handle perubahan filter gender
     const handleGenderChange = (value: string) => {
         setSelectedGender(value);
         fetchKosByArea({
@@ -169,7 +156,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
         });
     };
 
-    // Handle perubahan filter price
     const handlePriceChange = (value: string) => {
         setSelectedPrice(value);
         fetchKosByArea({
@@ -181,7 +167,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
         });
     };
 
-    // Handle perubahan filter kampus
     const handleKampusChange = (value: string) => {
         setSelectedKampus(value);
         fetchKosByArea({
@@ -193,22 +178,11 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
         });
     };
 
-    // Format harga dengan pemisah ribuan (tanpa Rp karena sudah ada di display)
     const formatPrice = (price: number) => {
         return new Intl.NumberFormat('id-ID', {
             minimumFractionDigits: 0
         }).format(price);
     };
-
-    // Tampilkan periode berdasarkan kalender
-    // const getPeriodText = (kalender: string) => {
-    //     switch (kalender) {
-    //         case "minggu": return "/minggu";
-    //         case "bulan": return "/bulan";
-    //         case "tahun": return "/tahun";
-    //         default: return "/bulan";
-    //     }
-    // };
 
     if (loading) {
         return (
@@ -235,10 +209,8 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                         </p>
                     </div>
 
-                    {/* Filter Section */}
                     <div className="mb-8">
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                            {/* Filter Kalender */}
                             <div>
                                 <Select
                                     id="kalender-filter"
@@ -254,7 +226,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                                 </Select>
                             </div>
 
-                            {/* Filter Gender */}
                             <div>
                                 <Select
                                     id="gender-filter"
@@ -270,7 +241,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                                 </Select>
                             </div>
 
-                            {/* Filter Harga */}
                             <div>
                                 <Select
                                     id="price-filter"
@@ -286,7 +256,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                                 </Select>
                             </div>
 
-                            {/* Filter Kampus */}
                             <div>
                                 <Select
                                     id="kampus-filter"
@@ -304,28 +273,16 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                         </div>
                     </div>
 
-                    {/* Error State */}
                     {error && (
                         <div className="mb-8 bg-red-50 border border-red-200 rounded-lg p-4">
                             <p className="text-red-600">{error}</p>
                         </div>
                     )}
 
-                    {/* Kos Cards Grid */}
                     {kosList.length > 0 ? (
                         <div>
-                            {/* Results Count */}
-                            {/* <div className="mb-4">
-                                <p className="text-gray-600">
-                                    Ditemukan {kosList.length} kos
-                                    {searchQuery.trim() !== "" && ` untuk pencarian "${searchQuery}"`}
-                                    {(selectedKalender !== "all" || selectedGender !== "all" || selectedPrice !== "all" || selectedKampus !== "all") && " dengan filter yang dipilih"}
-                                </p>
-                            </div> */}
-
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
                                 {kosList.map((kos) => {
-                                    // Helper functions untuk gender
                                     const getGenderText = (gender: string) => {
                                         switch (gender) {
                                             case 'male': return 'Pria';
@@ -344,7 +301,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                                             <div
                                                 className="rounded-xl h-[450px] w-full mx-auto transition-all duration-300"
                                                 onClick={() => window.location.href = `/kos/${kos.id}`}>
-                                                {/* Gambar Kos */}
                                                 <div className="relative h-[200px] overflow-hidden rounded-xl">
                                                     {kos.images && kos.images.length > 0 ? (
                                                         <img
@@ -359,9 +315,7 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                                                     )}
                                                 </div>
 
-                                                {/* Konten Kos */}
                                                 <div className="py-5">
-                                                    {/* Badge Gender */}
                                                     <span className={`px-2 py-1 rounded text-[14px] font-bold border border-slate-300 ${getGenderColor(kos.gender)}`}>
                                                         {getGenderText(kos.gender)}
                                                     </span>
@@ -378,7 +332,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                                                         </p>
                                                     </div>
 
-                                                    {/* Fasilitas */}
                                                     {kos.facilities && kos.facilities.length > 0 && (
                                                         <div className="mb-4 mt-2">
                                                             <div className="flex flex-wrap gap-1">
@@ -387,7 +340,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                                                                         key={facility.id}
                                                                         className="flex items-center gap-1 rounded-lg"
                                                                         title={facility.facility}>
-                                                                        {/* Icon lingkaran kecil muncul kalau bukan index pertama */}
                                                                         {index > 0 && (
                                                                             <span className="w-1 h-1 rounded-full bg-gray-400"></span>
                                                                         )}
@@ -414,7 +366,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                                                     <div className="flex items-baseline gap-1">
                                                         {kos.discountPercent && kos.discountPercent > 0 ? (
                                                             <div>
-                                                                {/* Discount Badge */}
                                                                 <div className="flex items-center gap-2">
                                                                     {kos.discountPercent && Number(kos.discountPercent) > 0 && (
                                                                         <div className="text-red-500 py-1 text-sm font-bold flex items-center gap-1">
@@ -452,16 +403,6 @@ const AreaKosPage = ({ kota, title, description }: AreaKosPageProps) => {
                                                             Sisa kamar tersedia
                                                         </div>
                                                     )}
-
-                                                    {/* Tombol Ajukan Sewa */}
-                                                    {/* <button
-                                                        onClick={(e) => {
-                                                            e.stopPropagation();
-                                                            window.location.href = `/kos/${kos.id}`;
-                                                        }}
-                                                        className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2.5 px-6 rounded-lg transition-colors duration-200 text-sm shadow-md hover:shadow-lg">
-                                                        Ajukan Sewa
-                                                    </button> */}
                                                 </div>
                                             </div>
                                         </div>

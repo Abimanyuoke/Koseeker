@@ -25,13 +25,11 @@ export default function Arealist({ areas, linkTo }: Props) {
                     <div
                         key={area.province}
                         className="py-6">
-                        {/* Province Header */}
                         <div className="flex items-center gap-2 mb-4 pb-3">
                             <FaMapMarkerAlt className="text-gray-500 text-xl" />
                             <h3 className="text-xl font-bold text-gray-800">{area.province}</h3>
                         </div>
 
-                        {/* Cities List */}
                         <div className="space-y-2">
                             {area.cities.map((city) => (
                                 <Link

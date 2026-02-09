@@ -7,7 +7,7 @@ export default function KampusArea() {
         <div className="max-w-6xl mx-auto font-lato">
             <h1 className="text-2xl font-bold mb-10 text-[##323232]">Kos Sekitar Kampus</h1>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-x-8 gap-y-5 justify-items-center">
-                <button className="relative w-[280px] h-[100px] p-4 bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `/area/surabaya`}>
+                <button className="relative w-[280px] h-[100px] p-4 bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `/area/jogja`}>
                     <div className="flex items-center gap-4">
                         <img src="./images/logo-kampus/10.svg" alt="Logo Kampus Unpad" className="w-[50px] h-full object-cover rounded-lg" />
                         <div className=" flex flex-col items-start text-[#2e2d39]">
@@ -16,7 +16,7 @@ export default function KampusArea() {
                         </div>
                     </div>
                 </button>
-                <button className="relative w-[280px] h-[100px] p-4 bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `/area/surabaya`}>
+                <button className="relative w-[280px] h-[100px] p-4 bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `/area/semarang`}>
                     <div className="flex items-center gap-4">
                         <img src="./images/logo-kampus/4.svg" alt="Logo Kampus Unpad" className="w-[50px] h-full object-cover rounded-lg" />
                         <div className=" flex flex-col items-start text-[#2e2d39]">
@@ -25,7 +25,7 @@ export default function KampusArea() {
                         </div>
                     </div>
                 </button>
-                <button className="relative w-[280px] h-[100px] p-4 bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `/area/surabaya`}>
+                <button className="relative w-[280px] h-[100px] p-4 bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `/area/jakarta`}>
                     <div className="flex items-center gap-4">
                         <img src="./images/logo-kampus/7.svg" alt="Logo Kampus Unpad" className="w-[50px] h-full object-cover rounded-lg" />
                         <div className=" flex flex-col items-start text-[#2e2d39]">
@@ -34,7 +34,7 @@ export default function KampusArea() {
                         </div>
                     </div>
                 </button>
-                <button className="relative w-[280px] h-[100px] p-4 bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `/area/surabaya`}>
+                <button className="relative w-[280px] h-[100px] p-4 bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `/area/sumedang`}>
                     <div className="flex items-center gap-4">
                         <img src="./images/logo-kampus/6.svg" alt="Logo Kampus Unpad" className="w-[50px] h-full object-cover rounded-lg" />
                         <div className=" flex flex-col items-start text-[#2e2d39]">
@@ -43,7 +43,7 @@ export default function KampusArea() {
                         </div>
                     </div>
                 </button>
-                <button className="relative w-[280px] h-[100px] p-4 bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `/area/surabaya`}>
+                <button className="relative w-[280px] h-[100px] p-4 bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `/area/jakarta`}>
                     <div className="flex items-center gap-4">
                         <img src="./images/logo-kampus/5.svg" alt="Logo Kampus Unpad" className="w-[50px] h-full object-cover rounded-lg" />
                         <div className=" flex flex-col items-start text-[#2e2d39]">
@@ -52,7 +52,7 @@ export default function KampusArea() {
                         </div>
                     </div>
                 </button>
-                <button className="relative w-[280px] h-[100px] p-4 bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `/area/surabaya`}>
+                <button className="relative w-[280px] h-[100px] p-4 bg-white border-gray-400/25 border-2 hover:shadow-lg rounded-lg cursor-pointer" onClick={() => window.location.href = `/area/malang`}>
                     <div className="flex items-center gap-4">
                         <img src="./images/logo-kampus/8.svg" alt="Logo Kampus Unpad" className="w-[50px] h-full object-cover rounded-lg" />
                         <div className=" flex flex-col items-start text-[#2e2d39]">
