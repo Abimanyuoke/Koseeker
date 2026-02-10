@@ -603,7 +603,7 @@ export default function ManageKosImagesPage() {
                                         disabled={!replaceFile || replacing}
                                         className='flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition disabled:opacity-50 disabled:cursor-not-allowed font-medium'>
                                         {replacing ? (
-                                            <div>
+                                            <div className='flex items-center justify-center'>
                                                 <div className='animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full'></div>
                                                 Mengganti...
                                             </div>

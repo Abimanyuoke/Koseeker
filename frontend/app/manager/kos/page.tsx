@@ -5,7 +5,7 @@
 import { useEffect, useState } from 'react'
 import { getUserData } from '@/lib/auth'
 import { BASE_API_URL, BASE_IMAGE_KOS } from '@/global'
-import { FaImage, FaList, FaEdit, FaTrash, FaPlus, FaMapMarkerAlt, FaHome } from 'react-icons/fa'
+import { FaImage, FaList, FaEdit, FaTrash, FaPlus, FaMapMarkerAlt, FaHome, FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import { MdFavorite } from 'react-icons/md'
 import { toast } from 'sonner'
 import Image from 'next/image'
@@ -39,13 +39,16 @@ export default function ManagerKosListPage() {
     const [deleteModal, setDeleteModal] = useState<{ show: boolean; kos: KosItem | null }>({ show: false, kos: null })
     const [isDeleting, setIsDeleting] = useState(false)
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
     useEffect(() => {
         if (user?.role === 'owner') {
             fetchKosList()
         } else {
             setLoading(false)
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const fetchKosList = async () => {
@@ -137,7 +140,7 @@ export default function ManagerKosListPage() {
         return (
             <div className='min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center'>
                 <div className='text-center bg-white rounded-2xl shadow-lg p-8 max-w-md'>
-                    <Image src="/images/logo.svg" className='text-6xl mb-4' alt={'logo'} />
+                    <Image src="/images/logo.svg" width={200} height={200} className='text-6xl mb-4' alt={'logo'} />
                     <h1 className='text-2xl font-bold mb-2'>Akses Ditolak</h1>
                     <p className='text-gray-600'>Halaman ini hanya untuk pemilik kos (owner).</p>
                 </div>
@@ -270,100 +273,102 @@ export default function ManagerKosListPage() {
                     </div>
                 ) : (
                     <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>
-                        {filteredKos.map((kos) => {
-                            const firstImage = kos.images?.[0]?.file
-                            const imgUrl = firstImage ? `${BASE_IMAGE_KOS}/${firstImage}` : 'https://via.placeholder.com/400x250?text=No+Image'
-                            const pendingCount = getPendingBookings(kos.books)
-                            const acceptedCount = getAcceptedBookings(kos.books)
+                        {filteredKos
+                            .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                            .map(kos => {
+                                const firstImage = kos.images?.[0]?.file
+                                const imgUrl = firstImage ? `${BASE_IMAGE_KOS}/${firstImage}` : 'https://via.placeholder.com/400x250?text=No+Image'
+                                const pendingCount = getPendingBookings(kos.books)
+                                const acceptedCount = getAcceptedBookings(kos.books)
 
-                            return (
-                                <div
-                                    key={kos.id}
-                                    className='group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100'>
-                                    {/* Image Section */}
-                                    <div className='relative h-48 overflow-hidden'>
-                                        <img
-                                            src={imgUrl}
-                                            alt={kos.name}
-                                            className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300' />
-                                        {kos.discountPercent && kos.discountPercent > 0 && (
-                                            <span className='absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg'>
-                                                -{kos.discountPercent}%
+                                return (
+                                    <div
+                                        key={kos.id}
+                                        className='group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden border border-gray-100'>
+                                        {/* Image Section */}
+                                        <div className='relative h-48 overflow-hidden'>
+                                            <img
+                                                src={imgUrl}
+                                                alt={kos.name}
+                                                className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300' />
+                                            {kos.discountPercent && kos.discountPercent > 0 && (
+                                                <span className='absolute top-3 right-3 bg-red-500 text-white px-3 py-1 rounded-full text-sm font-bold shadow-lg'>
+                                                    -{kos.discountPercent}%
+                                                </span>
+                                            )}
+                                            {kos.images.length > 0 && (
+                                                <div className='absolute bottom-3 right-3 bg-black/70 text-white px-2 py-1 rounded-md text-xs flex items-center gap-1'>
+                                                    <FaImage /> {kos.images.length}
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        {/* Content Section */}
+                                        <div className='p-3'>
+                                            <span className={`px-2 py-1 rounded text-[12px] font-bold border border-slate-300  ${getGenderColor(kos.gender)}`}>
+                                                {getGenderText(kos.gender)}
                                             </span>
-                                        )}
-                                        {kos.images.length > 0 && (
-                                            <div className='absolute bottom-3 right-3 bg-black/70 text-white px-2 py-1 rounded-md text-xs flex items-center gap-1'>
-                                                <FaImage /> {kos.images.length}
+                                            <h3 className='font-bold text-lg mb-1 text-gray-900 mt-3 line-clamp-1'>
+                                                {kos.name}
+                                            </h3>
+                                            <div className='flex items-start gap-2 text-sm text-gray-600 mb-2'>
+                                                <FaMapMarkerAlt className='text-red-500 mt-1 flex-shrink-0' />
+                                                <p className='line-clamp-2'>{kos.address}</p>
                                             </div>
-                                        )}
-                                    </div>
 
-                                    {/* Content Section */}
-                                    <div className='p-3'>
-                                        <span className={`px-2 py-1 rounded text-[12px] font-bold border border-slate-300  ${getGenderColor(kos.gender)}`}>
-                                            {getGenderText(kos.gender)}
-                                        </span>
-                                        <h3 className='font-bold text-lg mb-1 text-gray-900 mt-3 line-clamp-1'>
-                                            {kos.name}
-                                        </h3>
-                                        <div className='flex items-start gap-2 text-sm text-gray-600 mb-2'>
-                                            <FaMapMarkerAlt className='text-red-500 mt-1 flex-shrink-0' />
-                                            <p className='line-clamp-2'>{kos.address}</p>
-                                        </div>
-
-                                        <div className='flex items-center gap-2 mb-4'>
-                                            <span className='text-lg font-bold text-green-600'>
-                                                Rp {formatPrice(kos.pricePerMonth)}
-                                            </span>
-                                            <span className='text-sm text-gray-500'>/ bulan</span>
-                                        </div>
-
-                                        {/* Stats */}
-                                        <div className='grid grid-cols-3 gap-2 mb-4 text-center'>
-                                            <div className='bg-gray-50 rounded-lg p-2'>
-                                                <p className='text-xs text-gray-600'>Fasilitas</p>
-                                                <p className='font-bold text-gray-900'>{kos.facilities.length}</p>
+                                            <div className='flex items-center gap-2 mb-4'>
+                                                <span className='text-lg font-bold text-green-600'>
+                                                    Rp {formatPrice(kos.pricePerMonth)}
+                                                </span>
+                                                <span className='text-sm text-gray-500'>/ bulan</span>
                                             </div>
-                                            <div className='bg-blue-50 rounded-lg p-2'>
-                                                <p className='text-xs text-blue-600'>Booking</p>
-                                                <p className='font-bold text-blue-900'>{acceptedCount}</p>
-                                            </div>
-                                            <div className='bg-yellow-50 rounded-lg p-2'>
-                                                <p className='text-xs text-yellow-600'>Pending</p>
-                                                <p className='font-bold text-yellow-900'>{pendingCount}</p>
-                                            </div>
-                                        </div>
 
-                                        {/* Action Buttons */}
-                                        <div className='flex gap-2'>
-                                            <Link
-                                                href={`/manager/kos/${kos.id}`}
-                                                className='flex-1 flex items-center justify-center gap-2 px-3 py-2  text-black rounded-lg border border-gray-300 text-sm font-medium'>
-                                                <FaImage /> Gambar
-                                            </Link>
-                                            <Link
-                                                href={`/manager/facilities/${kos.id}`}
-                                                className='flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r border border-gray-300 text-black rounded-lg text-sm font-medium'>
-                                                <FaList /> Fasilitas
-                                            </Link>
-                                        </div>
+                                            {/* Stats */}
+                                            <div className='grid grid-cols-3 gap-2 mb-4 text-center'>
+                                                <div className='bg-gray-50 rounded-lg p-2'>
+                                                    <p className='text-xs text-gray-600'>Fasilitas</p>
+                                                    <p className='font-bold text-gray-900'>{kos.facilities.length}</p>
+                                                </div>
+                                                <div className='bg-blue-50 rounded-lg p-2'>
+                                                    <p className='text-xs text-blue-600'>Booking</p>
+                                                    <p className='font-bold text-blue-900'>{acceptedCount}</p>
+                                                </div>
+                                                <div className='bg-yellow-50 rounded-lg p-2'>
+                                                    <p className='text-xs text-yellow-600'>Pending</p>
+                                                    <p className='font-bold text-yellow-900'>{pendingCount}</p>
+                                                </div>
+                                            </div>
 
-                                        <div className='flex gap-2 mt-2'>
-                                            <Link
-                                                href={`/manager/kos/edit/${kos.id}`}
-                                                className='flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-blue-300 text-blue-600 rounded-lg hover:bg-blue-50 transition text-sm font-medium'>
-                                                <FaEdit /> Edit
-                                            </Link>
-                                            <button
-                                                onClick={() => handleDeleteClick(kos)}
-                                                className='flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition text-sm font-medium'>
-                                                <FaTrash /> Hapus
-                                            </button>
+                                            {/* Action Buttons */}
+                                            <div className='flex gap-2'>
+                                                <Link
+                                                    href={`/manager/kos/${kos.id}`}
+                                                    className='flex-1 flex items-center justify-center gap-2 px-3 py-2  text-black rounded-lg border border-gray-300 text-sm font-medium'>
+                                                    <FaImage /> Gambar
+                                                </Link>
+                                                <Link
+                                                    href={`/manager/facilities/${kos.id}`}
+                                                    className='flex-1 flex items-center justify-center gap-2 px-3 py-2 bg-gradient-to-r border border-gray-300 text-black rounded-lg text-sm font-medium'>
+                                                    <FaList /> Fasilitas
+                                                </Link>
+                                            </div>
+
+                                            <div className='flex gap-2 mt-2'>
+                                                <Link
+                                                    href={`/manager/kos/edit/${kos.id}`}
+                                                    className='flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-blue-300 text-blue-600 rounded-lg hover:bg-blue-50 transition text-sm font-medium'>
+                                                    <FaEdit /> Edit
+                                                </Link>
+                                                <button
+                                                    onClick={() => handleDeleteClick(kos)}
+                                                    className='flex-1 flex items-center justify-center gap-2 px-3 py-2 border border-red-300 text-red-600 rounded-lg hover:bg-red-50 transition text-sm font-medium'>
+                                                    <FaTrash /> Hapus
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            )
-                        })}
+                                )
+                            })}
                     </div>
                 )}
 
@@ -430,10 +435,10 @@ export default function ManagerKosListPage() {
                                         disabled={isDeleting}
                                         className='flex-1 px-6 py-3 bg-gradient-to-r from-red-600 to-red-700 text-white rounded-lg hover:from-red-700 hover:to-red-800 transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 shadow-lg'>
                                         {isDeleting ? (
-                                            <>
+                                            <div>
                                                 <div className='animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full'></div>
                                                 Menghapus...
-                                            </>
+                                            </div>
                                         ) : (
                                             <>
                                                 <FaTrash /> Ya, Hapus
@@ -443,6 +448,58 @@ export default function ManagerKosListPage() {
                                 </div>
                             </div>
                         </div>
+                    </div>
+                )}
+                {kosList.length > itemsPerPage && (
+                    <div className="mt-12 flex items-center justify-center gap-2">
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                            disabled={currentPage === 1}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${currentPage === 1
+                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                : 'bg-white text-gray-700 border-2 border-gray-300 hover:bg-primary hover:text-white'
+                                }`}>
+                            <FaChevronLeft className="text-sm" />
+                            <span>Sebelumnya</span>
+                        </button>
+
+                        <div className="flex items-center gap-1">
+                            {Array.from({ length: Math.ceil(kosList.length / itemsPerPage) }, (_, i) => i + 1)
+                                .filter(page => {
+                                    const totalPages = Math.ceil(kosList.length / itemsPerPage);
+                                    if (totalPages <= 7) return true;
+                                    if (page === 1 || page === totalPages) return true;
+                                    if (page >= currentPage - 1 && page <= currentPage + 1) return true;
+                                    if (page === currentPage - 2 || page === currentPage + 2) return page;
+                                    return false;
+                                })
+                                .map((page, index, array) => (
+                                    <div key={page} className="flex items-center">
+                                        {index > 0 && array[index - 1] !== page - 1 && (
+                                            <span className="px-2 text-gray-400">...</span>
+                                        )}
+                                        <button
+                                            onClick={() => setCurrentPage(page)}
+                                            className={`w-10 h-10 rounded-lg font-medium transition-all duration-200 ${currentPage === page
+                                                ? 'bg-primary text-white shadow-lg shadow-blue-200'
+                                                : 'bg-white text-gray-700 border-2 border-gray-300 hover:bg-secondary hover:text-white'
+                                                }`}>
+                                            {page}
+                                        </button>
+                                    </div>
+                                ))}
+                        </div>
+
+                        <button
+                            onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(kosList.length / itemsPerPage)))}
+                            disabled={currentPage === Math.ceil(kosList.length / itemsPerPage)}
+                            className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${currentPage === Math.ceil(kosList.length / itemsPerPage)
+                                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                : 'bg-white text-gray-700 border-2 border-gray-300 hover:bg-primary hover:text-white '
+                                }`}>
+                            <span>Selanjutnya</span>
+                            <FaChevronRight className="text-sm" />
+                        </button>
                     </div>
                 )}
             </div>

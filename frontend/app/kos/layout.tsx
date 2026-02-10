@@ -25,12 +25,14 @@ const RootLayout = ({ children }: PropsLayout) => {
 
 
     return (
-        <div className="">
-            <Toaster position="top-right" richColors />
-            <Navbar />
-            {children}
-            <Footer />
-        </div>
+        <section>
+            <div>
+                <Toaster position="top-right" richColors />
+                <Navbar />
+                {children}
+                <Footer />
+            </div>
+        </section>
     )
 }
 

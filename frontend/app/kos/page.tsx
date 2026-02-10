@@ -47,6 +47,9 @@ const KosPage = () => {
     const [showFacilitiesDropdown, setShowFacilitiesDropdown] = useState(false);
     const [showSortDropdown, setShowSortDropdown] = useState(false);
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
     const genderRef = useRef<HTMLDivElement>(null);
     const priceRef = useRef<HTMLDivElement>(null);
     const facilitiesRef = useRef<HTMLDivElement>(null);
@@ -143,6 +146,7 @@ const KosPage = () => {
         }
 
         setFilteredKosData(filtered);
+        setCurrentPage(1); // Reset to page 1 when filters change
     }, [kosData, selectedGender, priceRange, selectedFacilities, sortBy, showPromo, showRecommended]);
 
 
@@ -467,142 +471,198 @@ const KosPage = () => {
 
                         {/* Grid Layout */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                            {filteredKosData.map((kos) => {
-                                const currentImageIndex = imageIndexes[kos.id] || 0;
-                                const hasMultipleImages = kos.images && kos.images.length > 1;
+                            {filteredKosData
+                                .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage)
+                                .map((kos) => {
+                                    const currentImageIndex = imageIndexes[kos.id] || 0;
+                                    const hasMultipleImages = kos.images && kos.images.length > 1;
 
-                                return (
-                                    <div
-                                        key={kos.id}
-                                        className="bg-white rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer group transform hover:-translate-y-1"
-                                        onClick={() => router.push(`/kos/${kos.id}`)}>
+                                    return (
+                                        <div
+                                            key={kos.id}
+                                            className="bg-white rounded-2xl overflow-hidden transition-all duration-300 cursor-pointer group transform hover:-translate-y-1"
+                                            onClick={() => router.push(`/kos/${kos.id}`)}>
 
-                                        {/* Image Section */}
-                                        <div className="relative h-[200px] overflow-hidden">
-                                            {kos.images && kos.images.length > 0 ? (
-                                                <div>
-                                                    <Image
-                                                        src={`${BASE_IMAGE_KOS}/${kos.images[currentImageIndex].file}`}
-                                                        alt={kos.name}
-                                                        fill
-                                                        className="object-cover group-hover:scale-110 transition-transform duration-500"
-                                                        unoptimized />
+                                            {/* Image Section */}
+                                            <div className="relative h-[200px] overflow-hidden">
+                                                {kos.images && kos.images.length > 0 ? (
+                                                    <div>
+                                                        <Image
+                                                            src={`${BASE_IMAGE_KOS}/${kos.images[currentImageIndex].file}`}
+                                                            alt={kos.name}
+                                                            fill
+                                                            className="object-cover group-hover:scale-110 transition-transform duration-500"
+                                                            unoptimized />
 
-                                                    {hasMultipleImages && (
-                                                        <div>
-                                                            <button
-                                                                onClick={(e) => handlePrevImage(e, kos.id, kos.images.length)}
-                                                                className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 shadow-lg">
-                                                                <FaChevronLeft className="text-sm" />
-                                                            </button>
-                                                            <button
-                                                                onClick={(e) => handleNextImage(e, kos.id, kos.images.length)}
-                                                                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 shadow-lg">
-                                                                <FaChevronRight className="text-sm" />
-                                                            </button>
-                                                        </div>
-                                                    )}
-
-                                                    {kos.discountPercent && Number(kos.discountPercent) > 0 && (
-                                                        <div className="absolute top-3 right-3 z-20">
-                                                            <div className="bg-red-500 text-white px-3 py-1.5 rounded-md text-sm font-bold shadow-lg">
-                                                                Diskon {kos.discountPercent}%
+                                                        {hasMultipleImages && (
+                                                            <div>
+                                                                <button
+                                                                    onClick={(e) => handlePrevImage(e, kos.id, kos.images.length)}
+                                                                    className="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 shadow-lg">
+                                                                    <FaChevronLeft className="text-sm" />
+                                                                </button>
+                                                                <button
+                                                                    onClick={(e) => handleNextImage(e, kos.id, kos.images.length)}
+                                                                    className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white/90 hover:bg-white text-gray-800 rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10 shadow-lg">
+                                                                    <FaChevronRight className="text-sm" />
+                                                                </button>
                                                             </div>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            ) : (
-                                                <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
-                                                    <span className="text-gray-400 font-medium">No Image</span>
-                                                </div>
-                                            )}
-                                        </div>
+                                                        )}
 
-                                        <div className="py-5">
-                                            <span className={`px-2 py-1 rounded text-[12px] font-bold border border-slate-300  ${getGenderColor(kos.gender)}`}>
-                                                {getGenderText(kos.gender)}
-                                            </span>
-                                            <div className="mt-4">
-                                                <h3 className="text-sm text-gray-900 line-clamp-1">
-                                                    {kos.name}
-                                                </h3>
-                                                <p className="text-sm font-semibold text-gray-600 line-clamp-2">
-                                                    {kos.address}
-                                                </p>
-                                                <p className="text-xs text-gray-500 mt-1">
-                                                    {kos.kota}
-                                                </p>
-                                            </div>
-
-                                            {kos.facilities && kos.facilities.length > 0 && (
-                                                <div className="mb-4 mt-2">
-                                                    <div className="flex flex-wrap gap-1">
-                                                        {kos.facilities.slice(0, 4).map((facility, index) => (
-                                                            <div
-                                                                key={facility.id}
-                                                                className="flex items-center gap-1 rounded-lg"
-                                                                title={facility.facility}>
-                                                                {index > 0 && (
-                                                                    <span className="w-1 h-1 rounded-full bg-gray-400"></span>
-                                                                )}
-                                                                <span className="text-xs text-gray-600 truncate max-w-24">
-                                                                    {facility.facility.length > 30
-                                                                        ? facility.facility.substring(0, 8) + "..."
-                                                                        : facility.facility}
-                                                                </span>
-                                                            </div>
-                                                        ))}
-
-                                                        {kos.facilities.length > 4 && (
-                                                            <div className="flex items-center justify-center bg-gray-100 px-2 py-1 rounded-lg">
-                                                                <span className="text-xs text-gray-600">
-                                                                    +{kos.facilities.length - 4}
-                                                                </span>
+                                                        {kos.discountPercent && Number(kos.discountPercent) > 0 && (
+                                                            <div className="absolute top-3 right-3 z-20">
+                                                                <div className="bg-red-500 text-white px-3 py-1.5 rounded-md text-sm font-bold shadow-lg">
+                                                                    Diskon {kos.discountPercent}%
+                                                                </div>
                                                             </div>
                                                         )}
                                                     </div>
-                                                </div>
-                                            )}
+                                                ) : (
+                                                    <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                                                        <span className="text-gray-400 font-medium">No Image</span>
+                                                    </div>
+                                                )}
+                                            </div>
 
-                                            <div className="flex items-baseline gap-1">
-                                                {kos.discountPercent && kos.discountPercent > 0 ? (
-                                                    <div>
-                                                        <div className="flex items-center gap-2">
-                                                            {kos.discountPercent && Number(kos.discountPercent) > 0 && (
-                                                                <div className="text-red-500 py-1 text-sm font-bold flex items-center gap-1">
-                                                                    <BsFillLightningChargeFill />
-                                                                    Diskon -{kos.discountPercent}%
+                                            <div className="py-5">
+                                                <span className={`px-2 py-1 rounded text-[12px] font-bold border border-slate-300  ${getGenderColor(kos.gender)}`}>
+                                                    {getGenderText(kos.gender)}
+                                                </span>
+                                                <div className="mt-4">
+                                                    <h3 className="text-sm text-gray-900 line-clamp-1">
+                                                        {kos.name}
+                                                    </h3>
+                                                    <p className="text-sm font-semibold text-gray-600 line-clamp-2">
+                                                        {kos.address}
+                                                    </p>
+                                                    <p className="text-xs text-gray-500 mt-1">
+                                                        {kos.kota}
+                                                    </p>
+                                                </div>
+
+                                                {kos.facilities && kos.facilities.length > 0 && (
+                                                    <div className="mb-4 mt-2">
+                                                        <div className="flex flex-wrap gap-1">
+                                                            {kos.facilities.slice(0, 4).map((facility, index) => (
+                                                                <div
+                                                                    key={facility.id}
+                                                                    className="flex items-center gap-1 rounded-lg"
+                                                                    title={facility.facility}>
+                                                                    {index > 0 && (
+                                                                        <span className="w-1 h-1 rounded-full bg-gray-400"></span>
+                                                                    )}
+                                                                    <span className="text-xs text-gray-600 truncate max-w-24">
+                                                                        {facility.facility.length > 30
+                                                                            ? facility.facility.substring(0, 8) + "..."
+                                                                            : facility.facility}
+                                                                    </span>
+                                                                </div>
+                                                            ))}
+
+                                                            {kos.facilities.length > 4 && (
+                                                                <div className="flex items-center justify-center bg-gray-100 px-2 py-1 rounded-lg">
+                                                                    <span className="text-xs text-gray-600">
+                                                                        +{kos.facilities.length - 4}
+                                                                    </span>
                                                                 </div>
                                                             )}
-                                                            <span className="text-sm text-gray-500 line-through">
-                                                                Rp {formatPrice(kos.pricePerMonth)}
-                                                            </span>
                                                         </div>
-                                                        <div className="flex items-center gap-2">
-                                                            <span className="text-base font-bold text-red-500">
-                                                                Rp {formatPrice(kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100))}
+                                                    </div>
+                                                )}
+
+                                                <div className="flex items-baseline gap-1">
+                                                    {kos.discountPercent && kos.discountPercent > 0 ? (
+                                                        <div>
+                                                            <div className="flex items-center gap-2">
+                                                                {kos.discountPercent && Number(kos.discountPercent) > 0 && (
+                                                                    <div className="text-red-500 py-1 text-sm font-bold flex items-center gap-1">
+                                                                        <BsFillLightningChargeFill />
+                                                                        Diskon -{kos.discountPercent}%
+                                                                    </div>
+                                                                )}
+                                                                <span className="text-sm text-gray-500 line-through">
+                                                                    Rp {formatPrice(kos.pricePerMonth)}
+                                                                </span>
+                                                            </div>
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="text-base font-bold text-red-500">
+                                                                    Rp {formatPrice(kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100))}
+                                                                </span>
+                                                                <span className="text-sm text-black">
+                                                                    (Bulan pertama)
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    ) : (
+                                                        <div className="space-x-1 flex items-center">
+                                                            <span className="text-base font-bold text-green-600">
+                                                                Rp {formatPrice(kos.pricePerMonth)}
                                                             </span>
                                                             <span className="text-sm text-black">
                                                                 (Bulan pertama)
                                                             </span>
                                                         </div>
-                                                    </div>
-                                                ) : (
-                                                    <div className="space-x-1 flex items-center">
-                                                        <span className="text-base font-bold text-green-600">
-                                                            Rp {formatPrice(kos.pricePerMonth)}
-                                                        </span>
-                                                        <span className="text-sm text-black">
-                                                            (Bulan pertama)
-                                                        </span>
-                                                    </div>
-                                                )}
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                );
-                            })}
+                                    );
+                                })}
                         </div>
+
+                        {/* Pagination */}
+                        {filteredKosData.length > itemsPerPage && (
+                            <div className="mt-12 flex items-center justify-center gap-2">
+                                <button
+                                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                                    disabled={currentPage === 1}
+                                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${currentPage === 1
+                                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                            : 'bg-white text-gray-700 border-2 border-gray-300 hover:bg-primary hover:text-white'
+                                        }`}>
+                                    <FaChevronLeft className="text-sm" />
+                                    <span>Sebelumnya</span>
+                                </button>
+
+                                <div className="flex items-center gap-1">
+                                    {Array.from({ length: Math.ceil(filteredKosData.length / itemsPerPage) }, (_, i) => i + 1)
+                                        .filter(page => {
+                                            const totalPages = Math.ceil(filteredKosData.length / itemsPerPage);
+                                            if (totalPages <= 7) return true;
+                                            if (page === 1 || page === totalPages) return true;
+                                            if (page >= currentPage - 1 && page <= currentPage + 1) return true;
+                                            if (page === currentPage - 2 || page === currentPage + 2) return page;
+                                            return false;
+                                        })
+                                        .map((page, index, array) => (
+                                            <div key={page} className="flex items-center">
+                                                {index > 0 && array[index - 1] !== page - 1 && (
+                                                    <span className="px-2 text-gray-400">...</span>
+                                                )}
+                                                <button
+                                                    onClick={() => setCurrentPage(page)}
+                                                    className={`w-10 h-10 rounded-lg font-medium transition-all duration-200 ${currentPage === page
+                                                            ? 'bg-primary text-white shadow-lg shadow-blue-200'
+                                                            : 'bg-white text-gray-700 border-2 border-gray-300 hover:bg-secondary hover:text-white'
+                                                        }`}>
+                                                    {page}
+                                                </button>
+                                            </div>
+                                        ))}
+                                </div>
+
+                                <button
+                                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(filteredKosData.length / itemsPerPage)))}
+                                    disabled={currentPage === Math.ceil(filteredKosData.length / itemsPerPage)}
+                                    className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${currentPage === Math.ceil(filteredKosData.length / itemsPerPage)
+                                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                                            : 'bg-white text-gray-700 border-2 border-gray-300 hover:bg-primary hover:text-white '
+                                        }`}>
+                                    <span>Selanjutnya</span>
+                                    <FaChevronRight className="text-sm" />
+                                </button>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>

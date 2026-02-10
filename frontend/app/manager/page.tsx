@@ -9,6 +9,7 @@ import { getUserData, getAuthToken } from '../../lib/auth'
 import NotificationBell from '../components/notification/NotificationBell'
 import { getCookies } from '@/lib/client-cookies'
 import { BASE_IMAGE_PROFILE } from '@/global'
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 
 interface User {
     id: number
@@ -55,15 +56,16 @@ export default function ManagerPage() {
     const [filter, setFilter] = useState<'all' | 'pending' | 'accept' | 'reject'>('all')
     const [userData, setUserData] = useState<any>(null)
 
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 10;
+
     const getProfileImageUrl = (profilePicture: string) => {
         if (!profilePicture) return null;
 
-        // Check if it's a Google profile picture URL or any external URL
         if (profilePicture.startsWith('https://') || profilePicture.startsWith('http://')) {
             return profilePicture;
         }
 
-        // If it's a local file, use the BASE_IMAGE_PROFILE path
         return `${BASE_IMAGE_PROFILE}/${profilePicture}`;
     };
 
@@ -507,6 +509,58 @@ export default function ManagerPage() {
                                 </table>
                             </div>
                         )}
+                        {bookings.length > itemsPerPage && (
+                <div className="mt-12 flex items-center justify-center gap-2">
+                    <button
+                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                        disabled={currentPage === 1}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${currentPage === 1
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-blue-500 hover:bg-blue-50'
+                            }`}>
+                        <FaChevronLeft className="text-sm" />
+                        <span>Sebelumnya</span>
+                    </button>
+
+                    <div className="flex items-center gap-1">
+                        {Array.from({ length: Math.ceil(bookings.length / itemsPerPage) }, (_, i) => i + 1)
+                            .filter(page => {
+                                const totalPages = Math.ceil(bookings.length / itemsPerPage);
+                                if (totalPages <= 7) return true;
+                                if (page === 1 || page === totalPages) return true;
+                                if (page >= currentPage - 1 && page <= currentPage + 1) return true;
+                                if (page === currentPage - 2 || page === currentPage + 2) return page;
+                                return false;
+                            })
+                            .map((page, index, array) => (
+                                <div key={page} className="flex items-center">
+                                    {index > 0 && array[index - 1] !== page - 1 && (
+                                        <span className="px-2 text-gray-400">...</span>
+                                    )}
+                                    <button
+                                        onClick={() => setCurrentPage(page)}
+                                        className={`w-10 h-10 rounded-lg font-medium transition-all duration-200 ${currentPage === page
+                                            ? 'bg-primary text-white shadow-lg shadow-blue-200'
+                                            : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-primary hover:bg-secondary'
+                                            }`}>
+                                        {page}
+                                    </button>
+                                </div>
+                            ))}
+                    </div>
+
+                    <button
+                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, Math.ceil(bookings.length / itemsPerPage)))}
+                        disabled={currentPage === Math.ceil(bookings.length / itemsPerPage)}
+                        className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all duration-200 ${currentPage === Math.ceil(bookings.length / itemsPerPage)
+                            ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                            : 'bg-white text-gray-700 border-2 border-gray-300 hover:border-primary hover:bg-secondary'
+                            }`}>
+                        <span>Selanjutnya</span>
+                        <FaChevronRight className="text-sm" />
+                    </button>
+                </div>
+            )}
                     </div>
 
                     {/* Detail Modal */}
