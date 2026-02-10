@@ -10,7 +10,7 @@ export default function Area() {
         },
         {
             province: "Jawa Barat",
-            cities: ["Bandung", "Bogor", "Bekasi", "Depok", "Cirebon", "Sukabumi"]
+            cities: ["Bandung", "Bogor", "Bekasi", "Depok", "Cirebon", "Sukabumi", "Sumedang"]
         },
         {
             province: "Jawa Tengah",

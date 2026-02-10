@@ -23,21 +23,18 @@ const KosPage = () => {
     const search = searchParams.get("search") || "";
     const router = useRouter();
 
-    // Daftar kota berdasarkan enum Kota di Prisma
     const kotaOptions = [
         "Jakarta", "Bandung", "Surabaya", "Medan", "Semarang", "Makassar",
         "Palembang", "Batam", "Malang", "Bogor", "Depok", "Tangerang",
         "Solo", "Makasar", "Yogyakarta", "Bekasi"
     ];
 
-    /** ---------- STATE ---------- */
     const [kosData, setKosData] = useState<IKos[]>([]);
     const [filteredKosData, setFilteredKosData] = useState<IKos[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedKota, setSelectedKota] = useState<string>("all");
     const [imageIndexes, setImageIndexes] = useState<{ [key: number]: number }>({});
 
-    // Filter states
     const [selectedGender, setSelectedGender] = useState<string>("all");
     const [priceRange, setPriceRange] = useState<{ min: number; max: number }>({ min: 0, max: 10000000 });
     const [selectedFacilities, setSelectedFacilities] = useState<string[]>([]);
@@ -45,7 +42,6 @@ const KosPage = () => {
     const [showPromo, setShowPromo] = useState(false);
     const [showRecommended, setShowRecommended] = useState(false);
 
-    // Dropdown states
     const [showGenderDropdown, setShowGenderDropdown] = useState(false);
     const [showPriceDropdown, setShowPriceDropdown] = useState(false);
     const [showFacilitiesDropdown, setShowFacilitiesDropdown] = useState(false);
@@ -58,7 +54,6 @@ const KosPage = () => {
 
     const facilityOptions = ["WiFi", "AC", "Kasur", "Lemari", "Meja", "Kursi", "Kamar Mandi Dalam", "Dapur", "Laundry", "Parkir"];
 
-    /** ---------- FETCH KOS DATA ---------- */
     useEffect(() => {
         const getKosData = async () => {
             try {
@@ -70,7 +65,6 @@ const KosPage = () => {
                 if ((data as { status: boolean; data: IKos[] }).status) {
                     let allKos = (data as { status: boolean; data: IKos[] }).data;
 
-                    // Filter kota
                     if (selectedKota && selectedKota !== "all") {
                         allKos = allKos.filter(kos => kos.kota.toLowerCase() === selectedKota.toLowerCase());
                     }
@@ -87,7 +81,6 @@ const KosPage = () => {
         getKosData();
     }, [search, selectedKota]);
 
-    // Close dropdowns when clicking outside
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (genderRef.current && !genderRef.current.contains(e.target as Node)) {
@@ -111,12 +104,10 @@ const KosPage = () => {
     useEffect(() => {
         let filtered = [...kosData];
 
-        // Filter by gender
         if (selectedGender !== "all") {
             filtered = filtered.filter(kos => kos.gender === selectedGender);
         }
 
-        // Filter by price range
         filtered = filtered.filter(kos => {
             const price = kos.discountPercent && kos.discountPercent > 0
                 ? kos.pricePerMonth - (kos.pricePerMonth * kos.discountPercent / 100)
@@ -124,7 +115,6 @@ const KosPage = () => {
             return price >= priceRange.min && price <= priceRange.max;
         });
 
-        // Filter by facilities
         if (selectedFacilities.length > 0) {
             filtered = filtered.filter(kos => {
                 const kosFacilities = kos.facilities?.map(f => f.facility.toLowerCase()) || [];
@@ -134,12 +124,10 @@ const KosPage = () => {
             });
         }
 
-        // Filter by promo
         if (showPromo) {
             filtered = filtered.filter(kos => kos.discountPercent && kos.discountPercent > 0);
         }
 
-        // Sort
         if (sortBy === "price-low") {
             filtered.sort((a, b) => {
                 const priceA = a.discountPercent ? a.pricePerMonth - (a.pricePerMonth * a.discountPercent / 100) : a.pricePerMonth;
@@ -157,7 +145,6 @@ const KosPage = () => {
         setFilteredKosData(filtered);
     }, [kosData, selectedGender, priceRange, selectedFacilities, sortBy, showPromo, showRecommended]);
 
-    /** ---------- APPLY FILTERS ---------- */
 
     const resetFilters = () => {
         setSelectedGender("all");
@@ -224,7 +211,6 @@ const KosPage = () => {
         }));
     };
 
-    /** ---------- RENDER ---------- */
     return (
         <div className="bg-white duration-200 font-lato">
             <div className="max-w-6xl mx-auto px-4 py-8 flex items-center justify-between">
@@ -244,7 +230,6 @@ const KosPage = () => {
                     </div>
                 </div>
 
-                {/* Pilih Kota */}
                 <div className="mt-6">
                     <div className="w-full md:w-64">
                         <Select
@@ -265,7 +250,6 @@ const KosPage = () => {
             </div>
 
 
-            {/* ----------------- FILTER PILLS ----------------- */}
             <div className="max-w-6xl mx-auto px-4 py-4">
                 <div className="flex items-center gap-3 flex-wrap">
                     {/* Gender Filter */}
@@ -318,7 +302,6 @@ const KosPage = () => {
                         )}
                     </div>
 
-                    {/* Price Range Filter */}
                     <div ref={priceRef} className="relative">
                         <button
                             onClick={() => setShowPriceDropdown(!showPriceDropdown)}
@@ -362,7 +345,6 @@ const KosPage = () => {
                         )}
                     </div>
 
-                    {/* Facilities Filter */}
                     <div ref={facilitiesRef} className="relative">
                         <button
                             onClick={() => setShowFacilitiesDropdown(!showFacilitiesDropdown)}
@@ -392,7 +374,6 @@ const KosPage = () => {
                         )}
                     </div>
 
-                    {/* Sort Filter */}
                     <div ref={sortRef} className="relative">
                         <button
                             onClick={() => setShowSortDropdown(!showSortDropdown)}
@@ -461,7 +442,6 @@ const KosPage = () => {
                 </div>
             </div>
 
-            {/* ----------------- KOS CARDS ----------------- */}
             <div className="max-w-6xl mx-auto py-8 px-4">
                 {loading ? (
                     <div className="flex items-center justify-center min-h-[250px]">
@@ -523,7 +503,6 @@ const KosPage = () => {
                                                         </div>
                                                     )}
 
-                                                    {/* Top Right - Discount Badge */}
                                                     {kos.discountPercent && Number(kos.discountPercent) > 0 && (
                                                         <div className="absolute top-3 right-3 z-20">
                                                             <div className="bg-red-500 text-white px-3 py-1.5 rounded-md text-sm font-bold shadow-lg">
@@ -540,7 +519,6 @@ const KosPage = () => {
                                         </div>
 
                                         <div className="py-5">
-                                            {/* Badge Gender */}
                                             <span className={`px-2 py-1 rounded text-[12px] font-bold border border-slate-300  ${getGenderColor(kos.gender)}`}>
                                                 {getGenderText(kos.gender)}
                                             </span>
@@ -564,7 +542,6 @@ const KosPage = () => {
                                                                 key={facility.id}
                                                                 className="flex items-center gap-1 rounded-lg"
                                                                 title={facility.facility}>
-                                                                {/* Icon lingkaran kecil muncul kalau bukan index pertama */}
                                                                 {index > 0 && (
                                                                     <span className="w-1 h-1 rounded-full bg-gray-400"></span>
                                                                 )}
@@ -590,7 +567,6 @@ const KosPage = () => {
                                             <div className="flex items-baseline gap-1">
                                                 {kos.discountPercent && kos.discountPercent > 0 ? (
                                                     <div>
-                                                        {/* Discount Badge - hanya tampil jika discount > 0 */}
                                                         <div className="flex items-center gap-2">
                                                             {kos.discountPercent && Number(kos.discountPercent) > 0 && (
                                                                 <div className="text-red-500 py-1 text-sm font-bold flex items-center gap-1">

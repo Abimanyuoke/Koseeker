@@ -6,7 +6,7 @@ import Image from "next/image";
 const validCities = [
     "surabaya", "malang", "sidoarjo", "jember", "kediri", "pasuruan",
     "bandung", "bogor", "bekasi", "depok", "cirebon", "sukabumi",
-    "semarang", "solo", "yogyakarta", "purwokerto", "tegal", "magelang"
+    "semarang", "solo", "yogyakarta", "purwokerto", "tegal", "magelang", "medan", "jakarta", "jogja", "sumedang"
 ];
 
 export default function CityPage({ params }: { params: Promise<{ city: string }> }) {
