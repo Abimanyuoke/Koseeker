@@ -6,15 +6,15 @@ import {
     uploadMultipleKosImages,
     deleteKosImage,
     deleteMultipleKosImages
-} from "../controllers/kosImageController";
+} from "../controllers/kos-image-controller";
 import {
     verifyUploadImage,
     verifyUploadMultipleImages,
     verifyDeleteMultipleImages,
     verifyImageId,
     verifyKosId
-} from "../middlewares/kosImageValidation";
-import uploadFile from "../middlewares/kosUpload";
+} from "../validators/kosImageValidation";
+import uploadFile from "../middlewares/kos-upload-middleware";
 
 const app = express();
 app.use(express.json());

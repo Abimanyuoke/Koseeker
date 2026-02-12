@@ -10,11 +10,11 @@ import {
     checkUserReview,
     replyToReview,
     checkCanReview
-} from "../controllers/reviewcontroller";
+} from "../controllers/review-controller";
 import {
     verifyAddReview,
     verifyEditReview
-} from "../middlewares/reviewValidation";
+} from "../validators/reviewValidation";
 
 const router = Router();
 

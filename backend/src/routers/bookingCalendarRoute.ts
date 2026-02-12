@@ -2,8 +2,8 @@ import express from 'express'
 import {
     getBookingCalendar,
     initializeKosCalendar
-} from '../controllers/bookingCalendarController'
-import { verifyToken } from '../middlewares/authorization'
+} from '../controllers/booking-calender-controller'
+import { verifyToken } from '../middlewares/authorization-middleware'
 
 const router = express.Router()
 

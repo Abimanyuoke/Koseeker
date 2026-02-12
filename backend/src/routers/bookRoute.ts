@@ -7,13 +7,13 @@ import {
     updateBookingStatus,
     deleteBook,
     getOwnerBookings
-} from "../controllers/bookController";
+} from "../controllers/book-controller";
 import {
     verifyAddBook,
     verifyEditBook,
     verifyUpdateBookStatus
-} from "../middlewares/bookValidation";
-import { verifyToken } from "../middlewares/authorization";
+} from "../validators/bookValidation";
+import { verifyToken } from "../middlewares/authorization-middleware";
 
 const router = Router();
 

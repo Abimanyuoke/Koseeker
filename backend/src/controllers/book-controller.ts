@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
-import { createBookingCalendarEntries } from "./bookingCalendarController";
+import { createBookingCalendarEntries } from "./booking-calender-controller";
 import { v4 as uuidv4 } from 'uuid';
 
 const prisma = new PrismaClient({ errorFormat: "pretty" })

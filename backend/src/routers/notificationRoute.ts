@@ -5,8 +5,8 @@ import {
     markAllAsRead,
     getUnreadCount,
     createNotificationAPI
-} from '../controllers/notificationController'
-import { verifyToken } from '../middlewares/authorization'
+} from '../controllers/notification-controller'
+import { verifyToken } from '../middlewares/authorization-middleware'
 
 const router = express.Router()
 

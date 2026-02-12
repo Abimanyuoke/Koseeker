@@ -7,7 +7,7 @@ import {
     updateKosFacility,
     deleteKosFacility,
     deleteMultipleFacilities
-} from "../controllers/kosFaclities";
+} from "../controllers/kos-faclities-controller";
 import {
     verifyAddFacility,
     verifyAddMultipleFacilities,
@@ -15,7 +15,7 @@ import {
     verifyDeleteMultipleFacilities,
     verifyFacilityId,
     verifyKosId
-} from "../middlewares/kosFacilitiesValidation";
+} from "../validators/kosFacilitiesValidation";
 
 const app = express();
 app.use(express.json());

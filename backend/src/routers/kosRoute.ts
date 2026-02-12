@@ -1,9 +1,9 @@
 import express from "express"
-import { getAllKos, getKosById, createKos, updateKos, deleteKos, getPromoKos } from "../controllers/kosController"
-import { verifyAddKos, verifyEditKos, } from "../middlewares/kosValidation"
-import { verifyRole, verifyToken } from "../middlewares/authorization"
-import uploadFile from "../middlewares/kosUpload"
-import { parseFacilities } from "../middlewares/parseFacilities"
+import { getAllKos, getKosById, createKos, updateKos, deleteKos, getPromoKos } from "../controllers/kos-controller"
+import { verifyAddKos, verifyEditKos, } from "../validators/kosValidation"
+import { verifyRole, verifyToken } from "../middlewares/authorization-middleware"
+import uploadFile from "../middlewares/kos-upload-middleware"
+import { parseFacilities } from "../middlewares/parse-facilities-middleware"
 
 const app = express()
 app.use(express.json())

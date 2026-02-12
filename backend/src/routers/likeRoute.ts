@@ -6,12 +6,12 @@ import {
     deleteLike,
     toggleLike,
     checkUserLike
-} from "../controllers/likeController";
+} from "../controllers/like-controller";
 import {
     verifyAddLike,
     verifyToggleLike,
     verifyDeleteLike
-} from "../middlewares/likeValidaiton";
+} from "../validators/likeValidaiton";
 
 const router = Router();
 router.get("/kos/:kosId", getLikesByKos);           
