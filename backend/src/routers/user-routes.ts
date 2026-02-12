@@ -1,6 +1,6 @@
 import express from "express"
 import { getAllUsers, createUser, updateUser, deleteUser, changePicture, authentication, getUserById, googleAuthentication, changePassword } from "../controllers/user-controller"
-import { verifyAddUser, verifyAuthentication } from "../validators/userValidation"
+import { verifyAddUser, verifyAuthentication } from "../validators/user-validation"
 import uploadFile from "../middlewares/profil-upload-middleware"
 import { verifyToken, verifyRole } from "../middlewares/authorization-middleware"
 

@@ -15,7 +15,7 @@ import {
     verifyDeleteMultipleFacilities,
     verifyFacilityId,
     verifyKosId
-} from "../validators/kosFacilitiesValidation";
+} from "../validators/kos-facilities-validation";
 
 const app = express();
 app.use(express.json());

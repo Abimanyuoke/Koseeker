@@ -11,20 +11,17 @@ export default function AuthCallback() {
     const router = useRouter()
 
     useEffect(() => {
-        if (status === "loading") return // Still loading
+        if (status === "loading") return
 
         if (status === "unauthenticated") {
-            // No session, redirect to login
             router.replace("/auth/login")
             return
         }
 
         if (session?.accessToken) {
-            // Debug: Log the session data
             console.log("Session data:", session)
             console.log("Profile picture from session:", session.user?.image)
 
-            // Session exists with backend token, store in localStorage and cookies
             localStorage.setItem("token", session.accessToken)
             localStorage.setItem("id", session.userId || "")
             localStorage.setItem("name", session.user?.name || "")
@@ -39,12 +36,10 @@ export default function AuthCallback() {
 
             toast.success("Google login success!", { duration: 2000 })
 
-            // Redirect to home page
             setTimeout(() => {
                 router.replace("/home")
             }, 1000)
         } else {
-            // Session exists but no backend token, something went wrong
             toast.error("Login failed. Please try again.", { duration: 2000 })
             router.replace("/auth/login")
         }

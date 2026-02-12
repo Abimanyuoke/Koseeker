@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import fs from "fs";
-import { BASE_URL, SECRET } from "../global";
+import { BASE_URL, SECRET } from "../types/global";
 import { v4 as uuidv4 } from "uuid";
 import md5 from "md5";
 import { sign } from "jsonwebtoken";
@@ -34,44 +34,44 @@ export const getAllUsers = async (request: Request, response: Response) => {
     }
 }
 
-    export const getUserById = async (request: Request, response: Response) => {
-        try {
-            const { id } = request.params;
+export const getUserById = async (request: Request, response: Response) => {
+    try {
+        const { id } = request.params;
 
-            if (!id) {
-                return response.status(400).json({
-                    status: false,
-                    message: 'User ID is required'
-                });
-            }
-
-            const userId = Number(id);
-
-            const user = await prisma.user.findUnique({
-                where: { id: userId }
+        if (!id) {
+            return response.status(400).json({
+                status: false,
+                message: 'User ID is required'
             });
-
-            if (!user) {
-                return response.status(404).json({
-                    status: false,
-                    message: `User not found`
-                });
-            }
-
-            return response.json({
-                status: true,
-                data: user,
-                message: `User has been retrieved`
-            }).status(200); 
-        } catch (error) {
-            return response
-                .json({
-                    status: false,
-                    message: `There is an error. ${error}`
-                })
-                .status(400);
         }
+
+        const userId = Number(id);
+
+        const user = await prisma.user.findUnique({
+            where: { id: userId }
+        });
+
+        if (!user) {
+            return response.status(404).json({
+                status: false,
+                message: `User not found`
+            });
+        }
+
+        return response.json({
+            status: true,
+            data: user,
+            message: `User has been retrieved`
+        }).status(200);
+    } catch (error) {
+        return response
+            .json({
+                status: false,
+                message: `There is an error. ${error}`
+            })
+            .status(400);
     }
+}
 
 export const createUser = async (request: Request, response: Response) => {
     try {
@@ -308,8 +308,8 @@ export const googleAuthentication = async (request: Request, response: Response)
                     uuid,
                     name: name || '',
                     email: email || '',
-                    password: md5(googleId), 
-                    role: 'society', 
+                    password: md5(googleId),
+                    role: 'society',
                     profile_picture: picture || '',
                     phone: ''
                 }

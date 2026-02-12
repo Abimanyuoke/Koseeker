@@ -2,7 +2,7 @@ import React from "react"
 import { Toaster } from "sonner"
 
 export const metadata = {
-    title: 'Login',
+    title: 'Login | Koseeker',
     description: 'Praktikum SMK Telkom Malang',
 }
 

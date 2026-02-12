@@ -12,7 +12,7 @@ import {
     verifyAddBook,
     verifyEditBook,
     verifyUpdateBookStatus
-} from "../validators/bookValidation";
+} from "../validators/book-validation";
 import { verifyToken } from "../middlewares/authorization-middleware";
 
 const router = Router();

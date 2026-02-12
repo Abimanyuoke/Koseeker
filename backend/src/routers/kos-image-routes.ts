@@ -13,7 +13,7 @@ import {
     verifyDeleteMultipleImages,
     verifyImageId,
     verifyKosId
-} from "../validators/kosImageValidation";
+} from "../validators/kos-image-validation";
 import uploadFile from "../middlewares/kos-upload-middleware";
 
 const app = express();

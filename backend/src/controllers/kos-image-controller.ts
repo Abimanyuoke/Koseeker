@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import fs from "fs";
 import path from "path";
-import { BASE_URL } from "../global";
+import { BASE_URL } from "../types/global";
 
 const prisma = new PrismaClient({ errorFormat: "pretty" });
 

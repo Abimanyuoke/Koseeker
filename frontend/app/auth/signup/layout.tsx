@@ -4,7 +4,7 @@ import { Toaster } from "sonner"
 
 
 export const metadata = {
-    title: 'Sign Up',
+    title: 'Sign Up | Koseeker',
     description: 'Praktikum SMK Telkom Malang',
 }
 

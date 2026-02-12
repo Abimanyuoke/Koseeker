@@ -14,7 +14,7 @@ import {
 import {
     verifyAddReview,
     verifyEditReview
-} from "../validators/reviewValidation";
+} from "../validators/review-validation";
 
 const router = Router();
 

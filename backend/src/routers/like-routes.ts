@@ -11,7 +11,7 @@ import {
     verifyAddLike,
     verifyToggleLike,
     verifyDeleteLike
-} from "../validators/likeValidaiton";
+} from "../validators/like-validaiton";
 
 const router = Router();
 router.get("/kos/:kosId", getLikesByKos);           

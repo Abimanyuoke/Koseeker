@@ -1,6 +1,6 @@
 import { Request } from "express";
 import multer from "multer";
-import { BASE_URL } from "../global";
+import { BASE_URL } from "../types/global";
 
 /** define storage configuration of profil image  */
 const storage = multer.diskStorage({

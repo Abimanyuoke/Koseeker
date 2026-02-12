@@ -1,6 +1,6 @@
 import express from "express"
 import { getAllKos, getKosById, createKos, updateKos, deleteKos, getPromoKos } from "../controllers/kos-controller"
-import { verifyAddKos, verifyEditKos, } from "../validators/kosValidation"
+import { verifyAddKos, verifyEditKos, } from "../validators/kos-validation"
 import { verifyRole, verifyToken } from "../middlewares/authorization-middleware"
 import uploadFile from "../middlewares/kos-upload-middleware"
 import { parseFacilities } from "../middlewares/parse-facilities-middleware"

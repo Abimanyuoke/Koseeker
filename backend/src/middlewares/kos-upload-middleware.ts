@@ -1,6 +1,6 @@
 import { Request } from "express";
 import multer from "multer";
-import { BASE_URL } from "../global";
+import { BASE_URL } from "../types/global";
 import path from "path";
 
 /** define storage configuration of menu picture  */

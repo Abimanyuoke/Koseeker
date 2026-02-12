@@ -6,15 +6,15 @@ import cors from 'cors'
 import swaggerJsDoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 import path from 'path'
-import KosRoute from './routers/kosRoute'
-import UserRoute from './routers/userRoute'
-import LikeRoute from './routers/likeRoute'
-import ReviewRoute from './routers/reviewRoute'
-import BookRoute from './routers/bookRoute'
-import KosFacilitiesRoute from './routers/kosFacilitiesRoute'
-import KosImageRoute from './routers/kosImageRoute'
-import BookingCalendarRoute from './routers/bookingCalendarRoute'
-import NotificationRoute from './routers/notificationRoute'
+import KosRoute from '../routers/kos-routes'
+import UserRoute from '../routers/user-routes'
+import LikeRoute from '../routers/like-routes'
+import ReviewRoute from '../routers/review-routes'
+import BookRoute from '../routers/book-routes'
+import KosFacilitiesRoute from '../routers/kos-facilities-routes'
+import KosImageRoute from '../routers/kos-image-routes'
+import BookingCalendarRoute from '../routers/booking-calendar-routes'
+import NotificationRoute from '../routers/notification-routes'
 
 
 import { PORT } from './global'
@@ -41,13 +41,13 @@ const swaggerOptions = {
                 bearerAuth: {
                     type: 'http',
                     scheme: 'bearer',
-                    bearerFormat: 'JWT', 
+                    bearerFormat: 'JWT',
                 },
             },
         },
         security: [{ bearerAuth: [] }],
     },
-    apis: ['./src/routers/*.ts'], 
+    apis: ['./src/routers/*.ts'],
 };
 
 const swaggerDocs = swaggerJsDoc(swaggerOptions)
