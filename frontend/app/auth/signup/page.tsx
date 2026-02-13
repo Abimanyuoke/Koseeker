@@ -7,7 +7,7 @@ import { BASE_API_URL } from "../../../global";
 import { getCookies } from "../../../lib/client-cookies";
 import { IUser } from "../../types";
 import { post } from "../../../lib/bridge";
-import FileInput from "../../components/file-input"
+import FileInput from "../../src/components/ui/file-input"
 import { IoEyeSharp } from "react-icons/io5";
 import { HiEyeSlash } from "react-icons/hi2";
 import Image from "next/image";
@@ -202,14 +202,14 @@ export default function SignUp() {
 
                             {/* File Upload */}
                             <div className="relative">
-                                <FaImage className="absolute left-3 top-1/2 translate-y-0.5 transform  text-gray-400 text-lg"/>
-                                    <FileInput
-                                        acceptTypes={["image/png", "image/jpeg", "image/jpg"]}
-                                        id="profile_picture"
-                                        className="w-full pl-12 pr-4 py-2.5 border-2 border-gray-400 rounded-md focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400"
-                                        label="Profile Picture (Optional)"
-                                        onChange={(f) => setFile(f)}
-                                        required={false}/>
+                                <FaImage className="absolute left-3 top-1/2 translate-y-0.5 transform  text-gray-400 text-lg" />
+                                <FileInput
+                                    acceptTypes={["image/png", "image/jpeg", "image/jpg"]}
+                                    id="profile_picture"
+                                    className="w-full pl-12 pr-4 py-2.5 border-2 border-gray-400 rounded-md focus:outline-none focus:border-primary transition-all duration-300 text-gray-700 placeholder:text-gray-400"
+                                    label="Profile Picture (Optional)"
+                                    onChange={(f) => setFile(f)}
+                                    required={false} />
                             </div>
 
                             {/* Submit Button */}

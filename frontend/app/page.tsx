@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import AOS from "aos";
-import Home from './home/page';
+import Home from './main/home/page';
 
 
 

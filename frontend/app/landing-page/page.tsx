@@ -2,13 +2,13 @@
 "use client"
 
 import Link from "next/link";
-import NavbarLanding from "../components/navbar-landing/page";
+import NavbarLanding from "../src/components/common/navbar-landing/page";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { BsCheckCircleFill, BsPersonFillCheck } from "react-icons/bs";
 import { AiFillInsurance } from "react-icons/ai";
 import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { useState } from "react";
-import FooterLandingPage from "../components/footer-landing/page";
+import FooterLandingPage from "../src/components/common/footer-landing/page";
 
 export default function LandingPage() {
     const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
