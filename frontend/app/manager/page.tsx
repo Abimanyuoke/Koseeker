@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @next/next/no-img-element */
 'use client'
@@ -45,9 +44,6 @@ interface Booking {
 export default function ManagerPage() {
     const [bookings, setBookings] = useState<Booking[]>([])
     const [loading, setLoading] = useState(true)
-    const [profile, setProfile] = useState<string>("");
-    const [role, setRole] = useState<string>("");
-    const [user, setUser] = useState<string>("");
     const [selectedBooking, setSelectedBooking] = useState<Booking | null>(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false)
@@ -69,28 +65,38 @@ export default function ManagerPage() {
         return `${BASE_IMAGE_PROFILE}/${profilePicture}`;
     };
 
-    useEffect(() => {
-        const profilePicture = getCookies("profile_picture") || "";
-        const userName = getCookies("name") || "";
-        const userRole = getCookies("role") || "";
-
-        console.log("Navbar useEffect - Profile picture from cookies:", profilePicture);
-        console.log("Navbar useEffect - User name:", userName);
-        console.log("Navbar useEffect - User role:", userRole);
-
-        setProfile(profilePicture);
-        setUser(userName);
-        setRole(userRole);
-    }, []);
-
-
+    // Consolidated useEffect untuk load user data
     useEffect(() => {
         const user = getUserData()
-        setUserData(user)
-        if (user?.role === 'owner') {
-            fetchOwnerBookings()
+
+        // Fallback ke cookies jika getUserData tidak mengembalikan data lengkap
+        if (!user || !user.name) {
+            const profilePicture = getCookies("profile_picture") || "";
+            const userName = getCookies("name") || "";
+            const userRole = getCookies("role") || "";
+
+            setUserData({
+                profile_picture: profilePicture,
+                name: userName,
+                role: userRole
+            })
+
+            console.log("User data from cookies:", { profilePicture, userName, userRole });
+
+            if (userRole === 'owner') {
+                fetchOwnerBookings()
+            } else {
+                setLoading(false)
+            }
         } else {
-            setLoading(false)
+            setUserData(user)
+            console.log("User data from getUserData:", user);
+
+            if (user?.role === 'owner') {
+                fetchOwnerBookings()
+            } else {
+                setLoading(false)
+            }
         }
     }, [])
 
